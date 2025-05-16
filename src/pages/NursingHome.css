@@ -1,0 +1,63 @@
+.nursinghome-main {
+  padding: 20px;
+}
+
+.tab-menu {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.tab-menu button {
+  padding: 10px 20px;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+}
+
+.tab-menu .active {
+  background: #007acc;
+  color: #fff;
+}
+
+.filter-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-category > div {
+  margin-bottom: 20px;
+}
+
+.filter-category label {
+  margin-right: 10px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.facility-list {
+  display: flex;
+  gap: 20px;
+}
+
+.facility-card {
+  background: #eee;
+  width: 200px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
