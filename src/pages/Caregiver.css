@@ -1,29 +1,35 @@
-.nursinghome-main {
+.caregiver-main {
   padding: 20px;
 }
 
 .tab-menu {
   display: flex;
   gap: 5px !important;
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
-.tab-menu button {
+.tab-button {
+  display: inline-block;
   padding: 10px 20px;
   background: #ddd;
-  border: none;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  color: #333;
+  text-decoration: none;
   cursor: pointer;
 }
 
-.tab-menu .active {
+.tab-button.active {
   background: #007acc;
   color: #fff;
+  border: 1px solid #007acc;
+  border-bottom: none;
 }
 
 .filter-box {
   border: 1px solid #ddd;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 00px;
 }
 
 .filter-row {
