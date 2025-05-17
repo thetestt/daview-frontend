@@ -1,14 +1,19 @@
 import React from "react";
 import "./NursingHome.css";
+import { Link } from "react-router-dom";
 
 function NursingHome() {
   return (
     <div className="nursinghome-main">
       {/* 상단 탭 */}
-      <div className="tab-menu">
-        <button>실버타운</button>
+           <div className="tab-menu">
+        <Link to="/slivertown">
+          <button>실버타운</button>
+        </Link>
         <button className="active">요양원</button>
-        <button>요양사</button>
+        <Link to="/caregiver">
+          <button>요양사</button>
+        </Link>
       </div>
 
       {/* 필터 영역 */}
