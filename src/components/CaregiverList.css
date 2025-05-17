@@ -1,0 +1,23 @@
+.facility-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.facility-card {
+  background: #eee;
+  width: 220px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.facility-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
