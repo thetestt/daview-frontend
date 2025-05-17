@@ -54,16 +54,3 @@
   cursor: pointer;
 }
 
-.facility-list {
-  display: flex;
-  gap: 20px;
-}
-
-.facility-card {
-  background: #eee;
-  width: 200px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}

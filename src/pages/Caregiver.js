@@ -1,6 +1,7 @@
 import React from "react";
 import "./Caregiver.css";
 import { Link } from "react-router-dom";
+import CaregiverList from "../components/CaregiverList";
 
 function Caregiver() {
   return (
@@ -94,12 +95,7 @@ function Caregiver() {
 
         <button className="search-button">검색</button>
       </div>
-      {/* 리스트 더미 */}
-      <div className="facility-list">
-        <div className="facility-card">요양사1</div>
-        <div className="facility-card">요양사2</div>
-        <div className="facility-card">요양사3</div>
-      </div>
+       <CaregiverList />
     </div>
   );
 }
