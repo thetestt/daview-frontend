@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Caregiver from "./pages/Caregiver";
 import NursingHome from "./pages/NursingHome";
-import Slivertown from "./pages/Slivertown";
+import Silvertown from "./pages/Silvertown";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/caregiver" element={<Caregiver />} />
         <Route path="/nursinghome" element={<NursingHome />} />
-        <Route path="/slivertown" element={<Slivertown />} />
+        <Route path="/silvertown" element={<Silvertown />} />
       </Routes>
       <Footer />
     </div>

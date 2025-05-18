@@ -1,0 +1,16 @@
+.facility-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.facility-card {
+  background: #f0f0f0;
+  width: 220px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}

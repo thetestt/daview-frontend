@@ -1,13 +1,14 @@
 import React from "react";
 import "./NursingHome.css";
 import { Link } from "react-router-dom";
+import NursingHomeList from "../components/NursingHomeList";
 
 function NursingHome() {
   return (
     <div className="nursinghome-main">
       {/* 상단 탭 */}
            <div className="tab-menu">
-        <Link to="/slivertown">
+        <Link to="/silvertown">
           <button>실버타운</button>
         </Link>
         <button className="active">요양원</button>
@@ -95,13 +96,7 @@ function NursingHome() {
 
         <button className="search-button">검색</button>
       </div>
-
-      {/* 리스트 더미 */}
-      <div className="facility-list">
-        <div className="facility-card">요양원1</div>
-        <div className="facility-card">요양원2</div>
-        <div className="facility-card">요양원3</div>
-      </div>
+      <NursingHomeList />
     </div>
   );
 }

@@ -8,7 +8,7 @@ function Caregiver() {
     <div className="caregiver-main">
       {/* 상단 탭 */}
       <div className="tab-menu">
-        <Link to="/slivertown" className="tab-link">
+        <Link to="/silvertown" className="tab-link">
           <button>실버타운</button>
         </Link>
         <Link to="/nursinghome" className="tab-link">
