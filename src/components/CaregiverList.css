@@ -1,13 +1,13 @@
 .facility-list {
   display: flex;
-  gap: 20px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
 .facility-card {
   background: #f9f9f9;
   padding: 20px;
-  width: 200px;
+  width: 280px;
   border: 1px solid #ddd;
   border-radius: 8px;
   transition: transform 0.2s;
