@@ -5,19 +5,23 @@
 }
 
 .facility-card {
-  background: #eee;
-  width: 220px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background: #f9f9f9;
+  padding: 20px;
+  width: 200px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s;
 }
 
 .facility-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.03);
+  background: #eef6ff;
+}
+
+.facility-card h3 {
+  margin: 0 0 10px;
+}
+
+.facility-card p {
+  margin: 0;
 }
