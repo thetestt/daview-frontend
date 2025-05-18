@@ -1,7 +1,9 @@
 .floating-nav-container {
   position: fixed;
-  top: 100px;
-  left: 20px;
+  /* top: 100px;
+  left: 10px; */
+  right : 10px;
+  bottom : 50px;
   display: flex;
   flex-direction: column; /* 세로 방향 정렬 */
   align-items: flex-start; /* 왼쪽 정렬 */
@@ -10,19 +12,20 @@
 }
 
 .fnav-button {
-  padding: 10px 16px;
-  background-color: #007acc;
+  padding: 10px 10px;
+  background-color: #216793;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   transition: background 0.2s;
   min-width: 100px;
 }
 
-.nav-button:hover {
-  background-color: #005a99;
+.fnav-button:hover {
+  background-color: #f959f9;
+  transition: background 0.3s ease;
 }
