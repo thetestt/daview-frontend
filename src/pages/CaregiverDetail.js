@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import caregivers from "../data/caregivers";
 import "./CaregiverDetail.css";
+import "../styles/layout.css";
 
 function CaregiverDetail() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ function CaregiverDetail() {
   if (!data) return <div>Loading...</div>;
 
   return (
+    <div className="layout-container">
     <div className="caregiver-detail-container">
       <div className="caregiver-header">
         <div className="caregiver-info">
@@ -55,6 +57,7 @@ function CaregiverDetail() {
         <h3>자기소개</h3>
         <p>{data.introduction}</p>
       </div>
+    </div>
     </div>
   );
 }

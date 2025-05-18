@@ -15,6 +15,7 @@ function NursingHomeDetail() {
   if (!data) return <div>Loading...</div>;
 
   return (
+    <div className="layout-container">
     <div className="detail-container">
       <div className="detail-header">
         <img src={data.photos[0]} alt="메인" className="main-photo" />
@@ -60,6 +61,7 @@ function NursingHomeDetail() {
           )}
         </ul>
       </div>
+    </div>
     </div>
   );
 }

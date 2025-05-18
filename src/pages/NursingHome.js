@@ -2,9 +2,11 @@ import React from "react";
 import "./NursingHome.css";
 import { Link } from "react-router-dom";
 import NursingHomeList from "../components/NursingHomeList";
+import "../styles/layout.css";
 
 function NursingHome() {
   return (
+    <div className="layout-container">
     <div className="nursinghome-main">
       {/* 상단 탭 */}
            <div className="tab-menu">
@@ -97,6 +99,7 @@ function NursingHome() {
         <button className="search-button">검색</button>
       </div>
       <NursingHomeList />
+    </div>
     </div>
   );
 }

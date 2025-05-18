@@ -2,9 +2,11 @@ import React from "react";
 import "./Silvertown.css";
 import { Link } from "react-router-dom";
 import SilvertownList from "../components/SilvertownList";
+import "../styles/layout.css";
 
 function Silvertown() {
   return (
+    <div className="layout-container">
     <div className="silvertown-main">
       {/* 상단 탭 */}
       <div className="tab-menu">
@@ -100,6 +102,7 @@ function Silvertown() {
       </div>
       <SilvertownList />
 
+    </div>
     </div>
   );
 }

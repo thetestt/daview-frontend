@@ -2,9 +2,11 @@ import React from "react";
 import "./Caregiver.css";
 import { Link } from "react-router-dom";
 import CaregiverList from "../components/CaregiverList";
+import "../styles/layout.css";
 
 function Caregiver() {
   return (
+    <div className="layout-container">
     <div className="caregiver-main">
       {/* 상단 탭 */}
       <div className="tab-menu">
@@ -96,6 +98,7 @@ function Caregiver() {
         <button className="search-button">검색</button>
       </div>
        <CaregiverList />
+    </div>
     </div>
   );
 }
