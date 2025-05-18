@@ -1,4 +1,4 @@
-.slivertown-main {
+.silvertown-main {
   padding: 20px;
 }
 
@@ -8,11 +8,18 @@
   margin-bottom: 0px !important;
 }
 
+
 .tab-menu button {
   padding: 10px 20px;
   background: #ddd;
   border: none;
   cursor: pointer;
+}
+
+.tab-menu button:hover {
+  background: #e774bd;  /* 호버 시 색상 변경 */
+  color: #000;       /* 글자색도 변경 가능 */
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .tab-menu .active {
@@ -46,6 +53,11 @@
   color: #fff;
   border: none;
   cursor: pointer;
+}
+
+.search-button:hover {
+  background: #ff4cbd;
+  transition: background 0.2s ease;
 }
 
 .facility-list {

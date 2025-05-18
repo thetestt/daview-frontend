@@ -1,0 +1,27 @@
+.facility-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.facility-card {
+  width: 280px;
+  height: 140px;
+  background: #f0f0f0;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.facility-card:hover {
+  transform: scale(1.02);
+  background-color: #e0f7fa;
+}

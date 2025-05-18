@@ -2,13 +2,18 @@ import React from "react";
 import "./Caregiver.css";
 import { Link } from "react-router-dom";
 import CaregiverList from "../components/CaregiverList";
+import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function Caregiver() {
   return (
+        <>
+    <FloatingNavButtons backTo="/" />
+    <div className="layout-container">
     <div className="caregiver-main">
       {/* 상단 탭 */}
       <div className="tab-menu">
-        <Link to="/slivertown" className="tab-link">
+        <Link to="/silvertown" className="tab-link">
           <button>실버타운</button>
         </Link>
         <Link to="/nursinghome" className="tab-link">
@@ -97,6 +102,8 @@ function Caregiver() {
       </div>
        <CaregiverList />
     </div>
+    </div>
+    </>
   );
 }
 

@@ -1,10 +1,16 @@
 import React from "react";
-import "./Slivertown.css";
+import "./Silvertown.css";
 import { Link } from "react-router-dom";
+import SilvertownList from "../components/SilvertownList";
+import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
-function Slivertown() {
+function Silvertown() {
   return (
-    <div className="slivertown-main">
+    <>
+    <FloatingNavButtons backTo="/" />
+    <div className="layout-container">
+    <div className="silvertown-main">
       {/* 상단 탭 */}
       <div className="tab-menu">
         <button className="active">실버타운</button>
@@ -97,15 +103,12 @@ function Slivertown() {
 
         <button className="search-button">검색</button>
       </div>
+      <SilvertownList />
 
-      {/* 리스트 더미 */}
-      <div className="facility-list">
-        <div className="facility-card">실버타운1</div>
-        <div className="facility-card">실버타운2</div>
-        <div className="facility-card">실버타운3</div>
-      </div>
     </div>
+    </div>
+    </>
   );
 }
 
-export default Slivertown;
+export default Silvertown;
