@@ -3,9 +3,12 @@ import "./NursingHome.css";
 import { Link } from "react-router-dom";
 import NursingHomeList from "../components/NursingHomeList";
 import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function NursingHome() {
   return (
+        <>
+    <FloatingNavButtons backTo="/" />
     <div className="layout-container">
     <div className="nursinghome-main">
       {/* 상단 탭 */}
@@ -101,6 +104,7 @@ function NursingHome() {
       <NursingHomeList />
     </div>
     </div>
+    </>
   );
 }
 

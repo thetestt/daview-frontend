@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import silvertowns from "../data/silvertowns";
 import "./SilvertownDetail.css";
 import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function SilvertownDetail() {
   const { id } = useParams();
@@ -17,6 +18,8 @@ function SilvertownDetail() {
   if (!data) return <div>Loading...</div>;
 
   return (
+    <>
+     <FloatingNavButtons backTo="/silvertown" />
     <div className="layout-container">
     <div className="detail-container">
       <div className="detail-header">
@@ -65,6 +68,7 @@ function SilvertownDetail() {
       </div>
     </div>
     </div>
+    </>
   );
 }
 

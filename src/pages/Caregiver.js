@@ -3,9 +3,12 @@ import "./Caregiver.css";
 import { Link } from "react-router-dom";
 import CaregiverList from "../components/CaregiverList";
 import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function Caregiver() {
   return (
+        <>
+    <FloatingNavButtons backTo="/" />
     <div className="layout-container">
     <div className="caregiver-main">
       {/* 상단 탭 */}
@@ -100,6 +103,7 @@ function Caregiver() {
        <CaregiverList />
     </div>
     </div>
+    </>
   );
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import nursingHomes from "../data/nursingHomes"; 
 import "./NursingHomeDetail.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function NursingHomeDetail() {
   const { id } = useParams();
@@ -15,6 +16,8 @@ function NursingHomeDetail() {
   if (!data) return <div>Loading...</div>;
 
   return (
+        <>
+    <FloatingNavButtons backTo="/nursinghome" />
     <div className="layout-container">
     <div className="detail-container">
       <div className="detail-header">
@@ -63,6 +66,7 @@ function NursingHomeDetail() {
       </div>
     </div>
     </div>
+    </>
   );
 }
 

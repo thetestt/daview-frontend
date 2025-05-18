@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import caregivers from "../data/caregivers";
 import "./CaregiverDetail.css";
 import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function CaregiverDetail() {
   const { id } = useParams();
@@ -17,6 +18,8 @@ function CaregiverDetail() {
   if (!data) return <div>Loading...</div>;
 
   return (
+        <>
+    <FloatingNavButtons backTo="/caregiver" />
     <div className="layout-container">
     <div className="caregiver-detail-container">
       <div className="caregiver-header">
@@ -62,6 +65,7 @@ function CaregiverDetail() {
       </div>
     </div>
     </div>
+    </>
   );
 }
 

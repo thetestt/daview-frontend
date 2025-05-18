@@ -3,9 +3,12 @@ import "./Silvertown.css";
 import { Link } from "react-router-dom";
 import SilvertownList from "../components/SilvertownList";
 import "../styles/layout.css";
+import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function Silvertown() {
   return (
+    <>
+    <FloatingNavButtons backTo="/" />
     <div className="layout-container">
     <div className="silvertown-main">
       {/* 상단 탭 */}
@@ -104,6 +107,7 @@ function Silvertown() {
 
     </div>
     </div>
+    </>
   );
 }
 
