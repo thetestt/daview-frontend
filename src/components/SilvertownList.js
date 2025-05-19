@@ -28,15 +28,21 @@ function SilvertownList() {
               className="facility-card-link"
             >
               <div className="facility-card">
-                {Array.isArray(town.photos) && town.photos.length > 0 ? (
+                {/* ✅ photoUrl 기준으로 이미지 표시 */}
+                {town.photoUrl ? (
                   <img
-                    src={town.photos[0] || "/images/default.png"}
+                    src={`http://localhost:8080${town.photoUrl}`}
                     alt={town.facilityName}
                     className="card-thumbnail"
                   />
                 ) : (
-                  <div className="card-thumbnail">No Image</div>
+                  <img
+                    src="/images/default.png"
+                    alt="기본 이미지"
+                    className="card-thumbnail"
+                  />
                 )}
+
                 <h3>{town.facilityName}</h3>
                 <p>
                   {town.facilityAddressLocation}{" "}
