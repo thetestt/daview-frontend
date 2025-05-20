@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./SilvertownList.css";
+import "../styles/components/MainList.css";
 import { Link } from "react-router-dom";
 import { fetchSilvertowns } from "../api/silvertown"; // ✅ API에서만 불러오기
 
@@ -45,8 +45,7 @@ function SilvertownList() {
 
                 <h3>{town.facilityName}</h3>
                 <p>
-                  {town.facilityAddressLocation}{" "}
-                  {town.facilityAddressCity}
+                  {town.facilityAddressLocation} {town.facilityAddressCity}
                 </p>
                 <p>
                   {town.facilityCharge

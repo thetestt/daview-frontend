@@ -1,6 +1,6 @@
 import React from "react";
 import mainButtonData from "../data/MainButtonImages";
-import "./MainButton.css";
+import "../styles/components/MainButton.css";
 
 function MainButton() {
   return (

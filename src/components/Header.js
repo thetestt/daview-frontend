@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "../styles/components/Header.css";
 import logoImg from "../assets/daview-logo.png";
 
 function Header() {
