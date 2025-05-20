@@ -5,23 +5,21 @@ import "../styles/components/MainList.css";
 
 function NursingHomeList() {
   return (
-    <div div className="facility-wrapper">
-      <div className="facility-list">
-        {nursingHomes.map((item) => (
-          <Link
-            key={item.facility_id}
-            to={`/nursinghome/${item.facility_id}`}
-            className="card-link"
-          >
-            <div className="facility-card">
-              <h3>{item.facility_name}</h3>
-              <p>
-                {item.facility_address_city} | {item.facility_theme}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+    <div className="facility-list">
+      {nursingHomes.map((item) => (
+        <Link
+          key={item.facility_id}
+          to={`/nursinghome/${item.facility_id}`}
+          className="card-link"
+        >
+          <div className="facility-card">
+            <h3>{item.facility_name}</h3>
+            <p>
+              {item.facility_address_city} | {item.facility_theme}
+            </p>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
