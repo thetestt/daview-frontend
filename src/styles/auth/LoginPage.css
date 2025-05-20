@@ -1,0 +1,86 @@
+.login-container {
+    max-width: 320px;
+    margin: 5rem auto;
+    text-align: center;
+    font-family: sans-serif;
+    justify-content: flex-start;
+    padding-top:20px; 
+  }
+  
+  .login-subtitle {
+    font-size: 20px;
+    color: gray;
+    margin-bottom: 0px;
+    padding-top:20px; 
+  }
+  
+  .login-logo {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #0a3d62;
+  }
+  
+  .login-form input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #0a3d62;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .login-form input,
+  .login-form button {
+  box-sizing: border-box;
+  }
+  
+  .login-form button:hover {
+    background-color: #074b80;
+  }
+  
+  .login-links {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .login-links a {
+    color: #0a3d62;
+    text-decoration: none;
+    margin: 0 0.3rem;
+  }
+  
+  .login-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .login-container {
+    flex: 1; /* 남은 공간 차지 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center;
+  }
+
+  .page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .footer {
+    margin-top: auto;
+  }
