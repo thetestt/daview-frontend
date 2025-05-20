@@ -12,6 +12,8 @@ import Silvertown from "./pages/Silvertown";
 import SilvertownDetail from "./pages/SilvertownDetail";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
+import NoticeDetail from "./pages/NoticeDetail";
+import NoticeList from "./pages/NoticeList";
 
 function App() {
   return (
@@ -28,7 +30,11 @@ function App() {
         <Route path="/silvertown/:id" element={<SilvertownDetail />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        
+        <Route path="/notice/:facilityId" element={<NoticeList />} />
+        <Route
+          path="/notice/:facilityId/:noticeId"
+          element={<NoticeDetail />}
+        />
       </Routes>
       <Footer />
     </div>

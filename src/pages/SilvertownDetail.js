@@ -1,6 +1,6 @@
 // 📂 src/pages/SilvertownDetail.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import silvertowns from "../data/silvertowns";
 import "../styles/pages/SilvertownDetail.css";
 import "../styles/layouts/layout.css";
@@ -67,13 +67,19 @@ function SilvertownDetail() {
                 data.notices.map((notice, i) => (
                   <li key={i}>
                     <strong>{notice.isFixed ? "[공지] " : ""}</strong>
-                    {notice.title} - {notice.content}
+                    {notice.title}
                   </li>
                 ))
               ) : (
                 <li>공지사항이 없습니다.</li>
               )}
             </ul>
+            <Link
+              to={`/notice/${data.facilityId}`}
+              className="notice-full-link"
+            >
+              공지사항 전체 보기
+            </Link>
           </div>
         </div>
       </div>
