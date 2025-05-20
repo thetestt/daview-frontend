@@ -25,10 +25,7 @@ function SignupPage() {
         <input type="text" placeholder="한글 2~10자" />
 
         <label>약관동의</label>
-        <textarea
-          placeholder="여기에 약관 들어감 (스크롤 가능)"
-          rows={4}
-        />
+        <textarea placeholder="여기에 약관 들어감 (스크롤 가능)" rows={4} />
 
         <button type="submit">회원가입하기</button>
       </form>
@@ -37,4 +34,3 @@ function SignupPage() {
 }
 
 export default SignupPage;
-

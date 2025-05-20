@@ -16,8 +16,8 @@
 }
 
 .tab-menu button:hover {
-  background: #e774bd;  /* 호버 시 색상 변경 */
-  color: #000;       /* 글자색도 변경 가능 */
+  background: #e774bd; /* 호버 시 색상 변경 */
+  color: #000; /* 글자색도 변경 가능 */
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -54,23 +54,7 @@
   cursor: pointer;
 }
 
-
 .search-button:hover {
   background: #ff4cbd;
   transition: background 0.2s ease;
-}
-
-
-.facility-list {
-  display: flex;
-  gap: 20px;
-}
-
-.facility-card {
-  background: #eee;
-  width: 200px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
