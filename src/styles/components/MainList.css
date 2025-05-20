@@ -1,7 +1,8 @@
 .facility-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* 카드 사이 여백 */
+  justify-content: flex-start; /* 카드들을 왼쪽 정렬 */
   margin-top: 20px;
 }
 
@@ -11,15 +12,20 @@
 }
 
 .facility-card {
-  /* width: 280px; */
-  min-width: 0;
-  height: auto;
+  display: block;
+  width: 400px; /* ✅ 고정 너비 */
+  height: 600px; /* ✅ 고정 높이 */
   background: #f0f0f0;
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
 }
 
 .facility-card:hover {

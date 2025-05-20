@@ -7,13 +7,15 @@ function CaregiverList() {
   return (
     <div className="facility-list">
       {caregivers.map((item) => (
-        <Link key={item.caregiver_id} to={`/caregiver/${item.caregiver_id}`}>
-          <div className="facility-card">
-            <h3>{item.name}</h3>
-            <p>
-              {item.education_level} / {item.hope_work_place}
-            </p>
-          </div>
+        <Link
+          key={item.caregiver_id}
+          to={`/caregiver/${item.caregiver_id}`}
+          className="facility-card"
+        >
+          <h3>{item.name}</h3>
+          <p>
+            {item.education_level} / {item.hope_work_place}
+          </p>
         </Link>
       ))}
     </div>
