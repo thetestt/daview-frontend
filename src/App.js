@@ -11,6 +11,7 @@ import NursingHomeDetail from "./pages/NursingHomeDetail";
 import Silvertown from "./pages/Silvertown";
 import SilvertownDetail from "./pages/SilvertownDetail";
 import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignupPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/silvertown" element={<Silvertown />} />
         <Route path="/silvertown/:id" element={<SilvertownDetail />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         
       </Routes>
       <Footer />
