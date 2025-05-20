@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import caregivers from "../data/caregivers";
-import "./CaregiverList.css";
+import "../styles/components/MainList.css";
 
 function CaregiverList() {
   return (
@@ -10,7 +10,9 @@ function CaregiverList() {
         <Link key={item.caregiver_id} to={`/caregiver/${item.caregiver_id}`}>
           <div className="facility-card">
             <h3>{item.name}</h3>
-            <p>{item.education_level} / {item.hope_work_place}</p>
+            <p>
+              {item.education_level} / {item.hope_work_place}
+            </p>
           </div>
         </Link>
       ))}

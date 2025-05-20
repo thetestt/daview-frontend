@@ -1,7 +1,7 @@
 // 📂 src/components/SliderBanner.js
 import React, { useEffect, useRef, useState } from "react";
 import slideImages from "../data/slideImages";
-import "./SliderBanner.css";
+import "../styles/components/SliderBanner.css";
 
 // 복제된 슬라이드 배열 생성 (구조 보존)
 const cloneSlides = [
