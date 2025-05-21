@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import notices from "../data/notices";
+import { fetchNoticesByFacilityId } from "../api/notice";
 import "../styles/pages/NoticeList.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function NoticeList() {
   const { facilityId } = useParams();
+  const [notices, setNotices] = useState([]);
 
-  const filtered = notices.filter((n) => n.facility_id === facilityId);
+  useEffect(() => {
+    fetchNoticesByFacilityId(facilityId)
+      .then((data) => {
+        console.log("📦 받아온 공지:", data); // ← 여기에 출력
+        setNotices(data);
+      })
+      .catch((err) => console.error("❌ 공지 API 오류:", err));
+  }, [facilityId]);
 
-  const facilityType = filtered[0]?.facility_type || "실버타운"; // 기본값
-  const facilityName = filtered[0]?.facility_name || "시설";
+  if (notices.length === 0) {
+    return <div>공지사항이 없습니다.</div>;
+  }
+
+  const facilityType = notices[0]?.facilityType || "실버타운"; // DB 기반 필드
+  const facilityName = notices[0]?.facilityName || "시설";
 
   const backToPath =
     facilityType === "요양원"
@@ -21,16 +33,16 @@ function NoticeList() {
     <>
       <FloatingNavButtons backTo={backToPath} />
       <div className="notice-list-container">
-        <h2> {facilityName} 공지게시판</h2>
+        <h2>{facilityName} 공지게시판</h2>
 
         <div className="notice-fixed">
           <h4>고정 공지</h4>
-          {filtered
-            .filter((n) => n.notice_is_fixed)
+          {notices
+            .filter((n) => n.noticeIsFixed)
             .map((n) => (
-              <div key={n.notice_id} className="notice-item fixed">
-                <Link to={`/notice/${facilityId}/${n.notice_id}`}>
-                  {n.notice_title}
+              <div key={n.noticeId} className="notice-item fixed">
+                <Link to={`/notice/${facilityId}/${n.noticeId}`}>
+                  {n.noticeTitle}
                 </Link>
               </div>
             ))}
@@ -38,12 +50,12 @@ function NoticeList() {
 
         <div className="notice-recent">
           <h4>최근 공지</h4>
-          {filtered
-            .filter((n) => !n.notice_is_fixed)
+          {notices
+            .filter((n) => !n.noticeIsFixed)
             .map((n) => (
-              <div key={n.notice_id} className="notice-item">
-                <Link to={`/notice/${facilityId}/${n.notice_id}`}>
-                  {n.notice_title}
+              <div key={n.noticeId} className="notice-item">
+                <Link to={`/notice/${facilityId}/${n.noticeId}`}>
+                  {n.noticeTitle}
                 </Link>
               </div>
             ))}

@@ -1,18 +1,27 @@
 // 📂 src/pages/SilvertownDetail.js
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import silvertowns from "../data/silvertowns";
+//import silvertowns from "../data/silvertowns";
 import "../styles/pages/SilvertownDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import { fetchSilvertownDetail } from "../api/silvertown";
 
 function SilvertownDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
 
+  // useEffect(() => {
+  //   const found = silvertowns.find((item) => item.facilityId === id);
+  //   setData(found);
+  // }, [id]);
+
   useEffect(() => {
-    const found = silvertowns.find((item) => item.facilityId === id);
-    setData(found);
+    fetchSilvertownDetail(id)
+      .then(setData)
+      .catch((err) => {
+        console.error("디테일 API 오류:", err);
+      });
   }, [id]);
 
   if (!data) return <div>Loading...</div>;
@@ -63,15 +72,29 @@ function SilvertownDetail() {
           <div className="notice-section">
             <h3>공지사항</h3>
             <ul>
-              {data.notices.length > 0 ? (
-                data.notices.map((notice, i) => (
-                  <li key={i}>
-                    <strong>{notice.isFixed ? "[공지] " : ""}</strong>
-                    {notice.title}
-                  </li>
-                ))
+              {data.notices.filter((notice) => notice.noticeIsFixed).length >
+              0 ? (
+                data.notices
+                  .filter((notice) => notice.noticeIsFixed)
+                  .map((notice, i) => (
+                    <li key={i} className="fnotice-item">
+                      <Link
+                        to={`/notice/${data.facilityId}/${notice.noticeId}`}
+                        className="fnotice-link"
+                      >
+                        <span className="fnotice-title">
+                          {notice.noticeIsFixed ? "[공지] " : ""}
+                          {notice.noticeTitle}
+                        </span>
+                        <span className="fnotice-date">
+                          {notice.noticeUpdatedAt?.slice(0, 10)}{" "}
+                          {/* yyyy-MM-dd 형식 */}
+                        </span>
+                      </Link>
+                    </li>
+                  ))
               ) : (
-                <li>공지사항이 없습니다.</li>
+                <li>고정된 공지사항이 없습니다.</li>
               )}
             </ul>
             <Link
