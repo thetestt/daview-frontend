@@ -58,22 +58,41 @@ function NursingHomeDetail() {
             {data.tags.join(", ")}
           </div>
 
+          <div className="tag-section">
+            <strong>태그: </strong>
+            {data.tags.join(", ")}
+          </div>
+
           <div className="notice-section">
             <h3>공지사항</h3>
             <ul>
-              {data.notices.length > 0 ? (
-                data.notices.map((notice, i) => (
-                  <li key={i}>
-                    <strong>{notice.isFixed ? "[공지] " : ""}</strong>
-                    {notice.title}
-                  </li>
-                ))
+              {data.notices.filter((notice) => notice.noticeIsFixed).length >
+              0 ? (
+                data.notices
+                  .filter((notice) => notice.noticeIsFixed)
+                  .map((notice, i) => (
+                    <li key={i} className="fnotice-item">
+                      <Link
+                        to={`/notice/${data.facilityId}/${notice.noticeId}`}
+                        className="fnotice-link"
+                      >
+                        <span className="fnotice-title">
+                          {notice.noticeIsFixed ? "[공지] " : ""}
+                          {notice.noticeTitle}
+                        </span>
+                        <span className="fnotice-date">
+                          {notice.noticeUpdatedAt?.slice(0, 10)}{" "}
+                          {/* yyyy-MM-dd 형식 */}
+                        </span>
+                      </Link>
+                    </li>
+                  ))
               ) : (
-                <li>공지사항이 없습니다.</li>
+                <li>고정된 공지사항이 없습니다.</li>
               )}
             </ul>
             <Link
-              to={`/notice/${data.facility_id}`}
+              to={`/notice/${data.facilityId}`}
               className="notice-full-link"
             >
               공지사항 전체 보기
