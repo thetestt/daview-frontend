@@ -25,7 +25,7 @@ function NursingHomeList() {
         .map((town) => (
           <div key={town.facilityId} className="facility-card-wrapper">
             <Link
-              to={`/silvertown/${town.facilityId}`}
+              to={`/nursinghome/${town.facilityId}`}
               className="facility-card-link"
             >
               <div className="facility-card">

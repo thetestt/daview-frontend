@@ -12,7 +12,7 @@ export async function fetchSilvertowns() {
 
 export const fetchSilvertownDetail = async (id) => {
   const response = await axios.get(
-    `http://localhost:8080/api/facilities/${id}`
+    `http://localhost:8080/api/facilities/silvertown/${id}`
   );
   return response.data;
 };
