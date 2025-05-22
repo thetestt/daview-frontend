@@ -1,6 +1,5 @@
 import React from "react";
 import "../../styles/auth/SignupPage.css";
-import Footer from "../../components/Footer";
 
 function SignupPage() {
   return (
