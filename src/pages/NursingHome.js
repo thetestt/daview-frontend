@@ -13,12 +13,12 @@ function NursingHome() {
         <div className="nursinghome-main">
           {/* 상단 탭 */}
           <div className="tab-menu">
-            <Link to="/silvertown">
-              <button>실버타운</button>
-            </Link>
-            <button className="active">요양원</button>
             <Link to="/caregiver">
               <button>요양사</button>
+            </Link>
+            <button className="active">요양원</button>
+            <Link to="/silvertown">
+              <button>실버타운</button>
             </Link>
           </div>
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import caregivers from "../data/caregivers";
 import { getCaregivers } from "../api/caregiverApi";
-
 import "../styles/components/MainList.css";
 
 function CaregiverList() {

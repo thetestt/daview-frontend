@@ -1,9 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Header.css";
 import logoImg from "../assets/daview-logo.png";
+import { useSearch } from "../context/SearchContext";
 
 function Header() {
+  const { searchQuery, setSearchQuery, setSearchTriggered } = useSearch();
+  const navigate = useNavigate();
+
+  const handleSearchClick = () => {
+    if (searchQuery.trim() === "") return;
+    setSearchTriggered(true);
+    navigate("/search"); // 🔍 검색 결과 페이지로 이동
+  };
+
   return (
     <div>
       <header className="header">
@@ -16,7 +26,14 @@ function Header() {
         <div className="logo-text">전국 모든 요양원 / 실버타운</div>
 
         {/* 검색창 */}
-        <div className="search-placeholder">검색창 자리</div>
+        <input
+          className="header-search-input"
+          type="text"
+          placeholder="요양사, 지역, 시설명을 검색해보세요"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearchClick}>검색</button>
 
         {/* 로그인/회원가입 */}
         <div className="auto-buttons">

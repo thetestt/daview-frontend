@@ -13,13 +13,13 @@ function Caregiver() {
         <div className="caregiver-main">
           {/* 상단 탭 */}
           <div className="tab-menu">
-            <Link to="/silvertown" className="tab-link">
-              <button>실버타운</button>
-            </Link>
+            <button className="active">요양사</button>
             <Link to="/nursinghome" className="tab-link">
               <button>요양원</button>
             </Link>
-            <button className="active">요양사</button>
+            <Link to="/silvertown" className="tab-link">
+              <button>실버타운</button>
+            </Link>
           </div>
 
           {/* 필터 영역 */}

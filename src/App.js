@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -19,11 +18,13 @@ import Payment from "./pages/PaymentPage";
 import PaymentResult from "./pages/PaymentResultPage";
 import ReviewBoard from "./pages/ReviewBoardPage";
 import ReviewWrite from "./pages/ReviewWritePage";
+import { SearchProvider } from "./context/SearchContext";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
     //<Router>
-    <div>
+    <SearchProvider>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -45,9 +46,10 @@ function App() {
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
       <Footer />
-    </div>
+    </SearchProvider>
     //</Router>
   );
 }
