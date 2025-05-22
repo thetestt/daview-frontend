@@ -13,6 +13,10 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import NoticeDetail from "./pages/NoticeDetail";
 import NoticeList from "./pages/NoticeList";
+ SH-F-01
+import FindPasswordPage from "./pages/auth/FindPasswordPage";
+import FindIdPage from "./pages/auth/FindIdPage";
+
 import Reservation from "./pages/ReservationPage";
 import Payment from "./pages/PaymentPage";
 import PaymentResult from "./pages/PaymentResultPage";
@@ -20,6 +24,7 @@ import ReviewBoard from "./pages/ReviewBoardPage";
 import ReviewWrite from "./pages/ReviewWritePage";
 import { SearchProvider } from "./context/SearchContext";
 import SearchResults from "./pages/SearchResults";
+ main
 
 function App() {
   return (
@@ -41,12 +46,17 @@ function App() {
           path="/notice/:facilityId/:noticeId"
           element={<NoticeDetail />}
         />
+ SH-F-01
+        <Route path="/findpasswordpage" element={<FindPasswordPage />} />
+        <Route path="/findidpage" element={<FindIdPage />} />
+
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
         <Route path="/search" element={<SearchResults />} />
+ main
       </Routes>
       <Footer />
     </SearchProvider>
