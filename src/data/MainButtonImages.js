@@ -13,9 +13,9 @@ const MainButton = [
   },
   {
     id: "slivertown",
-    image: "/images/buttonimage/slivertown.png",
+    image: "/images/buttonimage/silvertown.png",
     alt: "실버타운",
-    url: "/slivertown",
+    url: "/silvertown",
   },
 ];
 

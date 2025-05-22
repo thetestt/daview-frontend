@@ -1,0 +1,81 @@
+.page-wrapper {
+  height: calc(100vh - 270px);  /* Footer 높이 예측해서 조정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* 로그인 내용 박스 */
+.login-inner {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+/* 타이틀 */
+.login-subtitle {
+  font-size: 20px;
+  color: gray;
+  margin: 0;
+  padding-top: 10px;
+}
+
+/* 로고 텍스트 */
+.login-logo {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #0a3d62;
+}
+
+/* 로그인 폼 */
+.login-form {
+  width: 100%;
+}
+
+.login-form input,
+.login-form button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  background-color: #0a3d62;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #074b80;
+}
+
+/* 아래 링크 */
+.login-links {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.login-links a {
+  color: #0a3d62;
+  text-decoration: none;
+  margin: 0 0.3rem;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}

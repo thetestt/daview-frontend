@@ -1,0 +1,28 @@
+.footer {
+  background-color: #121a26;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sns-icons {
+  margin-top: 10px;
+}
+
+.sns-icons a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.sns-icons a:hover {
+  color: #ffcc00; /* hover 시 노란색 강조 */
+}
