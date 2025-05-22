@@ -1,0 +1,48 @@
+.search-results-page {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.search-results-page h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.search-results-page section {
+  margin-bottom: 40px;
+}
+
+.search-results-page h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #007acc;
+  border-left: 5px solid #007acc;
+  padding-left: 10px;
+}
+
+.search-results-page ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.search-results-page li {
+  margin-bottom: 10px;
+}
+
+.search-results-page a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.search-results-page a:hover {
+  color: #007acc;
+}
+
+.search-results-page p {
+  color: #888;
+  font-style: italic;
+}

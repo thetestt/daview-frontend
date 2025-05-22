@@ -1,32 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import notices from "../data/notices";
+import { fetchNoticesByNoticeId } from "../api/notice";
 import "../styles/pages/NoticeDetail.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function NoticeDetail() {
   const { facilityId, noticeId } = useParams();
+  const [notice, setNotice] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = notices.filter((n) => n.facility_id === facilityId);
-  const facilityName = filtered[0]?.facility_name || "시설";
+  useEffect(() => {
+    // noticeId는 int로 변환해서 넘겨주는 게 안전
+    fetchNoticesByNoticeId(facilityId, parseInt(noticeId, 10))
+      .then((data) => {
+        setNotice(data);
+      })
+      .catch((err) => {
+        console.error("공지사항을 불러오는 데 실패했습니다:", err);
+      })
+      .finally(() => setLoading(false));
+  }, [facilityId, noticeId]);
 
-  const notice = notices.find(
-    (n) =>
-      n.facility_id === facilityId && n.notice_id === parseInt(noticeId, 10)
-  );
-
+  if (loading) return <div>Loading...</div>;
   if (!notice) return <div>공지사항을 찾을 수 없습니다.</div>;
 
   return (
     <>
       <FloatingNavButtons backTo={`/notice/${facilityId}`} />
-
       <div className="notice-detail-container">
-        <h2> {facilityName} 공지게시판</h2>
-        <h2>{notice.notice_title}</h2>
-        <div className="notice-date">{notice.notice_created_at}</div>
+        <h2>{notice.facilityName || "시설"} 공지게시판</h2>
+        <h2>{notice.noticeTitle}</h2>
+        <div className="notice-date">{notice.noticeCreatedAt}</div>
         <div className="notice-content">
-          {notice.notice_content.split("\n").map((line, idx) => (
+          {notice.noticeContent.split("\n").map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}
         </div>

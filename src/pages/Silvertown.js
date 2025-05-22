@@ -13,15 +13,13 @@ function Silvertown() {
         <div className="silvertown-main">
           {/* 상단 탭 */}
           <div className="tab-menu">
-            <button className="active">실버타운</button>
-
-            <Link to="/nursinghome">
-              <button>요양원</button>
-            </Link>
-
             <Link to="/caregiver">
               <button>요양사</button>
             </Link>
+            <Link to="/nursinghome">
+              <button>요양원</button>
+            </Link>
+            <button className="active">실버타운</button>
           </div>
 
           {/* 필터 영역 */}

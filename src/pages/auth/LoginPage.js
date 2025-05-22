@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import "../../styles/auth/LoginPage.css";
+ SH-F-01
+
+// import Footer from "../../components/Footer";
+ main
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -18,13 +22,25 @@ function LoginPage() {
           <p className="login-subtitle">전국 모든 요양원 / 실버타운</p>
           <h1 className="login-logo">다뷰</h1>
           <form onSubmit={handleSubmit} className="login-form">
-            <input type="text" placeholder="아이디" value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              type="text"
+              placeholder="아이디"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button type="submit">로그인</button>
           </form>
           <div className="login-links">
-            <a href="/findidpage">아이디찾기</a><span>|</span>
-            <a href="/findpasswordpage">비밀번호찾기</a><span>|</span>
+            <a href="/findidpage">아이디찾기</a>
+            <span>|</span>
+            <a href="/findpasswordpage">비밀번호찾기</a>
+            <span>|</span>
             <a href="/signup">회원가입</a>
           </div>
         </div>

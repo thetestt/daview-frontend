@@ -32,7 +32,11 @@ function SilvertownDetail() {
       <div className="layout-container">
         <div className="detail-container">
           <div className="detail-header">
-            <img src={data.photos[0]} alt="메인" className="main-photo" />
+            <img
+              src={data.photos[0] || "/images/default.png"}
+              alt="메인"
+              className="main-photo"
+            />
             <div className="detail-info">
               <h2>{data.facilityName}</h2>
               <p className="price">
@@ -59,9 +63,21 @@ function SilvertownDetail() {
           </div>
 
           <div className="thumbnail-box">
-            {data.photos.map((url, idx) => (
-              <img key={idx} src={url} alt={`photo-${idx}`} />
-            ))}
+            {data.photos &&
+            data.photos.length > 0 &&
+            data.photos.some((url) => url) ? (
+              data.photos
+                .filter((url) => url)
+                .map((url, idx) => (
+                  <img key={idx} src={url} alt={`photo-${idx}`} />
+                ))
+            ) : (
+              <img
+                src="/images/default.png"
+                alt="기본 이미지"
+                className="card-thumbnail"
+              />
+            )}
           </div>
 
           <div className="tag-section">
@@ -72,10 +88,10 @@ function SilvertownDetail() {
           <div className="notice-section">
             <h3>공지사항</h3>
             <ul>
-              {data.notices.filter((notice) => notice.noticeIsFixed).length >
-              0 ? (
+              {data.notices.filter((n) => n.noticeIsFixed).length > 0 ? (
+                // 고정 공지 1순위
                 data.notices
-                  .filter((notice) => notice.noticeIsFixed)
+                  .filter((n) => n.noticeIsFixed)
                   .map((notice, i) => (
                     <li key={i} className="fnotice-item">
                       <Link
@@ -83,18 +99,32 @@ function SilvertownDetail() {
                         className="fnotice-link"
                       >
                         <span className="fnotice-title">
-                          {notice.noticeIsFixed ? "[공지] " : ""}
-                          {notice.noticeTitle}
+                          [공지] {notice.noticeTitle}
                         </span>
                         <span className="fnotice-date">
-                          {notice.noticeUpdatedAt?.slice(0, 10)}{" "}
-                          {/* yyyy-MM-dd 형식 */}
+                          {notice.noticeUpdatedAt?.slice(0, 10)}
                         </span>
                       </Link>
                     </li>
                   ))
+              ) : data.notices.length > 0 ? (
+                // 고정이 없다면 최신 1개만
+                <li className="fnotice-item">
+                  <Link
+                    to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
+                    className="fnotice-link"
+                  >
+                    <span className="fnotice-title">
+                      {data.notices[0].noticeTitle}
+                    </span>
+                    <span className="fnotice-date">
+                      {data.notices[0].noticeUpdatedAt?.slice(0, 10)}
+                    </span>
+                  </Link>
+                </li>
               ) : (
-                <li>고정된 공지사항이 없습니다.</li>
+                // 공지가 아예 없을 때
+                <li>등록된 공지사항이 없습니다.</li>
               )}
             </ul>
             <Link
