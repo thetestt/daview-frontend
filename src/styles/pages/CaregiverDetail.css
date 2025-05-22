@@ -63,3 +63,28 @@
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+
+.detail-caregiver-gender {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 16px;
+}
+
+.detail-caregiver-gender.male {
+  background-color: #2196f3; /* 파랑 */
+}
+
+.detail-caregiver-gender.female {
+  background-color: #e91e63; /* 분홍 */
+}
+
+.detail-caregiver-gender.hidden {
+  background-color: #9e9e9e; /* 회색 */
+}
