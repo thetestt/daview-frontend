@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../../styles/auth/LoginPage.css";
-import Footer from "../../components/Footer";
 
 function LoginPage() {
   const [username, setUsername] = useState("");

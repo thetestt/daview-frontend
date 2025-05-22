@@ -14,6 +14,8 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import NoticeDetail from "./pages/NoticeDetail";
 import NoticeList from "./pages/NoticeList";
+import FindPasswordPage from "./pages/auth/FindPasswordPage";
+import FindIdPage from "./pages/auth/FindIdPage";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           path="/notice/:facilityId/:noticeId"
           element={<NoticeDetail />}
         />
+        <Route path="/findpasswordpage" element={<FindPasswordPage />} />
+        <Route path="/findidpage" element={<FindIdPage />} />
       </Routes>
       <Footer />
     </div>
