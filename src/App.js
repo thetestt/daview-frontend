@@ -14,6 +14,11 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import NoticeDetail from "./pages/NoticeDetail";
 import NoticeList from "./pages/NoticeList";
+import Reservation from "./pages/ReservationPage";
+import Payment from "./pages/PaymentPage";
+import PaymentResult from "./pages/PaymentResultPage";
+import ReviewBoard from "./pages/ReviewBoardPage";
+import ReviewWrite from "./pages/ReviewWritePage";
 
 function App() {
   return (
@@ -35,6 +40,11 @@ function App() {
           path="/notice/:facilityId/:noticeId"
           element={<NoticeDetail />}
         />
+        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/review-board" element={<ReviewBoard />} />
+        <Route path="/review-write" element={<ReviewWrite />} />
       </Routes>
       <Footer />
     </div>
