@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 // import caregivers from "../data/caregivers";
-import { getCaregiverById } from "../api/caregiverApi";
+import { getCaregiverById } from "../api/caregiver";
 import "../styles/pages/CaregiverDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
