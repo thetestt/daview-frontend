@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Header.css";
 import logoImg from "../assets/daview-logo.png";
 import { useSearch } from "../context/SearchContext";
 
 function Header() {
-  const { searchQuery, setSearchQuery, setSearchTriggered } = useSearch();
+  const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
 
-  const handleSearchClick = () => {
-    if (searchQuery.trim() === "") return;
-    setSearchTriggered(true);
-    navigate("/search"); // 🔍 검색 결과 페이지로 이동
+  const handleSearch = () => {
+    if (keyword.trim()) {
+      navigate(`/search?query=${encodeURIComponent(keyword)}`);
+    }
   };
 
   return (
@@ -27,13 +27,11 @@ function Header() {
 
         {/* 검색창 */}
         <input
-          className="header-search-input"
-          type="text"
-          placeholder="요양사, 지역, 시설명을 검색해보세요"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="검색어를 입력하세요"
         />
-        <button onClick={handleSearchClick}>검색</button>
+        <button onClick={handleSearch}>검색</button>
 
         {/* 로그인/회원가입 */}
         <div className="auto-buttons">

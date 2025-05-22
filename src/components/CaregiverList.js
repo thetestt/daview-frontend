@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCaregivers } from "../api/caregiverApi";
+import { getCaregivers } from "../api/caregiver";
 import "../styles/components/MainList.css";
 
 function CaregiverList() {

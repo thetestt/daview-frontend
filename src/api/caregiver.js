@@ -1,5 +1,4 @@
-
-import axios from "axios";
+import axios from "./axiosInstance";
 
 const API_BASE_URL = "http://localhost:8080/api/caregivers";
 
@@ -10,4 +9,3 @@ export const getCaregivers = async (params) => {
 export const getCaregiverById = async (id) => {
   return axios.get(`${API_BASE_URL}/${id}`);
 };
-
