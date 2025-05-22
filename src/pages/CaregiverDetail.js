@@ -1,7 +1,8 @@
 // 📂 src/pages/CaregiverDetail.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import caregivers from "../data/caregivers";
+// import caregivers from "../data/caregivers";
+import { getCaregiverById } from "../api/caregiverApi";
 import "../styles/pages/CaregiverDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
@@ -11,8 +12,11 @@ function CaregiverDetail() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const found = caregivers.find((item) => item.caregiver_id === id);
-    setData(found);
+    getCaregiverById(id)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => console.error("❌ 요양사 불러오기 실패:", err));
   }, [id]);
 
   if (!data) return <div>Loading...</div>;
@@ -27,18 +31,27 @@ function CaregiverDetail() {
               <img src={data.photo} alt="증명사진" className="profile-photo" />
             </div>
             <div className="caregiver-info">
-              <h2>{data.name || "이름 미정"}</h2>
+              <h2>
+                <span>{data.username || "이름 미정"}</span>
+                <span className={`detail-caregiver-gender ${data.userGender}`}>
+                  {data.userGender === "male"
+                    ? "남"
+                    : data.userGender === "female"
+                    ? "여"
+                    : "미정"}
+                </span>
+              </h2>
               <p>
                 희망 근무지:{" "}
-                {`${data.hope_work_area_location} ${data.hope_work_area_city}`}
+                {`${data.hopeWorkAreaLocation} ${data.hopeWorkAreaCity}`}
               </p>
-              <p>희망 근무기관: {data.hope_work_place}</p>
-              <p>근무형태: {data.hope_work_type}</p>
-              <p>고용형태: {data.hope_employment_type}</p>
-              <p>학력: {data.education_level}</p>
+              <p>희망 근무기관: {data.hopeWorkPlace}</p>
+              <p>근무형태: {data.hopeWorkType}</p>
+              <p>고용형태: {data.hopeEmploymentType}</p>
+              <p>학력: {data.educationLevel}</p>
               <p>보유 자격증: {data.certificates.join(", ")}</p>
               <p className="price">
-                {data.hope_work_amount.toLocaleString()}원/월
+                {data.hopeWorkAmount.toLocaleString()}원/월
               </p>
               <div className="detail-buttons">
                 <button>1:1 문의</button>
@@ -55,7 +68,7 @@ function CaregiverDetail() {
               {data.career.length > 0 ? (
                 data.career.map((c, i) => (
                   <li key={i}>
-                    {c.company_name} ({c.start_date} ~ {c.end_date})
+                    ●{c.companyName} ({c.startDate} ~ {c.endDate})
                   </li>
                 ))
               ) : (
