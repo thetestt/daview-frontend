@@ -25,7 +25,11 @@ function NursingHomeDetail() {
       <div className="layout-container">
         <div className="detail-container">
           <div className="detail-header">
-            <img src={data.photos[0]} alt="메인" className="main-photo" />
+            <img
+              src={data.photos[0] || "/images/default.png"}
+              alt="메인"
+              className="main-photo"
+            />
             <div className="detail-info">
               <h2>{data.facilityName}</h2>
               <p className="price">
@@ -52,14 +56,21 @@ function NursingHomeDetail() {
           </div>
 
           <div className="thumbnail-box">
-            {data.photos.map((url, idx) => (
-              <img key={idx} src={url} alt={`photo-${idx}`} />
-            ))}
-          </div>
-
-          <div className="tag-section">
-            <strong>태그: </strong>
-            {data.tags.join(", ")}
+            {data.photos &&
+            data.photos.length > 0 &&
+            data.photos.some((url) => url) ? (
+              data.photos
+                .filter((url) => url)
+                .map((url, idx) => (
+                  <img key={idx} src={url} alt={`photo-${idx}`} />
+                ))
+            ) : (
+              <img
+                src="/images/default.png"
+                alt="기본 이미지"
+                className="card-thumbnail"
+              />
+            )}
           </div>
 
           <div className="tag-section">
