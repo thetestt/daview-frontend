@@ -13,7 +13,6 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import NoticeDetail from "./pages/NoticeDetail";
 import NoticeList from "./pages/NoticeList";
-<<<<<<< HEAD
 import FindPasswordPage from "./pages/auth/FindPasswordPage";
 import FindIdPage from "./pages/auth/FindIdPage";
 
@@ -24,11 +23,6 @@ import ReviewBoard from "./pages/ReviewBoardPage";
 import ReviewWrite from "./pages/ReviewWritePage";
 import { SearchProvider } from "./context/SearchContext";
 import SearchResults from "./pages/SearchResults";
-=======
-import CaregiverDashboard from "./features/caregiver/CaregiverDashboard";
-import FacilityDashboard from "./features/facility/FacilityDashboard";
-
->>>>>>> 3bd08bf (한솔_ APP.js 충돌 롤백합니다)
 
 function App() {
   return (
@@ -46,13 +40,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/notice/:facilityId" element={<NoticeList />} />
-        <Route path="/caregiver/dashboard" element={<CaregiverDashboard />} />
-        <Route path="/facility/dashboard" element={<FacilityDashboard />} />
         <Route
           path="/notice/:facilityId/:noticeId"
           element={<NoticeDetail />}
         />
-<<<<<<< HEAD
         <Route path="/findpasswordpage" element={<FindPasswordPage />} />
         <Route path="/findidpage" element={<FindIdPage />} />
 
@@ -62,8 +53,6 @@ function App() {
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
         <Route path="/search" element={<SearchResults />} />
-=======
->>>>>>> 3bd08bf (한솔_ APP.js 충돌 롤백합니다)
       </Routes>
       <Footer />
     </SearchProvider>
