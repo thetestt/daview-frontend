@@ -37,7 +37,11 @@ function CaregiverDetail() {
         <div className="caregiver-detail-container">
           <div className="caregiver-header">
             <div className="profile-photo-box">
-              <img src={data.photo} alt="증명사진" className="profile-photo" />
+              <img
+                src={data.photo || "/images/default.png"}
+                alt="증명사진"
+                className="profile-photo"
+              />
             </div>
             <div className="caregiver-info">
               <h2>
