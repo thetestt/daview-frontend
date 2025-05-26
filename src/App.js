@@ -23,6 +23,7 @@ import ReviewBoard from "./pages/ReviewBoardPage";
 import ReviewWrite from "./pages/ReviewWritePage";
 import { SearchProvider } from "./context/SearchContext";
 import SearchResults from "./pages/SearchResults";
+import ChatRoom from "./pages/ChatRoom";
 
 function App() {
   return (
@@ -53,6 +54,9 @@ function App() {
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
         <Route path="/search" element={<SearchResults />} />
+
+        {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
+        <Route path="/chat/:chatroomId" element={<ChatRoom />} />
       </Routes>
       <Footer />
     </SearchProvider>

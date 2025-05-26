@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/pages/Caregiver.css";
 import { Link } from "react-router-dom";
 import CaregiverList from "../components/CaregiverList";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import CaregiverSearchResult from "../components/CaregiverSearchResult";
 
 function Caregiver() {
+  const [isSearch, setIsSearch] = useState(false);
+
+  const handleSearchClick = () => {
+    setIsSearch(true);
+  };
+
   return (
     <>
       <FloatingNavButtons backTo="/" />
@@ -98,9 +105,11 @@ function Caregiver() {
               </div>
             </div>
 
-            <button className="search-button">검색</button>
+            <button className="search-button" onClick={handleSearchClick}>
+              검색
+            </button>
           </div>
-          <CaregiverList />
+          {isSearch ? <CaregiverSearchResult /> : <CaregiverList />}
         </div>
       </div>
     </>
