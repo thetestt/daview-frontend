@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchSearchResults } from "../api/SearchResults"; // ✅ 이 파일 이름도 확인 필요!
+import { fetchSearchResults } from "../api/SearchResults";
+import "../styles/components/MainList.css"; // ✅ 스타일 적용
 
 function SearchResults() {
   const location = useLocation();
@@ -17,7 +18,7 @@ function SearchResults() {
     if (query) {
       fetchSearchResults(query)
         .then((res) => {
-          console.log("🔍 검색 결과 데이터:", res); // ✅ 여기에 콘솔 추가!
+          console.log("🔍 검색 결과 데이터:", res);
           setResults(res);
         })
         .catch((err) => console.error("❌ 검색 오류:", err));
@@ -32,19 +33,34 @@ function SearchResults() {
       {results.nursinghomes.length > 0 && (
         <section className="mb-8">
           <h3 className="text-lg font-semibold mb-2">🏥 요양원</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="facility-list">
             {results.nursinghomes.map((item) => (
-              <div
-                key={item.facilityId}
-                className="border rounded-xl p-2 cursor-pointer hover:shadow"
-                onClick={() => navigate(`/nursinghome/${item.facilityId}`)}
-              >
-                <img
-                  src={item.photoUrl}
-                  alt={item.facilityName}
-                  className="w-full h-40 object-cover rounded"
-                />
-                <h4 className="mt-2 text-center">{item.facilityName}</h4>
+              <div key={item.facilityId} className="facility-card-wrapper">
+                <div
+                  className="facility-card-link"
+                  onClick={() => navigate(`/nursinghome/${item.facilityId}`)}
+                >
+                  <div className="facility-card">
+                    <img
+                      src={
+                        item.photoUrl
+                          ? `http://localhost:8080${item.photoUrl}`
+                          : "/images/default.png"
+                      }
+                      alt={item.facilityName}
+                      className="card-thumbnail"
+                    />
+                    <h3>{item.facilityName}</h3>
+                    <p>
+                      {item.facilityAddressLocation} {item.facilityAddressCity}
+                    </p>
+                    <p>
+                      {item.facilityCharge
+                        ? `${item.facilityCharge.toLocaleString()}원/월`
+                        : "가격 정보 없음"}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -55,19 +71,34 @@ function SearchResults() {
       {results.silvertowns.length > 0 && (
         <section className="mb-8">
           <h3 className="text-lg font-semibold mb-2">🏡 실버타운</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="facility-list">
             {results.silvertowns.map((item) => (
-              <div
-                key={item.facilityId}
-                className="border rounded-xl p-2 cursor-pointer hover:shadow"
-                onClick={() => navigate(`/silvertown/${item.facilityId}`)}
-              >
-                <img
-                  src={item.photoUrl}
-                  alt={item.facilityName}
-                  className="w-full h-40 object-cover rounded"
-                />
-                <h4 className="mt-2 text-center">{item.facilityName}</h4>
+              <div key={item.facilityId} className="facility-card-wrapper">
+                <div
+                  className="facility-card-link"
+                  onClick={() => navigate(`/silvertown/${item.facilityId}`)}
+                >
+                  <div className="facility-card">
+                    <img
+                      src={
+                        item.photoUrl
+                          ? `http://localhost:8080${item.photoUrl}`
+                          : "/images/default.png"
+                      }
+                      alt={item.facilityName}
+                      className="card-thumbnail"
+                    />
+                    <h3>{item.facilityName}</h3>
+                    <p>
+                      {item.facilityAddressLocation} {item.facilityAddressCity}
+                    </p>
+                    <p>
+                      {item.facilityCharge
+                        ? `${item.facilityCharge.toLocaleString()}원/월`
+                        : "가격 정보 없음"}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -78,20 +109,34 @@ function SearchResults() {
       {results.caregivers.length > 0 && (
         <section className="mb-8">
           <h3 className="text-lg font-semibold mb-2">👩‍⚕️ 요양사</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="facility-list">
             {results.caregivers.map((item) => (
-              <div
-                key={item.caregiverId}
-                className="border rounded-xl p-2 cursor-pointer hover:shadow"
-                onClick={() => navigate(`/caregiver/${item.caregiverId}`)}
-              >
-                {/* 이미지가 없다면 기본 이미지 사용 */}
-                <img
-                  src={item.profileImg || "/images/default.png"}
-                  alt={item.username}
-                  className="w-full h-40 object-cover rounded"
-                />
-                <h4 className="mt-2 text-center">{item.username}</h4>
+              <div key={item.caregiverId} className="facility-card-wrapper">
+                <div
+                  className="facility-card-link"
+                  onClick={() => navigate(`/caregiver/${item.caregiverId}`)}
+                >
+                  <div className="facility-card">
+                    <img
+                      src={
+                        item.profileImg
+                          ? `http://localhost:8080${item.profileImg}`
+                          : "/images/default.png"
+                      }
+                      alt={item.username}
+                      className="card-thumbnail"
+                    />
+                    <h3>{item.username}</h3>
+                    <p>
+                      {item.hopeWorkAreaLocation} {item.hopeWorkAreaCity}
+                    </p>
+                    <p>
+                      {item.hopeWorkAmount
+                        ? `${item.hopeWorkAmount.toLocaleString()}원/월`
+                        : "희망 급여 미입력"}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

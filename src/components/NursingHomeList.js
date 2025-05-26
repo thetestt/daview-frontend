@@ -10,7 +10,6 @@ function NursingHomeList() {
   useEffect(() => {
     fetchNursinghome()
       .then((res) => {
-        console.log("백엔드 응답 결과:", res);
         setData(res);
       })
       .catch((err) => {
