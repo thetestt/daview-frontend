@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/pages/Silvertown.css";
 import { Link } from "react-router-dom";
 import SilvertownList from "../components/SilvertownList";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import SilvertownSearchResult from "../components/SilvertownSearchResult";
 
 function Silvertown() {
+  const [isSearch, setIsSearch] = useState(false); // ⭐ 상태 추가
+
+  const handleSearchClick = () => {
+    setIsSearch(true); // 검색 버튼 누르면 검색 결과 보여주기
+  };
+
   return (
     <>
       <FloatingNavButtons backTo="/" />
@@ -99,9 +106,11 @@ function Silvertown() {
               </div>
             </div>
 
-            <button className="search-button">검색</button>
+            <button className="search-button" onClick={handleSearchClick}>
+              검색
+            </button>
           </div>
-          <SilvertownList />
+          {isSearch ? <SilvertownSearchResult /> : <SilvertownList />}
         </div>
       </div>
     </>

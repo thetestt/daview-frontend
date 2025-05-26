@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/pages/NursingHome.css";
 import { Link } from "react-router-dom";
 import NursingHomeList from "../components/NursingHomeList";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import NursingHomeSearchResult from "../components/NursingHomeSearchResult";
 
 function NursingHome() {
+  const [isSearch, setIsSearch] = useState(false);
+
+  const handleSearchClick = () => {
+    setIsSearch(true);
+  };
+
   return (
     <>
       <FloatingNavButtons backTo="/" />
@@ -99,9 +106,11 @@ function NursingHome() {
               </div>
             </div>
 
-            <button className="search-button">검색</button>
+            <button className="search-button" onClick={handleSearchClick}>
+              검색
+            </button>
           </div>
-          <NursingHomeList />
+          {isSearch ? <NursingHomeSearchResult /> : <NursingHomeList />}
         </div>
       </div>
     </>

@@ -1,13 +1,12 @@
-// 📂 src/pages/CaregiverDetail.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-// import caregivers from "../data/caregivers";
+import { useParams, useNavigate } from "react-router-dom";
 import { getCaregiverById } from "../api/caregiver";
 import "../styles/pages/CaregiverDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function CaregiverDetail() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState(null);
 
@@ -18,6 +17,16 @@ function CaregiverDetail() {
       })
       .catch((err) => console.error("❌ 요양사 불러오기 실패:", err));
   }, [id]);
+
+  // ✅ 간이 채팅 연결용 - 추후 chatroom API 연동 예정
+  const handleChat = () => {
+    // 예시: 현재 로그인 사용자 (실제 구현 시 context에서 가져올 예정)
+    // const senderId = currentUser.memberId;
+    // const receiverId = data.memberId;
+
+    // 지금은 목 채팅방 ID 사용
+    navigate("/chat/room123");
+  };
 
   if (!data) return <div>Loading...</div>;
 
@@ -54,7 +63,7 @@ function CaregiverDetail() {
                 {data.hopeWorkAmount.toLocaleString()}원/월
               </p>
               <div className="detail-buttons">
-                <button>1:1 문의</button>
+                <button onClick={handleChat}>1:1 문의</button>
                 <button>장바구니</button>
                 <button>찜 ♥</button>
               </div>
@@ -68,7 +77,7 @@ function CaregiverDetail() {
               {data.career.length > 0 ? (
                 data.career.map((c, i) => (
                   <li key={i}>
-                    ●{c.companyName} ({c.startDate} ~ {c.endDate})
+                    ● {c.companyName} ({c.startDate} ~ {c.endDate})
                   </li>
                 ))
               ) : (
