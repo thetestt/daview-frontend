@@ -19,11 +19,12 @@ function LoginPage() {
       });
       console.log("로그인 성공:", response.data);
       localStorage.setItem("token", response.data.token);
-      // 예시: 로그인 성공하면 마이페이지로 이동
-      navigate("/mypage");
+      localStorage.setItem("username", response.data.username);
+      navigate("/");
+      window.location.reload();
       
     } catch (error) {
-      console.error("로그인 실패:", error);
+      console.error("로그인 실패:", error); //로그인실패하면 정말 슬퍼 힝
       setErrorMsg("아이디 또는 비밀번호가 올바르지 않습니다.");
     }
   };

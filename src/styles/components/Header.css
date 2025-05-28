@@ -34,6 +34,32 @@
 .auto-buttons {
   display: flex;
   align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-actions a,
+.user-actions span {
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .auto-buttons a {

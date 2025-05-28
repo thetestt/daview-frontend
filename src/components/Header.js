@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/components/Header.css";
 import logoImg from "../assets/daview-logo.png";
-import { useSearch } from "../context/SearchContext";
+import "../styles/components/Header.css";
 
 function Header() {
   const [keyword, setKeyword] = useState("");
+  const [username, setUsername] = useState(null);
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -13,6 +13,17 @@ function Header() {
       navigate(`/search?query=${encodeURIComponent(keyword)}`);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    window.location.href = "/";
+  };
+
+  useEffect(() => {
+    const stored = localStorage.getItem("username");
+    if (stored) setUsername(stored);
+  }, []);
 
   return (
     <div>
@@ -33,12 +44,24 @@ function Header() {
         />
         <button onClick={handleSearch}>검색</button>
 
-        {/* 로그인/회원가입 */}
         <div className="auto-buttons">
-          <Link to="/login">로그인</Link>
-          <Link to="/signup">회원가입</Link>
+          {username ? (
+            <div className="user-actions">
+              <span>{username}님</span>
+              <Link to="/mypage">마이페이지</Link>
+              <span onClick={handleLogout}>로그아웃</span>
+            </div>
+          ) : (
+            <>
+              <Link to="/login">로그인</Link>
+              <Link to="/signup">회원가입</Link>
+            </>
+          )}
         </div>
+
       </header>
+
+      {/* 네비게이션 */}
       <nav className="nav-bar">
         <ul>
           <li className="dropdown">
@@ -53,7 +76,7 @@ function Header() {
           <li className="dropdown">
             <a href="/nursinghome">요양원</a>
             <ul className="dropdown-menu">
-              <li className="dropdown">
+              <li>
                 <a href="/nursinghome">상품 보러가기</a>
                 <a href="/nursinghome">예약하기</a>
               </li>
