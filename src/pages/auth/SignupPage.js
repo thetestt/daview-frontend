@@ -4,9 +4,9 @@ import "../../styles/auth/SignupPage.css";
 
 function SignupPage() {
   const [agreed, setAgreed] = useState(false); 
-  const [smsAgree, setSmsAgree] = useState(false);
-  const [emailAgree, setEmailAgree] = useState(false);
-  const [pushAgree, setPushAgree] = useState(false);
+  const [smsAgree, setSmsAgree] = useState(false); 
+  const [emailAgree, setEmailAgree] = useState(false); 
+  const [pushAgree, setPushAgree] = useState(false); 
 
   return (
     <div className="signup-container">
