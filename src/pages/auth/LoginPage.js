@@ -1,15 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/auth/LoginPage.css";
 // import Footer from "../../components/Footer";
+import axios from "axios";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("아이디:", username);
-    console.log("비밀번호:", password);
+    try {
+      const response = await axios.post("http://localhost:8080/api/auth/login", {
+        username,
+        password,
+      });
+      console.log("로그인 성공:", response.data);
+      localStorage.setItem("token", response.data.token);
+      // 예시: 로그인 성공하면 마이페이지로 이동
+      navigate("/mypage");
+      
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      setErrorMsg("아이디 또는 비밀번호가 올바르지 않습니다.");
+    }
   };
 
   return (
