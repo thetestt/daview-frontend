@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../assets/daview-logo.png";
 import "../styles/components/Header.css";
+import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const [keyword, setKeyword] = useState("");
@@ -23,6 +24,24 @@ function Header() {
   useEffect(() => {
     const stored = localStorage.getItem("username");
     if (stored) setUsername(stored);
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (isExpired) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.href = "/login";
+        } else {
+          setUsername(localStorage.getItem("username"));
+        }
+      } catch (e) {
+        console.error("토큰 에러:", e);
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+      }
+    }
   }, []);
 
   return (
