@@ -24,6 +24,7 @@ import ReviewWrite from "./pages/ReviewWritePage";
 import { SearchProvider } from "./context/SearchContext";
 import SearchResults from "./pages/SearchResults";
 import ChatRoom from "./pages/ChatRoom";
+import MyPage from "./pages/auth/MyPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/silvertown/:id" element={<SilvertownDetail />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/notice/:facilityId" element={<NoticeList />} />
         <Route
           path="/notice/:facilityId/:noticeId"

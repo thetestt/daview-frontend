@@ -79,3 +79,25 @@
 .login-links a:hover {
   text-decoration: underline;
 }
+
+.kakao-login {
+  font-size: 0.9rem;
+  background: none;
+  padding: 0;
+  border: none;
+  margin-bottom: 10px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.kakao-login-button {
+  background-color: #fff500; 
+  color: #311e00;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
