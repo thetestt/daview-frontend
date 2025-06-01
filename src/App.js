@@ -50,7 +50,7 @@ function App() {
         <Route path="/findpasswordpage" element={<FindPasswordPage />} />
         <Route path="/findidpage" element={<FindIdPage />} />
 
-        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/reservation/member/:memberId" element={<Reservation />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/review-board" element={<ReviewBoard />} />
