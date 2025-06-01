@@ -4,6 +4,7 @@ import { getCaregiverById } from "../api/caregiver";
 import "../styles/pages/CaregiverDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import AddToCartButton from "../components/AddToCartButton";
 
 function CaregiverDetail() {
   const navigate = useNavigate();
@@ -68,8 +69,9 @@ function CaregiverDetail() {
               </p>
               <div className="detail-buttons">
                 <button onClick={handleChat}>1:1 문의</button>
-                <button>장바구니</button>
                 <button>찜 ♥</button>
+                {/* <button>장바구니</button> */}
+                <AddToCartButton data={data} productType="caregiver" />
               </div>
             </div>
             <div className="map-box">[지도 API]</div>

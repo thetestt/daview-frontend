@@ -29,6 +29,8 @@ import FacilityRoomManage from "../features/facility/FacilityRoomManage";
 // 관리자
 import AdminDashboard from "../features/admin/AdminDashboard";
 
+import Reservation from "../pages/ReservationPage"
+
 const AppRouter = () => {
   return (
     <Router>
@@ -58,6 +60,8 @@ const AppRouter = () => {
         {/* 관리자 전용 */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        <Route path="/reservation/member/:memberId" element={<Reservation />} />
       </Routes>
     </Router>
   );
