@@ -33,6 +33,7 @@ function FindIdPage() {
         <div className="form-group">
           <label>이름</label>
           <input type="text" placeholder="이름 입력" />
+
           <label>전화번호</label>
           <div className="phone-inputs">
           <input placeholder="+82" className="country-code" />
@@ -53,7 +54,7 @@ function FindIdPage() {
             <input type="text" placeholder="이메일" />
             <span>@</span>
             <input type="text" placeholder="도메인" />
-            <button>인증번호 전송</button>
+            <button className="findid-send-code-button">인증번호 전송</button>
           </div>
           <input type="text" placeholder="인증번호 6자리 숫자 입력" />
 

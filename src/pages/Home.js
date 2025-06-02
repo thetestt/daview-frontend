@@ -14,7 +14,7 @@ function Home() {
   } else if (role === "company") {
     mainMessage = `${username}님, 기업 전용 페이지입니다.`;
   } else {
-    mainMessage = "로그인 해주세요.";
+    mainMessage = "";
   }
 
   const handleLogout = () => {
