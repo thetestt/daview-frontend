@@ -5,12 +5,21 @@ import SilvertownList from "../components/SilvertownList";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
-import { getFilterOptions } from "../api/filterOption"; // ✅ 공통 API import
+import { getFilterOptions } from "../api/filterOption";
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
 
-  // 필터 옵션 상태
+  // ✅ 선택한 필터 값들
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState("");
+  const [selectedResidence, setSelectedResidence] = useState([]);
+  const [selectedFacility, setSelectedFacility] = useState([]);
+  const [selectedEnvironment, setSelectedEnvironment] = useState([]);
+  const [selectedEtc, setSelectedEtc] = useState([]);
+
+  // 옵션 리스트 상태
   const [locationOptions, setLocationOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
   const [themeOptions, setThemeOptions] = useState([]);
@@ -41,6 +50,16 @@ function Silvertown() {
     fetchOptions();
   }, []);
 
+  // 체크박스 처리 함수
+  const handleCheckboxChange = (value, selectedList, setSelectedList) => {
+    if (selectedList.includes(value)) {
+      setSelectedList(selectedList.filter((v) => v !== value));
+    } else {
+      setSelectedList([...selectedList, value]);
+    }
+  };
+
+  // ✅ 검색 버튼 클릭 시
   const handleSearchClick = () => {
     setIsSearch(true);
   };
@@ -66,7 +85,7 @@ function Silvertown() {
             <h2>실버타운</h2>
             <div className="filter-row">
               <label>지역</label>
-              <select>
+              <select onChange={(e) => setSelectedLocation(e.target.value)}>
                 <option>선택</option>
                 {locationOptions.map((opt) => (
                   <option key={opt.optionId} value={opt.value}>
@@ -76,7 +95,7 @@ function Silvertown() {
               </select>
 
               <label>시/군/구</label>
-              <select>
+              <select onChange={(e) => setSelectedCity(e.target.value)}>
                 <option>선택</option>
                 {cityOptions.map((opt) => (
                   <option key={opt.optionId} value={opt.value}>
@@ -86,7 +105,7 @@ function Silvertown() {
               </select>
 
               <label>테마</label>
-              <select>
+              <select onChange={(e) => setSelectedTheme(e.target.value)}>
                 <option>선택</option>
                 {themeOptions.map((opt) => (
                   <option key={opt.optionId} value={opt.value}>
@@ -101,7 +120,18 @@ function Silvertown() {
                 <strong>주거형태</strong>
                 {residenceOptions.map((opt) => (
                   <label key={opt.optionId}>
-                    <input type="checkbox" value={opt.value} /> {opt.value}
+                    <input
+                      type="checkbox"
+                      value={opt.value}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          opt.value,
+                          selectedResidence,
+                          setSelectedResidence
+                        )
+                      }
+                    />{" "}
+                    {opt.value}
                   </label>
                 ))}
               </div>
@@ -110,7 +140,18 @@ function Silvertown() {
                 <strong>시설</strong>
                 {facilityOptions.map((opt) => (
                   <label key={opt.optionId}>
-                    <input type="checkbox" value={opt.value} /> {opt.value}
+                    <input
+                      type="checkbox"
+                      value={opt.value}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          opt.value,
+                          selectedFacility,
+                          setSelectedFacility
+                        )
+                      }
+                    />{" "}
+                    {opt.value}
                   </label>
                 ))}
               </div>
@@ -119,7 +160,18 @@ function Silvertown() {
                 <strong>주변환경</strong>
                 {envOptions.map((opt) => (
                   <label key={opt.optionId}>
-                    <input type="checkbox" value={opt.value} /> {opt.value}
+                    <input
+                      type="checkbox"
+                      value={opt.value}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          opt.value,
+                          selectedEnvironment,
+                          setSelectedEnvironment
+                        )
+                      }
+                    />{" "}
+                    {opt.value}
                   </label>
                 ))}
               </div>
@@ -128,7 +180,18 @@ function Silvertown() {
                 <strong>기타</strong>
                 {etcOptions.map((opt) => (
                   <label key={opt.optionId}>
-                    <input type="checkbox" value={opt.value} /> {opt.value}
+                    <input
+                      type="checkbox"
+                      value={opt.value}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          opt.value,
+                          selectedEtc,
+                          setSelectedEtc
+                        )
+                      }
+                    />{" "}
+                    {opt.value}
                   </label>
                 ))}
               </div>
@@ -139,8 +202,22 @@ function Silvertown() {
             </button>
           </div>
 
-          {/* 리스트 or 검색 결과 */}
-          {isSearch ? <SilvertownSearchResult /> : <SilvertownList />}
+          {/* 검색 결과 */}
+          {isSearch ? (
+            <SilvertownSearchResult
+              filters={{
+                location: selectedLocation,
+                city: selectedCity,
+                theme: selectedTheme,
+                residence: selectedResidence,
+                facility: selectedFacility,
+                environment: selectedEnvironment,
+                etc: selectedEtc,
+              }}
+            />
+          ) : (
+            <SilvertownList />
+          )}
         </div>
       </div>
     </>

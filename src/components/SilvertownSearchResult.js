@@ -1,29 +1,31 @@
-// src/components/SilvertownSearchResult.js
 import React, { useState, useEffect } from "react";
 import "../styles/components/MainList.css";
 import { Link } from "react-router-dom";
-import { fetchSilvertowns } from "../api/silvertown"; // 이후 필터값이 있으면 여기에 추가
+import { fetchFilteredSilvertowns } from "../api/silvertown"; // 🔁 필터 적용 API 함수 사용
 
-function SilvertownSearchResult() {
+function SilvertownSearchResult({ filters }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // 추후 검색 조건 전달 가능
-    fetchSilvertowns()
-      .then((res) => {
-        setData(res); // 실제로는 필터 조건 적용된 결과만 오게 하면 좋아요
-      })
-      .catch((err) => {
+    const fetchFilteredData = async () => {
+      try {
+        const result = await fetchFilteredSilvertowns(filters);
+        setData(result);
+      } catch (err) {
         console.error("API 오류:", err);
-      });
-  }, []);
+      }
+    };
+
+    fetchFilteredData();
+  }, [filters]);
 
   return (
     <div className="facility-list">
-      실버타운 검색결과
-      {data
-        .filter((town) => town.facilityId)
-        .map((town) => (
+      <h3>실버타운 검색결과</h3>
+      {data.length === 0 ? (
+        <p>조건에 맞는 결과가 없습니다.</p>
+      ) : (
+        data.map((town) => (
           <div key={town.facilityId} className="facility-card-wrapper">
             <Link
               to={`/silvertown/${town.facilityId}`}
@@ -55,7 +57,8 @@ function SilvertownSearchResult() {
               </div>
             </Link>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 }
