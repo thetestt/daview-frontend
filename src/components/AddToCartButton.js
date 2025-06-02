@@ -37,7 +37,7 @@ function AddToCartButton({ data, productType }) {
           : {
               rsvId: generatedUuid,
               memberId,
-              prodType: productType === "silvertown" ? 1 : 2, // 실버타운:1, 요양원:2
+              prodType: productType === "silvertown" ? 2 : 1, // 실버타운:2, 요양원:1
               prodId: data.facilityId,
               prodNm: data.facilityName,
               prodDetail: [
