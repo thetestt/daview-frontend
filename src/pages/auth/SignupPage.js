@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../../styles/auth/SignupPage.css";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [agreed, setAgreed] = useState(false);
@@ -8,13 +9,15 @@ function SignupPage() {
   const [emailAgree, setEmailAgree] = useState(false);
   const [pushAgree, setPushAgree] = useState(false);
   const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [emailId, setEmailId] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,15 +33,17 @@ function SignupPage() {
     const email = `${emailId}@${emailDomain}`;
 
     axios.post("http://localhost:8080/api/auth/signup", {
-      username: email,
+      username,
       password,
       name,
-      nickname,
+      email,
       role,
+      phone,
     })
-    
+
       .then(() => {
         alert("회원가입 성공!");
+        navigate("/login");
       })
       .catch((err) => {
         console.error("회원가입 실패", err);
@@ -69,16 +74,31 @@ function SignupPage() {
           <input type="text" placeholder="이메일" value={emailId} onChange={(e) => setEmailId(e.target.value)} />
           <span className="at">@</span>
           <input type="text" placeholder="도메인" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} />
+          <select onChange={(e) => setEmailDomain(e.target.value)}>
+            <option value="">직접 입력</option>
+            <option value="naver.com">naver.com</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="daum.net">daum.net</option>
+          </select>
         </div>
+
+        <label>전화번호</label>
+        <div className="signup-phone-inputs">
+          <input placeholder="+82" className="signup-country-code" />
+          <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className="signup-phone-input" />
+          <button className="signup-send-code-button">인증번호 전송</button>
+        </div>
+        <input type="text" placeholder="인증번호 6자리 숫자 입력" />
+
+
+        <label>아이디</label>
+        <input type="text" placeholder="영문 2~10자" value={username} onChange={(e) => setUsername(e.target.value)} />
 
         <label>비밀번호</label>
         <input type="password" placeholder="영문, 특수기호, 숫자 포함 8자 이상" value={password} onChange={(e) => setPassword(e.target.value)} />
 
         <label>비밀번호 확인</label>
         <input type="password" placeholder="비밀번호 확인" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} />
-
-        <label>닉네임</label>
-        <input type="text" placeholder="한글 2~10자" value={nickname} onChange={(e) => setNickname(e.target.value)} />
 
         <label>약관동의</label>
         <div className="terms-content">

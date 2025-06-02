@@ -1,141 +1,173 @@
 /*로그인*/
 .login-container {
-    max-width: 320px;
-    margin: 5rem auto;
-    text-align: center;
-    font-family: sans-serif;
-  }
-  
-  .login-subtitle {
-    font-size: 20px;
-    color: gray;
-    margin-bottom: 0px;
-  }
-  
-  .login-logo {
-    font-size: 50px;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    margin-top: 0.2px;
-    color: #0a3d62;
-  }
-  
-  .login-form input {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .login-form button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #0a3d62;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .login-form input,
-  .login-form button {
+  max-width: 320px;
+  margin: 5rem auto;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.login-subtitle {
+  font-size: 20px;
+  color: gray;
+  margin-bottom: 0px;
+}
+
+.login-logo {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  margin-top: 0.2px;
+  color: #0a3d62;
+}
+
+.login-form input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #0a3d62;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-form input,
+.login-form button {
   box-sizing: border-box;
-  }
-  
-  .login-form button:hover {
-    background-color: #074b80;
-  }
-  
-  .login-links {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .login-links a {
-    color: #0a3d62;
-    text-decoration: none;
-    margin: 0 0.3rem;
-  }
-  
-  .login-links a:hover {
-    text-decoration: underline;
-  }
-  
+}
+
+.login-form button:hover {
+  background-color: #074b80;
+}
+
+.login-links {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.login-links a {
+  color: #0a3d62;
+  text-decoration: none;
+  margin: 0 0.3rem;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
 /*회원가입*/
 .signup-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: sans-serif;
-  }
-  
-  .signup-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .signup-form label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: bold;
-  }
-  
-  .signup-form input,
-  .signup-form textarea {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .signup-form .email-box {
-    display: flex;
-    gap: 0.5rem;
-  }
-  
-  .signup-form .email-box input {
-    flex: 1;
-  }
-  
-  .signup-form button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #0a3d62;
-    color: white;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
 
-  .terms-content {
-    font-size: 0.9rem;
-    background: none;
-    padding: 0;
-    border: none;
-    margin-bottom: 10px;
-    color: #444;
-    line-height: 1.5;
-  }
-  
-  .agree-check {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
-    margin-left: 4px;
-  }
-  .agree-check input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-  }
-  .agree-check span {
-    font-size: 14px;
-    font-weight: 500;
-  }
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.signup-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.signup-form input,
+.signup-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.signup-form .email-box {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.signup-form .email-box input {
+  flex: 1;
+}
+
+.signup-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #0a3d62;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.terms-content {
+  font-size: 0.9rem;
+  background: none;
+  padding: 0;
+  border: none;
+  margin-bottom: 10px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.agree-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  margin-left: 4px;
+}
+
+.agree-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.agree-check span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.signup-phone-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signup-country-code {
+  width: 30px;
+  height: 35px;
+  /* 높이 인풋과 맞춤 */
+}
+
+.signup-phone-input {
+  width: 80px;
+  height: 40px;
+  /* 높이 인풋과 맞춤 */
+}
+
+.signup-send-code-button {
+  height: 40px;
+  /* 높이 인풋과 맞춤 */
+  padding: 0 12px;
+  font-size: 0.7rem;
+  background-color: #0a3d62;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
