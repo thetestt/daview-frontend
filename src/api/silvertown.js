@@ -17,14 +17,14 @@ export const fetchSilvertownDetail = async (id) => {
   return response.data;
 };
 
-export const getSilvertownFilterOptions = async (category) => {
-  try {
-    const response = await axios.get(
-      `/api/options?category=${encodeURIComponent(category)}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("필터 옵션 불러오기 실패:", error);
-    return [];
-  }
-};
+// export const getSilvertownFilterOptions = async (category) => {
+//   try {
+//     const response = await axios.get(
+//       `/api/options?category=${encodeURIComponent(category)}`
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error("필터 옵션 불러오기 실패:", error);
+//     return [];
+//   }
+// };

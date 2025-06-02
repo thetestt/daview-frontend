@@ -5,12 +5,12 @@ import SilvertownList from "../components/SilvertownList";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
-import { getSilvertownFilterOptions } from "../api/silvertown";
+import { getFilterOptions } from "../api/filterOption"; // ✅ 공통 API import
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
 
-  // 필터 옵션 상태 선언
+  // 필터 옵션 상태
   const [locationOptions, setLocationOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
   const [themeOptions, setThemeOptions] = useState([]);
@@ -21,13 +21,13 @@ function Silvertown() {
 
   useEffect(() => {
     const fetchOptions = async () => {
-      const loc = await getSilvertownFilterOptions("지역");
-      const city = await getSilvertownFilterOptions("시군구");
-      const theme = await getSilvertownFilterOptions("테마");
-      const resi = await getSilvertownFilterOptions("주거형태");
-      const fac = await getSilvertownFilterOptions("시설");
-      const env = await getSilvertownFilterOptions("주변환경");
-      const etc = await getSilvertownFilterOptions("기타");
+      const loc = await getFilterOptions("실버타운", "지역");
+      const city = await getFilterOptions("실버타운", "시군구");
+      const theme = await getFilterOptions("실버타운", "테마");
+      const resi = await getFilterOptions("실버타운", "주거형태");
+      const fac = await getFilterOptions("실버타운", "시설");
+      const env = await getFilterOptions("실버타운", "주변환경");
+      const etc = await getFilterOptions("실버타운", "기타");
 
       setLocationOptions(loc);
       setCityOptions(city);

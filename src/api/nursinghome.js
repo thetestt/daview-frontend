@@ -16,3 +16,15 @@ export const fetchNursinghomeDetail = async (id) => {
   );
   return response.data;
 };
+
+// export const getNursingHomeFilterOptions = async (category) => {
+//   try {
+//     const response = await axios.get(
+//       `/api/searchfilter/nursinghome?category=${category}`
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error("요양원 필터 옵션 불러오기 오류:", error);
+//     return [];
+//   }
+// };
