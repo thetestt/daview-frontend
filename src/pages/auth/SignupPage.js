@@ -5,19 +5,21 @@ import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [agreed, setAgreed] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [emailDomain, setEmailDomain] = useState("");
+  const [gender, setGender] = useState("");
+  const [birth, setBirth] = useState("");
+  const [role, setRole] = useState("");
   const [smsAgree, setSmsAgree] = useState(false);
   const [emailAgree, setEmailAgree] = useState(false);
   const [pushAgree, setPushAgree] = useState(false);
-  const [role, setRole] = useState("");
-  const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [emailId, setEmailId] = useState("");
-  const [emailDomain, setEmailDomain] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,11 +38,12 @@ function SignupPage() {
       username,
       password,
       name,
-      email,
-      role,
       phone,
+      email,
+      gender,
+      birth,
+      role,
     })
-
       .then(() => {
         alert("회원가입 성공!");
         navigate("/login");
@@ -54,26 +57,27 @@ function SignupPage() {
   return (
     <div className="signup-container">
       <h2>회원가입</h2>
-
       <form className="signup-form" onSubmit={handleSubmit}>
-        <label>회원유형 필수선택</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="">선택하세요</option>
-          <option value="user">다뷰 회원</option>
-          <option value="company">기업</option>
-          <option value="caregiver">요양사</option>
-        </select><br /><br />
+        <label>아이디</label>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="아이디 입력" />
+
+        <label>비밀번호</label>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+
+        <label>비밀번호 확인</label>
+        <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" />
 
         <label>이름</label>
-        <div className="name-box">
-          <input type="text" placeholder="이름을 입력해주세요" value={name} onChange={(e) => setName(e.target.value)} />
-        </div>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" />
+
+        <label>전화번호</label>
+        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="전화번호 입력" />
 
         <label>이메일</label>
         <div className="email-box">
-          <input type="text" placeholder="이메일" value={emailId} onChange={(e) => setEmailId(e.target.value)} />
-          <span className="at">@</span>
-          <input type="text" placeholder="도메인" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} />
+          <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" />
+          <span>@</span>
+          <input type="text" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} placeholder="도메인" />
           <select onChange={(e) => setEmailDomain(e.target.value)}>
             <option value="">직접 입력</option>
             <option value="naver.com">naver.com</option>
@@ -82,23 +86,23 @@ function SignupPage() {
           </select>
         </div>
 
-        <label>전화번호</label>
-        <div className="signup-phone-inputs">
-          <input placeholder="+82" className="signup-country-code" />
-          <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className="signup-phone-input" />
-          <button className="signup-send-code-button">인증번호 전송</button>
-        </div>
-        <input type="text" placeholder="인증번호 6자리 숫자 입력" />
+        <label>성별</label>
+        <select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <option value="">선택</option>
+          <option value="male">남성</option>
+          <option value="female">여성</option>
+        </select>
 
+        <label>생년월일</label>
+        <input type="date" value={birth} onChange={(e) => setBirth(e.target.value)} />
 
-        <label>아이디</label>
-        <input type="text" placeholder="영문 2~10자" value={username} onChange={(e) => setUsername(e.target.value)} />
-
-        <label>비밀번호</label>
-        <input type="password" placeholder="영문, 특수기호, 숫자 포함 8자 이상" value={password} onChange={(e) => setPassword(e.target.value)} />
-
-        <label>비밀번호 확인</label>
-        <input type="password" placeholder="비밀번호 확인" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} />
+        <label>회원 유형</label>
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="">선택하세요</option>
+          <option value="user">일반 회원</option>
+          <option value="company">기업</option>
+          <option value="caregiver">요양사</option>
+        </select>
 
         <label>약관동의</label>
         <div className="terms-content">
@@ -154,7 +158,8 @@ function SignupPage() {
           <span>앱 푸시 알림 동의</span>
         </label>
 
-        <button type="submit">회원가입하기</button>
+
+        <button type="submit">회원가입</button>
       </form>
     </div>
   );
