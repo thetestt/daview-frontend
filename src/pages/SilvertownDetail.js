@@ -29,7 +29,7 @@ function SilvertownDetail() {
 
   return (
     <>
-      <FloatingNavButtons backTo="/silvertown" />
+      <FloatingNavButtons />
       <div className="layout-container">
         <div className="detail-container">
           <div className="detail-header">

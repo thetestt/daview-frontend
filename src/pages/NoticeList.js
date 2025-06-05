@@ -21,17 +21,11 @@ function NoticeList() {
     return <div>공지사항이 없습니다.</div>;
   }
 
-  const facilityType = notices[0]?.facilityType || "실버타운"; // DB 기반 필드
   const facilityName = notices[0]?.facilityName || "시설";
-
-  const backToPath =
-    facilityType === "요양원"
-      ? `/nursinghome/${facilityId}`
-      : `/silvertown/${facilityId}`;
 
   return (
     <>
-      <FloatingNavButtons backTo={backToPath} />
+      <FloatingNavButtons />
       <div className="notice-list-container">
         <h2>{facilityName} 공지게시판</h2>
 

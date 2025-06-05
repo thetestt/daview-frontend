@@ -6,11 +6,13 @@ import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
 import { getFilterOptions } from "../api/filterOption";
+import { useForceRefresh } from "../utils/forceRefresh"; //새로고침 으로 변동
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState(null); // ✔✔ 검색 시점의 필터 값
 
-  // ✅ 선택한 필터 값들
+  // 선택한 필터 값들
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedTheme, setSelectedTheme] = useState("");
@@ -27,6 +29,8 @@ function Silvertown() {
   const [facilityOptions, setFacilityOptions] = useState([]);
   const [envOptions, setEnvOptions] = useState([]);
   const [etcOptions, setEtcOptions] = useState([]);
+
+  const refresh = useForceRefresh(); //새로고침 함수
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -59,14 +63,23 @@ function Silvertown() {
     }
   };
 
-  // ✅ 검색 버튼 클릭 시
+  // 검색 버튼 클릭 시
   const handleSearchClick = () => {
+    setAppliedFilters({
+      location: selectedLocation,
+      city: selectedCity,
+      theme: selectedTheme,
+      residence: selectedResidence,
+      facility: selectedFacility,
+      environment: selectedEnvironment,
+      etc: selectedEtc,
+    });
     setIsSearch(true);
   };
 
   return (
     <>
-      <FloatingNavButtons backTo="/" />
+      <FloatingNavButtons />
       <div className="layout-container">
         <div className="silvertown-main">
           {/* 상단 탭 */}
@@ -77,7 +90,9 @@ function Silvertown() {
             <Link to="/nursinghome">
               <button>요양원</button>
             </Link>
-            <button className="active">실버타운</button>
+            <button onClick={refresh} className="active">
+              실버타운
+            </button>
           </div>
 
           {/* 필터 영역 */}
@@ -203,18 +218,8 @@ function Silvertown() {
           </div>
 
           {/* 검색 결과 */}
-          {isSearch ? (
-            <SilvertownSearchResult
-              filters={{
-                location: selectedLocation,
-                city: selectedCity,
-                theme: selectedTheme,
-                residence: selectedResidence,
-                facility: selectedFacility,
-                environment: selectedEnvironment,
-                etc: selectedEtc,
-              }}
-            />
+          {isSearch && appliedFilters ? (
+            <SilvertownSearchResult filters={appliedFilters} />
           ) : (
             <SilvertownList />
           )}

@@ -26,7 +26,7 @@ function NoticeDetail() {
 
   return (
     <>
-      <FloatingNavButtons backTo={`/notice/${facilityId}`} />
+      <FloatingNavButtons />
       <div className="notice-detail-container">
         <h2>{notice.facilityName || "시설"} 공지게시판</h2>
         <h2>{notice.noticeTitle}</h2>
