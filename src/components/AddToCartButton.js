@@ -8,7 +8,8 @@ function AddToCartButton({ data, productType }) {
 
   const handleAddToCart = async () => {
     try {
-      const memberId = localStorage.getItem("memberId") || 1; // 임시 사용자 ID
+      // 임시 사용자 ID
+      const memberId = localStorage.getItem("memberId") || 1;
       const generatedUuid = uuidv4();
 
       const reservationData =
@@ -59,9 +60,7 @@ function AddToCartButton({ data, productType }) {
 
       console.log("예약 성공:", created);
 
-      navigate(`/reservation/member/${created.memberId}`, {
-        state: { reservations: [created] },
-      });
+      navigate(`/reservation/member/${created.memberId}`);
     } catch (err) {
       console.error("예약 실패:", err);
       alert("예약에 실패했습니다. 다시 시도해 주세요.");
