@@ -7,6 +7,7 @@ import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { useForceRefresh } from "../utils/forceRefresh"; //새로고침 으로 변동
+import { getRegionList, getCityListByRegion } from "../api/SearchResults";
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
@@ -34,16 +35,16 @@ function Silvertown() {
 
   useEffect(() => {
     const fetchOptions = async () => {
-      const loc = await getFilterOptions("실버타운", "지역");
-      const city = await getFilterOptions("실버타운", "시군구");
+      // const loc = await getFilterOptions("실버타운", "지역");
+      // const city = await getFilterOptions("실버타운", "시군구");
       const theme = await getFilterOptions("실버타운", "테마");
       const resi = await getFilterOptions("실버타운", "주거형태");
       const fac = await getFilterOptions("실버타운", "시설");
       const env = await getFilterOptions("실버타운", "주변환경");
       const etc = await getFilterOptions("실버타운", "기타");
 
-      setLocationOptions(loc);
-      setCityOptions(city);
+      // setLocationOptions(loc);
+      // setCityOptions(city);
       setThemeOptions(theme);
       setResidenceOptions(resi);
       setFacilityOptions(fac);
@@ -53,6 +54,34 @@ function Silvertown() {
 
     fetchOptions();
   }, []);
+
+  //지역 리스트 가져오기
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const regions = await getRegionList();
+        setLocationOptions(regions); // 🔥 지역 리스트 저장
+      } catch (error) {
+        console.error("지역 리스트 가져오기 실패:", error);
+      }
+    };
+
+    fetchRegions();
+  }, []);
+
+  //지역 선택시 시군구 리스트 자동변경
+  const handleRegionChange = async (e) => {
+    const regionId = e.target.value;
+    setSelectedLocation(regionId);
+
+    try {
+      const cities = await getCityListByRegion(regionId);
+      setCityOptions(cities);
+      setSelectedCity(""); // 기존 선택 초기화
+    } catch (error) {
+      console.error("시군구 불러오기 실패:", error);
+    }
+  };
 
   // 체크박스 처리 함수
   const handleCheckboxChange = (value, selectedList, setSelectedList) => {
@@ -100,21 +129,21 @@ function Silvertown() {
             <h2>실버타운</h2>
             <div className="filter-row">
               <label>지역</label>
-              <select onChange={(e) => setSelectedLocation(e.target.value)}>
-                <option>선택</option>
-                {locationOptions.map((opt) => (
-                  <option key={opt.optionId} value={opt.value}>
-                    {opt.value}
+              <select onChange={handleRegionChange}>
+                <option value="">선택</option>
+                {locationOptions.map((region) => (
+                  <option key={region.id} value={region.id}>
+                    {region.name}
                   </option>
                 ))}
               </select>
 
               <label>시/군/구</label>
               <select onChange={(e) => setSelectedCity(e.target.value)}>
-                <option>선택</option>
-                {cityOptions.map((opt) => (
-                  <option key={opt.optionId} value={opt.value}>
-                    {opt.value}
+                <option value="">선택</option>
+                {cityOptions.map((city) => (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
                   </option>
                 ))}
               </select>
