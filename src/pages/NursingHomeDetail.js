@@ -22,7 +22,7 @@ function NursingHomeDetail() {
 
   return (
     <>
-      <FloatingNavButtons backTo="/nursinghome" />
+      <FloatingNavButtons />
       <div className="layout-container">
         <div className="detail-container">
           <div className="detail-header">

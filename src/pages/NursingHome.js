@@ -46,7 +46,7 @@ function NursingHome() {
 
   return (
     <>
-      <FloatingNavButtons backTo="/" />
+      <FloatingNavButtons />
       <div className="layout-container">
         <div className="nursinghome-main">
           {/* 상단 탭 */}
