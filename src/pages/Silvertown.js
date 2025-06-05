@@ -31,7 +31,7 @@ function Silvertown() {
   const [envOptions, setEnvOptions] = useState([]);
   const [etcOptions, setEtcOptions] = useState([]);
 
-  const refresh = useForceRefresh(); //새로고침 함수
+  const refresh = useForceRefresh(); //새로고침 유틸 함수
 
   useEffect(() => {
     const fetchOptions = async () => {
