@@ -21,7 +21,6 @@ import Payment from "../components/Payment";
 import PaymentResult from "../components/PaymentResult";
 import ReviewBoard from "../components/ReviewBoard";
 import ReviewWrite from "../components/ReviewWrite";
-import AdminDashboard from "../features/admin/AdminDashboard";
 
 const AppRouter = () => {
   return (
@@ -65,7 +64,6 @@ const AppRouter = () => {
       <Route path="/review-write" element={<ReviewWrite />} />
 
       {/* 관리자 */}
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
     </Routes>
   );
 };
