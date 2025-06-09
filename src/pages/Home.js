@@ -27,13 +27,13 @@ function Home() {
       <SlideBanner />
       <MainButton />
 
-      <p>{mainMessage}</p>
+      {/* <p>{mainMessage}</p>
       {role && (
         <>
           <a href="/mypage">마이페이지</a>
           <button onClick={handleLogout}>로그아웃</button>
         </>
-      )}
+      )} */}
     </div>
   );
 }

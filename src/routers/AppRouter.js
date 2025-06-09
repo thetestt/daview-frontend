@@ -21,6 +21,11 @@ import Payment from "../components/Payment";
 import PaymentResult from "../components/PaymentResult";
 import ReviewBoard from "../components/ReviewBoard";
 import ReviewWrite from "../components/ReviewWrite";
+import CompanyDashboard from "../pages/company/CompanyDashboard";
+import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import Header from "../components/Header";
+
 
 const AppRouter = () => {
   return (
@@ -34,10 +39,14 @@ const AppRouter = () => {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/findpasswordpage" element={<FindPasswordPage />} />
       <Route path="/findidpage" element={<FindIdPage />} />
-
+      
       {/* 요양사 */}
       <Route path="/caregiver" element={<Caregiver />} />
       <Route path="/caregiver/:id" element={<CaregiverDetail />} />
+      <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+
+      {/* 기업 */}
+      <Route path="/company/main" element={<CompanyDashboard />} />
 
       {/* 요양기관 */}
       <Route path="/nursinghome" element={<NursingHome />} />
@@ -64,6 +73,8 @@ const AppRouter = () => {
       <Route path="/review-write" element={<ReviewWrite />} />
 
       {/* 관리자 */}
+      <Route path="/admin/main" element={<AdminDashboard />} />
+
     </Routes>
   );
 };

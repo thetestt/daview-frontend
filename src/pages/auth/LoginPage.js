@@ -23,7 +23,7 @@ function LoginPage() {
         { username, password },
         { withCredentials: true }
       );
-
+  
       if (response.data.success) {
         const token = response.data.token;
         const decoded = jwtDecode(token);
@@ -31,20 +31,30 @@ function LoginPage() {
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role); // 역할 저장
-
-        alert("로그인 성공");
-        localStorage.setItem("token", response.data.token);
-        navigate("/");
+  
+        if (decoded.role === "user") {
+          navigate("/");
+        } else if (decoded.role === "company") {
+          navigate("/company/main");
+        } else if (decoded.role === "caregiver") {
+          navigate("/caregiver/main");
+        } else if (decoded.role === "admin") {
+          navigate("/admin/main");
+        }
+  
       } else {
+        // 이 else는 response.data.success === false 인 경우에 씀 잊지말기~ 얏호
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");
         alert("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
       }
+  
     } catch (error) {
       console.error("로그인 에러", error);
       setErrorMsg("서버 오류가 발생했습니다.");
       alert("서버 오류");
     }
   };
+  
 
   return (
     <div className="page-wrapper">
