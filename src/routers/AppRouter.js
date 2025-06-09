@@ -26,6 +26,7 @@ import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import Header from "../components/Header";
 
+
 const AppRouter = () => {
   return (
     <Routes>
@@ -73,8 +74,6 @@ const AppRouter = () => {
 
       {/* 관리자 */}
       <Route path="/admin/main" element={<AdminDashboard />} />
-
-      
 
     </Routes>
   );
