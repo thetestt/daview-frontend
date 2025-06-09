@@ -43,7 +43,9 @@ function SignupPage() {
       gender,
       birth,
       role,
-    })
+    },
+      { withCredentials: true }
+    )
       .then(() => {
         alert("회원가입 성공!");
         navigate("/login");
