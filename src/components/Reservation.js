@@ -80,6 +80,24 @@ const Reservation = () => {
     }
   };
 
+  const handleDecreaseCount = (rsvId) => {
+    setReservations((prev) =>
+      prev.map((res) =>
+        res.rsvId === rsvId
+          ? { ...res, rsvCnt: Math.max(1, res.rsvCnt - 1) }
+          : res
+      )
+    );
+  };
+
+  const handleIncreaseCount = (rsvId) => {
+    setReservations((prev) =>
+      prev.map((res) =>
+        res.rsvId === rsvId ? { ...res, rsvCnt: (res.rsvCnt || 1) + 1 } : res
+      )
+    );
+  };
+
   if (loading)
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>로딩 중...</div>
@@ -152,6 +170,16 @@ const Reservation = () => {
                       .map((word, idx) => <div key={idx}>{word}</div>)
                   : "정보 없음"}
               </div>
+            </div>
+            <div>
+              수량:
+              <button onClick={() => handleDecreaseCount(reservation.rsvId)}>
+                -
+              </button>
+              {reservation.rsvCnt || 1}
+              <button onClick={() => handleIncreaseCount(reservation.rsvId)}>
+                +
+              </button>
             </div>
             <div>
               상품 가격:{" "}
