@@ -201,7 +201,7 @@ const Reservation = () => {
       </button>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button onClick={() => navigate(-1)}>쇼핑 계속하기</button>
-        <button onClick={() => navigate(`/payment`)}>결제하기</button>
+        <button onClick={() => navigate(`/payment`)}>결제</button>
       </div>
     </div>
   );
