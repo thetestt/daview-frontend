@@ -35,6 +35,8 @@ function LoginPage() {
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role);
 
+        window.dispatchEvent(new Event("storage"));
+
         console.log("로그인 성공!");
         console.log("토큰:", token);
         console.log("디코딩 결과:", decoded);

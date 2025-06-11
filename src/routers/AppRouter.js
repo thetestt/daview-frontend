@@ -25,8 +25,9 @@ import ReviewBoard from "../components/ReviewBoard";
 import ReviewWrite from "../components/ReviewWrite";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
-import SilvertownDashboard from "../pages/silvertown/SilvertownDashboard";
-import NursingHomeDashboard from "../pages/nursinghome/NursingHomeDashboard";
+import CompanyDashboard from "../pages/company/CompanyDashboard";
+import Header from "../components/Header";
+
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -70,13 +71,7 @@ const AppRouter = () => {
         {/* 요양사 */}
         <Route path="/caregiver" element={<Caregiver />} />
         <Route path="/caregiver/:id" element={<CaregiverDetail />} />
-        <Route path="/caregiver/main" element={<CaregiverDashboard />} />
 
-        {/* 실버타운 운영자 대시보드 */}
-        <Route path="/silvertown/main" element={<SilvertownDashboard />} />
-
-        {/* 요양원 운영자 대시보드 */}
-        <Route path="/nursinghome/main" element={<NursingHomeDashboard />} />
 
         {/* 요양기관 */}
         <Route path="/nursinghome" element={<NursingHome />} />
@@ -107,6 +102,9 @@ const AppRouter = () => {
 
         {/* 관리자 */}
         <Route path="/admin/main" element={<AdminDashboard />} />
+        <Route path="/company/main" element={<CompanyDashboard />} />
+        <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+
       </Routes>
     </>
   );
