@@ -34,6 +34,7 @@ function LoginPage() {
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role);
+        localStorage.setItem("memberId", decoded.memberId);
 
         window.dispatchEvent(new Event("storage"));
 
