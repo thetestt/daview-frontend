@@ -30,9 +30,11 @@ function Header() {
           const isExpired = decoded.exp * 1000 < Date.now();
           if (!isExpired) {
             setUsername(decoded.sub);
+            localStorage.setItem("memberId", decoded.memberId); 
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("username");
+            localStorage.removeItem("memberId");
             setUsername(null);
           }
         } catch (e) {
