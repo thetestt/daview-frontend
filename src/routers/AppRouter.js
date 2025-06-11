@@ -23,9 +23,10 @@ import Payment from "../components/Payment";
 import PaymentResult from "../components/PaymentResult";
 import ReviewBoard from "../components/ReviewBoard";
 import ReviewWrite from "../components/ReviewWrite";
-import CompanyDashboard from "../pages/company/CompanyDashboard";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import SilvertownDashboard from "../pages/silvertown/SilvertownDashboard";
+import NursingHomeDashboard from "../pages/nursinghome/NursingHomeDashboard";
 import Header from "../components/Header";
 
 
@@ -45,8 +46,9 @@ const AppRouter = () => {
           const role = decoded.role.toLowerCase();
 
           if (role === "admin") navigate("/admin/main");
+          else if (role === "silvertown") navigate("/silvertown/main");
           else if (role === "company") navigate("/company/main");
-          else if (role === "caregiver") navigate("/caregiver/main");
+          else if (role === "nursinghome") navigate("/nursinghome/main");
           else if (role === "user") navigate("/");
         }
       } catch (e) {
@@ -72,9 +74,14 @@ const AppRouter = () => {
         <Route path="/caregiver" element={<Caregiver />} />
         <Route path="/caregiver/:id" element={<CaregiverDetail />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+		
+        {/* 실버타운 운영자 대시보드 */}
+        <Route path="/silvertown/main" element={<SilvertownDashboard />} />
 
-        {/* 기업 */}
-        <Route path="/company/main" element={<CompanyDashboard />} />
+        {/* 요양원 운영자 대시보드 */}
+        <Route path="/nursinghome/main" element={<NursingHomeDashboard />} />
+
+        
 
         {/* 요양기관 */}
         <Route path="/nursinghome" element={<NursingHome />} />
@@ -102,6 +109,7 @@ const AppRouter = () => {
 
         {/* 관리자 */}
         <Route path="/admin/main" element={<AdminDashboard />} />
+       
 
       </Routes>
     </>
