@@ -1,5 +1,7 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 import Home from "../pages/Home";
 import LoginPage from "../pages/auth/LoginPage";
 import SignupPage from "../pages/auth/SignupPage";
@@ -28,54 +30,81 @@ import Header from "../components/Header";
 
 
 const AppRouter = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const currentPath = window.location.pathname;
+
+    if (token && currentPath === "/login") {
+      try {
+        const decoded = jwtDecode(token);
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (!isExpired) {
+
+          const role = decoded.role.toLowerCase();
+
+          if (role === "admin") navigate("/admin/main");
+          else if (role === "company") navigate("/company/main");
+          else if (role === "caregiver") navigate("/caregiver/main");
+          else if (role === "user") navigate("/");
+        }
+      } catch (e) {
+        console.error("토큰 디코딩 실패", e);
+      }
+    }
+  }, [navigate]);
+
   return (
-    <Routes>
-      {/* 공통 */}
-      <Route path="/" element={<Home />} />
+    <>
+      <Routes>
+        {/* 공통 */}
+        <Route path="/" element={<Home />} />
 
-      {/* 회원 */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/findpasswordpage" element={<FindPasswordPage />} />
-      <Route path="/findidpage" element={<FindIdPage />} />
-      
-      {/* 요양사 */}
-      <Route path="/caregiver" element={<Caregiver />} />
-      <Route path="/caregiver/:id" element={<CaregiverDetail />} />
-      <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+        {/* 회원 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/findpasswordpage" element={<FindPasswordPage />} />
+        <Route path="/findidpage" element={<FindIdPage />} />
 
-      {/* 기업 */}
-      <Route path="/company/main" element={<CompanyDashboard />} />
+        {/* 요양사 */}
+        <Route path="/caregiver" element={<Caregiver />} />
+        <Route path="/caregiver/:id" element={<CaregiverDetail />} />
+        <Route path="/caregiver/main" element={<CaregiverDashboard />} />
 
-      {/* 요양기관 */}
-      <Route path="/nursinghome" element={<NursingHome />} />
-      <Route path="/nursinghome/:id" element={<NursingHomeDetail />} />
-      <Route path="/silvertown" element={<Silvertown />} />
-      <Route path="/silvertown/:id" element={<SilvertownDetail />} />
+        {/* 기업 */}
+        <Route path="/company/main" element={<CompanyDashboard />} />
 
-      {/* 공지 */}
-      <Route path="/notice/:facilityId" element={<NoticeList />} />
-      <Route path="/notice/:facilityId/:noticeId" element={<NoticeDetail />} />
+        {/* 요양기관 */}
+        <Route path="/nursinghome" element={<NursingHome />} />
+        <Route path="/nursinghome/:id" element={<NursingHomeDetail />} />
+        <Route path="/silvertown" element={<Silvertown />} />
+        <Route path="/silvertown/:id" element={<SilvertownDetail />} />
 
-      {/* 검색 */}
-      <Route path="/search" element={<SearchResults />} />
+        {/* 공지 */}
+        <Route path="/notice/:facilityId" element={<NoticeList />} />
+        <Route path="/notice/:facilityId/:noticeId" element={<NoticeDetail />} />
 
-      {/* 채팅 */}
-      {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
-      <Route path="/chat/:chatroomId" element={<ChatRoom />} />
+        {/* 검색 */}
+        <Route path="/search" element={<SearchResults />} />
 
-      {/* 주문 */}
-      <Route path="/reservation/member/:memberId" element={<Reservation />} />
-      <Route path="/payment" element={<Payment />} />
-      <Route path="/payment-result" element={<PaymentResult />} />
-      <Route path="/review-board" element={<ReviewBoard />} />
-      <Route path="/review-write" element={<ReviewWrite />} />
+        {/* 채팅 */}
+        {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
+        <Route path="/chat/:chatroomId" element={<ChatRoom />} />
 
-      {/* 관리자 */}
-      <Route path="/admin/main" element={<AdminDashboard />} />
+        {/* 주문 */}
+        <Route path="/reservation/member/:memberId" element={<Reservation />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/review-board" element={<ReviewBoard />} />
+        <Route path="/review-write" element={<ReviewWrite />} />
 
-    </Routes>
+        {/* 관리자 */}
+        <Route path="/admin/main" element={<AdminDashboard />} />
+
+      </Routes>
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ import "../../styles/auth/LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,44 +16,51 @@ function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log("로그인 버튼 눌림");
+
     try {
       const response = await axios.post(
         "http://localhost:8080/api/auth/login",
         { username, password },
         { withCredentials: true }
       );
-  
+
+      console.log("로그인 응답", response.data);
+
       if (response.data.success) {
         const token = response.data.token;
         const decoded = jwtDecode(token);
-  
+
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
-        localStorage.setItem("role", decoded.role); // 역할 저장
-  
+        localStorage.setItem("role", decoded.role);
+
+        console.log("로그인 성공!");
+        console.log("토큰:", token);
+        console.log("디코딩 결과:", decoded);
+
+        const role = decoded.role.toLowerCase();
+
         if (decoded.role === "user") {
           navigate("/");
-        } else if (decoded.role === "company") {
+        } else if (role === "company") {
           navigate("/company/main");
-        } else if (decoded.role === "caregiver") {
+        } else if (role === "caregiver") {
           navigate("/caregiver/main");
-        } else if (decoded.role === "admin") {
+        } else if (role === "admin") {
           navigate("/admin/main");
         }
-  
       } else {
-        // 이 else는 response.data.success === false 인 경우에 씀 잊지말기~ 얏호
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");
         alert("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
       }
-  
+
     } catch (error) {
       console.error("로그인 에러", error);
       setErrorMsg("서버 오류가 발생했습니다.");
       alert("서버 오류");
     }
   };
-  
 
   return (
     <div className="page-wrapper">

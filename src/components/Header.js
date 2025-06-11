@@ -22,8 +22,6 @@ function Header() {
   };
 
   useEffect(() => {
-    const stored = localStorage.getItem("username");
-    if (stored) setUsername(stored);
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -34,7 +32,9 @@ function Header() {
           localStorage.removeItem("username");
           window.location.href = "/login";
         } else {
-          setUsername(localStorage.getItem("username"));
+          setUsername(decoded.sub);
+
+          const currentPath = window.location.pathname;
         }
       } catch (e) {
         console.error("토큰 에러:", e);
@@ -43,6 +43,7 @@ function Header() {
       }
     }
   }, []);
+
 
   return (
     <div>
