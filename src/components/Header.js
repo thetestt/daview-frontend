@@ -22,28 +22,38 @@ function Header() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const isExpired = decoded.exp * 1000 < Date.now();
-        if (isExpired) {
+    const handleStorageChange = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          const isExpired = decoded.exp * 1000 < Date.now();
+          if (!isExpired) {
+            setUsername(decoded.sub);
+          } else {
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            setUsername(null);
+          }
+        } catch (e) {
+          console.error("토큰 에러:", e);
           localStorage.removeItem("token");
           localStorage.removeItem("username");
-          window.location.href = "/login";
-        } else {
-          setUsername(decoded.sub);
-
-          const currentPath = window.location.pathname;
+          setUsername(null);
         }
-      } catch (e) {
-        console.error("토큰 에러:", e);
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+      } else {
+        setUsername(null);
       }
-    }
+    };
+  
+    // storage 이벤트 리스너
+    window.addEventListener("storage", handleStorageChange);
+    handleStorageChange(); // 최초 1회 실행
+  
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
-
 
   return (
     <div>
