@@ -1,28 +1,31 @@
-// src/components/NursingHomeSearchResult.js
 import React, { useState, useEffect } from "react";
 import "../styles/components/MainList.css";
 import { Link } from "react-router-dom";
-import { fetchNursinghome } from "../api/nursinghome";
+import { fetchFilteredNursinghomes } from "../api/nursinghome"; // 🔁 필터 적용 API 함수 사용
 
-function NursingHomeSearchResult() {
+function NursingHomeSearchResult({ filters }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchNursinghome()
-      .then((res) => {
-        setData(res);
-      })
-      .catch((err) => {
-        console.error("API 오류:", err);
-      });
-  }, []);
+    const fetchFilteredData = async () => {
+      try {
+        const result = await fetchFilteredNursinghomes(filters);
+        setData(result);
+      } catch (err) {
+        console.error("요양원 검색 오류:", err);
+      }
+    };
+
+    fetchFilteredData();
+  }, [filters]);
 
   return (
     <div className="facility-list">
-      요양원 검색결과
-      {data
-        .filter((home) => home.facilityId)
-        .map((home) => (
+      <h3>요양원 검색결과</h3>
+      {data.length === 0 ? (
+        <p>조건에 맞는 결과가 없습니다.</p>
+      ) : (
+        data.map((home) => (
           <div key={home.facilityId} className="facility-card-wrapper">
             <Link
               to={`/nursinghome/${home.facilityId}`}
@@ -54,7 +57,8 @@ function NursingHomeSearchResult() {
               </div>
             </Link>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 }

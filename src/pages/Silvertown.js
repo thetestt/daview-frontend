@@ -6,12 +6,12 @@ import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
 import { getFilterOptions } from "../api/filterOption";
-import { useForceRefresh } from "../utils/forceRefresh"; //새로고침 으로 변동
+import { useForceRefresh } from "../utils/forceRefresh";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState(null); // ✔✔ 검색 시점의 필터 값
+  const [appliedFilters, setAppliedFilters] = useState(null);
 
   // 선택한 필터 값들
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -31,20 +31,17 @@ function Silvertown() {
   const [envOptions, setEnvOptions] = useState([]);
   const [etcOptions, setEtcOptions] = useState([]);
 
-  const refresh = useForceRefresh(); //새로고침 유틸 함수
+  const refresh = useForceRefresh();
 
+  // 필터 옵션 불러오기
   useEffect(() => {
     const fetchOptions = async () => {
-      // const loc = await getFilterOptions("실버타운", "지역");
-      // const city = await getFilterOptions("실버타운", "시군구");
       const theme = await getFilterOptions("실버타운", "테마");
       const resi = await getFilterOptions("실버타운", "주거형태");
       const fac = await getFilterOptions("실버타운", "시설");
       const env = await getFilterOptions("실버타운", "주변환경");
       const etc = await getFilterOptions("실버타운", "기타");
 
-      // setLocationOptions(loc);
-      // setCityOptions(city);
       setThemeOptions(theme);
       setResidenceOptions(resi);
       setFacilityOptions(fac);
@@ -55,12 +52,12 @@ function Silvertown() {
     fetchOptions();
   }, []);
 
-  //지역 리스트 가져오기
+  // 지역 리스트 불러오기
   useEffect(() => {
     const fetchRegions = async () => {
       try {
         const regions = await getRegionList();
-        setLocationOptions(regions); // 🔥 지역 리스트 저장
+        setLocationOptions(regions);
       } catch (error) {
         console.error("지역 리스트 가져오기 실패:", error);
       }
@@ -69,21 +66,27 @@ function Silvertown() {
     fetchRegions();
   }, []);
 
-  //지역 선택시 시군구 리스트 자동변경
+  // 지역 선택 시 시군구 변경
   const handleRegionChange = async (e) => {
-    const regionId = e.target.value;
-    setSelectedLocation(regionId);
+    const selectedRegionName = e.target.value;
+    setSelectedLocation(selectedRegionName);
+
+    const selectedRegion = locationOptions.find(
+      (region) => region.name === selectedRegionName
+    );
+
+    if (!selectedRegion) return;
 
     try {
-      const cities = await getCityListByRegion(regionId);
+      const cities = await getCityListByRegion(selectedRegion.id);
       setCityOptions(cities);
-      setSelectedCity(""); // 기존 선택 초기화
+      setSelectedCity("");
     } catch (error) {
       console.error("시군구 불러오기 실패:", error);
     }
   };
 
-  // 체크박스 처리 함수
+  // 체크박스 처리
   const handleCheckboxChange = (value, selectedList, setSelectedList) => {
     if (selectedList.includes(value)) {
       setSelectedList(selectedList.filter((v) => v !== value));
@@ -92,9 +95,9 @@ function Silvertown() {
     }
   };
 
-  // 검색 버튼 클릭 시
+  // 검색 결과 넘겨주기
   const handleSearchClick = () => {
-    setAppliedFilters({
+    const filters = {
       location: selectedLocation,
       city: selectedCity,
       theme: selectedTheme,
@@ -102,7 +105,9 @@ function Silvertown() {
       facility: selectedFacility,
       environment: selectedEnvironment,
       etc: selectedEtc,
-    });
+    };
+
+    setAppliedFilters(filters);
     setIsSearch(true);
   };
 
@@ -132,7 +137,7 @@ function Silvertown() {
               <select onChange={handleRegionChange}>
                 <option value="">선택</option>
                 {locationOptions.map((region) => (
-                  <option key={region.id} value={region.id}>
+                  <option key={region.id} value={region.name}>
                     {region.name}
                   </option>
                 ))}
@@ -150,7 +155,7 @@ function Silvertown() {
 
               <label>테마</label>
               <select onChange={(e) => setSelectedTheme(e.target.value)}>
-                <option>선택</option>
+                <option value="">선택</option>
                 {themeOptions.map((opt) => (
                   <option key={opt.optionId} value={opt.value}>
                     {opt.value}

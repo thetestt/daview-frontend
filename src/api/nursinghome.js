@@ -16,3 +16,16 @@ export const fetchNursinghomeDetail = async (id) => {
   );
   return response.data;
 };
+
+export const fetchFilteredNursinghomes = async (filters) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/facilities/nursinghome/search",
+      filters
+    );
+    return response.data;
+  } catch (error) {
+    console.error("요양원 검색 실패:", error);
+    throw error;
+  }
+};

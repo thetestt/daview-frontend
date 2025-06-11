@@ -29,6 +29,7 @@ function NursingHome() {
   const [etcOptions, setEtcOptions] = useState([]);
   const [businessTypeOptions, setBusinessTypeOptions] = useState([]);
 
+  // 필터 옵션 불러오기
   useEffect(() => {
     const fetchOptions = async () => {
       const theme = await getFilterOptions("요양원", "테마");
@@ -43,24 +44,44 @@ function NursingHome() {
       setBusinessTypeOptions(biz);
     };
 
+    fetchOptions();
+  }, []);
+
+  // 지역 리스트 불러오기
+  useEffect(() => {
     const fetchRegions = async () => {
-      const regions = await getRegionList();
-      setLocationOptions(regions);
+      try {
+        const regions = await getRegionList();
+        setLocationOptions(regions);
+      } catch (error) {
+        console.error("지역 리스트 가져오기 실패:", error);
+      }
     };
 
-    fetchOptions();
     fetchRegions();
   }, []);
 
-  // 지역 변경 시 시군구 가져오기
+  // 지역 선택 시 시군구 변경
   const handleRegionChange = async (e) => {
-    const regionId = e.target.value;
-    setSelectedLocation(regionId);
-    const cities = await getCityListByRegion(regionId);
-    setCityOptions(cities);
-    setSelectedCity(""); // 초기화
+    const selectedRegionName = e.target.value;
+    setSelectedLocation(selectedRegionName);
+
+    const selectedRegion = locationOptions.find(
+      (region) => region.name === selectedRegionName
+    );
+
+    if (!selectedRegion) return;
+
+    try {
+      const cities = await getCityListByRegion(selectedRegion.id);
+      setCityOptions(cities);
+      setSelectedCity("");
+    } catch (error) {
+      console.error("시군구 불러오기 실패:", error);
+    }
   };
 
+  // 체크박스 처리
   const handleCheckboxChange = (value, selectedList, setSelectedList) => {
     if (selectedList.includes(value)) {
       setSelectedList(selectedList.filter((v) => v !== value));
@@ -70,15 +91,19 @@ function NursingHome() {
   };
 
   const handleSearchClick = () => {
-    setAppliedFilters({
+    const filters = {
       location: selectedLocation,
       city: selectedCity,
       theme: selectedTheme,
-      program: selectedProgram,
+      residence: selectedProgram,
       environment: selectedEnv,
       etc: selectedEtc,
-      businessType: selectedBusiness,
-    });
+      facility: selectedBusiness,
+    };
+
+    console.log("🟢 사용자가 선택한 필터 데이터:", filters);
+
+    setAppliedFilters(filters);
     setIsSearch(true);
   };
 
@@ -103,10 +128,10 @@ function NursingHome() {
             <h2>요양원</h2>
             <div className="filter-row">
               <label>지역</label>
-              <select onChange={handleRegionChange} value={selectedLocation}>
+              <select onChange={handleRegionChange}>
                 <option value="">선택</option>
                 {locationOptions.map((region) => (
-                  <option key={region.id} value={region.id}>
+                  <option key={region.id} value={region.name}>
                     {region.name}
                   </option>
                 ))}
