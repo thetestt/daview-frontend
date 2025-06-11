@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getReservationById } from "../api/reservationApi";
 import { deleteReservation, deleteAllReservation } from "../api/reservationApi";
 
@@ -8,6 +8,7 @@ const Reservation = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkedItems, setCheckedItems] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
@@ -108,14 +109,12 @@ const Reservation = () => {
               position: "relative",
             }}
           >
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "10px",
-              }}
-            >
+            <img
+              src={reservation.prodPhoto || "/images/default.png"}
+              alt="상품이미지"
+              style={{ width: "200px", height: "auto" }}
+            />
+            <div>
               <input
                 type="checkbox"
                 checked={!!checkedItems[reservation.rsvId]}
@@ -124,7 +123,7 @@ const Reservation = () => {
                 }
               />
               상품명: {reservation.prodNm}
-            </label>
+            </div>
             <div>예약 ID: {reservation.rsvId}</div>
             <div>회원 ID: {reservation.memberId}</div>
             <div>상품 ID: {reservation.prodId}</div>
@@ -200,6 +199,10 @@ const Reservation = () => {
       >
         전체 삭제
       </button>
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button onClick={() => navigate(-1)}>쇼핑 계속하기</button>
+        <button onClick={() => navigate(`/payment`)}>결제하기</button>
+      </div>
     </div>
   );
 };

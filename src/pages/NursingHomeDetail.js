@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchNursinghomeDetail } from "../api/nursinghome";
 import "../styles/pages//NursingHomeDetail.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
-import AddToCartButton from "../components/AddToCartButton";
+import CartButton from "../components/CartButton";
 
 function NursingHomeDetail() {
   const { id } = useParams();
@@ -51,7 +51,7 @@ function NursingHomeDetail() {
                 <button>찜 ♥</button>
                 {/* <button>상담예약</button> */}
                 {/* <button>장바구니</button> */}
-                <AddToCartButton data={data} productType="nursinghome" />
+                <CartButton data={data} productType="nursinghome" />
               </div>
             </div>
             <div className="map-box">[지도 API]</div>

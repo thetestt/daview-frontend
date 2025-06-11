@@ -27,8 +27,6 @@ import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import SilvertownDashboard from "../pages/silvertown/SilvertownDashboard";
 import NursingHomeDashboard from "../pages/nursinghome/NursingHomeDashboard";
-import Header from "../components/Header";
-
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -42,7 +40,6 @@ const AppRouter = () => {
         const decoded = jwtDecode(token);
         const isExpired = decoded.exp * 1000 < Date.now();
         if (!isExpired) {
-
           const role = decoded.role.toLowerCase();
 
           if (role === "admin") navigate("/admin/main");
@@ -74,14 +71,12 @@ const AppRouter = () => {
         <Route path="/caregiver" element={<Caregiver />} />
         <Route path="/caregiver/:id" element={<CaregiverDetail />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
-		
+
         {/* 실버타운 운영자 대시보드 */}
         <Route path="/silvertown/main" element={<SilvertownDashboard />} />
 
         {/* 요양원 운영자 대시보드 */}
         <Route path="/nursinghome/main" element={<NursingHomeDashboard />} />
-
-        
 
         {/* 요양기관 */}
         <Route path="/nursinghome" element={<NursingHome />} />
@@ -91,7 +86,10 @@ const AppRouter = () => {
 
         {/* 공지 */}
         <Route path="/notice/:facilityId" element={<NoticeList />} />
-        <Route path="/notice/:facilityId/:noticeId" element={<NoticeDetail />} />
+        <Route
+          path="/notice/:facilityId/:noticeId"
+          element={<NoticeDetail />}
+        />
 
         {/* 검색 */}
         <Route path="/search" element={<SearchResults />} />
@@ -109,8 +107,6 @@ const AppRouter = () => {
 
         {/* 관리자 */}
         <Route path="/admin/main" element={<AdminDashboard />} />
-       
-
       </Routes>
     </>
   );
