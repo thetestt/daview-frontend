@@ -47,7 +47,7 @@ const AppRouter = () => {
 
           if (role === "admin") navigate("/admin/main");
           else if (role === "silvertown") navigate("/silvertown/main");
-          else if (role === "company") navigate("/company/main");
+          else if (role === "caregiver") navigate("/caregiver/main");
           else if (role === "nursinghome") navigate("/nursinghome/main");
           else if (role === "user") navigate("/");
         }
