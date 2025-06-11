@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createReservation } from "../api/reservationApi";
 import { v4 as uuidv4 } from "uuid";
 
-function AddToCartButton({ data, productType }) {
+function CartButton({ data, productType }) {
   const navigate = useNavigate();
 
   const handleAddToCart = async () => {
@@ -34,6 +34,10 @@ function AddToCartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.hopeWorkAmount,
               rsvType: 1, // 결제전
+              prodPhoto:
+                Array.isArray(data.photos) && data.photos.length > 0
+                  ? data.photos[0]
+                  : "/images/default.png",
             }
           : {
               rsvId: generatedUuid,
@@ -53,6 +57,10 @@ function AddToCartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.facilityCharge,
               rsvType: 1, // 결제전
+              prodPhoto:
+                Array.isArray(data.photos) && data.photos.length > 0
+                  ? data.photos[0]
+                  : "/images/default.png",
             };
 
       const res = await createReservation(reservationData);
@@ -70,4 +78,4 @@ function AddToCartButton({ data, productType }) {
   return <button onClick={handleAddToCart}>예약하기</button>;
 }
 
-export default AddToCartButton;
+export default CartButton;

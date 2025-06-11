@@ -26,7 +26,6 @@ import ReviewWrite from "../components/ReviewWrite";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
-
 import Header from "../components/Header";
 
 
@@ -42,7 +41,6 @@ const AppRouter = () => {
         const decoded = jwtDecode(token);
         const isExpired = decoded.exp * 1000 < Date.now();
         if (!isExpired) {
-
           const role = decoded.role.toLowerCase();
 
           if (role === "admin") navigate("/admin/main");
@@ -74,7 +72,7 @@ const AppRouter = () => {
         <Route path="/caregiver" element={<Caregiver />} />
         <Route path="/caregiver/:id" element={<CaregiverDetail />} />
 
-      
+
         {/* 요양기관 */}
         <Route path="/nursinghome" element={<NursingHome />} />
         <Route path="/nursinghome/:id" element={<NursingHomeDetail />} />
@@ -83,7 +81,10 @@ const AppRouter = () => {
 
         {/* 공지 */}
         <Route path="/notice/:facilityId" element={<NoticeList />} />
-        <Route path="/notice/:facilityId/:noticeId" element={<NoticeDetail />} />
+        <Route
+          path="/notice/:facilityId/:noticeId"
+          element={<NoticeDetail />}
+        />
 
         {/* 검색 */}
         <Route path="/search" element={<SearchResults />} />
@@ -103,7 +104,6 @@ const AppRouter = () => {
         <Route path="/admin/main" element={<AdminDashboard />} />
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
-       
 
       </Routes>
     </>

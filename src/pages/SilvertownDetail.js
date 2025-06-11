@@ -6,7 +6,7 @@ import "../styles/pages/SilvertownDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import { fetchSilvertownDetail } from "../api/silvertown";
-import AddToCartButton from "../components/AddToCartButton";
+import CartButton from "../components/CartButton";
 
 function SilvertownDetail() {
   const { id } = useParams();
@@ -58,7 +58,7 @@ function SilvertownDetail() {
                 <button>찜 ♥</button>
                 {/* <button>상담예약</button>
                 <button>장바구니</button> */}
-                <AddToCartButton data={data} productType="silvertown" />
+                <CartButton data={data} productType="silvertown" />
               </div>
             </div>
             <div className="map-box">[지도 API]</div>
