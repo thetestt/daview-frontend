@@ -1,9 +1,10 @@
+// src/page/Caregiver.js
+
 import React, { useState, useEffect } from "react";
-import "../styles/pages/Caregiver.css";
+import "../styles/pages/NursingHome.css"; // 재사용
 import { Link } from "react-router-dom";
-import CaregiverList from "../components/CaregiverList";
-import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import CaregiverList from "../components/CaregiverList";
 import CaregiverSearchResult from "../components/CaregiverSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
@@ -18,43 +19,46 @@ function Caregiver() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedCert, setSelectedCert] = useState([]);
   const [selectedWorkType, setSelectedWorkType] = useState([]);
-  const [selectedEmployment, setSelectedEmployment] = useState([]);
+  const [selectedEmployType, setSelectedEmployType] = useState([]);
 
   // 옵션 리스트
   const [locationOptions, setLocationOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
-  const [genderOptions, setGenderOptions] = useState([]);
   const [certOptions, setCertOptions] = useState([]);
   const [workTypeOptions, setWorkTypeOptions] = useState([]);
-  const [employmentTypeOptions, setEmploymentTypeOptions] = useState([]);
+  const [employTypeOptions, setEmployTypeOptions] = useState([]);
 
   useEffect(() => {
     const fetchOptions = async () => {
-      const gender = await getFilterOptions("요양사", "성별");
       const cert = await getFilterOptions("요양사", "자격증");
-      const workType = await getFilterOptions("요양사", "근무형태");
-      const empType = await getFilterOptions("요양사", "고용형태");
+      const work = await getFilterOptions("요양사", "근무형태");
+      const employ = await getFilterOptions("요양사", "고용형태");
 
-      setGenderOptions(gender);
       setCertOptions(cert);
-      setWorkTypeOptions(workType);
-      setEmploymentTypeOptions(empType);
+      setWorkTypeOptions(work);
+      setEmployTypeOptions(employ);
     };
 
+    fetchOptions();
+  }, []);
+
+  useEffect(() => {
     const fetchRegions = async () => {
       const regions = await getRegionList();
       setLocationOptions(regions);
     };
-
-    fetchOptions();
     fetchRegions();
   }, []);
 
-  // 지역 선택 시 시군구 업데이트
   const handleRegionChange = async (e) => {
-    const regionId = e.target.value;
-    setSelectedLocation(regionId);
-    const cities = await getCityListByRegion(regionId);
+    const selected = e.target.value;
+    setSelectedLocation(selected);
+    const selectedRegion = locationOptions.find(
+      (region) => region.name === selected
+    );
+    if (!selectedRegion) return;
+
+    const cities = await getCityListByRegion(selectedRegion.id);
     setCityOptions(cities);
     setSelectedCity("");
   };
@@ -68,42 +72,46 @@ function Caregiver() {
   };
 
   const handleSearchClick = () => {
-    setAppliedFilters({
+    const filters = {
       location: selectedLocation,
       city: selectedCity,
       gender: selectedGender,
-      certificate: selectedCert,
+      certificates: selectedCert,
       workType: selectedWorkType,
-      employmentType: selectedEmployment,
-    });
+      employmentType: selectedEmployType,
+    };
+
+    console.log("🔍 요양사 필터 검색 조건:", filters);
+    setAppliedFilters(filters);
     setIsSearch(true);
   };
 
   return (
     <>
-      <FloatingNavButtons backTo="/" />
+      <FloatingNavButtons />
       <div className="layout-container">
-        <div className="caregiver-main">
+        <div className="nursinghome-main">
           {/* 상단 탭 */}
           <div className="tab-menu">
             <button className="active">요양사</button>
-            <Link to="/nursinghome" className="tab-link">
+            <Link to="/nursinghome">
               <button>요양원</button>
             </Link>
-            <Link to="/silvertown" className="tab-link">
+            <Link to="/silvertown">
               <button>실버타운</button>
             </Link>
           </div>
 
           {/* 필터 박스 */}
           <div className="filter-box">
-            <h2>요양보호사</h2>
+            <h2>요양사 검색</h2>
+
             <div className="filter-row">
               <label>지역</label>
-              <select onChange={handleRegionChange} value={selectedLocation}>
+              <select onChange={handleRegionChange}>
                 <option value="">선택</option>
                 {locationOptions.map((region) => (
-                  <option key={region.id} value={region.id}>
+                  <option key={region.id} value={region.name}>
                     {region.name}
                   </option>
                 ))}
@@ -111,8 +119,8 @@ function Caregiver() {
 
               <label>시/군/구</label>
               <select
-                onChange={(e) => setSelectedCity(e.target.value)}
                 value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
               >
                 <option value="">선택</option>
                 {cityOptions.map((city) => (
@@ -124,15 +132,13 @@ function Caregiver() {
 
               <label>성별</label>
               <select
-                onChange={(e) => setSelectedGender(e.target.value)}
                 value={selectedGender}
+                onChange={(e) => setSelectedGender(e.target.value)}
               >
                 <option value="">선택</option>
-                {genderOptions.map((opt) => (
-                  <option key={opt.optionId} value={opt.value}>
-                    {opt.value}
-                  </option>
-                ))}
+                <option value="female">여자</option>
+                <option value="male">남자</option>
+                <option value="hidden">무관</option>
               </select>
             </div>
 
@@ -179,7 +185,7 @@ function Caregiver() {
 
               <div>
                 <strong>고용형태</strong>
-                {employmentTypeOptions.map((opt) => (
+                {employTypeOptions.map((opt) => (
                   <label key={opt.optionId}>
                     <input
                       type="checkbox"
@@ -187,8 +193,8 @@ function Caregiver() {
                       onChange={() =>
                         handleCheckboxChange(
                           opt.value,
-                          selectedEmployment,
-                          setSelectedEmployment
+                          selectedEmployType,
+                          setSelectedEmployType
                         )
                       }
                     />
@@ -203,7 +209,7 @@ function Caregiver() {
             </button>
           </div>
 
-          {/* 검색 결과 영역 */}
+          {/* 검색 결과 */}
           {isSearch && appliedFilters ? (
             <CaregiverSearchResult filters={appliedFilters} />
           ) : (
