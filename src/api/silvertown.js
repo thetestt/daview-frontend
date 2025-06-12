@@ -17,6 +17,7 @@ export const fetchSilvertownDetail = async (id) => {
   return response.data;
 };
 
+//필터검색 post API
 export const fetchFilteredSilvertowns = async (filters) => {
   try {
     const response = await axios.post(
