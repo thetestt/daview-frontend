@@ -171,3 +171,34 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.username-check-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.input-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
+}
+
+.input-success {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
+}
+
+.agree-desc {
+  font-size: 0.9rem;
+  background: none;
+  padding: 0;
+  border: none;
+  margin-bottom: 10px;
+  color: #444;
+  line-height: 1.5;
+  font-weight: 400;
+}
