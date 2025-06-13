@@ -4,7 +4,7 @@ import ChatWindow from "../components/ChatWindow";
 
 const ChatRoom = () => {
   const { chatroomId } = useParams(); // /chat/:chatroomId
-  const currentUser = { memberId: 100, username: "나" }; // 로그인 사용자라고 가정
+  const currentUser = { memberId: 1, username: "나" }; // 로그인 사용자라고 가정
 
   return (
     <div className="chat-room-container">
