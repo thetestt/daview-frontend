@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { fetchSearchResults } from "../api/SearchResults";
 import "../styles/components/MainList.css"; // ✅ 스타일 적용
 
@@ -111,33 +111,51 @@ function SearchResults() {
           <h3 className="text-lg font-semibold mb-2">👩‍⚕️ 요양사</h3>
           <div className="facility-list">
             {results.caregivers.map((item) => (
-              <div key={item.caregiverId} className="facility-card-wrapper">
-                <div
-                  className="facility-card-link"
-                  onClick={() => navigate(`/caregiver/${item.caregiverId}`)}
-                >
-                  <div className="facility-card">
-                    <img
-                      src={
-                        item.profileImg
-                          ? `http://localhost:8080${item.profileImg}`
-                          : "/images/default.png"
-                      }
-                      alt={item.username}
-                      className="card-thumbnail"
-                    />
-                    <h3>{item.username}</h3>
-                    <p>
-                      {item.hopeWorkAreaLocation} {item.hopeWorkAreaCity}
-                    </p>
-                    <p>
-                      {item.hopeWorkAmount
-                        ? `${item.hopeWorkAmount.toLocaleString()}원/월`
-                        : "희망 급여 미입력"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <Link
+                key={item.caregiverId}
+                to={`/caregiver/${item.caregiverId}`}
+                className="facility-card"
+              >
+                {/* 이름 + 성별 */}
+                <h2 className="caregiver-name-box">
+                  <span className="caregiver-name">
+                    {item.username || "이름 미정"}
+                  </span>
+                  <span className={`caregiver-gender ${item.userGender}`}>
+                    {item.userGender === "male"
+                      ? "남"
+                      : item.userGender === "female"
+                      ? "여"
+                      : "미정"}
+                  </span>
+                </h2>
+
+                {/* 지역 */}
+                <p>
+                  {item.hopeWorkAreaLocation} {item.hopeWorkAreaCity}
+                </p>
+
+                {/* 근무형태 */}
+                <p>근무형태: {item.hopeWorkType || "미입력"}</p>
+
+                {/* 자격증 */}
+                <p>
+                  자격증:{" "}
+                  {item.certificates && item.certificates.length > 0
+                    ? item.certificates.join(", ")
+                    : "없음"}
+                </p>
+
+                {/* 경력 */}
+                <p>경력: {item.career?.length || 0}건</p>
+
+                {/* 급여 */}
+                <p>
+                  {item.hopeWorkAmount
+                    ? `${item.hopeWorkAmount.toLocaleString()}원/월`
+                    : "희망 급여 미입력"}
+                </p>
+              </Link>
             ))}
           </div>
         </section>
