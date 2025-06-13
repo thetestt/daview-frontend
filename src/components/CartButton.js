@@ -8,8 +8,11 @@ function CartButton({ data, productType }) {
 
   const handleAddToCart = async () => {
     try {
-      // 임시 사용자 ID
-      const memberId = localStorage.getItem("memberId") || 1;
+      const memberId = localStorage.getItem("memberId");
+      if (!memberId) {
+        alert("로그인 후 예약이 가능합니다.");
+        return;
+      }
       const generatedUuid = uuidv4();
 
       const reservationData =
@@ -34,6 +37,7 @@ function CartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.hopeWorkAmount,
               rsvType: 1, // 결제전
+              rsvCnt: 1,
               prodPhoto:
                 Array.isArray(data.photos) && data.photos.length > 0
                   ? data.photos[0]
@@ -57,6 +61,7 @@ function CartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.facilityCharge,
               rsvType: 1, // 결제전
+              rsvCnt: 1,
               prodPhoto:
                 Array.isArray(data.photos) && data.photos.length > 0
                   ? data.photos[0]

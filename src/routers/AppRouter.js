@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -19,15 +19,17 @@ import NoticeDetail from "../pages/NoticeDetail";
 import SearchResults from "../pages/SearchResults";
 import ChatRoom from "../pages/ChatRoom";
 import Reservation from "../pages/ReservationPage";
-import Payment from "../components/Payment";
-import PaymentResult from "../components/PaymentResult";
-import ReviewBoard from "../components/ReviewBoard";
-import ReviewWrite from "../components/ReviewWrite";
+import Payment from "../pages/PaymentPage";
+import PaymentResult from "../pages/PaymentResultPage";
+import ReviewBoard from "../pages/ReviewBoardPage";
+import ReviewWrite from "../pages/ReviewWritePage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
+
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
+
 
 const AppRouter = () => {
   const navigate = useNavigate();
