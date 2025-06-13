@@ -42,7 +42,8 @@ function LoginPage() {
         console.log("토큰:", token);
         console.log("디코딩 결과:", decoded);
 
-        const role = decoded.role.toLowerCase();
+        // const role = decoded.role.toLowerCase();
+        const role = decoded.role ? decoded.role.toLowerCase() : "";
 
         if (decoded.role === "user") {
           navigate("/");
@@ -57,7 +58,6 @@ function LoginPage() {
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");
         alert("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
       }
-
     } catch (error) {
       console.error("로그인 에러", error);
       setErrorMsg("서버 오류가 발생했습니다.");
@@ -86,7 +86,9 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button type="submit" className="login-button">로그인</button>
+            <button type="submit" className="login-button">
+              로그인
+            </button>
 
             <button
               type="button"

@@ -8,8 +8,11 @@ function CartButton({ data, productType }) {
 
   const handleAddToCart = async () => {
     try {
-      // 임시 사용자 ID
-      const memberId = localStorage.getItem("memberId") || 1;
+      const memberId = localStorage.getItem("memberId");
+      if (!memberId) {
+        alert("로그인 후 예약이 가능합니다.");
+        return;
+      }
       const generatedUuid = uuidv4();
 
       const reservationData =

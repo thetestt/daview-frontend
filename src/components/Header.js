@@ -30,7 +30,7 @@ function Header() {
           const isExpired = decoded.exp * 1000 < Date.now();
           if (!isExpired) {
             setUsername(decoded.sub);
-            localStorage.setItem("memberId", decoded.memberId); 
+            localStorage.setItem("memberId", decoded.memberId);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("username");
@@ -41,17 +41,19 @@ function Header() {
           console.error("토큰 에러:", e);
           localStorage.removeItem("token");
           localStorage.removeItem("username");
+          localStorage.removeItem("memberId");
           setUsername(null);
         }
       } else {
+        localStorage.removeItem("memberId");
         setUsername(null);
       }
     };
-  
+
     // storage 이벤트 리스너
     window.addEventListener("storage", handleStorageChange);
     handleStorageChange(); // 최초 1회 실행
-  
+
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
@@ -90,7 +92,6 @@ function Header() {
             </>
           )}
         </div>
-
       </header>
 
       {/* 네비게이션 */}
