@@ -27,6 +27,10 @@ import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 
+//import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
+import ChatList from "../pages/ChatList";
+
+
 const AppRouter = () => {
   const navigate = useNavigate();
 
@@ -89,6 +93,10 @@ const AppRouter = () => {
         {/* 채팅 */}
         {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
         <Route path="/chat/:chatroomId" element={<ChatRoom />} />
+        <Route
+          path="/chatlist"
+          element={<ChatList currentUser={{ memberId: 1 }} />}
+        />
 
         {/* 주문 */}
         <Route path="/reservation/member/:memberId" element={<Reservation />} />
