@@ -1,11 +1,7 @@
 import React from "react";
 
 function Payment() {
-  return (
-    <div>
-      <h2>결제 페이지</h2>
-    </div>
-  );
+  return <div></div>;
 }
 
 export default Payment;

@@ -37,6 +37,7 @@ function CartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.hopeWorkAmount,
               rsvType: 1, // 결제전
+              rsvCnt: 1,
               prodPhoto:
                 Array.isArray(data.photos) && data.photos.length > 0
                   ? data.photos[0]
@@ -60,6 +61,7 @@ function CartButton({ data, productType }) {
                 .join(" "),
               prodPrice: data.facilityCharge,
               rsvType: 1, // 결제전
+              rsvCnt: 1,
               prodPhoto:
                 Array.isArray(data.photos) && data.photos.length > 0
                   ? data.photos[0]
