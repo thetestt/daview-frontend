@@ -6,6 +6,7 @@ const ChatInput = ({ onSend }) => {
 
   const handleSend = () => {
     if (text.trim()) {
+      console.log("✅ 전송할 메시지:", text);
       onSend(text);
       setText("");
     }
