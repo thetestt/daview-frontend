@@ -7,6 +7,7 @@ import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import { fetchSilvertownDetail } from "../api/silvertown";
 import CartButton from "../components/CartButton";
+import HeartButton from "../components/common/HeartButton";
 
 function SilvertownDetail() {
   const { id } = useParams();
@@ -55,6 +56,8 @@ function SilvertownDetail() {
               <p>전화번호: {data.facilityPhone}</p>
               <div className="detail-buttons">
                 <button>1:1 문의</button>
+                {/* 하트버튼 */}
+                <HeartButton facilityId={id} />
                 <button>찜 ♥</button>
                 {/* <button>상담예약</button>
                 <button>장바구니</button> */}
