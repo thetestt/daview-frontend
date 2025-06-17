@@ -5,6 +5,7 @@ import "../styles/pages/CaregiverDetail.css";
 import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import CartButton from "../components/CartButton";
+import HeartButton from "../components/common/HeartButton";
 
 function CaregiverDetail() {
   const navigate = useNavigate();
@@ -70,6 +71,8 @@ function CaregiverDetail() {
               <div className="detail-buttons">
                 <button onClick={handleChat}>1:1 문의</button>
                 <button>찜 ♥</button>
+                {/* 하트버튼 */}
+                <HeartButton facilityId={id} />
                 {/* <button>장바구니</button> */}
                 <CartButton data={data} productType="caregiver" />
               </div>
