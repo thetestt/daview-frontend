@@ -6,6 +6,7 @@ import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
+import ChatButton from "../components/common/ChatButton";
 
 function CaregiverDetail() {
   const navigate = useNavigate();
@@ -69,8 +70,8 @@ function CaregiverDetail() {
                 {data.hopeWorkAmount.toLocaleString()}원/월
               </p>
               <div className="detail-buttons">
-                <button onClick={handleChat}>1:1 문의</button>
-                <button>찜 ♥</button>
+                {/* 1:1버튼 */}
+                <ChatButton facilityId={id} receiverId={data.memberId} />
                 {/* 하트버튼 */}
                 <HeartButton facilityId={id} />
                 {/* <button>장바구니</button> */}
