@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createReservation } from "../api/reservationApi";
 import { v4 as uuidv4 } from "uuid";
 import CartModal from "./CartModal";
-import ConfirmModal from "./ConfirmModal";
+import CartConfirmModal from "./CartConfirmModal";
 import "../styles/components/CartButton.css";
 
 function CartButton({ data, productType }) {
@@ -140,7 +140,7 @@ function CartButton({ data, productType }) {
       )}
 
       {isConfirmOpen && (
-        <ConfirmModal
+        <CartConfirmModal
           isOpen={isConfirmOpen}
           onClose={() => setIsConfirmOpen(false)}
           onConfirm={handleAddToCart}
