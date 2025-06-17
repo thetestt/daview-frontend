@@ -24,8 +24,10 @@ import PaymentResult from "../pages/PaymentResultPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
-import AdminDashboard from "../pages/admin/AdminDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
+import AdminLayout from '../components/admin_components/AdminLayout'; //관리자 레이아웃
+import AdminDashboard from '../pages/admin/AdminDashboard'; //관리자 대시보드
+import AdminProductList from '../pages/admin/admin_service/AdminProductList';//관리자 상품 목록
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
@@ -109,6 +111,15 @@ const AppRouter = () => {
         <Route path="/admin/main" element={<AdminDashboard />} />
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+
+        {/* 관리자 상품 목록 */}
+        <Route path="/admin/products" element={<AdminProductList />} /> 
+        {/* 관리자 레이아웃 공통 적용 */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProductList />} />
+          {/* 나중에 추가될 예약관리, 리뷰관리 등도 여기에 작성 */}
+      </Route>    
       </Routes>
     </>
   );
