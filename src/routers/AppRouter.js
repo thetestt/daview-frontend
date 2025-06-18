@@ -1,31 +1,33 @@
-import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
-import Home from "../pages/Home";
-import LoginPage from "../pages/auth/LoginPage";
-import SignupPage from "../pages/auth/SignupPage";
-import MyPage from "../pages/auth/MyPage";
-import FindPasswordPage from "../pages/auth/FindPasswordPage";
-import FindIdPage from "../pages/auth/FindIdPage";
-import CaregiverDetail from "../pages/CaregiverDetail";
 import Caregiver from "../pages/Caregiver";
+import CaregiverDetail from "../pages/CaregiverDetail";
+import ChatRoom from "../pages/ChatRoom";
+import Home from "../pages/Home";
+import NoticeDetail from "../pages/NoticeDetail";
+import NoticeList from "../pages/NoticeList";
 import NursingHome from "../pages/NursingHome";
 import NursingHomeDetail from "../pages/NursingHomeDetail";
-import Silvertown from "../pages/Silvertown";
-import SilvertownDetail from "../pages/SilvertownDetail";
-import NoticeList from "../pages/NoticeList";
-import NoticeDetail from "../pages/NoticeDetail";
-import SearchResults from "../pages/SearchResults";
-import ChatRoom from "../pages/ChatRoom";
-import Reservation from "../pages/ReservationPage";
 import Payment from "../pages/PaymentPage";
 import PaymentResult from "../pages/PaymentResultPage";
+import Reservation from "../pages/ReservationPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
-import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
+import SearchResults from "../pages/SearchResults";
+import Silvertown from "../pages/Silvertown";
+import SilvertownDetail from "../pages/SilvertownDetail";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import FindIdPage from "../pages/auth/FindIdPage";
+import FindIdResultPage from "../pages/auth/FindIdResultPage";
+import FindPasswordPage from "../pages/auth/FindPasswordPage";
+import LoginPage from "../pages/auth/LoginPage";
+import MyPage from "../pages/auth/MyPage";
+import SignupPage from "../pages/auth/SignupPage";
+import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
+
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
@@ -109,6 +111,10 @@ const AppRouter = () => {
         <Route path="/admin/main" element={<AdminDashboard />} />
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+
+        {/* 아이디찾기 */}
+        <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
+
       </Routes>
     </>
   );
