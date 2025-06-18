@@ -18,7 +18,6 @@ import ReviewWrite from "../pages/ReviewWritePage";
 import SearchResults from "../pages/SearchResults";
 import Silvertown from "../pages/Silvertown";
 import SilvertownDetail from "../pages/SilvertownDetail";
-import AdminDashboard from "../pages/admin/AdminDashboard";
 import FindIdPage from "../pages/auth/FindIdPage";
 import FindIdResultPage from "../pages/auth/FindIdResultPage";
 import FindPasswordPage from "../pages/auth/FindPasswordPage";
