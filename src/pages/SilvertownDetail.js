@@ -8,6 +8,7 @@ import FloatingNavButtons from "../components/FloatingNavButtons";
 import { fetchSilvertownDetail } from "../api/silvertown";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
+import ChatButton from "../components/common/ChatButton";
 
 function SilvertownDetail() {
   const { id } = useParams();
@@ -25,6 +26,8 @@ function SilvertownDetail() {
         console.error("디테일 API 오류:", err);
       });
   }, [id]);
+
+  console.log("🔥 디테일 data:", { data });
 
   if (!data) return <div>Loading...</div>;
 
@@ -55,10 +58,10 @@ function SilvertownDetail() {
               </p>
               <p>전화번호: {data.facilityPhone}</p>
               <div className="detail-buttons">
-                <button>1:1 문의</button>
+                {/* 1:1버튼 */}
+                <ChatButton facilityId={id} receiverId={data.memberId} />
                 {/* 하트버튼 */}
                 <HeartButton facilityId={id} />
-                <button>찜 ♥</button>
                 {/* <button>상담예약</button>
                 <button>장바구니</button> */}
                 <CartButton data={data} productType="silvertown" />

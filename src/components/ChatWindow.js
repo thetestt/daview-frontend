@@ -72,11 +72,14 @@ const ChatWindow = ({ chatroomId, currentUser }) => {
       sentAt: new Date().toISOString(),
     };
 
+    console.log("📤 보낼 메시지 객체:", msg);
+
     if (stompClientRef.current && stompClientRef.current.connected) {
       stompClientRef.current.publish({
-        destination: "/pub/chat/send",
+        destination: "/pub/send",
         body: JSON.stringify(msg),
       });
+      console.log("📡 메시지 WebSocket으로 발행함!");
     } else {
       console.error("❌ WebSocket이 연결되지 않았습니다.");
     }
