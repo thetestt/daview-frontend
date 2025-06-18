@@ -66,25 +66,28 @@ const Reservation = () => {
       return;
     }
 
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      try {
-        await deleteReservation(rsvId);
-      } catch (err) {
-        if (err.response && err.response.status !== 404) {
-          console.error("삭제 실패:", err);
-          alert("삭제 중 오류가 발생했습니다.");
-          return;
-        }
-      }
-    }
+    const confirmed = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmed) return;
 
     try {
+      await deleteReservation(rsvId);
+
+      setCheckedItems((prev) => {
+        const updated = { ...prev };
+        delete updated[rsvId];
+        return updated;
+      });
       const res = await getReservationById(memberId);
       const fetchedReservations = Array.isArray(res) ? res : [res];
       setReservations(fetchedReservations.filter((item) => item.rsvType !== 2));
     } catch (err) {
-      console.error("예약 정보 갱신 실패", err);
-      alert("예약 목록을 불러오는 데 문제가 발생했습니다.");
+      if (err?.response?.status === 404) {
+        console.warn("이미 삭제된 예약입니다.");
+        alert("해당 예약은 이미 삭제된 상태입니다.");
+      } else {
+        console.error("삭제 실패:", err);
+        alert("삭제 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -137,7 +140,8 @@ const Reservation = () => {
       await updateReservationCount(selectedReservations);
       const totalSelectedPrice = selectedReservations.reduce(
         (sum, reservation) =>
-          sum + (reservation.prodPrice || 0) * (reservation.rsvCnt || 1),
+          sum +
+          (Number(reservation.prodPrice) || 0) * (reservation.rsvCnt || 1),
         0
       );
 
