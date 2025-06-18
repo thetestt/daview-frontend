@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createReservation } from "../api/reservationApi";
 import { v4 as uuidv4 } from "uuid";
-import CartModal from "./CartModal";
+import CartCountModal from "./CartCountModal";
 import CartConfirmModal from "./CartConfirmModal";
 import "../styles/components/CartButton.css";
 
@@ -95,7 +95,10 @@ function CartButton({ data, productType }) {
       <button onClick={handleReservation}>예약하기</button>
 
       {isModalOpen && (
-        <CartModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <CartCountModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
           <div className="modal-container">
             <h3 className="modal-title">예약할 수량을 선택하세요.</h3>
 
@@ -136,7 +139,7 @@ function CartButton({ data, productType }) {
               </button>
             </div>
           </div>
-        </CartModal>
+        </CartCountModal>
       )}
 
       {isConfirmOpen && (
