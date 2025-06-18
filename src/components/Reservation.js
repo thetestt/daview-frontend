@@ -1,6 +1,9 @@
 import { React, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getReservationById } from "../api/reservationApi";
+import {
+  getReservationById,
+  updateReservationCount,
+} from "../api/reservationApi";
 import { deleteReservation, deleteAllReservation } from "../api/reservationApi";
 
 const Reservation = () => {
@@ -115,6 +118,42 @@ const Reservation = () => {
         res.rsvId === rsvId ? { ...res, rsvCnt: (res.rsvCnt || 1) + 1 } : res
       )
     );
+  };
+
+  const handlePayment = async () => {
+    const selectedReservations = reservations.filter(
+      (reservation) => checkedItems[reservation.rsvId]
+    );
+
+    if (selectedReservations.length == 0) {
+      alert("결제할 예약을 선택해 주세요.");
+      return;
+    }
+
+    if (!window.confirm("정말 결제를 진행하겠습니까?")) {
+      return;
+    }
+    try {
+      await updateReservationCount(selectedReservations);
+      const totalSelectedPrice = selectedReservations.reduce(
+        (sum, reservation) =>
+          sum + (reservation.prodPrice || 0) * (reservation.rsvCnt || 1),
+        0
+      );
+
+      console.log("선택된 예약:", selectedReservations);
+      console.log("총 금액:", totalSelectedPrice);
+
+      navigate(`/payment`, {
+        state: {
+          reservations: selectedReservations,
+          totalPrice: totalSelectedPrice,
+        },
+      });
+    } catch (error) {
+      alert("수량 업데이트 중 오류가 발생했습니다.");
+      console.error(error);
+    }
   };
 
   if (loading)
@@ -250,7 +289,7 @@ const Reservation = () => {
       <div>총 결제 금액: {totalSelectedPrice.toLocaleString()} 원</div>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button onClick={() => navigate(-1)}>쇼핑 계속하기</button>
-        <button onClick={() => navigate(`/payment`)}>결제하기</button>
+        <button onClick={handlePayment}>결제하기</button>
       </div>
     </div>
   );
