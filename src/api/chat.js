@@ -10,16 +10,16 @@ export const getMessages = async (chatroomId) => {
   return response.data;
 };
 
-export const createOrGetChatRoom = async ({ memberId, receiverId }) => {
-  const res = await fetch("/api/chat/rooms/check-or-create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ memberId, receiverId }),
+export const createOrGetChatRoom = async ({
+  memberId,
+  receiverId,
+  facilityId,
+}) => {
+  const res = await axios.post("/api/chat/rooms/check-or-create", {
+    memberId,
+    receiverId,
+    facilityId,
   });
 
-  if (!res.ok) throw new Error("채팅방 확인/생성 실패");
-  return res.json(); // { chatroomId: "..." }
+  return res.data; // { chatroomId: "..." }
 };

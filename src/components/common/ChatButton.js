@@ -16,9 +16,10 @@ const ChatButton = ({ facilityId, receiverId }) => {
       const res = await createOrGetChatRoom({
         memberId,
         receiverId,
+        facilityId,
       });
 
-      console.log("🔥 ChatButton Props:", { memberId, receiverId });
+      console.log("🔥 ChatButton Props:", { memberId, receiverId, facilityId });
 
       navigate(`/chat/${res.chatroomId}`);
     } catch (err) {
