@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import PayButton from "./PayButton";
 
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
+  const memberId = localStorage.getItem("memberId");
   const reservations = location.state?.reservations || [];
   const totalPrice = location.state?.totalPrice || 0;
-
   const [loading, setLoading] = useState(true);
 
   const [userInfo, setUserInfo] = useState({
@@ -18,6 +19,11 @@ function Payment() {
   });
 
   useEffect(() => {
+    if (!memberId) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -137,9 +143,12 @@ function Payment() {
           </div>
           <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button onClick={() => navigate(-1)}>예약 페이지로 돌아가기</button>
-            <button onClick={() => navigate(`/payment-result`)}>
-              결제하기
-            </button>
+            <PayButton
+              reservations={reservations}
+              totalPrice={totalPrice}
+              userInfo={userInfo}
+              memberId={memberId}
+            />
           </div>
         </>
       )}
