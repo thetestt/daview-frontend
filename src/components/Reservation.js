@@ -8,6 +8,7 @@ import { deleteReservation, deleteAllReservation } from "../api/reservationApi";
 
 const Reservation = () => {
   const { memberId } = useParams();
+  const loginMemberId = localStorage.getItem("memberId");
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkedItems, setCheckedItems] = useState({});
@@ -15,6 +16,11 @@ const Reservation = () => {
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0);
 
   useEffect(() => {
+    if (!loginMemberId) {
+      alert("로그인 후 예약이 가능합니다.");
+      return;
+    }
+
     const init = async () => {
       try {
         const res = await getReservationById(memberId);
