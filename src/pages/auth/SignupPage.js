@@ -29,6 +29,15 @@ function SignupPage() {
 
   const navigate = useNavigate();
 
+  const formatPhoneNumber = (value) => {
+    const onlyNums = value.replace(/\D/g, ''); 
+  
+    if (onlyNums.length < 4) return onlyNums;
+    if (onlyNums.length < 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  };
+  
+
   const checkUsername = async () => {
     if (!username) {
       alert("아이디를 입력해주세요.");
@@ -123,7 +132,7 @@ function SignupPage() {
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" />
 
         <label>전화번호</label>
-        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="전화번호 입력" />
+        <input type="text" value={phone} onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} placeholder="전화번호 입력" />
 
         <label>이메일</label>
         <div className="email-box">

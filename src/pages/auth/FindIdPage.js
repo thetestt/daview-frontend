@@ -5,7 +5,7 @@ import "../../styles/auth/FindIdPage.css";
 
 
 function FindIdPage() {
-  const [method, setMethod] = useState("phone"); // 기본: 전화번호 인증
+  const [method, setMethod] = useState("phone"); 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -18,14 +18,13 @@ function FindIdPage() {
   };
 
   const sendVerificationCode = async () => {
-    const plainPhone = phone.replace(/-/g, "");
     console.log("보낼 이름:", name);
-    console.log("보낼 번호:", plainPhone);
+    console.log("보낼 번호:", phone);
 
     try {
       const response = await axios.post("http://localhost:8080/api/account/send-sms-code", {
         name,
-        phone: plainPhone
+        phone
       });
       alert("인증번호 전송됨");
     } catch (err) {
@@ -38,10 +37,16 @@ function FindIdPage() {
   const verifyCode = async () => {
     try {
       const response = await axios.post("http://localhost:8080/api/account/verify-code", {
+        name,
         phone,
         code
       });
-      navigate("/FindIdPage/result", { state: { username: response.data } });
+
+      console.log("response.data:", response.data);
+
+      navigate("/FindIdPage/result", {
+        state: { username: response.data.username }
+      });
     } catch (err) {
       alert("인증 실패");
     }
