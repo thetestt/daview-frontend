@@ -1,7 +1,8 @@
 import React from "react";
-import { createPayment } from "../api/paymentApi";
+import { createPayment, mapReservationsToPayment } from "../api/paymentApi";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { updateReservationStatus } from "../api/reservationApi";
 
 const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
   const navigate = useNavigate();
@@ -29,10 +30,21 @@ const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
         custDate: userInfo.consultDate,
         custMemo: userInfo.message,
         pymPrice: totalPrice,
-        pymStatus: 1,
+        pymStatus: 2,
         pymMethod: "card",
         pymNum: "1234-5678-9012",
       });
+
+      const mappingList = reservations.map((rsv) => ({
+        pymId,
+        rsvId: rsv.rsvId,
+      }));
+
+      await mapReservationsToPayment(mappingList);
+
+      for (const rsv of reservations) {
+        await updateReservationStatus(rsv.rsvId);
+      }
 
       alert("결제 테스트 완료");
       console.log(result);
@@ -44,6 +56,7 @@ const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
           pymId,
           memberId,
         },
+        replace: true,
       });
     } catch (error) {
       alert("서버 저장 중 오류 발생: " + error);

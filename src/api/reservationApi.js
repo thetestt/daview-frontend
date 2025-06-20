@@ -24,3 +24,8 @@ export const updateReservationCount = async (reservations) => {
   const responese = await axios.put(`/api/reservation/update`, reservations);
   return responese.data;
 };
+
+export const updateReservationStatus = async (rsvId) =>  {
+  const response = await axios.put(`/api/reservation/${rsvId}/status`)
+  return response.data;
+}
