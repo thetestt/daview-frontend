@@ -174,7 +174,7 @@ function SignupPage() {
         <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} />
 
         <div className="terms-row">
-          <label className="terms-label">약관동의</label><br/>
+          <label className="terms-label">약관동의</label>
           <div className="agree-all-line">
             <input
               type="checkbox"
@@ -191,9 +191,6 @@ function SignupPage() {
             <span>전체 약관에 동의합니다</span>
           </div>
         </div>
-
-
-
 
         <div className="terms-content">
           [이용약관 요약]<br /><br />
