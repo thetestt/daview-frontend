@@ -1,6 +1,28 @@
 .findidresultpage-container {
-    height: calc(100vh - 270px);
+    height: calc(100vh - 416px);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-}
+    margin-top: 150px;
+    font-family: sans-serif;
+    font-size: 50px;
+  }
+  
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 50px;
+  }
+  
+  .result-text {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .login-link {
+    font-size: 25px;
+    color: #0a3d62;
+    text-decoration: none;
+  }
+  
+  
