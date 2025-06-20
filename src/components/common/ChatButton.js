@@ -9,6 +9,7 @@ const ChatButton = ({ facilityId, receiverId }) => {
   const handleChatClick = async () => {
     if (!memberId) {
       alert("로그인이 필요합니다.");
+      navigate("/login");
       return;
     }
 
@@ -21,7 +22,7 @@ const ChatButton = ({ facilityId, receiverId }) => {
 
       console.log("🔥 ChatButton Props:", { memberId, receiverId, facilityId });
 
-      navigate(`/chat/${res.chatroomId}`);
+      navigate(`/chat/${res.chatroomId}?skipValidation=true`);
     } catch (err) {
       console.error("❌ 채팅방 진입 실패:", err);
       alert("채팅방 열기에 실패했습니다.");
