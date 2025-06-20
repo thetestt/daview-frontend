@@ -5,18 +5,19 @@ import { Client } from "@stomp/stompjs";
 import { getChatRooms } from "../api/chat";
 import "../styles/pages/ChatList.css";
 
-const ChatList = ({ currentUser }) => {
+const ChatList = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const stompClientRef = useRef(null);
+  const memberId = Number(localStorage.getItem("memberId"));
 
   // ✅ 채팅방 불러오기 함수
   const loadChatRooms = async () => {
     try {
       setLoading(true);
-      const data = await getChatRooms(String(currentUser.memberId));
+      const data = await getChatRooms(memberId);
       console.log("🔥 전체 채팅방 수:", data.length);
       console.log("🔥 채팅방 전체 목록:", data);
       const uniqueRooms = Array.from(
@@ -36,6 +37,13 @@ const ChatList = ({ currentUser }) => {
   };
 
   useEffect(() => {
+    // ✅ 로그인 안 했을 경우 접근 제한
+    if (!memberId) {
+      alert("권한이 없습니다. 로그인 후 이용해주세요.");
+      navigate("/login"); // 또는 navigate("/")로 홈으로 이동 가능
+      return;
+    }
+
     loadChatRooms();
 
     // ✅ WebSocket 연결
@@ -58,10 +66,10 @@ const ChatList = ({ currentUser }) => {
     return () => {
       stompClient.deactivate();
     };
-  }, [currentUser.memberId]);
+  }, [memberId]);
 
   const handleEnterRoom = (chatroomId) => {
-    navigate(`/chat/${chatroomId}`);
+    navigate(`/chat/${chatroomId}?skipValidation=true`);
   };
 
   return (
