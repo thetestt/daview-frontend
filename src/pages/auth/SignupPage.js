@@ -131,9 +131,8 @@ function SignupPage() {
           <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" />
           <button type="button" className="username-check-button" onClick={checkUsername}>중복 확인</button>
         </div>
-
         {isDuplicate === true && <p className="input-error">이미 사용 중인 아이디입니다.</p>}
-        {isDuplicate === false && <p className="input-success">사용 가능한 아이디입니다.</p>} <br />
+        {isDuplicate === false && <p className="input-success">사용 가능한 아이디입니다.</p>}
 
         <label>비밀번호</label>
         <p className="terms-content">
@@ -174,9 +173,9 @@ function SignupPage() {
         <label>생년월일</label>
         <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} />
 
-        <label>약관동의</label>
-        <div className="terms-wrapper">
-          <label>
+        <div className="terms-row">
+          <label className="terms-label">약관동의</label><br/>
+          <div className="agree-all-line">
             <input
               type="checkbox"
               checked={agreeAll}
@@ -187,10 +186,14 @@ function SignupPage() {
                 setSmsAgree(checked);
                 setEmailAgree(checked);
                 setPushAgree(checked);
-              }} />
-            전체 약관에 동의합니다
-          </label>
+              }}
+            />
+            <span>전체 약관에 동의합니다</span>
+          </div>
         </div>
+
+
+
 
         <div className="terms-content">
           [이용약관 요약]<br /><br />
