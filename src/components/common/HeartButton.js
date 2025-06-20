@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axiosInstance";
+import { useNavigate } from "react-router";
 
 function HeartButton({ facilityId }) {
   const [isLiked, setIsLiked] = useState(false);
   const memberId = localStorage.getItem("memberId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!memberId) return;
@@ -22,6 +24,7 @@ function HeartButton({ facilityId }) {
   const toggleHeart = () => {
     if (!memberId) {
       alert("로그인이 필요합니다.");
+      navigate("/login");
       return;
     }
 
