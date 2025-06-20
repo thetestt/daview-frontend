@@ -30,13 +30,13 @@ function SignupPage() {
   const navigate = useNavigate();
 
   const formatPhoneNumber = (value) => {
-    const onlyNums = value.replace(/\D/g, ''); 
-  
+    const onlyNums = value.replace(/\D/g, '');
+
     if (onlyNums.length < 4) return onlyNums;
     if (onlyNums.length < 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
   };
-  
+
 
   const checkUsername = async () => {
     if (!username) {
@@ -60,6 +60,20 @@ function SignupPage() {
   };
 
   const handleSubmit = (e) => {
+    const nameRegex = /^[가-힣]{1,7}$/;
+
+    if (!nameRegex.test(name)) {
+      alert("이름은 한글 1~7자만 입력 가능합니다.");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{10,16}$/;
+
+    if (!passwordRegex.test(password)) {
+      alert("비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.");
+      return;
+    }
+
     e.preventDefault();
     if (!agreed) {
       alert("필수약관에 동의해주세요.");
@@ -122,6 +136,9 @@ function SignupPage() {
         {isDuplicate === false && <p className="input-success">사용 가능한 아이디입니다.</p>} <br />
 
         <label>비밀번호</label>
+        <p className="terms-content">
+          비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.
+        </p>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
 
         <label>비밀번호 확인</label>
