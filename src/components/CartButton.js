@@ -16,6 +16,7 @@ function CartButton({ data, productType }) {
   const handleReservation = () => {
     if (!memberId) {
       alert("로그인 후 예약이 가능합니다.");
+      navigate("/login");
       return;
     }
     setIsModalOpen(true);

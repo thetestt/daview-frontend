@@ -51,8 +51,6 @@ const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
       navigate("/payment-result", {
         state: {
           reservations,
-          totalPrice,
-          userInfo,
           pymId,
           memberId,
         },
