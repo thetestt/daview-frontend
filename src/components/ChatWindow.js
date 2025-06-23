@@ -13,7 +13,7 @@ const ChatWindow = ({ chatroomId, currentUser }) => {
   const subscriptionRef = useRef(null);
   const isActivatedRef = useRef(false);
 
-  // ✅ 메시지 중복 방지용 ref 깃수정테스트
+  // ✅ 메시지 중복 방지용 ref 깃수정테스트 2025.06.23
   const receivedMessageCacheRef = useRef(new Set());
 
   useEffect(() => {
