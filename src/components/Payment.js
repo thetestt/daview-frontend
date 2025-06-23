@@ -28,7 +28,7 @@ function Payment() {
       setLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [memberId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
