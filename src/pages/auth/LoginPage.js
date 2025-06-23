@@ -45,7 +45,7 @@ function LoginPage() {
         // const role = decoded.role.toLowerCase();
         const role = decoded.role ? decoded.role.toLowerCase() : "";
 
-        if (decoded.role === "user") {
+        if (role === "user") {
           navigate("/");
         } else if (role === "company") {
           navigate("/company/main");

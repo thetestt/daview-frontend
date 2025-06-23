@@ -24,6 +24,7 @@ import FindPasswordPage from "../pages/auth/FindPasswordPage";
 import LoginPage from "../pages/auth/LoginPage";
 import MyPage from "../pages/auth/MyPage";
 import SignupPage from "../pages/auth/SignupPage";
+import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -113,6 +114,9 @@ const AppRouter = () => {
 
         {/* 아이디찾기 */}
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
+
+        {/* 비밀번호변경 */}
+        <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
 
         {/* 관리자 상품 목록 */}
         <Route path="/admin/products" element={<AdminProductList />} />
