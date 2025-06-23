@@ -134,7 +134,7 @@ const Reservation = () => {
       (reservation) => checkedItems[reservation.rsvId]
     );
 
-    if (selectedReservations.length == 0) {
+    if (selectedReservations.length === 0) {
       alert("결제할 예약을 선택해 주세요.");
       return;
     }
@@ -303,7 +303,9 @@ const Reservation = () => {
       >
         전체 삭제
       </button>
-      <div><strong>총 결제 금액: {totalSelectedPrice.toLocaleString()} 원</strong></div>
+      <div>
+        <strong>총 결제 금액: {totalSelectedPrice.toLocaleString()} 원</strong>
+      </div>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button onClick={() => navigate(-1)}>쇼핑 계속하기</button>
         <button onClick={handlePayment}>결제하기</button>
