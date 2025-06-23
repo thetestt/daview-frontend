@@ -32,6 +32,7 @@ import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
+import RegisterPage from "../pages/RegisterPage";
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/findpasswordpage" element={<FindPasswordPage />} />
         <Route path="/findidpage" element={<FindIdPage />} />
 
