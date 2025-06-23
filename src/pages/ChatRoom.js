@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import axios from "../api/axiosInstance";
+import ChatList from "./ChatList";
+import "../styles/pages/ChatRoom.css";
 
 const ChatRoom = () => {
   const { chatroomId } = useParams();
@@ -30,13 +32,11 @@ const ChatRoom = () => {
 
     const checkAccess = async () => {
       try {
-        console.log("🔑 검사 요청 memberId:", memberId);
-        console.log("🧾 memberId:", memberId, typeof memberId);
         const res = await axios.get(`/api/chat/rooms/${chatroomId}/validate`, {
           params: { memberId },
         });
 
-        if (res.status === 200) {
+        if (res.status === 200 && res.data.success) {
           setAccessGranted(true);
         }
       } catch (err) {
@@ -60,12 +60,16 @@ const ChatRoom = () => {
   if (!accessGranted) return null;
 
   return (
-    <div className="chat-room-container">
-      <h2>채팅방 (ID: {chatroomId})</h2>
-      <ChatWindow
-        chatroomId={chatroomId}
-        currentUser={{ memberId, username }}
-      />
+    <div className="chatroom-layout">
+      <div className="chatlist-area">
+        <ChatList />
+      </div>
+      <div className="chatwindow-area">
+        <ChatWindow
+          chatroomId={chatroomId}
+          currentUser={{ memberId, username }}
+        />
+      </div>
     </div>
   );
 };
