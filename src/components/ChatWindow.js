@@ -80,6 +80,19 @@ const ChatWindow = ({ chatroomId, currentUser }) => {
         body: JSON.stringify(msg),
       });
       console.log("📡 메시지 WebSocket으로 발행함!");
+
+      // ✅ 발행 직후 내 화면에도 즉시 반영
+      setMessages((prev) => [
+        ...prev,
+        {
+          ...msg,
+          sender: "나",
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        },
+      ]);
     } else {
       console.error("❌ WebSocket이 연결되지 않았습니다.");
     }
