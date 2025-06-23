@@ -1,17 +1,12 @@
 .chat-window {
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 16px;
-  width: 100%;
-  max-width: 600px;
-  height: 500px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  height: 100%;
 }
 
 .message-list {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 12px;
+  flex: 1; /* 메시지 영역이 남은 공간 모두 차지 */
+  overflow-y: auto; /* 여기에만 스크롤 */
+  padding: 16px;
+  /* height: 100%; ❌ 절대 넣지 마세요! */
 }
