@@ -161,7 +161,7 @@ const Reservation = () => {
         },
       });
     } catch (error) {
-      alert("수량 업데이트 중 오류가 발생했습니다.");
+      alert("예약 인원 업데이트 중 오류가 발생했습니다.");
       console.error(error);
     }
   };
@@ -240,7 +240,7 @@ const Reservation = () => {
               </div>
             </div>
             <div>
-              수량:
+              예약 인원:
               <button onClick={() => handleDecreaseCount(reservation.rsvId)}>
                 -
               </button>
