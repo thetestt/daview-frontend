@@ -229,9 +229,11 @@ const AdminProductList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isServerConnected, setIsServerConnected] = useState(false); // 기본적으로 오프라인 모드로 시작
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [users, setUsers] = useState([]); // 회원 목록
   const [formData, setFormData] = useState({
     prodName: '',
     prodTypeName: '',
+    member_id: '', // 회원 ID 추가
     hope_work_amount: '',
     introduction: '',
     hope_work_area_location: '',
@@ -252,6 +254,7 @@ const AdminProductList = () => {
   const [editFormData, setEditFormData] = useState({
     prodName: '',
     prodTypeName: '',
+    member_id: '', // 회원 ID 추가
     hope_work_amount: '',
     introduction: '',
     hope_work_area_location: '',
@@ -383,12 +386,39 @@ const AdminProductList = () => {
     setSelectedType('');
   };
 
+  // 회원 목록 조회 (임시: 로컬 데이터)
+  const fetchUsers = async () => {
+    try {
+      // 실제 서버에서 DB 데이터 조회
+      const response = await axios.get('http://localhost:8080/api/admin/products/get-users', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        timeout: 10000
+      });
+      
+      if (response.data.success) {
+        setUsers(response.data.users);
+        console.log('실제 DB 회원 데이터 로드 완료:', response.data.users.length, '명');
+      } else {
+        console.error('회원 목록 조회 실패:', response.data.message);
+        // 실패 시 빈 배열로 설정
+        setUsers([]);
+      }
+    } catch (error) {
+      console.error('회원 목록 조회 오류:', error);
+      // 오류 발생 시 빈 배열로 설정
+      setUsers([]);
+    }
+  };
+
   // 상품 등록 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.prodName || !formData.prodTypeName || !formData.hope_work_amount) {
-      alert('필수 항목을 모두 입력해주세요.');
+    if (!formData.prodName || !formData.prodTypeName || !formData.member_id || !formData.hope_work_amount) {
+      alert('필수 항목을 모두 입력해주세요. (상품명, 상품유형, 회원선택, 희망급여)');
       return;
     }
 
@@ -399,6 +429,7 @@ const AdminProductList = () => {
       const submitData = {
         prodName: formData.prodName.trim(),
         prodTypeName: formData.prodTypeName,
+        member_id: parseInt(formData.member_id), // 회원 ID 추가
         hope_work_amount: parseInt(formData.hope_work_amount),
         introduction: formData.introduction.trim(),
         hope_work_area_location: formData.hope_work_area_location,
@@ -563,6 +594,20 @@ const AdminProductList = () => {
   // 폼 입력 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // 회원 선택 시 추천 상품명 자동 설정
+    if (name === 'member_id' && value) {
+      const selectedUser = users.find(user => user.member_id == value);
+      if (selectedUser && selectedUser.suggested_product_name) {
+        setFormData(prev => ({
+          ...prev,
+          [name]: value,
+          prodName: selectedUser.suggested_product_name // 추천 상품명 자동 입력
+        }));
+        return;
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -584,19 +629,23 @@ const AdminProductList = () => {
     setFormData({
       prodName: '',
       prodTypeName: '',
-      prodPrice: '',
-      prodDetail: '',
-      province: '',
-      city: '',
-      preferredWorkLocation: '',
-      preferredWorkMethod: '',
-      preferredWorkType: '',
-      education: '',
+      member_id: '',
+      hope_work_amount: '',
       introduction: '',
-      careerWorkplace: '',
-      startDate: '',
-      endDate: '',
-      certifications: ''
+      hope_work_area_location: '',
+      hope_work_area_city: '',
+      hope_work_place: '',
+      hope_work_type: '',
+      hope_employment_type: '',
+      education_level: '',
+      prodDetail: '',
+      company_name: '',
+      start_date: '',
+      end_date: '',
+      certificate_name: '',
+      caregiver_created_at: '',
+      caregiver_update_at: '',
+      caregiver_deleted_at: ''
     });
   };
 
@@ -615,19 +664,23 @@ const AdminProductList = () => {
     setEditFormData({
       prodName: '',
       prodTypeName: '',
-      prodPrice: '',
-      prodDetail: '',
-      province: '',
-      city: '',
-      preferredWorkLocation: '',
-      preferredWorkMethod: '',
-      preferredWorkType: '',
-      education: '',
+      member_id: '',
+      hope_work_amount: '',
       introduction: '',
-      careerWorkplace: '',
-      startDate: '',
-      endDate: '',
-      certifications: ''
+      hope_work_area_location: '',
+      hope_work_area_city: '',
+      hope_work_place: '',
+      hope_work_type: '',
+      hope_employment_type: '',
+      education_level: '',
+      prodDetail: '',
+      company_name: '',
+      start_date: '',
+      end_date: '',
+      certificate_name: '',
+      caregiver_created_at: '',
+      caregiver_update_at: '',
+      caregiver_deleted_at: ''
     });
   };
 
@@ -662,19 +715,23 @@ const AdminProductList = () => {
     setEditFormData({
       prodName: '',
       prodTypeName: '',
-      prodPrice: '',
-      prodDetail: '',
-      province: '',
-      city: '',
-      preferredWorkLocation: '',
-      preferredWorkMethod: '',
-      preferredWorkType: '',
-      education: '',
+      member_id: '',
+      hope_work_amount: '',
       introduction: '',
-      careerWorkplace: '',
-      startDate: '',
-      endDate: '',
-      certifications: ''
+      hope_work_area_location: '',
+      hope_work_area_city: '',
+      hope_work_place: '',
+      hope_work_type: '',
+      hope_employment_type: '',
+      education_level: '',
+      prodDetail: '',
+      company_name: '',
+      start_date: '',
+      end_date: '',
+      certificate_name: '',
+      caregiver_created_at: '',
+      caregiver_update_at: '',
+      caregiver_deleted_at: ''
     });
   };
 
@@ -703,7 +760,10 @@ const AdminProductList = () => {
           )}
           <button 
             className="register-btn"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true);
+              fetchUsers(); // 모달 열 때 회원 목록 로드
+            }}
           >
             ➕ 상품 등록
           </button>
@@ -906,6 +966,26 @@ const AdminProductList = () => {
                     <option value="요양사">요양사</option>
                     <option value="요양원">요양원</option>
                     <option value="실버타운">실버타운</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>회원 선택 *</label>
+                  <select
+                    name="member_id"
+                    value={formData.member_id}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">회원을 선택하세요</option>
+                    {users.map(user => (
+                      <option key={user.member_id} value={user.member_id}>
+                        {user.name} ({user.username}) - {user.email}
+                        {user.suggested_product_name && ` → "${user.suggested_product_name}"`}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
