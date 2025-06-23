@@ -63,3 +63,8 @@
   padding: 4px 8px;
   border-radius: 20px;
 }
+
+.chat-list-item.active {
+  background-color: #f0f4ff;
+  border-left: 4px solid #3366ff;
+}
