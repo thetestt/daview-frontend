@@ -8,6 +8,27 @@ function FindPasswordPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+
+  const verifyCode = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/account/verify-code", {
+        name,
+        phone,
+        code,
+      });
+  
+      console.log("response.data:", response.data);
+  
+      navigate("/FindPasswordPage/CPw", {
+        state: { username: username },
+      });      
+    } catch (err) {
+      alert("인증 실패");
+    }
+  };
+  
 
   const formatPhoneNumber = (value) => {
     const onlyNums = value.replace(/[^\d]/g, "");
@@ -32,25 +53,6 @@ function FindPasswordPage() {
     }
   };
 
-  const navigate = useNavigate();
-  const verifyCode = async () => {
-    try {
-      const response = await axios.post("http://localhost:8080/api/account/verify-code", {
-        name,
-        phone,
-        code
-      });
-
-      console.log("response.data:", response.data);
-
-      navigate("/FindIdPage/result", {
-        state: { username: response.data.username }
-      });
-    } catch (err) {
-      alert("인증 실패");
-    }
-  };
-
   return (
     <div className="find-password-wrapper">
       <h2>비밀번호 찾기</h2>
@@ -58,11 +60,11 @@ function FindPasswordPage() {
       {method === "phone" && (
         <div className="form-group">
           <label>이름</label>
-          <input type="text" placeholder="이름 입력" />
+          <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
 
           <div className="form-group-id">
             <label>아이디</label>
-            <input type="text" placeholder="아이디 입력" />
+            <input type="text" placeholder="아이디 입력" value={username} onChange={(e) => setUsername(e.target.value)} />
 
             <br /><br /><label>전화번호</label>
             <div className="phone-inputs">

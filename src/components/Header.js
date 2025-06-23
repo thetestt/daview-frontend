@@ -8,6 +8,7 @@ function Header() {
   const [keyword, setKeyword] = useState("");
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
+  const memberId = localStorage.getItem("memberId");
 
   const handleSearch = () => {
     if (keyword.trim()) {
@@ -95,6 +96,7 @@ function Header() {
             <div className="user-actions">
               <span>{username}님</span>
               <Link to="/mypage">마이페이지</Link>
+              <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
               <span onClick={handleLogout}>로그아웃</span>
             </div>
           ) : (

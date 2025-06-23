@@ -28,7 +28,7 @@ function Payment() {
       setLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [memberId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +75,7 @@ function Payment() {
                 <div>회원 ID: {reservation.memberId}</div>
                 <div>상품명: {reservation.prodNm}</div>
                 <div>상품 상세: {reservation.prodDetail}</div>
-                <div>수량: {reservation.rsvCnt}</div>
+                <div>예약 인원: {reservation.rsvCnt}</div>
                 <div>
                   상품 가격:{" "}
                   {reservation.prodPrice
