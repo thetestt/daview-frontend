@@ -12,6 +12,7 @@ import NursingHome from "../pages/NursingHome";
 import NursingHomeDetail from "../pages/NursingHomeDetail";
 import Payment from "../pages/PaymentPage";
 import PaymentResult from "../pages/PaymentResultPage";
+import PaymentList from "../pages/PaymentListPage";
 import Reservation from "../pages/ReservationPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
@@ -104,6 +105,7 @@ const AppRouter = () => {
         <Route path="/reservation/member/:memberId" element={<Reservation />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/payments/member/:memberId" element={<PaymentList />} />
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
 

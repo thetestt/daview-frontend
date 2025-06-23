@@ -101,7 +101,7 @@ function CartButton({ data, productType }) {
           onClose={() => setIsModalOpen(false)}
         >
           <div className="modal-container">
-            <h3 className="modal-title">예약할 수량을 선택하세요.</h3>
+            <h3 className="modal-title">예약할 인원을 선택하세요.</h3>
 
             <div className="modal-buttons">
               <button
