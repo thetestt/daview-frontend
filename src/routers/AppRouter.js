@@ -115,7 +115,7 @@ const AppRouter = () => {
         {/* 아이디찾기 */}
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
 
-        {/* 아이디찾기 */}
+        {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
 
         {/* 관리자 상품 목록 */}
