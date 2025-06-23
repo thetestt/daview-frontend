@@ -1,5 +1,5 @@
 .page-wrapper {
-  height: calc(100vh - 265px);  /* Footer 높이 예측해서 조정 */
+  height: calc(100vh - 250px);  /* Footer 높이 예측해서 조정 */
   display: flex;
   justify-content: center;
   align-items: center;
