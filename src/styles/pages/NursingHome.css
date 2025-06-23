@@ -46,13 +46,13 @@
   margin-right: 10px;
 }
 
-.search-button {
+/* .search-button {
   padding: 10px 20px;
-  background: #333;
+  background: #00334f;
   color: #fff;
   border: none;
   cursor: pointer;
-}
+} */
 
 .search-button:hover {
   background: #ff4cbd;
