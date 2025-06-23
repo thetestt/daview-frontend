@@ -16,3 +16,10 @@ export const getPaymentById = async (pymId) => {
   const response = await axios.get(`${PAYMENT_API}/${pymId}`);
   return response.data;
 };
+
+export const getPaymentsByMemberId = async (memberId) => {
+  const response = await axios.get(
+    `${PAYMENT_API}/payments/member/${memberId}`
+  );
+  return response.data;
+};

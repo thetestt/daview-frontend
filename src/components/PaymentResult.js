@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getPaymentById } from "../api/paymentApi";
 import { getReservationByPaymentId } from "../api/reservationApi";
 
 function PaymentResult() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { pymId } = location.state || {};
+  const { pymId, memberId } = location.state || {};
   const [paymentData, setPaymentData] = useState(null);
   const [reservations, setReservations] = useState(
     location.state?.reservations || []
@@ -32,7 +32,7 @@ function PaymentResult() {
   if (!pymId) return <div>주문 내역이 없습니다.</div>;
   if (!paymentData) return <div>결제 정보를 불러오는 중...</div>;
 
-  const { pymId: id, pymMethod, pymData, pymStatus, pymPrice } = paymentData;
+  const { merchantUid, pymMethod, pymDate, pymStatus, pymPrice } = paymentData;
 
   return (
     <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
@@ -49,9 +49,9 @@ function PaymentResult() {
           position: "relative",
         }}
       >
-        <div>주문번호: {id}</div>
+        <div>주문번호: {merchantUid}</div>
         <div>결제 수단: {pymMethod === "card" ? "카드결제" : pymMethod}</div>
-        <div>주문 일시: {new Date(pymData).toLocaleString()}</div>
+        <div>주문 일시: {new Date(pymDate).toLocaleString()}</div>
         <div></div>
         주문 상태:{" "}
         {pymStatus === 2 ? "결제 완료" : pymStatus === 1 ? "결제 대기" : "기타"}
@@ -79,7 +79,7 @@ function PaymentResult() {
             </div>
             <div>상품명: {reservation.prodNm}</div>
             <div>상품상세: {reservation.prodDetail}</div>
-            <div>수량: {reservation.rsvCnt || 1}</div>
+            <div>예약 인원: {reservation.rsvCnt || 1}</div>
             <div>상품 금액: {reservation.prodPrice?.toLocaleString()} 원</div>
           </div>
         ))
@@ -98,7 +98,17 @@ function PaymentResult() {
         >
           쇼핑 계속하기
         </button>
-        <button>주문 내역 보기</button>
+        <button
+          onClick={() => {
+            if (memberId) {
+              navigate(`/payments/member/${memberId}`);
+            } else {
+              alert("회원 정보를 찾을 수 없습니다.");
+            }
+          }}
+        >
+          주문 내역 보기
+        </button>
       </div>
     </div>
   );
