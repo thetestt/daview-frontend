@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchNoticesByFacilityId } from "../api/notice";
-import "../styles/pages/NoticeList.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
+import "../styles/pages/NoticeList.css";
 
 function NoticeList() {
   const { facilityId } = useParams();

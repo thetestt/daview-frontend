@@ -25,6 +25,7 @@ import FindPasswordPage from "../pages/auth/FindPasswordPage";
 import LoginPage from "../pages/auth/LoginPage";
 import MyPage from "../pages/auth/MyPage";
 import SignupPage from "../pages/auth/SignupPage";
+import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -33,6 +34,7 @@ import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
+import RegisterPage from "../pages/RegisterPage";
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -70,6 +72,7 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/findpasswordpage" element={<FindPasswordPage />} />
         <Route path="/findidpage" element={<FindIdPage />} />
 
@@ -113,6 +116,9 @@ const AppRouter = () => {
 
         {/* 아이디찾기 */}
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
+
+        {/* 비밀번호변경 */}
+        <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
 
         {/* 관리자 상품 목록 */}
         <Route path="/admin/products" element={<AdminProductList />} />
