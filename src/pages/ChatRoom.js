@@ -14,6 +14,7 @@ const ChatRoom = () => {
   const skipValidation = searchParams.get("skipValidation") === "true"; // 👈 검증 생략 여부 확인
 
   useEffect(() => {
+    console.log("🚀 useEffect 실행 되는지 한번보자고");
     // ✅ 로그인하지 않았을 경우 접근 제한
     if (!memberId) {
       alert("권한이 없습니다.로그인 후 이용해주세요.");
@@ -31,7 +32,7 @@ const ChatRoom = () => {
       try {
         console.log("🔑 검사 요청 memberId:", memberId);
         console.log("🧾 memberId:", memberId, typeof memberId);
-        const res = await axios.get(`/api/chat/room/${chatroomId}/validate`, {
+        const res = await axios.get(`/api/chat/rooms/${chatroomId}/validate`, {
           params: { memberId },
         });
 

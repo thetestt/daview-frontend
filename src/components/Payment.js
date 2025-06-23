@@ -28,7 +28,7 @@ function Payment() {
       setLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [memberId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +38,10 @@ function Payment() {
     }));
   };
 
+  const filteredReservations = reservations.filter(
+    (reservation) => reservation.rsvType === 1 && reservation.rsvType !== 3
+  );
+
   return (
     <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>결제 페이지</h2>
@@ -46,7 +50,7 @@ function Payment() {
         <p style={{ textAlign: "center" }}>로딩 중...</p>
       ) : (
         <>
-          {reservations.length === 0 ? (
+          {filteredReservations.length === 0 ? (
             <p style={{ textAlign: "center", marginTop: "50px" }}>
               결제할 예약 정보가 없습니다.
             </p>
@@ -142,7 +146,18 @@ function Payment() {
             <strong>총 결제 금액: {totalPrice.toLocaleString()} 원</strong>
           </div>
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <button onClick={() => navigate(-1)}>예약 페이지로 돌아가기</button>
+            <button
+              onClick={() => {
+                const confirmed = window.confirm(
+                  "이전 페이지로 돌아가면 결제 내용은 초기화됩니다.\n이동하시겠습니까?"
+                );
+                if (confirmed) {
+                  navigate(-1);
+                }
+              }}
+            >
+              예약 페이지로 돌아가기
+            </button>
             <PayButton
               reservations={reservations}
               totalPrice={totalPrice}

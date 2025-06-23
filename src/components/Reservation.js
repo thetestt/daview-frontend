@@ -26,7 +26,7 @@ const Reservation = () => {
         const res = await getReservationById(memberId);
         const fetchedReservations = Array.isArray(res) ? res : [res];
         setReservations(
-          fetchedReservations.filter((item) => item.rsvType !== 2)
+          fetchedReservations.filter((item) => item.rsvType === 1)
         );
       } catch (err) {
         if (err.response && err.response.status === 404) {
@@ -40,7 +40,7 @@ const Reservation = () => {
     };
 
     init();
-  }, [memberId]);
+  }, [memberId, loginMemberId]);
 
   useEffect(() => {
     const selectedReservations = Object.values(checkedItems).some(
@@ -85,7 +85,7 @@ const Reservation = () => {
       });
       const res = await getReservationById(memberId);
       const fetchedReservations = Array.isArray(res) ? res : [res];
-      setReservations(fetchedReservations.filter((item) => item.rsvType !== 2));
+      setReservations(fetchedReservations.filter((item) => item.rsvType === 1));
     } catch (err) {
       if (err?.response?.status === 404) {
         console.warn("이미 삭제된 예약입니다.");
@@ -134,12 +134,12 @@ const Reservation = () => {
       (reservation) => checkedItems[reservation.rsvId]
     );
 
-    if (selectedReservations.length == 0) {
+    if (selectedReservations.length === 0) {
       alert("결제할 예약을 선택해 주세요.");
       return;
     }
 
-    if (!window.confirm("정말 결제를 진행하겠습니까?")) {
+    if (!window.confirm("결제를 진행하겠습니까?")) {
       return;
     }
     try {
@@ -184,7 +184,7 @@ const Reservation = () => {
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>예약 목록</h2>
 
       {reservations
-        .filter((item) => item.rsvType !== 2)
+        .filter((item) => item.rsvType === 1)
         .map((reservation) => (
           <div
             key={reservation.rsvId}
@@ -257,7 +257,14 @@ const Reservation = () => {
               원
             </div>
             <div>
-              예약 유형: {reservation.rsvType === 1 ? "결제전" : "예약취소"}
+              예약 유형:{" "}
+              {reservation.rsvType === 1
+                ? "결제전"
+                : reservation.rsvType === 2
+                ? "예약취소"
+                : reservation.rsvType === 3
+                ? "결제완료"
+                : "알 수 없음"}
             </div>
             <div>
               예약일:{" "}
@@ -296,7 +303,9 @@ const Reservation = () => {
       >
         전체 삭제
       </button>
-      <div>총 결제 금액: {totalSelectedPrice.toLocaleString()} 원</div>
+      <div>
+        <strong>총 결제 금액: {totalSelectedPrice.toLocaleString()} 원</strong>
+      </div>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button onClick={() => navigate(-1)}>쇼핑 계속하기</button>
         <button onClick={handlePayment}>결제하기</button>

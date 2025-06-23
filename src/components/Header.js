@@ -8,6 +8,7 @@ function Header() {
   const [keyword, setKeyword] = useState("");
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
+  const memberId = localStorage.getItem("memberId");
 
   const handleSearch = () => {
     if (keyword.trim()) {
@@ -62,27 +63,40 @@ function Header() {
   return (
     <div>
       <header className="header">
-        {/* 로고 */}
-        <div className="logo">
-          <Link to="/">
-            <img src={logoImg} alt="LOGO" className="logo-image" />
-          </Link>
+        {/* 왼쪽: 로고 + 텍스트 */}
+        <div className="header-left">
+          <div className="logo-container">
+            <Link to="/" className="logo">
+              <img src={logoImg} alt="LOGO" className="logo-image" />
+            </Link>
+            <span className="logo-text">전국 모든 요양원 / 실버타운</span>
+          </div>
         </div>
-        <div className="logo-text">전국 모든 요양원 / 실버타운</div>
 
-        {/* 검색창 */}
-        <input
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="검색어를 입력하세요"
-        />
-        <button onClick={handleSearch}>검색</button>
+        {/* 가운데: 검색 input + 버튼 */}
+        <div className="header-right">
+          <div className="search-box">
+            <span className="search-icon">
+              <img src="/images/buttonimage/searchicon.png" alt="검색" />
+            </span>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="검색어를 입력하세요"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button className="search-button" onClick={handleSearch}>
+              검색
+            </button>
+          </div>
 
-        <div className="auto-buttons">
+          {/* 오른쪽: 로그인 / 회원가입 */}
           {username ? (
             <div className="user-actions">
               <span>{username}님</span>
               <Link to="/mypage">마이페이지</Link>
+              <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
               <span onClick={handleLogout}>로그아웃</span>
             </div>
           ) : (
