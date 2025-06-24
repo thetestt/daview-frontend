@@ -483,6 +483,61 @@ const AdminCaregiverList = () => {
     });
   };
 
+  // 요양사 삭제 (소프트 삭제)
+  const handleDeleteCaregiver = async (caregiverId, caregiverName) => {
+    const confirmDelete = window.confirm(
+      `"${caregiverName}" 요양사를 삭제하시겠습니까?\n\n삭제된 요양사는 목록에서 제거되지만 데이터는 보관됩니다.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      
+      // 실제 API 호출 시도
+      const response = await axios.delete(`/admin/caregivers/${caregiverId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200) {
+        alert('요양사가 성공적으로 삭제되었습니다.');
+        // 목록 새로고침
+        fetchCaregivers();
+      }
+
+    } catch (error) {
+      console.error('요양사 삭제 실패:', error);
+      
+      // 에러 타입별 메시지 처리
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.message || '서버 오류가 발생했습니다.';
+        
+        if (status === 401) {
+          alert('로그인이 필요합니다. 다시 로그인해주세요.');
+          window.location.href = '/login';
+        } else if (status === 403) {
+          alert('삭제 권한이 없습니다. 관리자에게 문의하세요.');
+        } else if (status === 404) {
+          alert('삭제하려는 요양사를 찾을 수 없습니다.');
+        } else {
+          alert(`요양사 삭제에 실패했습니다: ${message}`);
+        }
+      } else if (error.request) {
+        alert('네트워크 연결을 확인해주세요.');
+      } else {
+        alert('요양사 삭제 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // 초기 및 조건 변경 시 자동 호출
   useEffect(() => {
     fetchCaregivers();
@@ -554,6 +609,7 @@ const AdminCaregiverList = () => {
               <th>희망 근무지</th>
               <th>근무 유형</th>
               <th>희망 급여</th>
+              <th>관리</th>
             </tr>
           </thead>
           <tbody>
@@ -596,10 +652,36 @@ const AdminCaregiverList = () => {
                     <td>{c.hopeWorkAreaLocation} {c.hopeWorkAreaCity}</td>
                     <td>{c.hopeWorkType}</td>
                     <td>{c.hopeWorkAmount.toLocaleString()}만원</td>
+                    <td>
+                      <button 
+                        onClick={() => handleDeleteCaregiver(c.caregiverId, c.username)}
+                        style={{
+                          background: 'linear-gradient(135deg, #dc3545, #c82333)',
+                          color: 'white',
+                          border: 'none',
+                          padding: '6px 12px',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.background = 'linear-gradient(135deg, #c82333, #bd2130)';
+                          e.target.style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+                          e.target.style.transform = 'translateY(0)';
+                        }}
+                        disabled={isLoading}
+                      >
+                        🗑️ 삭제
+                      </button>
+                    </td>
                   </tr>
                                      {expandedRows.has(c.caregiverId) && (
                      <tr className="caregiver-expand-row">
-                       <td colSpan="6" style={{ padding: '0', border: 'none' }}>
+                       <td colSpan="7" style={{ padding: '0', border: 'none' }}>
                          <div
                            style={{
                              backgroundColor: '#f8f9fa',
@@ -694,7 +776,7 @@ const AdminCaregiverList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="no-data">
+                <td colSpan="7" className="no-data">
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 요양사가 없습니다.'}
                 </td>
               </tr>
@@ -835,6 +917,30 @@ const AdminCaregiverList = () => {
                 <div className="detail-footer">
                   <button className="edit-btn" onClick={handleEditClick}>
                     ✏️ 수정
+                  </button>
+                  <button 
+                    className="delete-btn"
+                    onClick={() => {
+                      handleDeleteCaregiver(selectedCaregiver.caregiverId, selectedCaregiver.username);
+                      handleCloseDetailModal();
+                    }}
+                    style={{
+                      background: 'linear-gradient(135deg, #dc3545, #c82333)',
+                      color: 'white',
+                      border: 'none',
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}
+                    disabled={isLoading}
+                  >
+                    🗑️ 삭제
                   </button>
                   <button className="close-detail-btn" onClick={handleCloseDetailModal}>
                     닫기
