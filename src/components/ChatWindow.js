@@ -183,7 +183,7 @@ const ChatWindow = ({ chatroomId, currentUser, chatTargetInfo }) => {
         ))}
         <div ref={endOfMessagesRef} />
       </div>
-      <ChatInput onSend={sendMessage} />
+      <ChatInput onSend={sendMessage} className="chat-input" />
     </div>
   );
 };
