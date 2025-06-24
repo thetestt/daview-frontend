@@ -1,12 +1,12 @@
 import React from "react";
-import "../styles/components//Footer.css";
+import styles from "../styles/components/Footer.module.css";
 
 function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-content">
+    <footer className={styles["footer"]}>
+      <div className={styles["footer-content"]}>
         <p>ⓒ 2025 DAVIEW. All rights reserved.</p>
-        <div className="sns-icons">
+        <div className={styles["sns-icons"]}>
           <a
             href="https://www.instagram.com"
             target="_blank"
