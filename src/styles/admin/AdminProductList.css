@@ -783,4 +783,158 @@ table tr:hover {
   .field-value.price {
     font-size: 16px;
   }
+}
+
+/* 요양사 전용 필터 스타일 */
+.caregiver-filters {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 2px solid #007bff;
+  position: relative;
+  overflow: hidden;
+}
+
+.caregiver-filters::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #28a745, #ffc107, #dc3545);
+}
+
+.caregiver-filters h3 {
+  margin: 0 0 20px 0;
+  color: #007bff;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.caregiver-filters .filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.caregiver-filters .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.caregiver-filters .filter-group label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.region-filter,
+.city-filter,
+.gender-filter {
+  padding: 10px 14px;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.region-filter:focus,
+.city-filter:focus,
+.gender-filter:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.region-filter:hover,
+.city-filter:hover,
+.gender-filter:hover {
+  border-color: #007bff;
+}
+
+.city-filter:disabled {
+  background: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  border-color: #e9ecef;
+}
+
+/* 체크박스 그룹 스타일 */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  transition: border-color 0.3s ease;
+}
+
+.checkbox-group:hover {
+  border-color: #007bff;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.checkbox-label:hover {
+  background: #e7f3ff;
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #007bff;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"]:checked + * {
+  color: #007bff;
+}
+
+/* 체크된 체크박스 레이블 스타일 */
+.checkbox-label:has(input:checked) {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-color: #007bff;
+}
+
+/* 반응형 디자인 - 요양사 필터 */
+@media (max-width: 768px) {
+  .caregiver-filters .filter-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkbox-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .checkbox-label {
+    justify-content: flex-start;
+  }
 } 
