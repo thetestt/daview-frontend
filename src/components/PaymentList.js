@@ -42,6 +42,7 @@ const PaymentList = () => {
       }}
     >
       <h2 style={{ marginBottom: "30px" }}>{memberId} 회원님의 주문 내역</h2>
+      <h3>총 {payments.length}건의 주문 내역이 있습니다.</h3>
       {payments.map((payment) => (
         <div
           key={payment.pymId}

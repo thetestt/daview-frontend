@@ -182,7 +182,7 @@ const Reservation = () => {
   return (
     <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>예약 목록</h2>
-
+      <h3>총 {reservations.length}건의 예약이 있습니다.</h3>
       {reservations
         .filter((item) => item.rsvType === 1)
         .map((reservation) => (

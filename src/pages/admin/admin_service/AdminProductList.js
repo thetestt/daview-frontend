@@ -735,6 +735,72 @@ const AdminProductList = () => {
     });
   };
 
+  // 상품 삭제 (소프트 삭제)
+  const handleDeleteProduct = async (productId, productName) => {
+    const confirmDelete = window.confirm(
+      `"${productName}" 상품을 삭제하시겠습니까?\n\n삭제된 상품은 목록에서 제거되지만 데이터는 보관됩니다.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      
+      // 실제 API 호출 시도 - 요양사의 경우 caregiver API 사용
+      const token = localStorage.getItem('token');
+      console.log('🔑 Token for delete request:', token);
+      console.log('🎯 Delete URL:', `/admin/caregivers/${productId}`);
+      
+      const response = await axios.delete(`/admin/caregivers/${productId}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200) {
+        alert('상품이 성공적으로 삭제되었습니다.');
+        // 목록 새로고침
+        fetchProducts();
+      }
+
+    } catch (error) {
+      console.error('상품 삭제 실패:', error);
+      
+      // 더미 데이터에서 삭제 (서버 연결 실패 시)
+      if (!isServerConnected) {
+        const updatedProducts = dummyProducts.filter(p => p.prodId !== productId);
+        setProducts(updatedProducts);
+        alert('상품이 삭제되었습니다. (더미 데이터)');
+        return;
+      }
+      
+      // 에러 타입별 메시지 처리
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.message || '서버 오류가 발생했습니다.';
+        
+        if (status === 401) {
+          alert('로그인이 필요합니다. 다시 로그인해주세요.');
+          window.location.href = '/login';
+        } else if (status === 403) {
+          alert('삭제 권한이 없습니다. 관리자에게 문의하세요.');
+        } else if (status === 404) {
+          alert('삭제하려는 상품을 찾을 수 없습니다.');
+        } else {
+          alert(`상품 삭제에 실패했습니다: ${message}`);
+        }
+      } else if (error.request) {
+        alert('네트워크 연결을 확인해주세요.');
+      } else {
+        alert('상품 삭제 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // 초기 및 조건 변경 시 자동 호출
   useEffect(() => {
     fetchProducts();
@@ -877,6 +943,7 @@ const AdminProductList = () => {
               <th>수정된 날짜</th>
               <th>삭제된 날짜</th>
               <th>상세 설명</th>
+              <th>관리</th>
             </tr>
           </thead>
           <tbody>
@@ -912,11 +979,37 @@ const AdminProductList = () => {
                     {p.deletedAt ? p.deletedAt : '활성'}
                   </td>
                   <td className="detail-cell">{p.prodDetail}</td>
+                  <td>
+                    <button 
+                      onClick={() => handleDeleteProduct(p.prodId, p.prodName)}
+                      style={{
+                        background: 'linear-gradient(135deg, #dc3545, #c82333)',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseOver={(e) => {
+                        e.target.style.background = 'linear-gradient(135deg, #c82333, #bd2130)';
+                        e.target.style.transform = 'translateY(-1px)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+                        e.target.style.transform = 'translateY(0)';
+                      }}
+                      disabled={isLoading}
+                    >
+                      🗑️ 삭제
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="18" className="no-data">
+                <td colSpan="19" className="no-data">
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 상품이 없습니다.'}
                 </td>
               </tr>
