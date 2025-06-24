@@ -85,6 +85,11 @@ function Header() {
               placeholder="검색어를 입력하세요"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
             <button className="search-button" onClick={handleSearch}>
               검색

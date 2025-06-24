@@ -22,7 +22,16 @@ const ChatButton = ({ facilityId, receiverId }) => {
 
       console.log("🔥 ChatButton Props:", { memberId, receiverId, facilityId });
 
-      navigate(`/chat/${res.chatroomId}?skipValidation=true`);
+      const chatUrl = `/chat/${res.chatroomId}?skipValidation=true`;
+
+      // ✅ 새 탭에서 열기
+      window.open(
+        chatUrl,
+        "chatWindow", // 창 이름
+        "width=900,height=700,left=200,top=100,noopener,noreferrer"
+      );
+
+      //navigate(`/chat/${res.chatroomId}?skipValidation=true`);
     } catch (err) {
       console.error("❌ 채팅방 진입 실패:", err);
       alert("채팅방 열기에 실패했습니다.");
