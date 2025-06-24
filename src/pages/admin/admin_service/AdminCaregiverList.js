@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getRegions, getCitiesByRegion, getCaregiverFilterOptions } from '../../../api/filterOption';
-import '../../../styles/admin/AdminProductList.css';
+import styles from '../../../styles/admin/AdminProductList.module.css';
 
 // 요양사 더미 데이터 (실제 DB 구조에 맞춤)
 const dummyCaregivers = [
@@ -832,17 +832,17 @@ const AdminCaregiverList = () => {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <div className="admin-header">
+      <div className={styles["admin-header"]}>
         <h2>📦 요양사 목록</h2>
-        <div className="header-info">
+        <div className={styles["header-info"]}>
           {!isServerConnected && (
-            <span className="server-status offline">🔴 오프라인 모드 (더미 데이터)</span>
+            <span className={`${styles["server-status"]} ${styles["offline"]}`}>🔴 오프라인 모드 (더미 데이터)</span>
           )}
           {isServerConnected && (
-            <span className="server-status online">🟢 서버 연결됨</span>
+            <span className={`${styles["server-status"]} ${styles["online"]}`}>🟢 서버 연결됨</span>
           )}
           <button 
-            className="register-btn"
+            className={styles["register-btn"]}
             onClick={() => setIsModalOpen(true)}
           >
             ➕ 요양사 등록
@@ -850,18 +850,18 @@ const AdminCaregiverList = () => {
         </div>
       </div>
 
-      <div className="search-container">
+      <div className={styles["search-container"]}>
         <input
           type="text"
           placeholder="상품명, 유형, 설명으로 검색"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyPress={handleSearchKeyPress}
-          className="search-input"
+          className={styles["search-input"]}
         />
         <button 
           onClick={handleSearch} 
-          className="search-btn"
+          className={styles["search-btn"]}
           disabled={isLoading}
         >
           {isLoading ? '🔄' : '🔍'} {isLoading ? '검색 중...' : '검색'}
@@ -872,7 +872,7 @@ const AdminCaregiverList = () => {
               setSearch('');
               fetchCaregivers();
             }} 
-            className="clear-btn"
+            className={styles["clear-btn"]}
           >
             ✖ 초기화
           </button>
@@ -880,13 +880,13 @@ const AdminCaregiverList = () => {
       </div>
 
       {isLoading && (
-        <div className="loading-indicator">
-          <div className="spinner"></div>
+        <div className={styles["loading-indicator"]}>
+          <div className={styles["spinner"]}></div>
           <span>데이터를 불러오는 중...</span>
         </div>
       )}
 
-      <div className="table-container">
+      <div className={styles["table-container"]}>
         <table border="1" cellPadding="8" width="100%">
           <thead>
             <tr>
@@ -907,7 +907,7 @@ const AdminCaregiverList = () => {
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <button
-                          className="expand-button"
+                          className={styles["expand-button"]}
                           onClick={() => toggleRowExpansion(c.caregiverId)}
                           style={{
                             background: 'none',
@@ -928,7 +928,7 @@ const AdminCaregiverList = () => {
                     </td>
                     <td>
                       <span 
-                        className="caregiver-name-link" 
+                        className={styles["caregiver-name-link"]} 
                         onClick={() => handleCaregiverClick(c)}
                         style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
                       >
@@ -967,7 +967,7 @@ const AdminCaregiverList = () => {
                     </td>
                   </tr>
                                      {expandedRows.has(c.caregiverId) && (
-                     <tr className="caregiver-expand-row">
+                     <tr className={styles["caregiver-expand-row"]}>
                        <td colSpan="7" style={{ padding: '0', border: 'none' }}>
                          <div
                            style={{
@@ -1063,7 +1063,7 @@ const AdminCaregiverList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="no-data">
+                <td colSpan="7" className={styles["no-data"]}>
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 요양사가 없습니다.'}
                 </td>
               </tr>
@@ -1080,15 +1080,15 @@ const AdminCaregiverList = () => {
 
       {/* 등록 모달 */}
       {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+        <div className={styles["modal-overlay"]} onClick={handleCloseModal}>
+          <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["modal-header"]}>
               <h3>👨‍⚕️ 새 요양사 등록</h3>
-              <button className="close-btn" onClick={handleCloseModal}>✖</button>
+              <button className={styles["close-btn"]} onClick={handleCloseModal}>✖</button>
             </div>
             
-            <form onSubmit={handleSubmit} className="register-form">
-              <div className="form-group">
+            <form onSubmit={handleSubmit} className={styles["register-form"]}>
+              <div className={styles["form-group"]}>
                 <label>이름 *</label>
                 <input
                   type="text"
@@ -1100,7 +1100,7 @@ const AdminCaregiverList = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>성별 *</label>
                 <select
                   name="userGender"
@@ -1117,7 +1117,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>희망 근무 지역 *</label>
                 <select
                   value={selectedRegionId}
@@ -1136,7 +1136,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>희망 근무 시/군/구 *</label>
                 <select
                   name="hopeWorkAreaCity"
@@ -1154,7 +1154,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>희망 근무 장소 *</label>
                 <select
                   name="hopeWorkPlace"
@@ -1170,7 +1170,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>요양사 유형 *</label>
                 <select
                   name="hopeWorkType"
@@ -1183,7 +1183,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>고용 형태 *</label>
                 <select
                   name="hopeEmploymentType"
@@ -1200,7 +1200,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>학력 *</label>
                 <select
                   name="educationLevel"
@@ -1216,7 +1216,7 @@ const AdminCaregiverList = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>희망 급여 *</label>
                 <input
                   type="number"
@@ -1229,7 +1229,7 @@ const AdminCaregiverList = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>자기소개</label>
                 <textarea
                   name="introduction"
@@ -1240,11 +1240,11 @@ const AdminCaregiverList = () => {
                 />
               </div>
 
-              <div className="form-buttons">
-                <button type="button" onClick={handleCloseModal} className="cancel-btn" disabled={isLoading}>
+              <div className={styles["form-buttons"]}>
+                <button type="button" onClick={handleCloseModal} className={styles["cancel-btn"]} disabled={isLoading}>
                   취소
                 </button>
-                <button type="submit" className="submit-btn" disabled={isLoading}>
+                <button type="submit" className={styles["submit-btn"]} disabled={isLoading}>
                   {isLoading ? '등록 중...' : '등록하기'}
                 </button>
               </div>
@@ -1255,59 +1255,59 @@ const AdminCaregiverList = () => {
 
       {/* 상세 정보 모달 */}
       {isDetailModalOpen && selectedCaregiver && (
-        <div className="modal-overlay" onClick={handleCloseDetailModal}>
-          <div className="detail-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+        <div className={styles["modal-overlay"]} onClick={handleCloseDetailModal}>
+          <div className={styles["detail-modal-content"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["modal-header"]}>
               <h3>{isEditMode ? '✏️ 요양사 수정' : '📋 요양사 상세 정보'}</h3>
-              <button className="close-btn" onClick={handleCloseDetailModal}>✖</button>
+              <button className={styles["close-btn"]} onClick={handleCloseDetailModal}>✖</button>
             </div>
             
             {!isEditMode ? (
               // 상세 정보 보기 모드
               <>
-                <div className="detail-content">
-                  <div className="detail-section">
-                    <div className="detail-field">
+                <div className={styles["detail-content"]}>
+                  <div className={styles["detail-section"]}>
+                    <div className={styles["detail-field"]}>
                       <label>요양사 ID</label>
-                      <div className="field-value">{selectedCaregiver.caregiverId}</div>
+                      <div className={styles["field-value"]}>{selectedCaregiver.caregiverId}</div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>이름</label>
-                      <div className="field-value product-title">{selectedCaregiver.username}</div>
+                                             <div className={`${styles["field-value"]} ${styles["product-title"]}`}>{selectedCaregiver.username}</div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>성별</label>
-                      <div className="field-value">
+                      <div className={styles["field-value"]}>
                         <span className={`type-badge ${selectedCaregiver.userGender}`}>
                           {selectedCaregiver.userGender}
                         </span>
                       </div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>희망 급여</label>
-                      <div className="field-value price">
+                                             <div className={`${styles["field-value"]} ${styles["price"]}`}>
                         {selectedCaregiver.hopeWorkAmount.toLocaleString()}만원
                       </div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>자기소개</label>
-                      <div className="field-value description">
+                                             <div className={`${styles["field-value"]} ${styles["description"]}`}>
                         {selectedCaregiver.introduction}
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="detail-footer">
-                  <button className="edit-btn" onClick={handleEditClick}>
+                <div className={styles["detail-footer"]}>
+                  <button className={styles["edit-btn"]} onClick={handleEditClick}>
                     ✏️ 수정
                   </button>
                   <button 
-                    className="delete-btn"
+                    className={styles["delete-btn"]}
                     onClick={() => {
                       handleDeleteCaregiver(selectedCaregiver.caregiverId, selectedCaregiver.username);
                       handleCloseDetailModal();
@@ -1330,15 +1330,15 @@ const AdminCaregiverList = () => {
                   >
                     🗑️ 삭제
                   </button>
-                  <button className="close-detail-btn" onClick={handleCloseDetailModal}>
+                  <button className={styles["close-detail-btn"]} onClick={handleCloseDetailModal}>
                     닫기
                   </button>
                 </div>
               </>
             ) : (
               // 수정 모드
-              <form onSubmit={handleEditSubmit} className="register-form">
-                <div className="form-group">
+              <form onSubmit={handleEditSubmit} className={styles["register-form"]}>
+                <div className={styles["form-group"]}>
                   <label>이름 *</label>
                   <input
                     type="text"
@@ -1350,7 +1350,7 @@ const AdminCaregiverList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>성별</label>
                   <select
                     name="userGender"
@@ -1366,7 +1366,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망 근무 지역</label>
                   <select
                     value={editSelectedRegionId}
@@ -1381,7 +1381,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망 근무 시/군/구</label>
                   <select
                     name="hopeWorkAreaCity"
@@ -1398,7 +1398,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망 근무 장소</label>
                   <select
                     name="hopeWorkPlace"
@@ -1413,7 +1413,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>요양사 유형</label>
                   <select
                     name="hopeWorkType"
@@ -1425,7 +1425,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>고용 형태</label>
                   <select
                     name="hopeEmploymentType"
@@ -1441,7 +1441,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>학력</label>
                   <select
                     name="educationLevel"
@@ -1456,7 +1456,7 @@ const AdminCaregiverList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망 급여 *</label>
                   <input
                     type="number"
@@ -1469,7 +1469,7 @@ const AdminCaregiverList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>자기소개</label>
                   <textarea
                     name="introduction"
@@ -1480,11 +1480,11 @@ const AdminCaregiverList = () => {
                   />
                 </div>
 
-                <div className="form-buttons">
-                  <button type="button" onClick={handleEditCancel} className="cancel-btn">
+                <div className={styles["form-buttons"]}>
+                  <button type="button" onClick={handleEditCancel} className={styles["cancel-btn"]}>
                     취소
                   </button>
-                  <button type="submit" className="edit-submit-btn">
+                  <button type="submit" className={styles["edit-submit-btn"]}>
                     수정 완료
                   </button>
                 </div>
