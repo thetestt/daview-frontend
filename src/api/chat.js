@@ -34,3 +34,11 @@ export const getChatRoomInfo = async (chatroomId, memberId) => {
   });
   return res.data;
 };
+
+// ✅ 5. 채팅방 나가기 (trash_can 처리)
+export const exitChatRoom = async (chatroomId, memberId) => {
+  const res = await axios.put(`/api/chat/rooms/${chatroomId}/exit`, {
+    memberId,
+  });
+  return res.data; // { success: true }
+};
