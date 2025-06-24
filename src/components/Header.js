@@ -147,7 +147,9 @@ function Header() {
             <a href="#">고객의 소리</a>
             <ul className="dropdown-menu">
               <li>
-                <a href="#">공지게시판</a>
+                <Link to="/notice/00000000-0000-0000-0000-000000000001">
+                  공지게시판
+                </Link>
                 <a href="#">문의하기</a>
                 <a href="#">고객 후기</a>
               </li>
