@@ -3,15 +3,22 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
-import { getMessages } from "../api/chat";
+import { getMessages, exitChatRoom } from "../api/chat";
 import "../styles/components/ChatWindow.css";
+import { useNavigate } from "react-router";
 
-const ChatWindow = ({ chatroomId, currentUser, chatTargetInfo }) => {
+const ChatWindow = ({
+  chatroomId,
+  currentUser,
+  chatTargetInfo,
+  onExitChat,
+}) => {
   const [messages, setMessages] = useState([]);
   const stompClientRef = useRef(null);
   const endOfMessagesRef = useRef(null);
   const subscriptionRef = useRef(null);
   const isActivatedRef = useRef(false);
+  const navigate = useNavigate();
 
   // ✅ 메시지 중복 방지용
   const receivedMessageCacheRef = useRef(new Set());
@@ -145,6 +152,21 @@ const ChatWindow = ({ chatroomId, currentUser, chatTargetInfo }) => {
     }
   }, [messages, chatTargetInfo]);
 
+  const handleExit = async () => {
+    if (window.confirm("정말 이 채팅방에서 나가시겠습니까?")) {
+      try {
+        const res = await exitChatRoom(chatroomId, currentUser.memberId);
+        if (res.success) {
+          alert("채팅방에서 나갔습니다.");
+          onExitChat(); // ✅ 채팅 목록으로 이동
+        }
+      } catch (error) {
+        alert("채팅방 나가기 실패");
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <div className="chat-window">
       {chatTargetInfo && (
@@ -174,6 +196,10 @@ const ChatWindow = ({ chatroomId, currentUser, chatTargetInfo }) => {
           ) : (
             <div>정보가 없습니다</div>
           )}
+
+          <button className="exit-chat-btn" onClick={handleExit}>
+            채팅방 나가기
+          </button>
         </div>
       )}
 

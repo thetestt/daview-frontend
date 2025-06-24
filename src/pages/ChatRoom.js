@@ -15,6 +15,8 @@ const ChatRoom = () => {
   const [chatTargetInfo, setChatTargetInfo] = useState(null);
   const memberId = Number(localStorage.getItem("memberId"));
   const username = localStorage.getItem("username");
+  const [refreshList, setRefreshList] = useState(false);
+  const triggerListRefresh = () => setRefreshList((prev) => !prev);
 
   const skipValidation = searchParams.get("skipValidation") === "true";
 
@@ -66,16 +68,23 @@ const ChatRoom = () => {
   return (
     <div className="chatroom-layout">
       <div className="chatlist-area">
-        <ChatList />
+        <ChatList refresh={refreshList} />
       </div>
 
       <div className="chatwindow-area">
-        {/* ✅ 상단 상대 정보 */}
-        <ChatWindow
-          chatroomId={chatroomId}
-          currentUser={{ memberId, username }}
-          chatTargetInfo={chatTargetInfo}
-        />
+        {chatTargetInfo ? (
+          <ChatWindow
+            chatroomId={chatroomId}
+            currentUser={{ memberId, username }}
+            chatTargetInfo={chatTargetInfo}
+            onExitChat={() => {
+              setChatTargetInfo(null);
+              triggerListRefresh();
+            }}
+          />
+        ) : (
+          <div className="chat-exited-message"></div>
+        )}
       </div>
     </div>
   );

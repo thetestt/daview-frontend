@@ -5,7 +5,7 @@ import { Client } from "@stomp/stompjs";
 import { getChatRooms, getChatRoomInfo } from "../api/chat";
 import "../styles/pages/ChatList.css";
 
-const ChatList = () => {
+const ChatList = ({ refresh }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
   const stompClientRef = useRef(null);
@@ -83,7 +83,13 @@ const ChatList = () => {
     return () => {
       stompClient.deactivate();
     };
-  }, [memberId]); // ✅ chatroomId 제거
+  }, [memberId]);
+
+  useEffect(() => {
+    if (refresh) {
+      loadChatRooms();
+    }
+  }, [refresh]);
 
   const handleEnterRoom = (chatroomId) => {
     navigate(`/chat/${chatroomId}?skipValidation=true`);
