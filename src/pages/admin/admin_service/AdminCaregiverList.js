@@ -1,6 +1,7 @@
 // 📁 src/pages/admin/AdminCaregiverList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getRegions, getCitiesByRegion, getCaregiverFilterOptions } from '../../../api/filterOption';
 import '../../../styles/admin/AdminProductList.css';
 
 // 요양사 더미 데이터 (실제 DB 구조에 맞춤)
@@ -153,6 +154,108 @@ const AdminCaregiverList = () => {
     educationLevel: '',
     introduction: '',
     hopeWorkAmount: ''
+  });
+
+  // 정적 지역 데이터 (하드코딩)
+  const regions = [
+    { id: 1, name: '서울특별시' },
+    { id: 2, name: '부산광역시' },
+    { id: 3, name: '대구광역시' },
+    { id: 4, name: '인천광역시' },
+    { id: 5, name: '광주광역시' },
+    { id: 6, name: '대전광역시' },
+    { id: 7, name: '울산광역시' },
+    { id: 8, name: '세종특별자치시' },
+    { id: 9, name: '경기도' },
+    { id: 10, name: '강원도' },
+    { id: 11, name: '충청북도' },
+    { id: 12, name: '충청남도' },
+    { id: 13, name: '전라북도' },
+    { id: 14, name: '전라남도' },
+    { id: 15, name: '경상북도' },
+    { id: 16, name: '경상남도' },
+    { id: 17, name: '제주특별자치도' }
+  ];
+
+  // 정적 시/군/구 데이터 (하드코딩)
+  const cityData = {
+    1: [ // 서울특별시
+      '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
+      '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
+      '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'
+    ],
+    2: [ // 부산광역시
+      '강서구', '금정구', '기장군', '남구', '동구', '동래구', '부산진구', '북구',
+      '사상구', '사하구', '서구', '수영구', '연제구', '영도구', '중구', '해운대구'
+    ],
+    3: [ // 대구광역시
+      '남구', '달서구', '달성군', '동구', '북구', '서구', '수성구', '중구'
+    ],
+    4: [ // 인천광역시
+      '강화군', '계양구', '남동구', '동구', '미추홀구', '부평구', '서구', '연수구', '옹진군', '중구'
+    ],
+    5: [ // 광주광역시
+      '광산구', '남구', '동구', '북구', '서구'
+    ],
+    6: [ // 대전광역시
+      '대덕구', '동구', '서구', '유성구', '중구'
+    ],
+    7: [ // 울산광역시
+      '남구', '동구', '북구', '울주군', '중구'
+    ],
+    8: [ // 세종특별자치시
+      '세종시'
+    ],
+    9: [ // 경기도
+      '가평군', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시',
+      '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시',
+      '안양시', '양주시', '양평군', '여주시', '연천군', '오산시', '용인시', '의왕시',
+      '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'
+    ],
+    10: [ // 강원도
+      '강릉시', '고성군', '동해시', '삼척시', '속초시', '양구군', '양양군', '영월군',
+      '원주시', '인제군', '정선군', '철원군', '춘천시', '태백시', '평창군', '홍천군', '화천군', '횡성군'
+    ],
+    11: [ // 충청북도
+      '괴산군', '단양군', '보은군', '영동군', '옥천군', '음성군', '제천시', '진천군', '청주시', '충주시', '증평군'
+    ],
+    12: [ // 충청남도
+      '계룡시', '공주시', '금산군', '논산시', '당진시', '보령시', '부여군', '서산시',
+      '서천군', '아산시', '예산군', '천안시', '청양군', '태안군', '홍성군'
+    ],
+    13: [ // 전라북도
+      '고창군', '군산시', '김제시', '남원시', '무주군', '부안군', '순창군', '완주군',
+      '익산시', '임실군', '장수군', '전주시', '정읍시', '진안군'
+    ],
+    14: [ // 전라남도
+      '강진군', '고흥군', '곡성군', '광양시', '구례군', '나주시', '담양군', '목포시',
+      '무안군', '보성군', '순천시', '신안군', '여수시', '영광군', '영암군', '완도군',
+      '장성군', '장흥군', '진도군', '함평군', '해남군', '화순군'
+    ],
+    15: [ // 경상북도
+      '경산시', '경주시', '고령군', '구미시', '군위군', '김천시', '문경시', '봉화군',
+      '상주시', '성주군', '안동시', '영덕군', '영양군', '영주시', '영천시', '예천군',
+      '울릉군', '울진군', '의성군', '청도군', '청송군', '칠곡군', '포항시'
+    ],
+    16: [ // 경상남도
+      '거제시', '거창군', '고성군', '김해시', '남해군', '밀양시', '사천시', '산청군',
+      '양산시', '의령군', '진주시', '창녕군', '창원시', '통영시', '하동군', '함안군',
+      '함양군', '합천군'
+    ],
+    17: [ // 제주특별자치도
+      '서귀포시', '제주시'
+    ]
+  };
+
+  const [selectedRegionId, setSelectedRegionId] = useState(''); // 선택된 지역 ID
+  const [editSelectedRegionId, setEditSelectedRegionId] = useState(''); // 수정 시 선택된 지역 ID
+  const [cities, setCities] = useState([]); // 시/군/구 목록
+  const [editCities, setEditCities] = useState([]); // 수정 시 시/군/구 목록
+  const [filterOptions, setFilterOptions] = useState({
+    genders: [],
+    certificates: [],
+    workTypes: [],
+    employmentTypes: []
   });
 
   // 행 확장/축소 토글 함수
@@ -345,46 +448,100 @@ const AdminCaregiverList = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     
-    if (!editFormData.username || !editFormData.userGender || !editFormData.hopeWorkAreaLocation || !editFormData.hopeWorkAreaCity || !editFormData.hopeWorkPlace || !editFormData.hopeWorkType || !editFormData.hopeEmploymentType || !editFormData.educationLevel || !editFormData.introduction || !editFormData.hopeWorkAmount) {
-      alert('필수 항목을 모두 입력해주세요.');
+    // 최소한의 필수 항목만 검증 (이름과 희망급여만)
+    if (!editFormData.username || !editFormData.hopeWorkAmount) {
+      alert('이름과 희망급여는 필수 입력 항목입니다.');
       return;
     }
 
     try {
-      // 더미 데이터에서 상품 수정
-      const index = dummyCaregivers.findIndex(c => c.caregiverId === selectedCaregiver.caregiverId);
-      if (index !== -1) {
-        const updatedCaregiver = {
-          ...selectedCaregiver,
-          username: editFormData.username,
-          userGender: editFormData.userGender,
-          hopeWorkAreaLocation: editFormData.hopeWorkAreaLocation,
-          hopeWorkAreaCity: editFormData.hopeWorkAreaCity,
-          hopeWorkPlace: editFormData.hopeWorkPlace,
-          hopeWorkType: editFormData.hopeWorkType,
-          hopeEmploymentType: editFormData.hopeEmploymentType,
-          educationLevel: editFormData.educationLevel,
-          introduction: editFormData.introduction,
-          hopeWorkAmount: parseInt(editFormData.hopeWorkAmount)
-        };
-        
-        dummyCaregivers[index] = updatedCaregiver;
-        setSelectedCaregiver(updatedCaregiver);
-      }
+      setIsLoading(true);
       
-      /* 실제 API 사용 시 아래 코드 사용
-      await axios.put(`/admin/caregivers/${selectedCaregiver.caregiverId}`, {
-        ...editFormData,
-        hopeWorkAmount: parseInt(editFormData.hopeWorkAmount)
+      // 서버로 전송할 데이터 준비 (빈 값도 허용)
+      const submitData = {
+        username: editFormData.username ? editFormData.username.trim() : '',
+        userGender: editFormData.userGender || '',
+        hopeWorkAreaLocation: editFormData.hopeWorkAreaLocation || '',
+        hopeWorkAreaCity: editFormData.hopeWorkAreaCity || '',
+        hopeWorkPlace: editFormData.hopeWorkPlace || '',
+        hopeWorkType: editFormData.hopeWorkType || '',
+        hopeEmploymentType: editFormData.hopeEmploymentType || '',
+        educationLevel: editFormData.educationLevel || '',
+        introduction: editFormData.introduction ? editFormData.introduction.trim() : '',
+        hopeWorkAmount: editFormData.hopeWorkAmount ? parseInt(editFormData.hopeWorkAmount) : 0
+      };
+
+      // 실제 axios PUT 요청
+      const response = await axios.put(`/admin/caregivers/${selectedCaregiver.caregiverId}`, submitData, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
       });
-      */
-      
-      alert('요양사가 성공적으로 수정되었습니다.');
-      setIsEditMode(false);
-      fetchCaregivers(); // 목록 새로고침
+
+      // 성공 응답 처리
+      if (response.status === 200 || response.status === 201) {
+        alert('요양사가 성공적으로 수정되었습니다.');
+        setIsEditMode(false);
+        setIsDetailModalOpen(false);
+        fetchCaregivers(); // 목록 새로고침
+      }
+
     } catch (error) {
       console.error('요양사 수정 실패:', error);
-      alert('요양사 수정에 실패했습니다.');
+      
+      // 에러 타입별 메시지 처리
+      if (error.response) {
+        // 서버 응답 에러
+        const status = error.response.status;
+        const message = error.response.data?.message || '서버 오류가 발생했습니다.';
+        
+        if (status === 401) {
+          alert('로그인이 필요합니다. 다시 로그인해주세요.');
+          // 로그인 페이지로 리다이렉트
+          window.location.href = '/login';
+        } else if (status === 403) {
+          alert('권한이 없습니다. 관리자에게 문의하세요.');
+        } else if (status === 400) {
+          alert(`입력 정보를 확인해주세요: ${message}`);
+        } else if (status === 404) {
+          alert('수정하려는 요양사를 찾을 수 없습니다.');
+        } else {
+          alert(`요양사 수정에 실패했습니다: ${message}`);
+        }
+      } else if (error.request) {
+        // 네트워크 에러 - 더미 데이터로 폴백
+        console.warn('서버 연결 실패, 더미 데이터로 수정합니다:', error.message);
+        
+        const index = dummyCaregivers.findIndex(c => c.caregiverId === selectedCaregiver.caregiverId);
+        if (index !== -1) {
+          const updatedCaregiver = {
+            ...selectedCaregiver,
+            username: editFormData.username,
+            userGender: editFormData.userGender,
+            hopeWorkAreaLocation: editFormData.hopeWorkAreaLocation,
+            hopeWorkAreaCity: editFormData.hopeWorkAreaCity,
+            hopeWorkPlace: editFormData.hopeWorkPlace,
+            hopeWorkType: editFormData.hopeWorkType,
+            hopeEmploymentType: editFormData.hopeEmploymentType,
+            educationLevel: editFormData.educationLevel,
+            introduction: editFormData.introduction,
+            hopeWorkAmount: parseInt(editFormData.hopeWorkAmount)
+          };
+          
+          dummyCaregivers[index] = updatedCaregiver;
+          setSelectedCaregiver(updatedCaregiver);
+        }
+        
+        alert('네트워크 연결을 확인해주세요. 임시로 로컬 데이터가 수정되었습니다.');
+        setIsEditMode(false);
+        fetchCaregivers();
+      } else {
+        // 기타 에러
+        alert('요양사 수정 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -421,6 +578,8 @@ const AdminCaregiverList = () => {
       introduction: '',
       hopeWorkAmount: ''
     });
+    setSelectedRegionId('');
+    setCities([]);
   };
 
   // 상세 모달 열기
@@ -447,10 +606,12 @@ const AdminCaregiverList = () => {
       introduction: '',
       hopeWorkAmount: ''
     });
+    setEditSelectedRegionId('');
+    setEditCities([]);
   };
 
   // 수정 모드 활성화
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     setEditFormData({
       username: selectedCaregiver.username,
       userGender: selectedCaregiver.userGender,
@@ -463,6 +624,23 @@ const AdminCaregiverList = () => {
       introduction: selectedCaregiver.introduction,
       hopeWorkAmount: selectedCaregiver.hopeWorkAmount.toString()
     });
+    
+    // 기존 지역에 맞는 regionId 찾기
+    const region = regions.find(r => r.name === selectedCaregiver.hopeWorkAreaLocation);
+    if (region) {
+      setEditSelectedRegionId(region.id.toString());
+      // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
+      if (cityData[region.id]) {
+        const cityList = cityData[region.id].map((cityName, index) => ({
+          id: index + 1,
+          name: cityName
+        }));
+        setEditCities(cityList);
+      } else {
+        setEditCities([]);
+      }
+    }
+    
     setIsEditMode(true);
   };
 
@@ -481,6 +659,8 @@ const AdminCaregiverList = () => {
       introduction: '',
       hopeWorkAmount: ''
     });
+    setEditSelectedRegionId('');
+    setEditCities([]);
   };
 
   // 요양사 삭제 (소프트 삭제)
@@ -536,6 +716,113 @@ const AdminCaregiverList = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // 컴포넌트 마운트 시 기초 데이터 로드
+  useEffect(() => {
+    console.log('🚀 AdminCaregiverList 컴포넌트 마운트됨');
+    console.log('🌍 regions 데이터:', regions);
+    console.log('🏙️ cityData:', cityData);
+    loadInitialData();
+  }, []);
+
+  // 기초 데이터 로드 함수
+  const loadInitialData = async () => {
+    try {
+      // 필터 옵션들만 API에서 로드 (지역은 하드코딩 사용)
+      const filterOptionsData = await getCaregiverFilterOptions();
+      setFilterOptions(filterOptionsData);
+      
+      console.log('필터 옵션들:', filterOptionsData);
+    } catch (error) {
+      console.error('기초 데이터 로드 실패:', error);
+      // 실패 시 기본값 설정
+      setFilterOptions({
+        genders: [
+          { optionId: 1, value: '남성' },
+          { optionId: 2, value: '여성' }
+        ],
+        employmentTypes: [
+          { optionId: 1, value: '정규직' },
+          { optionId: 2, value: '계약직' },
+          { optionId: 3, value: '파트타임' },
+          { optionId: 4, value: '프리랜서' }
+        ]
+      });
+    }
+  };
+
+  // 지역 선택 시 시/군/구 목록 로드 (등록 모달용)
+  const handleRegionChange = (e) => {
+    const regionId = e.target.value;
+    console.log('선택된 지역 ID:', regionId);
+    setSelectedRegionId(regionId);
+    
+    // 폼 데이터의 지역 설정
+    const selectedRegion = regions.find(r => r.id.toString() === regionId);
+    console.log('선택된 지역 객체:', selectedRegion);
+    setFormData(prev => ({
+      ...prev,
+      hopeWorkAreaLocation: selectedRegion ? selectedRegion.name : '',
+      hopeWorkAreaCity: '' // 시/군/구 초기화
+    }));
+
+    // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
+    console.log('cityData[regionId]:', cityData[regionId]);
+    if (regionId && cityData[regionId]) {
+      const cityList = cityData[regionId].map((cityName, index) => ({
+        id: index + 1,
+        name: cityName
+      }));
+      console.log('생성된 시/군/구 목록:', cityList);
+      setCities(cityList);
+    } else {
+      console.log('시/군/구 목록을 찾을 수 없음');
+      setCities([]);
+    }
+  };
+
+  // 시/군/구 선택 시 (등록 모달용)
+  const handleCityChange = (e) => {
+    const cityName = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      hopeWorkAreaCity: cityName
+    }));
+  };
+
+  // 지역 선택 시 시/군/구 목록 로드 (수정 모달용)
+  const handleEditRegionChange = (e) => {
+    const regionId = e.target.value;
+    setEditSelectedRegionId(regionId);
+    
+    // 수정 폼 데이터의 지역 설정
+    const selectedRegion = regions.find(r => r.id.toString() === regionId);
+    setEditFormData(prev => ({
+      ...prev,
+      hopeWorkAreaLocation: selectedRegion ? selectedRegion.name : '',
+      hopeWorkAreaCity: '' // 시/군/구 초기화
+    }));
+
+    // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
+    if (regionId && cityData[regionId]) {
+      const cityList = cityData[regionId].map((cityName, index) => ({
+        id: index + 1,
+        name: cityName
+      }));
+      setEditCities(cityList);
+    } else {
+      setEditCities([]);
+    }
+  };
+
+  // 시/군/구 선택 시 (수정 모달용)
+  const handleEditCityChange = (e) => {
+    const cityName = e.target.value;
+    setEditFormData(prev => ({
+      ...prev,
+      hopeWorkAreaCity: cityName
+    }));
   };
 
   // 초기 및 조건 변경 시 자동 호출
@@ -796,58 +1083,159 @@ const AdminCaregiverList = () => {
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>🛍️ 새 상품 등록</h3>
+              <h3>👨‍⚕️ 새 요양사 등록</h3>
               <button className="close-btn" onClick={handleCloseModal}>✖</button>
             </div>
             
             <form onSubmit={handleSubmit} className="register-form">
               <div className="form-group">
-                <label>상품명 *</label>
+                <label>이름 *</label>
                 <input
                   type="text"
-                  name="prodName"
-                  value={formData.prodName}
+                  name="username"
+                  value={formData.username}
                   onChange={handleInputChange}
-                  placeholder="상품명을 입력하세요"
+                  placeholder="요양사 이름을 입력하세요"
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>상품 유형 *</label>
+                <label>성별 *</label>
                 <select
-                  name="prodTypeName"
-                  value={formData.prodTypeName}
+                  name="userGender"
+                  value={formData.userGender}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">성별을 선택하세요</option>
+                  {filterOptions.genders.map(gender => (
+                    <option key={gender.optionId} value={gender.value}>
+                      {gender.value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>희망 근무 지역 *</label>
+                <select
+                  value={selectedRegionId}
+                  onChange={(e) => {
+                    console.log('🔥 드롭다운 onChange 이벤트 발생!', e.target.value);
+                    handleRegionChange(e);
+                  }}
+                  required
+                >
+                  <option value="">시/도를 선택하세요</option>
+                  {regions.map(region => (
+                    <option key={region.id} value={region.id}>
+                      {region.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>희망 근무 시/군/구 *</label>
+                <select
+                  name="hopeWorkAreaCity"
+                  value={formData.hopeWorkAreaCity}
+                  onChange={handleCityChange}
+                  required
+                  disabled={!selectedRegionId}
+                >
+                  <option value="">시/군/구를 선택하세요</option>
+                  {cities.map(city => (
+                    <option key={city.id} value={city.name}>
+                      {city.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>희망 근무 장소 *</label>
+                <select
+                  name="hopeWorkPlace"
+                  value={formData.hopeWorkPlace}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">근무 장소를 선택하세요</option>
+                  <option value="가정방문">가정방문</option>
+                  <option value="요양원">요양원</option>
+                  <option value="실버타운">실버타운</option>
+                  <option value="병원">병원</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>요양사 유형 *</label>
+                <select
+                  name="hopeWorkType"
+                  value={formData.hopeWorkType}
                   onChange={handleInputChange}
                   required
                 >
                   <option value="">유형을 선택하세요</option>
                   <option value="요양사">요양사</option>
-                  <option value="요양원">요양원</option>
-                  <option value="실버타운">실버타운</option>
                 </select>
               </div>
 
               <div className="form-group">
-                <label>가격 *</label>
+                <label>고용 형태 *</label>
+                <select
+                  name="hopeEmploymentType"
+                  value={formData.hopeEmploymentType}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">고용 형태를 선택하세요</option>
+                  {filterOptions.employmentTypes.map(type => (
+                    <option key={type.optionId} value={type.value}>
+                      {type.value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>학력 *</label>
+                <select
+                  name="educationLevel"
+                  value={formData.educationLevel}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">학력을 선택하세요</option>
+                  <option value="고등학교 졸업">고등학교 졸업</option>
+                  <option value="전문대학 졸업">전문대학 졸업</option>
+                  <option value="대학교 졸업">대학교 졸업</option>
+                  <option value="대학원 졸업">대학원 졸업</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>희망 급여 *</label>
                 <input
                   type="number"
-                  name="prodPrice"
-                  value={formData.prodPrice}
+                  name="hopeWorkAmount"
+                  value={formData.hopeWorkAmount}
                   onChange={handleInputChange}
-                  placeholder="가격을 입력하세요"
+                  placeholder="희망 급여를 입력하세요 (만원 단위)"
                   min="0"
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>상세 설명</label>
+                <label>자기소개</label>
                 <textarea
-                  name="prodDetail"
-                  value={formData.prodDetail}
+                  name="introduction"
+                  value={formData.introduction}
                   onChange={handleInputChange}
-                  placeholder="상품에 대한 상세 설명을 입력하세요"
+                  placeholder="요양사 경력과 자기소개를 입력하세요"
                   rows="4"
                 />
               </div>
@@ -951,52 +1339,143 @@ const AdminCaregiverList = () => {
               // 수정 모드
               <form onSubmit={handleEditSubmit} className="register-form">
                 <div className="form-group">
-                  <label>상품명 *</label>
+                  <label>이름 *</label>
                   <input
                     type="text"
-                    name="prodName"
-                    value={editFormData.prodName}
+                    name="username"
+                    value={editFormData.username}
                     onChange={handleEditInputChange}
-                    placeholder="상품명을 입력하세요"
+                    placeholder="요양사 이름을 입력하세요"
                     required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>상품 유형 *</label>
+                  <label>성별</label>
                   <select
-                    name="prodTypeName"
-                    value={editFormData.prodTypeName}
+                    name="userGender"
+                    value={editFormData.userGender}
                     onChange={handleEditInputChange}
-                    required
                   >
-                    <option value="">유형을 선택하세요</option>
-                    <option value="요양사">요양사</option>
-                    <option value="요양원">요양원</option>
-                    <option value="실버타운">실버타운</option>
+                    <option value="">성별을 선택하세요</option>
+                    {filterOptions.genders.map(gender => (
+                      <option key={gender.optionId} value={gender.value}>
+                        {gender.value}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label>가격 *</label>
+                  <label>희망 근무 지역</label>
+                  <select
+                    value={editSelectedRegionId}
+                    onChange={handleEditRegionChange}
+                  >
+                    <option value="">시/도를 선택하세요</option>
+                    {regions.map(region => (
+                      <option key={region.id} value={region.id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>희망 근무 시/군/구</label>
+                  <select
+                    name="hopeWorkAreaCity"
+                    value={editFormData.hopeWorkAreaCity}
+                    onChange={handleEditCityChange}
+                    disabled={!editSelectedRegionId}
+                  >
+                    <option value="">시/군/구를 선택하세요</option>
+                    {editCities.map(city => (
+                      <option key={city.id} value={city.name}>
+                        {city.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>희망 근무 장소</label>
+                  <select
+                    name="hopeWorkPlace"
+                    value={editFormData.hopeWorkPlace}
+                    onChange={handleEditInputChange}
+                  >
+                    <option value="">근무 장소를 선택하세요</option>
+                    <option value="가정방문">가정방문</option>
+                    <option value="요양원">요양원</option>
+                    <option value="실버타운">실버타운</option>
+                    <option value="병원">병원</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>요양사 유형</label>
+                  <select
+                    name="hopeWorkType"
+                    value={editFormData.hopeWorkType}
+                    onChange={handleEditInputChange}
+                  >
+                    <option value="">유형을 선택하세요</option>
+                    <option value="요양사">요양사</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>고용 형태</label>
+                  <select
+                    name="hopeEmploymentType"
+                    value={editFormData.hopeEmploymentType}
+                    onChange={handleEditInputChange}
+                  >
+                    <option value="">고용 형태를 선택하세요</option>
+                    {filterOptions.employmentTypes.map(type => (
+                      <option key={type.optionId} value={type.value}>
+                        {type.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>학력</label>
+                  <select
+                    name="educationLevel"
+                    value={editFormData.educationLevel}
+                    onChange={handleEditInputChange}
+                  >
+                    <option value="">학력을 선택하세요</option>
+                    <option value="고등학교 졸업">고등학교 졸업</option>
+                    <option value="전문대학 졸업">전문대학 졸업</option>
+                    <option value="대학교 졸업">대학교 졸업</option>
+                    <option value="대학원 졸업">대학원 졸업</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>희망 급여 *</label>
                   <input
                     type="number"
-                    name="prodPrice"
-                    value={editFormData.prodPrice}
+                    name="hopeWorkAmount"
+                    value={editFormData.hopeWorkAmount}
                     onChange={handleEditInputChange}
-                    placeholder="가격을 입력하세요"
+                    placeholder="희망 급여를 입력하세요 (만원 단위)"
                     min="0"
                     required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>상세 설명</label>
+                  <label>자기소개</label>
                   <textarea
-                    name="prodDetail"
-                    value={editFormData.prodDetail}
+                    name="introduction"
+                    value={editFormData.introduction}
                     onChange={handleEditInputChange}
-                    placeholder="상품에 대한 상세 설명을 입력하세요"
+                    placeholder="요양사 경력과 자기소개를 입력하세요"
                     rows="4"
                   />
                 </div>
