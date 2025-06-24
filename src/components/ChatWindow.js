@@ -6,14 +6,14 @@ import ChatInput from "./ChatInput";
 import { getMessages } from "../api/chat";
 import "../styles/components/ChatWindow.css";
 
-const ChatWindow = ({ chatroomId, currentUser }) => {
+const ChatWindow = ({ chatroomId, currentUser, chatTargetInfo }) => {
   const [messages, setMessages] = useState([]);
   const stompClientRef = useRef(null);
   const endOfMessagesRef = useRef(null);
   const subscriptionRef = useRef(null);
   const isActivatedRef = useRef(false);
 
-  // ✅ 메시지 중복 방지용 ref 깃수정테스트 2025.06.23
+  // ✅ 메시지 중복 방지용
   const receivedMessageCacheRef = useRef(new Set());
 
   useEffect(() => {
@@ -138,13 +138,45 @@ const ChatWindow = ({ chatroomId, currentUser }) => {
   };
 
   useEffect(() => {
+    console.log("받은 채팅 상대 정보:", chatTargetInfo);
+
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, chatTargetInfo]);
 
   return (
     <div className="chat-window">
+      {chatTargetInfo && (
+        <div className="chatroom-header">
+          {chatTargetInfo.type === "facility" ? (
+            <div>
+              <h3>{chatTargetInfo.facilityName}</h3>
+              <p>
+                {chatTargetInfo.facilityAddressLocation}{" "}
+                {chatTargetInfo.facilityAddressCity}
+              </p>
+              <p>{chatTargetInfo.facilityPhone}</p>
+            </div>
+          ) : chatTargetInfo.type === "caregiver" ? (
+            <div>
+              <h3>{chatTargetInfo.userName} 요양사</h3>
+              <p>
+                희망근무지 :{chatTargetInfo.hopeWorkAreaLocation}{" "}
+                {chatTargetInfo.hopeWorkAreaCity}
+              </p>
+            </div>
+          ) : chatTargetInfo.type === "user" ? (
+            <div>
+              <h3>{chatTargetInfo.userName}</h3>
+              <p>일반 사용자</p>
+            </div>
+          ) : (
+            <div>정보가 없습니다</div>
+          )}
+        </div>
+      )}
+
       <div className="message-list">
         {messages.map((msg, index) => (
           <ChatMessage key={index} message={msg} />
