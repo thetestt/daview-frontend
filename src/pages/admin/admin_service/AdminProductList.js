@@ -1,7 +1,7 @@
 // 📁 src/pages/admin/AdminProductList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../../../styles/admin/AdminProductList.css';
+import styles from '../../../styles/admin/AdminProductList.module.css';
 
 // 정적 지역 데이터 (하드코딩)
 const regions = [
@@ -1359,17 +1359,17 @@ const AdminProductList = () => {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <div className="admin-header">
+      <div className={styles["admin-header"]}>
         <h2>📦 상품 목록</h2>
-        <div className="header-info">
+        <div className={styles["header-info"]}>
           {!isServerConnected && (
-            <span className="server-status offline">🔴 오프라인 모드 (더미 데이터)</span>
+            <span className={`${styles["server-status"]} ${styles["offline"]}`}>🔴 오프라인 모드 (더미 데이터)</span>
           )}
           {isServerConnected && (
-            <span className="server-status online">🟢 서버 연결됨</span>
+            <span className={`${styles["server-status"]} ${styles["online"]}`}>🟢 서버 연결됨</span>
           )}
           <button 
-            className="register-btn"
+            className={styles["register-btn"]}
             onClick={() => {
               setIsModalOpen(true);
               fetchUsers(); // 모달 열 때 회원 목록 로드
@@ -1381,14 +1381,14 @@ const AdminProductList = () => {
       </div>
 
       {/* 필터 영역 */}
-      <div className="filter-section">
-        <div className="filter-row">
-          <div className="filter-group">
+      <div className={styles["filter-section"]}>
+        <div className={styles["filter-row"]}>
+          <div className={styles["filter-group"]}>
             <label>상품 유형</label>
             <select 
               value={selectedType} 
               onChange={handleTypeChange}
-              className="type-filter"
+              className={styles["type-filter"]}
             >
               <option value="">▼ 전체 보기</option>
               <option value="요양사">👩‍⚕️ 요양사</option>
@@ -1396,20 +1396,20 @@ const AdminProductList = () => {
             </select>
           </div>
           
-          <div className="filter-group">
+          <div className={styles["filter-group"]}>
             <label>검색</label>
-            <div className="search-container">
+            <div className={styles["search-container"]}>
               <input
                 type="text"
                 placeholder="상품명, 유형, 지역으로 검색"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyPress={handleSearchKeyPress}
-                className="search-input"
+                className={styles["search-input"]}
               />
               <button 
                 onClick={handleSearch} 
-                className="search-btn"
+                className={styles["search-btn"]}
                 disabled={isLoading}
               >
                 {isLoading ? '🔄' : '🔍'} {isLoading ? '검색 중...' : '검색'}
@@ -1420,16 +1420,16 @@ const AdminProductList = () => {
 
         {/* 요양사 전용 상세 필터 */}
         {selectedType === '요양사' && (
-          <div className="caregiver-filters">
+          <div className={styles["caregiver-filters"]}>
             <h3>🔍 요양사 검색</h3>
             
-            <div className="filter-row">
-              <div className="filter-group">
+            <div className={styles["filter-row"]}>
+              <div className={styles["filter-group"]}>
                 <label>지역</label>
                 <select 
                   value={selectedRegionId} 
                   onChange={handleRegionChange}
-                  className="region-filter"
+                  className={styles["region-filter"]}
                 >
                   <option value="">선택</option>
                   {regions.map(region => (
@@ -1440,13 +1440,13 @@ const AdminProductList = () => {
                 </select>
               </div>
               
-              <div className="filter-group">
+              <div className={styles["filter-group"]}>
                 <label>시/군/구</label>
                 <select 
                   value={formData.hope_work_area_city || ''} 
                   onChange={handleCityChange}
                   disabled={!selectedRegionId}
-                  className="city-filter"
+                  className={styles["city-filter"]}
                 >
                   <option value="">선택</option>
                   {cities.map(city => (
@@ -1457,12 +1457,12 @@ const AdminProductList = () => {
                 </select>
               </div>
 
-              <div className="filter-group">
+              <div className={styles["filter-group"]}>
                 <label>성별</label>
                 <select 
                   value={filterGender} 
                   onChange={(e) => setFilterGender(e.target.value)}
-                  className="gender-filter"
+                  className={styles["gender-filter"]}
                 >
                   <option value="">선택</option>
                   <option value="여자">여자</option>
@@ -1472,12 +1472,12 @@ const AdminProductList = () => {
               </div>
             </div>
 
-            <div className="filter-row">
-              <div className="filter-group">
+            <div className={styles["filter-row"]}>
+              <div className={styles["filter-group"]}>
                 <label>자격증</label>
-                <div className="checkbox-group">
+                <div className={styles["checkbox-group"]}>
                   {['요양보호사', '사회복지사', '간호조무사', '일반'].map(cert => (
-                    <label key={cert} className="checkbox-label">
+                    <label key={cert} className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={filterCertificate.includes(cert)}
@@ -1498,12 +1498,12 @@ const AdminProductList = () => {
               </div>
             </div>
 
-            <div className="filter-row">
-              <div className="filter-group">
+            <div className={styles["filter-row"]}>
+              <div className={styles["filter-group"]}>
                 <label>근무형태</label>
-                <div className="checkbox-group">
+                <div className={styles["checkbox-group"]}>
                   {['출퇴근', '입주'].map(workType => (
-                    <label key={workType} className="checkbox-label">
+                    <label key={workType} className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={filterWorkType.includes(workType)}
@@ -1523,11 +1523,11 @@ const AdminProductList = () => {
                 </div>
               </div>
 
-              <div className="filter-group">
+              <div className={styles["filter-group"]}>
                 <label>고용형태</label>
-                <div className="checkbox-group">
+                <div className={styles["checkbox-group"]}>
                   {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
-                    <label key={empType} className="checkbox-label">
+                    <label key={empType} className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={filterEmploymentType.includes(empType)}
@@ -1551,45 +1551,45 @@ const AdminProductList = () => {
         )}
         
         {(search || selectedType || filterGender || filterCertificate || filterWorkType || filterEmploymentType) && (
-          <div className="active-filters">
-            <span className="filter-label">활성 필터:</span>
+          <div className={styles["active-filters"]}>
+            <span className={styles["filter-label"]}>활성 필터:</span>
             {selectedType && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 유형: {selectedType} 
-                <button onClick={() => setSelectedType('')} className="remove-filter">✖</button>
+                <button onClick={() => setSelectedType('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
             {search && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 검색: "{search}"
-                <button onClick={() => setSearch('')} className="remove-filter">✖</button>
+                <button onClick={() => setSearch('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
             {filterGender && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 성별: {filterGender}
-                <button onClick={() => setFilterGender('')} className="remove-filter">✖</button>
+                <button onClick={() => setFilterGender('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
             {filterCertificate && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 자격증: {filterCertificate}
-                <button onClick={() => setFilterCertificate('')} className="remove-filter">✖</button>
+                <button onClick={() => setFilterCertificate('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
             {filterWorkType && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 근무형태: {filterWorkType}
-                <button onClick={() => setFilterWorkType('')} className="remove-filter">✖</button>
+                <button onClick={() => setFilterWorkType('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
             {filterEmploymentType && (
-              <span className="filter-tag">
+              <span className={styles["filter-tag"]}>
                 고용형태: {filterEmploymentType}
-                <button onClick={() => setFilterEmploymentType('')} className="remove-filter">✖</button>
+                <button onClick={() => setFilterEmploymentType('')} className={styles["remove-filter"]}>✖</button>
               </span>
             )}
-            <button onClick={handleResetFilters} className="reset-filters-btn">
+            <button onClick={handleResetFilters} className={styles["reset-filters-btn"]}>
               🔄 전체 초기화
             </button>
           </div>
@@ -1597,13 +1597,13 @@ const AdminProductList = () => {
       </div>
 
       {/* 결과 요약 */}
-      <div className="results-summary">
-        <span className="results-count">
+      <div className={styles["results-summary"]}>
+        <span className={styles["results-count"]}>
           {selectedType ? `${selectedType} ` : '전체 '}
           총 <strong>{products.length}</strong>개 상품
         </span>
         {selectedType && (
-          <span className="type-indicator">
+          <span className={styles["type-indicator"]}>
             <span className={`type-badge ${selectedType.replace('/', '-')}`}>
               {selectedType === '요양사' && '👩‍⚕️ '}
               {selectedType === '요양원/실버타운' && '🏥🏢 '}
@@ -1614,13 +1614,13 @@ const AdminProductList = () => {
       </div>
 
       {isLoading && (
-        <div className="loading-indicator">
-          <div className="spinner"></div>
+        <div className={styles["loading-indicator"]}>
+          <div className={styles["spinner"]}></div>
           <span>데이터를 불러오는 중...</span>
         </div>
       )}
 
-      <div className="table-container">
+      <div className={styles["table-container"]}>
         <table border="1" cellPadding="8" width="100%">
           <thead>
             <tr>
@@ -1653,7 +1653,7 @@ const AdminProductList = () => {
                   <td>{p.prodId}</td>
                   <td>
                     <span 
-                      className="product-name-link" 
+                      className={styles["product-name-link"]} 
                       onClick={() => handleProductClick(p)}
                     >
                       {p.prodName}
@@ -1661,24 +1661,24 @@ const AdminProductList = () => {
                   </td>
                   <td>{p.prodTypeName}</td>
                   <td>{p.prodPrice || p.price || 0}만원</td>
-                  <td className="detail-cell">{p.prodDetail || p.description || '-'}</td>
+                  <td className={styles["detail-cell"]}>{p.prodDetail || p.description || '-'}</td>
                   <td>{p.location ? p.location.split(' ')[0] : '-'}</td>
                   <td>{p.location ? p.location.split(' ')[1] : '-'}</td>
-                  <td className="detail-cell">{p.workPlace || '-'}</td>
+                  <td className={styles["detail-cell"]}>{p.workPlace || '-'}</td>
                   <td>{p.workType || '-'}</td>
                   <td>{p.employmentType || '-'}</td>
                   <td>{p.education || '-'}</td>
 
-                  <td className="detail-cell">{p.careerString || '-'}</td>
+                  <td className={styles["detail-cell"]}>{p.careerString || '-'}</td>
                   <td>{p.startDateString || '-'}</td>
                   <td>{p.endDateString || '-'}</td>
-                  <td className="detail-cell">{p.certificatesString || '-'}</td>
+                  <td className={styles["detail-cell"]}>{p.certificatesString || '-'}</td>
                   <td>{p.createdAt || '-'}</td>
                   <td>{p.updatedAt || '-'}</td>
                   <td style={{color: p.deletedAt ? '#dc3545' : '#28a745'}}>
                     {p.deletedAt ? p.deletedAt : '활성'}
                   </td>
-                  <td className="detail-cell">{p.prodDetail}</td>
+                  <td className={styles["detail-cell"]}>{p.prodDetail}</td>
                   <td>
                     <button 
                       onClick={() => handleDeleteProduct(p.prodId, p.prodName)}
@@ -1709,7 +1709,7 @@ const AdminProductList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="19" className="no-data">
+                <td colSpan="19" className={styles["no-data"]}>
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 상품이 없습니다.'}
                 </td>
               </tr>
@@ -1726,16 +1726,16 @@ const AdminProductList = () => {
 
       {/* 등록 모달 */}
       {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+        <div className={styles["modal-overlay"]} onClick={handleCloseModal}>
+          <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["modal-header"]}>
               <h3>🛍️ 새 상품 등록</h3>
-              <button className="close-btn" onClick={handleCloseModal}>✖</button>
+              <button className={styles["close-btn"]} onClick={handleCloseModal}>✖</button>
             </div>
             
-            <form onSubmit={handleSubmit} className="register-form">
-              <div className="form-row">
-                <div className="form-group">
+            <form onSubmit={handleSubmit} className={styles["register-form"]}>
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>상품명 *</label>
                   <input
                     type="text"
@@ -1747,7 +1747,7 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>상품 유형 *</label>
                   <select
                     name="prodTypeName"
@@ -1762,8 +1762,8 @@ const AdminProductList = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>회원 선택 *</label>
                   <select
                     name="member_id"
@@ -1784,8 +1784,8 @@ const AdminProductList = () => {
 
               {/* 요양사일 때만 표시되는 필드들 */}
               {formData.prodTypeName === '요양사' && (
-                <div className="form-row">
-                  <div className="form-group">
+                <div className={styles["form-row"]}>
+                  <div className={styles["form-group"]}>
                     <label>희망급여(만원) *</label>
                     <input
                       type="number"
@@ -1803,8 +1803,8 @@ const AdminProductList = () => {
 
 
               {/* 지역 선택 - 모든 유형에 공통 (요양사는 희망근무지역, 시설은 위치) */}
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>
                     {formData.prodTypeName === '요양사' ? '희망근무지역(도/광역시)' : '시설위치(도/광역시)'}
                     {formData.prodTypeName === '요양사' && ' *'}
@@ -1826,7 +1826,7 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>
                     {formData.prodTypeName === '요양사' ? '희망근무지역(시/군/구)' : '시설위치(시/군/구)'}
                     {formData.prodTypeName === '요양사' && ' *'}
@@ -1851,8 +1851,8 @@ const AdminProductList = () => {
               {/* 요양사 전용 필드들 */}
               {formData.prodTypeName === '요양사' && (
                 <>
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>성별 *</label>
                       <select
                         name="userGender"
@@ -1867,11 +1867,11 @@ const AdminProductList = () => {
                       </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>희망근무장소</label>
-                      <div className="checkbox-group">
+                      <div className={styles["checkbox-group"]}>
                         {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
-                          <label key={workPlace} className="checkbox-label">
+                          <label key={workPlace} className={styles["checkbox-label"]}>
                             <input
                               type="checkbox"
                               checked={(formData.hope_work_place || '').includes(workPlace)}
@@ -1896,12 +1896,12 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>희망근무형태 *</label>
-                      <div className="checkbox-group">
+                      <div className={styles["checkbox-group"]}>
                         {['출퇴근', '입주'].map(workType => (
-                          <label key={workType} className="checkbox-label">
+                          <label key={workType} className={styles["checkbox-label"]}>
                             <input
                               type="checkbox"
                               checked={(formData.hope_work_type || '').includes(workType)}
@@ -1926,12 +1926,12 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>희망고용형태 *</label>
-                      <div className="checkbox-group">
+                      <div className={styles["checkbox-group"]}>
                         {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
-                          <label key={empType} className="checkbox-label">
+                          <label key={empType} className={styles["checkbox-label"]}>
                             <input
                               type="checkbox"
                               checked={(formData.hope_employment_type || '').includes(empType)}
@@ -1956,12 +1956,12 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>자격증</label>
-                      <div className="checkbox-group">
+                      <div className={styles["checkbox-group"]}>
                         {['요양보호사', '사회복지사', '간호조무사', '일반'].map(cert => (
-                          <label key={cert} className="checkbox-label">
+                          <label key={cert} className={styles["checkbox-label"]}>
                             <input
                               type="checkbox"
                               checked={(formData.certificate_name || '').includes(cert)}
@@ -1986,8 +1986,8 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>학력수준</label>
                       <select
                         name="education_level"
@@ -2002,7 +2002,7 @@ const AdminProductList = () => {
                       </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>경력근무지</label>
                       <input
                         type="text"
@@ -2019,8 +2019,8 @@ const AdminProductList = () => {
               {/* 요양원/실버타운 전용 필드들 (실제 DB 구조에 맞춤) */}
               {formData.prodTypeName === '요양원/실버타운' && (
                 <>
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>시설명 *</label>
                       <input
                         type="text"
@@ -2032,7 +2032,7 @@ const AdminProductList = () => {
                       />
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>월별이용료 * (만원)</label>
                       <input
                         type="number"
@@ -2046,8 +2046,8 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>시설 유형 *</label>
                       <select
                         name="facility_type"
@@ -2061,7 +2061,7 @@ const AdminProductList = () => {
                       </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>테마</label>
                       <input
                         type="text"
@@ -2073,8 +2073,8 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>상세주소</label>
                       <input
                         type="text"
@@ -2085,7 +2085,7 @@ const AdminProductList = () => {
                       />
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>전화번호</label>
                       <input
                         type="tel"
@@ -2097,8 +2097,8 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>홈페이지</label>
                       <input
                         type="url"
@@ -2109,7 +2109,7 @@ const AdminProductList = () => {
                       />
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>기본 메시지</label>
                       <input
                         type="text"
@@ -2121,8 +2121,8 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>희망 근무 지역 *</label>
                       <select
                         value={selectedRegionId}
@@ -2138,7 +2138,7 @@ const AdminProductList = () => {
                       </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>희망 근무 시/군/구 *</label>
                       <select
                         name="hope_work_area_city"
@@ -2157,7 +2157,7 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>상세주소 *</label>
                     <input
                       type="text"
@@ -2169,8 +2169,8 @@ const AdminProductList = () => {
                     />
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>연락처 *</label>
                       <input
                         type="tel"
@@ -2182,7 +2182,7 @@ const AdminProductList = () => {
                       />
                     </div>
 
-                                         <div className="form-group">
+                                         <div className={styles["form-group"]}>
                        <label>홈페이지URL</label>
                        <input
                          type="url"
@@ -2194,8 +2194,8 @@ const AdminProductList = () => {
                      </div>
                    </div>
 
-                   <div className="form-row">
-                     <div className="form-group">
+                   <div className={styles["form-row"]}>
+                     <div className={styles["form-group"]}>
                        <label>공지사항 제목</label>
                        <input
                          type="text"
@@ -2206,7 +2206,7 @@ const AdminProductList = () => {
                        />
                      </div>
 
-                     <div className="form-group">
+                     <div className={styles["form-group"]}>
                        <label>카테고리</label>
                        <input
                          type="text"
@@ -2218,7 +2218,7 @@ const AdminProductList = () => {
                      </div>
                    </div>
 
-                   <div className="form-group">
+                   <div className={styles["form-group"]}>
                      <label>공지사항 내용</label>
                      <textarea
                        name="notice_content"
@@ -2229,8 +2229,8 @@ const AdminProductList = () => {
                      />
                    </div>
 
-                   <div className="form-row">
-                     <div className="form-group">
+                   <div className={styles["form-row"]}>
+                     <div className={styles["form-group"]}>
                        <label>사진 URL</label>
                        <input
                          type="text"
@@ -2241,7 +2241,7 @@ const AdminProductList = () => {
                        />
                      </div>
 
-                     <div className="form-group">
+                     <div className={styles["form-group"]}>
                        <label>썸네일 여부</label>
                        <select
                          name="is_thumbnail"
@@ -2254,7 +2254,7 @@ const AdminProductList = () => {
                      </div>
                    </div>
 
-                   <div className="form-group">
+                   <div className={styles["form-group"]}>
                      <label>시설 태그</label>
                      <input
                        type="text"
@@ -2267,8 +2267,8 @@ const AdminProductList = () => {
                 </>
               )}
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>입사일</label>
                   <input
                     type="date"
@@ -2278,7 +2278,7 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>퇴사일</label>
                   <input
                     type="date"
@@ -2289,7 +2289,7 @@ const AdminProductList = () => {
                 </div>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>자격증</label>
                 <textarea
                   name="certificate_name"
@@ -2300,7 +2300,7 @@ const AdminProductList = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>소개</label>
                 <textarea
                   name="introduction"
@@ -2311,8 +2311,8 @@ const AdminProductList = () => {
                 />
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>추가된 날짜</label>
                   <input
                     type="date"
@@ -2322,7 +2322,7 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>수정된 날짜</label>
                   <input
                     type="date"
@@ -2333,7 +2333,7 @@ const AdminProductList = () => {
                 </div>
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>삭제된 날짜</label>
                 <input
                   type="date"
@@ -2344,7 +2344,7 @@ const AdminProductList = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>상세 설명</label>
                 <textarea
                   name="prodDetail"
@@ -2355,11 +2355,11 @@ const AdminProductList = () => {
                 />
               </div>
 
-              <div className="form-buttons">
-                <button type="button" onClick={handleCloseModal} className="cancel-btn" disabled={isLoading}>
+              <div className={styles["form-buttons"]}>
+                <button type="button" onClick={handleCloseModal} className={styles["cancel-btn"]} disabled={isLoading}>
                   취소
                 </button>
-                <button type="submit" className="submit-btn" disabled={isLoading}>
+                <button type="submit" className={styles["submit-btn"]} disabled={isLoading}>
                   {isLoading ? '등록 중...' : '등록하기'}
                 </button>
               </div>
@@ -2370,31 +2370,31 @@ const AdminProductList = () => {
 
       {/* 상세 정보 모달 */}
       {isDetailModalOpen && selectedProduct && (
-        <div className="modal-overlay" onClick={handleCloseDetailModal}>
-          <div className="detail-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+        <div className={styles["modal-overlay"]} onClick={handleCloseDetailModal}>
+          <div className={styles["detail-modal-content"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["modal-header"]}>
               <h3>{isEditMode ? '✏️ 상품 수정' : '📋 상품 상세 정보'}</h3>
-              <button className="close-btn" onClick={handleCloseDetailModal}>✖</button>
+              <button className={styles["close-btn"]} onClick={handleCloseDetailModal}>✖</button>
             </div>
             
             {!isEditMode ? (
               // 상세 정보 보기 모드
               <>
-                <div className="detail-content">
-                  <div className="detail-section">
-                    <div className="detail-field">
+                <div className={styles["detail-content"]}>
+                  <div className={styles["detail-section"]}>
+                    <div className={styles["detail-field"]}>
                       <label>상품 ID</label>
-                      <div className="field-value">{selectedProduct.prodId}</div>
+                      <div className={styles["field-value"]}>{selectedProduct.prodId}</div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>상품명</label>
-                      <div className="field-value product-title">{selectedProduct.prodName}</div>
+                                             <div className={`${styles["field-value"]} ${styles["product-title"]}`}>{selectedProduct.prodName}</div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>상품 유형</label>
-                      <div className="field-value">
+                      <div className={styles["field-value"]}>
                         <span className={`type-badge ${selectedProduct.prodTypeName}`}>
                           {selectedProduct.prodTypeName}
                         </span>
@@ -2402,9 +2402,9 @@ const AdminProductList = () => {
                     </div>
                     
                     {/* 요양사와 요양원/실버타운 공통 필드 */}
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>{selectedProduct.prodTypeName === '요양원/실버타운' ? '월별이용료' : '희망급여'}</label>
-                      <div className="field-value price">
+                                             <div className={`${styles["field-value"]} ${styles["price"]}`}>
                         {selectedProduct.prodTypeName === '요양원/실버타운' ? 
                           `${selectedProduct.facility_charge || selectedProduct.hope_work_amount}만원` :
                           `${selectedProduct.hope_work_amount}만원`
@@ -2415,30 +2415,30 @@ const AdminProductList = () => {
                     {/* 요양원/실버타운 전용 필드들 */}
                     {selectedProduct.prodTypeName === '요양원/실버타운' && (
                       <>
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>테마</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {selectedProduct.facility_theme || '-'}
                           </div>
                         </div>
                         
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>상세주소</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {selectedProduct.facility_detail_address || '-'}
                           </div>
                         </div>
                         
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>연락처</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {selectedProduct.facility_phone || '-'}
                           </div>
                         </div>
                         
-                                                 <div className="detail-field">
+                                                 <div className={styles["detail-field"]}>
                            <label>홈페이지URL</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.facility_homepage ? (
                                <a href={selectedProduct.facility_homepage} target="_blank" rel="noopener noreferrer">
                                  {selectedProduct.facility_homepage}
@@ -2447,37 +2447,37 @@ const AdminProductList = () => {
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>카테고리</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.category || '-'}
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>시설 태그</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.facility_tag || '-'}
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>공지사항 제목</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.notice_title || '-'}
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>공지사항 내용</label>
-                           <div className="field-value description">
+                           <div className={`${styles["field-value"]} ${styles["description"]}`}>
                              {selectedProduct.notice_content || '-'}
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>사진 URL</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.photo_url ? (
                                <a href={selectedProduct.photo_url} target="_blank" rel="noopener noreferrer">
                                  {selectedProduct.photo_url}
@@ -2486,9 +2486,9 @@ const AdminProductList = () => {
                            </div>
                          </div>
                          
-                         <div className="detail-field">
+                         <div className={styles["detail-field"]}>
                            <label>썸네일 여부</label>
-                           <div className="field-value">
+                           <div className={styles["field-value"]}>
                              {selectedProduct.is_thumbnail ? '썸네일' : '일반 사진'}
                            </div>
                          </div>
@@ -2498,18 +2498,18 @@ const AdminProductList = () => {
                     {/* 요양사 전용 필드들 */}
                     {selectedProduct.prodTypeName === '요양사' && (
                       <>
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>경력근무지</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {(selectedProduct.careerString && selectedProduct.careerString !== '경력 정보 없음') 
                               ? selectedProduct.careerString 
                               : (selectedProduct.company_name || '-')}
                           </div>
                         </div>
                         
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>근무기간</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {(selectedProduct.startDateString && selectedProduct.endDateString) 
                               ? `${selectedProduct.startDateString} ~ ${selectedProduct.endDateString}`
                               : (selectedProduct.start_date && selectedProduct.end_date)
@@ -2518,9 +2518,9 @@ const AdminProductList = () => {
                           </div>
                         </div>
                         
-                        <div className="detail-field">
+                        <div className={styles["detail-field"]}>
                           <label>자격증</label>
-                          <div className="field-value">
+                          <div className={styles["field-value"]}>
                             {(selectedProduct.certificatesString && selectedProduct.certificatesString !== '자격증 정보 없음') 
                               ? selectedProduct.certificatesString 
                               : (selectedProduct.certificate_name || '-')}
@@ -2529,49 +2529,49 @@ const AdminProductList = () => {
                       </>
                     )}
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>추가된 날짜</label>
-                      <div className="field-value">
+                      <div className={styles["field-value"]}>
                         {selectedProduct.caregiver_created_at || '-'}
                       </div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>수정된 날짜</label>
-                      <div className="field-value">
+                      <div className={styles["field-value"]}>
                         {selectedProduct.caregiver_update_at || '-'}
                       </div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>삭제된 날짜</label>
-                      <div className="field-value" style={{color: selectedProduct.caregiver_deleted_at ? '#dc3545' : '#28a745'}}>
+                      <div className={styles["field-value"]} style={{color: selectedProduct.caregiver_deleted_at ? '#dc3545' : '#28a745'}}>
                         {selectedProduct.caregiver_deleted_at ? selectedProduct.caregiver_deleted_at : '활성'}
                       </div>
                     </div>
                     
-                    <div className="detail-field">
+                    <div className={styles["detail-field"]}>
                       <label>상세 설명</label>
-                      <div className="field-value description">
+                                             <div className={`${styles["field-value"]} ${styles["description"]}`}>
                         {selectedProduct.prodDetail}
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="detail-footer">
-                  <button className="edit-btn" onClick={handleEditClick}>
+                <div className={styles["detail-footer"]}>
+                  <button className={styles["edit-btn"]} onClick={handleEditClick}>
                     ✏️ 수정
                   </button>
-                  <button className="close-detail-btn" onClick={handleCloseDetailModal}>
+                  <button className={styles["close-detail-btn"]} onClick={handleCloseDetailModal}>
                     닫기
                   </button>
                 </div>
               </>
             ) : (
               // 수정 모드
-              <form onSubmit={handleEditSubmit} className="register-form">
-                <div className="form-group">
+              <form onSubmit={handleEditSubmit} className={styles["register-form"]}>
+                <div className={styles["form-group"]}>
                   <label>상품명 *</label>
                   <input
                     type="text"
@@ -2583,7 +2583,7 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>상품 유형 *</label>
                   <select
                     name="prodTypeName"
@@ -2597,7 +2597,7 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망급여(만원) *</label>
                   <input
                     type="number"
@@ -2610,7 +2610,7 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>성별 *</label>
                   <select
                     name="userGender"
@@ -2625,7 +2625,7 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>상세 설명</label>
                   <textarea
                     name="prodDetail"
@@ -2636,12 +2636,12 @@ const AdminProductList = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망근무지역(도/광역시) *</label>
                   <select
                     value={editSelectedRegionId}
                     onChange={handleEditRegionChange}
-                    className="region-select"
+                    className={styles["region-select"]}
                     required
                   >
                     <option value="">지역을 선택하세요</option>
@@ -2653,13 +2653,13 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망근무지역(시/군/구) *</label>
                   <select
                     value={editFormData.hope_work_area_city || ''}
                     onChange={handleEditCityChange}
                     disabled={!editSelectedRegionId}
-                    className="city-select"
+                    className={styles["city-select"]}
                     required
                   >
                     <option value="">시/군/구를 선택하세요</option>
@@ -2671,11 +2671,11 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망근무장소 *</label>
-                  <div className="checkbox-group">
+                  <div className={styles["checkbox-group"]}>
                     {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
-                      <label key={workPlace} className="checkbox-label">
+                      <label key={workPlace} className={styles["checkbox-label"]}>
                         <input
                           type="checkbox"
                           checked={(editFormData.hope_work_place || '').includes(workPlace)}
@@ -2699,11 +2699,11 @@ const AdminProductList = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망근무형태 *</label>
-                  <div className="checkbox-group">
+                  <div className={styles["checkbox-group"]}>
                     {['출퇴근', '입주'].map(workType => (
-                      <label key={workType} className="checkbox-label">
+                      <label key={workType} className={styles["checkbox-label"]}>
                         <input
                           type="checkbox"
                           checked={(editFormData.hope_work_type || '').includes(workType)}
@@ -2727,11 +2727,11 @@ const AdminProductList = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>희망고용형태 *</label>
-                  <div className="checkbox-group">
+                  <div className={styles["checkbox-group"]}>
                     {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
-                      <label key={empType} className="checkbox-label">
+                      <label key={empType} className={styles["checkbox-label"]}>
                         <input
                           type="checkbox"
                           checked={(editFormData.hope_employment_type || '').includes(empType)}
@@ -2755,7 +2755,7 @@ const AdminProductList = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>학력수준</label>
                   <select
                     name="education_level"
@@ -2770,7 +2770,7 @@ const AdminProductList = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>소개 *</label>
                   <textarea
                     name="introduction"
@@ -2784,7 +2784,7 @@ const AdminProductList = () => {
 
 
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>경력 근무 장소 *</label>
                   <input
                     type="text"
@@ -2798,11 +2798,11 @@ const AdminProductList = () => {
 
 
 
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>자격증</label>
-                  <div className="checkbox-group">
+                  <div className={styles["checkbox-group"]}>
                                             {['요양보호사', '사회복지사', '간호조무사', '일반'].map(cert => (
-                          <label key={cert} className="checkbox-label">
+                          <label key={cert} className={styles["checkbox-label"]}>
                             <input
                               type="checkbox"
                               checked={(editFormData.certificate_name || '').includes(cert)}
@@ -2828,11 +2828,11 @@ const AdminProductList = () => {
 
 
 
-                <div className="form-buttons">
-                  <button type="button" onClick={handleEditCancel} className="cancel-btn">
+                <div className={styles["form-buttons"]}>
+                  <button type="button" onClick={handleEditCancel} className={styles["cancel-btn"]}>
                     취소
                   </button>
-                  <button type="submit" className="edit-submit-btn">
+                  <button type="submit" className={styles["edit-submit-btn"]}>
                     수정 완료
                   </button>
                 </div>

@@ -1,9 +1,9 @@
 import React from "react";
-import "../../styles/admin/CaregiverDashboard.css";
+import styles from "../../styles/admin/CaregiverDashboard.module.css";
 
 function CaregiverDashboard() {
   return (
-    <div className="caregiverdashboard-container">
+    <div className={styles["caregiverdashboard-container"]}>
       <h2>요양사 페이지 준비중</h2>
       </div>
       );
