@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchNoticesByNoticeId } from "../api/notice";
-import "../styles/pages/NoticeDetail.css";
+import styles from "../styles/pages/NoticeDetail.module.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 
 function NoticeDetail() {
@@ -27,16 +27,16 @@ function NoticeDetail() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="notice-detail-container">
+      <div className={styles["notice-detail-container"]}>
         <h2>{notice.facilityName || "시설"} 공지게시판</h2>
         <h2>{notice.noticeTitle}</h2>
-        <div className="notice-date">{notice.noticeCreatedAt}</div>
-        <div className="notice-content">
+        <div className={styles["notice-date"]}>{notice.noticeCreatedAt}</div>
+        <div className={styles["notice-content"]}>
           {notice.noticeContent.split("\n").map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}
         </div>
-        <Link to={`/notice/${facilityId}`} className="back-button">
+        <Link to={`/notice/${facilityId}`} className={styles["back-button"]}>
           목록으로가기
         </Link>
       </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchNoticesByFacilityId } from "../api/notice";
 import FloatingNavButtons from "../components/FloatingNavButtons";
-import "../styles/pages/NoticeList.css";
+import styles from "../styles/pages/NoticeList.module.css";
 
 function NoticeList() {
   const { facilityId } = useParams();
@@ -26,15 +26,18 @@ function NoticeList() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="notice-list-container">
+      <div className={styles["notice-list-container"]}>
         <h2>{facilityName} 공지게시판</h2>
 
-        <div className="notice-fixed">
+        <div className={styles["notice-fixed"]}>
           <h4>고정 공지</h4>
           {notices
             .filter((n) => n.noticeIsFixed)
             .map((n) => (
-              <div key={n.noticeId} className="notice-item fixed">
+              <div
+                key={n.noticeId}
+                className={`${styles["notice-item"]} ${styles["fixed"]}`}
+              >
                 <Link to={`/notice/${facilityId}/${n.noticeId}`}>
                   {n.noticeTitle}
                 </Link>
@@ -42,12 +45,12 @@ function NoticeList() {
             ))}
         </div>
 
-        <div className="notice-recent">
+        <div className={styles["notice-recent"]}>
           <h4>최근 공지</h4>
           {notices
             .filter((n) => !n.noticeIsFixed)
             .map((n) => (
-              <div key={n.noticeId} className="notice-item">
+              <div key={n.noticeId} className={styles["notice-item"]}>
                 <Link to={`/notice/${facilityId}/${n.noticeId}`}>
                   {n.noticeTitle}
                 </Link>
