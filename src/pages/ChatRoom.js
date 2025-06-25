@@ -72,11 +72,12 @@ const ChatRoom = () => {
       </div>
 
       <div className="chatwindow-area">
-        {chatTargetInfo ? (
+        {chatTargetInfo && accessGranted ? (
           <ChatWindow
             chatroomId={chatroomId}
             currentUser={{ memberId, username }}
             chatTargetInfo={chatTargetInfo}
+            //accessGranted={accessGranted}
             onExitChat={() => {
               setChatTargetInfo(null);
               triggerListRefresh();

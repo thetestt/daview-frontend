@@ -7,9 +7,16 @@ export const getChatRooms = async (memberId) => {
 };
 
 // ✅ 2. 특정 채팅방의 메시지 목록 불러오기
-export const getMessages = async (chatroomId) => {
-  const response = await axios.get(`/api/chat/rooms/${chatroomId}/messages`);
-  return response.data;
+export const getMessages = async (chatroomId, memberId) => {
+  try {
+    const res = await axios.get(`/api/chat/rooms/${chatroomId}/messages`, {
+      params: { memberId },
+    });
+    return res.data || []; // <- null 방지!
+  } catch (err) {
+    console.error("❌ 채팅방 불러오기 실패:", err);
+    return []; // <- 실패 시도 안전하게 빈 배열
+  }
 };
 
 // ✅ 3. 기존 채팅방 찾기 or 없으면 생성하기
@@ -41,4 +48,17 @@ export const exitChatRoom = async (chatroomId, memberId) => {
     memberId,
   });
   return res.data; // { success: true }
+};
+
+//채팅방 검증
+export const verifyChatAccess = async (chatroomId, memberId) => {
+  try {
+    const res = await axios.get(`/api/chat/rooms/${chatroomId}/verify`, {
+      params: { memberId },
+    });
+    return res.data.allowed; // 백엔드에서 allowed: true/false 형태로 응답한다고 가정
+  } catch (err) {
+    console.error("❌ 채팅방 접근 검증 실패:", err);
+    return false;
+  }
 };

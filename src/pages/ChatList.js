@@ -137,10 +137,11 @@ const ChatList = ({ refresh }) => {
             <div className="chat-title">{getDisplayName(room)}</div>
             <div className="chat-preview">
               <span>
-                {" "}
-                {room.lastMessage.length > 38
-                  ? `${room.lastMessage.slice(0, 38)}...`
-                  : room.lastMessage}
+                {room.lastMessage
+                  ? room.lastMessage.length > 38
+                    ? `${room.lastMessage.slice(0, 38)}...`
+                    : room.lastMessage
+                  : ""}
               </span>
               <span className="chat-time">
                 {room.lastTime
