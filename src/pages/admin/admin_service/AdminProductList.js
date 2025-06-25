@@ -1557,7 +1557,7 @@ const AdminProductList = () => {
             <tr>
               <th>상품 ID</th>
               <th>상품명</th>
-              <th>유형</th>
+              {/* <th>유형</th> 유형 컬럼 숨김 */}
               
               {/* 요양원/실버타운 선택 시 표시할 헤더 */}
               {selectedType === '요양원/실버타운' ? (
@@ -1570,8 +1570,8 @@ const AdminProductList = () => {
                   <th>상세주소</th>
                   <th>홈페이지URL</th>
                   <th>연락처</th>
-                  <th>공지사항 제목</th>
-                  <th>공지사항 내용</th>
+                  {/* <th>공지사항 제목</th> 공지사항 제목 컬럼 숨김 */}
+                  {/* <th>공지사항 내용</th> 공지사항 내용 컬럼 숨김 */}
                   <th>사진업로드</th>
                   <th>썸네일</th>
                   <th>유형</th>
@@ -1614,7 +1614,7 @@ const AdminProductList = () => {
                       {selectedType === '요양원/실버타운' ? p.facilityName : p.username}
                     </span>
                   </td>
-                  <td>{selectedType === '요양원/실버타운' ? '요양원/실버타운' : '요양사'}</td>
+                  {/* <td>{selectedType === '요양원/실버타운' ? '요양원/실버타운' : '요양사'}</td> 유형 컬럼 숨김 */}
                   
                   {/* 요양원/실버타운 데이터 */}
                   {selectedType === '요양원/실버타운' ? (
@@ -1627,8 +1627,8 @@ const AdminProductList = () => {
                       <td className={styles["detail-cell"]}>{p.facilityDetailAddress || '-'}</td>
                       <td className={styles["detail-cell"]}>{p.facilityHomepage || '-'}</td>
                       <td>{p.facilityPhone || '-'}</td>
-                      <td className={styles["detail-cell"]}>{p.noticeTitle || '-'}</td>
-                      <td className={styles["detail-cell"]}>{p.noticeContent || '-'}</td>
+                      {/* <td className={styles["detail-cell"]}>{p.noticeTitle || '-'}</td> 공지사항 제목 컬럼 숨김 */}
+                      {/* <td className={styles["detail-cell"]}>{p.noticeContent || '-'}</td> 공지사항 내용 컬럼 숨김 */}
                       <td className={styles["detail-cell"]}>{p.photoUrl || '-'}</td>
                       <td>{p.isThumbnail || '일반'}</td>
                       <td>{p.category || '-'}</td>
@@ -1689,7 +1689,7 @@ const AdminProductList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={selectedType === '요양원/실버타운' ? "18" : "20"} className={styles["no-data"]}>
+                <td colSpan={selectedType === '요양원/실버타운' ? "15" : "19"} className={styles["no-data"]}>
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 상품이 없습니다.'}
                 </td>
               </tr>
