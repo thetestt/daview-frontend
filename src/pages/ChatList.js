@@ -18,12 +18,29 @@ const ChatList = ({ refresh }) => {
       ? selectedIdFromParams
       : null;
 
-  // ✅ 채팅방 목록 초기 불러오기
+  // 처음 리스트 불러오기
   const loadChatRooms = async () => {
     try {
-      const data = await getChatRooms(memberId);
+      const basicRooms = await getChatRooms(memberId);
+
+      // 각 방에 대해 getChatRoomInfo 호출해서 상세 정보로 덮어쓰기
+      const detailedRooms = await Promise.all(
+        basicRooms.map(async (room) => {
+          try {
+            const info = await getChatRoomInfo(room.chatroomId, memberId);
+            return {
+              ...room,
+              ...info, // opponentName, type, userName 등 상세정보 덮어쓰기
+            };
+          } catch (e) {
+            console.warn(`❌ ${room.chatroomId} 상세 정보 가져오기 실패`);
+            return room; // 실패 시 기본 정보라도 유지
+          }
+        })
+      );
+
       const uniqueRooms = Array.from(
-        new Map(data.map((room) => [room.chatroomId, room])).values()
+        new Map(detailedRooms.map((room) => [room.chatroomId, room])).values()
       );
       const sortedRooms = uniqueRooms.sort(
         (a, b) => new Date(b.lastTime) - new Date(a.lastTime)
@@ -95,6 +112,18 @@ const ChatList = ({ refresh }) => {
     navigate(`/chat/${chatroomId}?skipValidation=true`);
   };
 
+  const getDisplayName = (room) => {
+    if (room.type === "facility") {
+      return room.facilityName || room.opponentName;
+    } else if (room.type === "caregiver") {
+      return room.userName ? `${room.userName} 요양사` : room.opponentName;
+    } else if (room.type === "user") {
+      return room.userName || room.opponentName;
+    } else {
+      return room.opponentName;
+    }
+  };
+
   return (
     <div className="chat-list-container">
       {chatRooms.map((room) => {
@@ -105,9 +134,14 @@ const ChatList = ({ refresh }) => {
             className={`chat-list-item ${isActive ? "active" : ""}`}
             onClick={() => handleEnterRoom(room.chatroomId)}
           >
-            <div className="chat-title">{room.opponentName}</div>
+            <div className="chat-title">{getDisplayName(room)}</div>
             <div className="chat-preview">
-              <span>{room.lastMessage}</span>
+              <span>
+                {" "}
+                {room.lastMessage.length > 38
+                  ? `${room.lastMessage.slice(0, 38)}...`
+                  : room.lastMessage}
+              </span>
               <span className="chat-time">
                 {room.lastTime
                   ? new Date(room.lastTime).toLocaleTimeString([], {
