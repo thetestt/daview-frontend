@@ -3,6 +3,7 @@
   background: white;
   color: #2c3e50;
   overflow: hidden;
+  height: 450px;
 }
 
 .heroContent {
@@ -61,7 +62,7 @@
   background: #004d7a;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 0 2px #66ccff, 0 0 2px #66ccff;
+  box-shadow: 0 0 4px #66ccff, 0 0 4px #66ccff;
 }
 
 .primaryButton {
