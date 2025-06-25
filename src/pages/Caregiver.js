@@ -1,7 +1,8 @@
 // src/page/Caregiver.js
 
 import React, { useState, useEffect } from "react";
-import "../styles/pages/NursingHome.css"; // 재사용
+import styles from "../styles/pages/EachMainPage.module.css";
+//import "../styles/layouts/layout.css";
 import { Link } from "react-router-dom";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import CaregiverList from "../components/CaregiverList";
@@ -89,11 +90,11 @@ function Caregiver() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="layout-container">
-        <div className="nursinghome-main">
+      <div className={styles["layout-container"]}>
+        <div className={styles["each-main"]}>
           {/* 상단 탭 */}
-          <div className="tab-menu">
-            <button className="active">요양사</button>
+          <div className={styles["tab-menu"]}>
+            <button className={styles["active"]}>요양사</button>
             <Link to="/nursinghome">
               <button>요양원</button>
             </Link>
@@ -103,10 +104,10 @@ function Caregiver() {
           </div>
 
           {/* 필터 박스 */}
-          <div className="filter-box">
+          <div className={styles["filter-box"]}>
             <h2>요양사 검색</h2>
 
-            <div className="filter-row">
+            <div className={styles["filter-row"]}>
               <label>지역</label>
               <select onChange={handleRegionChange}>
                 <option value="">선택</option>
@@ -142,7 +143,7 @@ function Caregiver() {
               </select>
             </div>
 
-            <div className="filter-category">
+            <div className={styles["filter-category"]}>
               <div>
                 <strong>자격증</strong>
                 {certOptions.map((opt) => (
@@ -204,7 +205,10 @@ function Caregiver() {
               </div>
             </div>
 
-            <button className="search-button" onClick={handleSearchClick}>
+            <button
+              className={styles["search-button"]}
+              onClick={handleSearchClick}
+            >
               검색
             </button>
           </div>

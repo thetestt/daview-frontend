@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "../styles/pages/Silvertown.css";
+import styles from "../styles/pages/EachMainPage.module.css";
 import { Link } from "react-router-dom";
 import SilvertownList from "../components/SilvertownList";
-import "../styles/layouts/layout.css";
+//import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import SilvertownSearchResult from "../components/SilvertownSearchResult";
 import { getFilterOptions } from "../api/filterOption";
@@ -114,25 +114,25 @@ function Silvertown() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="layout-container">
-        <div className="silvertown-main">
+      <div className={styles["layout-container"]}>
+        <div className={styles["silvertown-main"]}>
           {/* 상단 탭 */}
-          <div className="tab-menu">
+          <div className={styles["tab-menu"]}>
             <Link to="/caregiver">
               <button>요양사</button>
             </Link>
             <Link to="/nursinghome">
               <button>요양원</button>
             </Link>
-            <button onClick={refresh} className="active">
+            <button onClick={refresh} className={styles["active"]}>
               실버타운
             </button>
           </div>
 
           {/* 필터 영역 */}
-          <div className="filter-box">
+          <div className={styles["filter-box"]}>
             <h2>실버타운</h2>
-            <div className="filter-row">
+            <div className={styles["filter-row"]}>
               <label>지역</label>
               <select onChange={handleRegionChange}>
                 <option value="">선택</option>
@@ -164,7 +164,7 @@ function Silvertown() {
               </select>
             </div>
 
-            <div className="filter-category">
+            <div className={styles["filter-category"]}>
               <div>
                 <strong>주거형태</strong>
                 {residenceOptions.map((opt) => (
@@ -246,7 +246,10 @@ function Silvertown() {
               </div>
             </div>
 
-            <button className="search-button" onClick={handleSearchClick}>
+            <button
+              className={styles["search-button"]}
+              onClick={handleSearchClick}
+            >
               검색
             </button>
           </div>

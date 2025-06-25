@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "../styles/pages/NursingHome.css";
+import styles from "../styles/pages/EachMainPage.module.css";
+import "../styles/layouts/layout.css";
 import { Link } from "react-router-dom";
 import NursingHomeList from "../components/NursingHomeList";
 import FloatingNavButtons from "../components/FloatingNavButtons";
@@ -110,23 +111,23 @@ function NursingHome() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="layout-container">
-        <div className="nursinghome-main">
+      <div className={styles["layout-container"]}>
+        <div className={styles["nursinghome-main"]}>
           {/* 상단 탭 */}
-          <div className="tab-menu">
+          <div className={styles["tab-menu"]}>
             <Link to="/caregiver">
               <button>요양사</button>
             </Link>
-            <button className="active">요양원</button>
+            <button className={styles["active"]}>요양원</button>
             <Link to="/silvertown">
               <button>실버타운</button>
             </Link>
           </div>
 
           {/* 필터 박스 */}
-          <div className="filter-box">
+          <div className={styles["filter-box"]}>
             <h2>요양원</h2>
-            <div className="filter-row">
+            <div className={styles["filter-row"]}>
               <label>지역</label>
               <select onChange={handleRegionChange}>
                 <option value="">선택</option>
@@ -164,7 +165,7 @@ function NursingHome() {
               </select>
             </div>
 
-            <div className="filter-category">
+            <div className={styles["filter-category"]}>
               <div>
                 <strong>업종</strong>
                 {businessTypeOptions.map((opt) => (
@@ -246,7 +247,10 @@ function NursingHome() {
               </div>
             </div>
 
-            <button className="search-button" onClick={handleSearchClick}>
+            <button
+              className={styles["search-button"]}
+              onClick={handleSearchClick}
+            >
               검색
             </button>
           </div>

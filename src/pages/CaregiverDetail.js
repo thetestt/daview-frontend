@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCaregiverById } from "../api/caregiver";
-import "../styles/pages/CaregiverDetail.css";
-import "../styles/layouts/layout.css";
+import styles from "../styles/pages/Detail.module.css";
+//import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
@@ -32,29 +32,37 @@ function CaregiverDetail() {
   };
 
   if (!data) return <div>Loading...</div>;
+  const genderKey = data.userGender?.toLowerCase?.();
 
   return (
     <>
       <FloatingNavButtons backTo="/caregiver" />
-      <div className="layout-container">
-        <div className="caregiver-detail-container">
-          <div className="caregiver-header">
-            <div className="profile-photo-box">
+      <div className={styles["layout-container"]}>
+        <div className={styles["detail-container"]}>
+          <div className={styles["detail-header"]}>
+            <div>
               <img
                 src={data.photo || "/images/default.png"}
                 alt="증명사진"
-                className="profile-photo"
+                className={styles["main-photo"]}
               />
             </div>
-            <div className="caregiver-info">
+            <div className={styles["detail-info"]}>
               <h2>
                 <span>{data.username || "이름 미정"}</span>
-                <span className={`detail-caregiver-gender ${data.userGender}`}>
-                  {data.userGender === "male"
-                    ? "남"
-                    : data.userGender === "female"
-                    ? "여"
-                    : "미정"}
+                <span
+                  className={`${styles["detail-gender"]} ${
+                    genderKey === "male"
+                      ? styles["gender-male"]
+                      : genderKey === "female"
+                      ? styles["gender-female"]
+                      : styles["gender-unknown"]
+                  }`}
+                >
+                  {{
+                    male: "남",
+                    female: "여",
+                  }[genderKey] || "미정"}
                 </span>
               </h2>
               <p>
@@ -66,22 +74,19 @@ function CaregiverDetail() {
               <p>고용형태: {data.hopeEmploymentType}</p>
               <p>학력: {data.educationLevel}</p>
               <p>보유 자격증: {data.certificates.join(", ")}</p>
-              <p className="price">
+              <p className={styles["price"]}>
                 {data.hopeWorkAmount.toLocaleString()}원/월
               </p>
-              <div className="detail-buttons">
-                {/* 1:1버튼 */}
+              <div className={styles["detail-buttons"]}>
                 <ChatButton facilityId={id} receiverId={data.memberId} />
-                {/* 하트버튼 */}
                 <HeartButton facilityId={id} />
-                {/* <button>장바구니</button> */}
                 <CartButton data={data} productType="caregiver" />
               </div>
             </div>
-            <div className="map-box">[지도 API]</div>
+            <div className={styles["map-box"]}>[지도 API]</div>
           </div>
 
-          <div className="career-section">
+          <div className={styles["career-section"]}>
             <h3>경력사항</h3>
             <ul>
               {data.career.length > 0 ? (
@@ -96,7 +101,7 @@ function CaregiverDetail() {
             </ul>
           </div>
 
-          <div className="intro-section">
+          <div className={styles["intro-section"]}>
             <h3>자기소개</h3>
             <p>{data.introduction}</p>
           </div>

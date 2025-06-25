@@ -1,3 +1,7 @@
+.layout-container {
+  padding: 20px;
+}
+
 .detail-container {
   padding: 20px;
 }
@@ -12,13 +16,15 @@
   width: 300px;
   height: 200px;
   object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 .detail-info {
   flex: 1;
 }
 
-.detail-info .price {
+.price {
   font-size: 18px;
   color: #007acc;
   margin: 10px 0;
@@ -36,6 +42,7 @@
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
 }
 
 .map-box {
@@ -45,6 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
 }
 
 .thumbnail-box {
@@ -57,10 +65,15 @@
   width: 100px;
   height: 80px;
   object-fit: cover;
+  border-radius: 4px;
 }
 
 .tag-section {
   margin: 10px 0;
+}
+
+.notice-section {
+  margin-top: 20px;
 }
 
 .fnotice-item {
@@ -71,7 +84,7 @@
   height: 80px;
   width: 100%;
   box-sizing: border-box;
-  display: flex; /* ✅ 직접 적용해도 좋음 */
+  display: flex;
   align-items: center;
 }
 
@@ -82,7 +95,7 @@
   text-decoration: none;
   color: #333;
   width: 100%;
-  height: 100%; /* ✅ 중요! 부모 높이 따라가기 */
+  height: 100%;
 }
 
 .fnotice-title {
@@ -97,4 +110,46 @@
   white-space: nowrap;
   text-decoration: none;
   border: none;
+}
+
+.notice-full-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #007acc;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.career-section ul {
+  padding-left: 20px;
+}
+
+.intro-section {
+  margin-top: 20px;
+}
+
+/* 성별 배지 스타일 */
+.detail-gender {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 12px;
+}
+
+.gender-male {
+  background-color: #2196f3;
+}
+
+.gender-female {
+  background-color: #e91e63;
+}
+
+.gender-unknown {
+  background-color: #9e9e9e;
 }
