@@ -1,5 +1,5 @@
 import React from "react";
-import SlideBanner from "../components/SliderBanner";
+// import SlideBanner from "../components/SliderBanner";
 import MainButton from "../components/MainButton";
 import IntroSection from "../components/IntroSection";
 
@@ -25,7 +25,7 @@ function Home() {
 
   return (
     <div>
-      <SlideBanner />
+      {/* <SlideBanner /> */}
       <IntroSection />
       <MainButton />
 

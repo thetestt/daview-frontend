@@ -79,7 +79,11 @@ function Header() {
         <div className={styles["header-right"]}>
           <div className={styles["search-box"]}>
             <span className={styles["search-icon"]}>
-              <img src="/images/buttonimage/searchicon.png" alt="검색" />
+              <img
+                src="/images/buttonimage/searchicon.png"
+                alt="검색"
+                onClick={handleSearch}
+              />
             </span>
             <input
               type="text"
@@ -93,9 +97,9 @@ function Header() {
                 }
               }}
             />
-            <button className={styles["search-button"]} onClick={handleSearch}>
+            {/* <button className={styles["search-button"]} onClick={handleSearch}>
               검색
-            </button>
+            </button> */}
           </div>
 
           {/* 오른쪽: 로그인 / 회원가입 */}

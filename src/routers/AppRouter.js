@@ -24,6 +24,7 @@ import FindIdResultPage from "../pages/auth/FindIdResultPage";
 import FindPasswordPage from "../pages/auth/FindPasswordPage";
 import LoginPage from "../pages/auth/LoginPage";
 import MyPage from "../pages/auth/MyPage";
+import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
@@ -119,6 +120,9 @@ const AppRouter = () => {
 
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
+
+        {/* 내 프로필 */}
+        <Route path="/mypage/myprofile" element={<MyProfile />} />
 
         {/* 관리자 상품 목록 */}
         <Route path="/admin/products" element={<AdminProductList />} />

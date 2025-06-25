@@ -69,7 +69,11 @@ function SliderBanner() {
         onTransitionEnd={handleTransitionEnd}
       >
         {cloneSlides.map((item, i) => (
-          <a href={item?.url || "#"} key={i}>
+          <a
+            href={item?.url || "#"}
+            key={i}
+            onClick={(e) => e.preventDefault()}
+          >
             <img
               src={item?.image}
               alt={item?.alt || "슬라이드 이미지"}
@@ -80,12 +84,20 @@ function SliderBanner() {
       </div>
 
       {/* 좌우 버튼 */}
-      <button className={styles["nav-button prev"]} onClick={goToPrev}>
-        ‹
-      </button>
-      <button className={styles["nav-button next"]} onClick={goToNext}>
-        ›
-      </button>
+      <div className={styles["nav-wrapper"]}>
+        <button
+          className={`${styles["nav-button"]} ${styles["prev"]}`}
+          onClick={goToPrev}
+        >
+          ❮
+        </button>
+        <button
+          className={`${styles["nav-button"]} ${styles["next"]}`}
+          onClick={goToNext}
+        >
+          ❯
+        </button>
+      </div>
 
       {/* 인디케이터 */}
       <div className={styles["indicators"]}>
