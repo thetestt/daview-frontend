@@ -1,6 +1,7 @@
 import React from "react";
 import SlideBanner from "../components/SliderBanner";
 import MainButton from "../components/MainButton";
+import IntroSection from "../components/IntroSection";
 
 function Home() {
   const username = localStorage.getItem("username");
@@ -25,6 +26,7 @@ function Home() {
   return (
     <div>
       <SlideBanner />
+      <IntroSection />
       <MainButton />
 
       {/* <p>{mainMessage}</p>
@@ -39,7 +41,6 @@ function Home() {
 }
 
 export default Home;
-
 
 // 헷갈려서 여기 좀 적을게여~ - 수현
 
