@@ -12,43 +12,6 @@
     text-align: left;
   }
   
-  .mypage-body {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 40px;
-  }
-  
-  /* 왼쪽 */
-  .mypage-left {
-    width: 250px;
-    padding: 20px;
-    border: 1px solid #bbb;
-    border-radius: 10px;
-    text-align: center;
-  }
-  
-  .mypage-avatar {
-    width: 100px;
-    height: 100px;
-    background: #ddd;
-    border-radius: 50%;
-    margin: 0 auto 15px;
-  }
-  
-  .mypage-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-direction: column; 
-    gap: 10px;
-  }
-  
-  .mypage-menu li {
-    margin: 12px 0;
-    font-weight: 500;
-    cursor: pointer;
-  }
   
   /* 오른쪽 */
   .mypage-right {
