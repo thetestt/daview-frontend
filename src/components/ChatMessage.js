@@ -1,14 +1,18 @@
 import React from "react";
-import "../styles/components/ChatMessage.css";
+import styles from "../styles/components/ChatMessage.module.css";
 
 const ChatMessage = ({ message }) => {
   const isMe = message.sender === "나";
 
   return (
-    <div className={`chat-message ${isMe ? "me" : "you"}`}>
-      <div className="bubble">
-        <p className="text">{message.content}</p>
-        <p className="time">{message.time}</p>
+    <div
+      className={`${styles["chat-message"]} ${
+        isMe ? styles["me"] : styles["you"]
+      }`}
+    >
+      <div className={styles["bubble"]}>
+        <p className={styles["text"]}>{message.content}</p>
+        <p className={styles["time"]}>{message.time}</p>
       </div>
     </div>
   );

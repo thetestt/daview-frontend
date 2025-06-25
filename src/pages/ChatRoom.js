@@ -4,7 +4,7 @@ import ChatWindow from "../components/ChatWindow";
 import ChatList from "./ChatList";
 import { getChatRoomInfo } from "../api/chat";
 import axios from "../api/axiosInstance";
-import "../styles/pages/ChatRoom.css";
+import styles from "../styles/pages/ChatRoom.module.css";
 
 const ChatRoom = () => {
   const { chatroomId } = useParams();
@@ -66,12 +66,12 @@ const ChatRoom = () => {
   if (!accessGranted) return null;
 
   return (
-    <div className="chatroom-layout">
-      <div className="chatlist-area">
+    <div className={styles["chatroom-layout"]}>
+      <div className={styles["chatlist-area"]}>
         <ChatList refresh={refreshList} />
       </div>
 
-      <div className="chatwindow-area">
+      <div className={styles["chatwindow-area"]}>
         {chatTargetInfo && accessGranted ? (
           <ChatWindow
             chatroomId={chatroomId}
@@ -84,7 +84,7 @@ const ChatRoom = () => {
             }}
           />
         ) : (
-          <div className="chat-exited-message"></div>
+          <div className={styles["chat-exited-message"]}></div>
         )}
       </div>
     </div>

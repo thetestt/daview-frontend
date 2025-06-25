@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/components/ChatInput.css";
+import styles from "../styles/components/ChatInput.module.css";
 
 const ChatInput = ({ onSend }) => {
   const [text, setText] = useState("");
@@ -17,7 +17,7 @@ const ChatInput = ({ onSend }) => {
   };
 
   return (
-    <div className="chat-input">
+    <div className={styles["chat-input"]}>
       <input
         type="text"
         value={text}

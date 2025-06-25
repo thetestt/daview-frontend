@@ -2,8 +2,8 @@
   position: fixed;
   /* top: 100px;
   left: 10px; */
-  right : 10px;
-  bottom : 50px;
+  right: 10px;
+  bottom: 50px;
   display: flex;
   flex-direction: column; /* 세로 방향 정렬 */
   align-items: flex-start; /* 왼쪽 정렬 */
@@ -13,7 +13,7 @@
 
 .fnav-button {
   padding: 10px 10px;
-  background-color: #216793;
+  background-color: #00334f;
   color: white;
   border: none;
   border-radius: 8px;
@@ -26,6 +26,6 @@
 }
 
 .fnav-button:hover {
-  background-color: #f959f9;
+  background-color: #01659b;
   transition: background 0.3s ease;
 }

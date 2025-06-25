@@ -3,7 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { getChatRooms, getChatRoomInfo } from "../api/chat";
-import "../styles/pages/ChatList.css";
+import styles from "../styles/pages/ChatList.module.css";
 
 const ChatList = ({ refresh }) => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -125,17 +125,19 @@ const ChatList = ({ refresh }) => {
   };
 
   return (
-    <div className="chat-list-container">
+    <div className={styles["chat-list-container"]}>
       {chatRooms.map((room) => {
         const isActive = String(room.chatroomId) === selectedChatroomId;
         return (
           <div
             key={room.chatroomId}
-            className={`chat-list-item ${isActive ? "active" : ""}`}
+            className={`${styles["chat-list-item"]} ${
+              isActive ? styles["active"] : ""
+            }`}
             onClick={() => handleEnterRoom(room.chatroomId)}
           >
-            <div className="chat-title">{getDisplayName(room)}</div>
-            <div className="chat-preview">
+            <div className={styles["chat-title"]}>{getDisplayName(room)}</div>
+            <div className={styles["chat-preview"]}>
               <span>
                 {room.lastMessage
                   ? room.lastMessage.length > 38
@@ -143,7 +145,7 @@ const ChatList = ({ refresh }) => {
                     : room.lastMessage
                   : ""}
               </span>
-              <span className="chat-time">
+              <span className={styles["chat-time"]}>
                 {room.lastTime
                   ? new Date(room.lastTime).toLocaleTimeString([], {
                       hour: "2-digit",
@@ -153,7 +155,7 @@ const ChatList = ({ refresh }) => {
               </span>
             </div>
             {room.unreadCount > 0 && (
-              <div className="unread-badge">{room.unreadCount}</div>
+              <div className={styles["unread-badge"]}>{room.unreadCount}</div>
             )}
           </div>
         );

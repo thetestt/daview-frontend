@@ -4,7 +4,7 @@ import { Client } from "@stomp/stompjs";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import { getMessages, exitChatRoom, verifyChatAccess } from "../api/chat";
-import "../styles/components/ChatWindow.css";
+import styles from "../styles/components/ChatWindow.module.css";
 //import { useNavigate } from "react-router";
 
 const ChatWindow = ({
@@ -191,48 +191,60 @@ const ChatWindow = ({
   if (isAllowed === false) return null;
 
   return (
-    <div className="chat-window">
+    <div className={styles["chat-window"]}>
       {chatTargetInfo && (
-        <div className="chatroom-header">
-          {chatTargetInfo.type === "facility" ? (
-            <div>
-              <h3>{chatTargetInfo.facilityName}</h3>
-              <p>
-                {chatTargetInfo.facilityAddressLocation}{" "}
-                {chatTargetInfo.facilityAddressCity}
-              </p>
-              <p>{chatTargetInfo.facilityPhone}</p>
-            </div>
-          ) : chatTargetInfo.type === "caregiver" ? (
-            <div>
-              <h3>{chatTargetInfo.userName} 요양사</h3>
-              <p>
-                희망근무지 :{chatTargetInfo.hopeWorkAreaLocation}{" "}
-                {chatTargetInfo.hopeWorkAreaCity}
-              </p>
-            </div>
-          ) : chatTargetInfo.type === "user" ? (
-            <div>
-              <h3>{chatTargetInfo.userName}</h3>
-              <p>일반 사용자</p>
-            </div>
-          ) : (
-            <div>정보가 없습니다</div>
-          )}
+        <div className={styles["chatroom-header"]}>
+          <div className={styles["header-content"]}>
+            {/* 상대방 정보 */}
+            {chatTargetInfo.type === "facility" ? (
+              <div>
+                <h3>
+                  {chatTargetInfo.facilityName}
+                  <span className={styles["facility-type"]}>
+                    {" "}
+                    {chatTargetInfo.facilityType}
+                  </span>
+                </h3>
+                <div className={styles["info-row"]}>
+                  <p>
+                    {chatTargetInfo.facilityAddressLocation}{" "}
+                    {chatTargetInfo.facilityAddressCity}{" "}
+                    {chatTargetInfo.facilityPhone}
+                  </p>
+                </div>
+              </div>
+            ) : chatTargetInfo.type === "caregiver" ? (
+              <div>
+                <h3>{chatTargetInfo.userName} 요양사</h3>
+                <p>
+                  희망근무지 :{chatTargetInfo.hopeWorkAreaLocation}{" "}
+                  {chatTargetInfo.hopeWorkAreaCity}
+                </p>
+              </div>
+            ) : chatTargetInfo.type === "user" ? (
+              <div>
+                <h3>{chatTargetInfo.userName}</h3>
+                <p>일반 사용자</p>
+              </div>
+            ) : (
+              <div>정보가 없습니다</div>
+            )}
 
-          <button className="exit-chat-btn" onClick={handleExit}>
-            채팅방 나가기
-          </button>
+            {/* 우측 상단 나가기 버튼 */}
+            <button className={styles["exit-chat-btn"]} onClick={handleExit}>
+              채팅방 나가기
+            </button>
+          </div>
         </div>
       )}
 
-      <div className="message-list">
+      <div className={styles["message-list"]}>
         {messages.map((msg, index) => (
           <ChatMessage key={index} message={msg} />
         ))}
         <div ref={endOfMessagesRef} />
       </div>
-      <ChatInput onSend={sendMessage} className="chat-input" />
+      <ChatInput onSend={sendMessage} className={styles["chat-input"]} />
     </div>
   );
 };

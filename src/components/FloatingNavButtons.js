@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../styles/components/FloatingNavButtons.css";
+import styles from "../styles/components/FloatingNavButtons.module.css";
 import GoBackButton from "./common/GoBackButton";
 
 //tofh
@@ -18,26 +18,26 @@ function FloatingNavButtons({ backTo = "/" }) {
   };
 
   return (
-    <div className="floating-nav-container">
+    <div className={styles["floating-nav-container"]}>
       {/* 25.06.05 -히스토리기반으로 뒤로가기 버튼 생성  
       네비 사용하는 모든 페이지 에서 기존 
       Backto(수동경로 설정) 지우고 단일 버튼으로 사용 합니다.*/}
-      <GoBackButton />
+      <GoBackButton className={styles["fnav-button"]} />
       <button
         onClick={() => handleNavClick("/silvertown")}
-        className="fnav-button"
+        className={styles["fnav-button"]}
       >
         실버타운
       </button>
       <button
         onClick={() => handleNavClick("/nursinghome")}
-        className="fnav-button"
+        className={styles["fnav-button"]}
       >
         요양원
       </button>
       <button
         onClick={() => handleNavClick("/caregiver")}
-        className="fnav-button"
+        className={styles["fnav-button"]}
       >
         요양사
       </button>
