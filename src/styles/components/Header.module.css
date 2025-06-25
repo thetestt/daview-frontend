@@ -167,7 +167,7 @@
 }
 
 .nav-bar {
-  background-color: #f7f6f6;
+  background-color: #00334f;
   display: flex;
   align-items: center;
   padding-left: 30px;
@@ -185,7 +185,7 @@
   padding: 16px 24px;
   font-size: 25px;
   font-weight: 600;
-  color: #00334f;
+  color: #ffffff;
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -198,6 +198,11 @@
 .nav-bar .dropdown {
   position: relative;
   padding-left: 10px;
+}
+
+.nav-bar ul li > a:hover {
+  background-color: #01659b;
+  color: white;
 }
 
 .dropdown-menu {
