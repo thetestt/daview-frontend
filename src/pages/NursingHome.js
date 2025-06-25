@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/pages/EachMainPage.module.css";
-import "../styles/layouts/layout.css";
+//import "../styles/layouts/layout.css";
 import { Link } from "react-router-dom";
 import NursingHomeList from "../components/NursingHomeList";
 import FloatingNavButtons from "../components/FloatingNavButtons";
