@@ -562,150 +562,92 @@ const AdminProductList = () => {
     prodDetail: ''
   });
 
-  // 더미 데이터 필터링 함수
-  const filterDummyData = (searchTerm = '', typeFilter = '') => {
-    let filteredData = dummyProducts;
-    
-    // 유형별 필터링
-    if (typeFilter && typeFilter !== '') {
-      if (typeFilter === '요양원/실버타운') {
-        // 요양원/실버타운 타입만 포함, 요양사 제외
-        filteredData = filteredData.filter(product => 
-          product.prodTypeName === '요양원/실버타운'
-        );
-      } else {
-        filteredData = filteredData.filter(product => 
-          product.prodTypeName === typeFilter
-        );
-      }
-    }
-    
-    // 요양사 전용 필터링 (요양사가 선택된 경우에만)
-    if (typeFilter === '요양사') {
-      // 성별 필터링
-      if (filterGender && filterGender !== '') {
-        filteredData = filteredData.filter(product => {
-          if (filterGender === '무관') return true;
-          return product.userGender === filterGender || product.gender === filterGender;
-        });
-      }
-      
-      // 자격증 필터링
-      if (filterCertificate && filterCertificate !== '') {
-        const selectedCerts = filterCertificate.split(',').filter(c => c);
-        filteredData = filteredData.filter(product => {
-          const productCerts = product.certificatesString || product.certificate_name || product.certificates || '';
-          return selectedCerts.some(cert => 
-            productCerts.toLowerCase().includes(cert.toLowerCase())
-          );
-        });
-      }
-      
-      // 근무형태 필터링
-      if (filterWorkType && filterWorkType !== '') {
-        const selectedWorkTypes = filterWorkType.split(',').filter(w => w);
-        filteredData = filteredData.filter(product => {
-          const productWorkType = product.hope_work_type || product.workType || '';
-          return selectedWorkTypes.some(workType => {
-            if (workType === '출퇴근') return productWorkType.includes('출퇴근') || productWorkType.includes('방문');
-            if (workType === '입주') return productWorkType.includes('입주');
-            return productWorkType.includes(workType);
-          });
-        });
-      }
-      
-      // 고용형태 필터링
-      if (filterEmploymentType && filterEmploymentType !== '') {
-        const selectedEmpTypes = filterEmploymentType.split(',').filter(e => e);
-        filteredData = filteredData.filter(product => {
-          const productEmpType = product.hope_employment_type || product.employmentType || '';
-          return selectedEmpTypes.some(empType => 
-            productEmpType.includes(empType)
-          );
-        });
-      }
-    }
+  // 실제 API 데이터 필터링 함수
+  const filterApiData = (data, searchTerm = '', typeFilter = '') => {
+    let filteredData = Array.isArray(data) ? [...data] : [];
     
     // 검색어 필터링
     if (searchTerm.trim()) {
-      filteredData = filteredData.filter(product => 
-        product.prodName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.prodTypeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.prodDetail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (product.province && product.province.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (product.city && product.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (product.preferredWorkLocation && product.preferredWorkLocation.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
+      filteredData = filteredData.filter(product => {
+        const searchableFields = [
+          product.facilityName || product.prodName || '',
+          product.facilityType || product.prodTypeName || '',
+          product.location || product.hope_work_area_location || '',
+          product.city || product.hope_work_area_city || '',
+          product.introduction || ''
+        ];
+        
+        return searchableFields.some(field => 
+          field.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
     }
     
     return filteredData;
   };
 
-  // 상품 목록 조회 요청
+  // 상품 목록 가져오기
   const fetchProducts = async () => {
     try {
-      setIsLoading(true);
-      setIsServerConnected(true);
+      console.log('=== fetchProducts 시작 ===');
+      console.log('현재 선택된 상품 유형:', selectedType);
       
-      console.log('DB 데이터 조회 시작...');
-      console.log('요청 파라미터:', { page, size, search: search.trim(), type: selectedType });
+      let url, apiName;
       
-      // 실제 API 호출 (백엔드 서버 주소로 변경)
-      const response = await axios.get('http://localhost:8080/api/admin/products', {
-        params: {
-          page,
-          size,
-          search: search.trim(),
-          type: selectedType
-        },
+      if (selectedType === '요양원/실버타운') {
+        url = 'http://localhost:8080/admin/facilities';
+        apiName = '요양원';
+      } else if (selectedType === '요양사') {
+        url = 'http://localhost:8080/admin/caregivers';
+        apiName = '요양사';
+      } else {
+        // 전체 조회 시 요양사 데이터만 조회 (기본값)
+        url = 'http://localhost:8080/admin/caregivers';
+        apiName = '요양사';
+      }
+      
+      console.log(`=== ${apiName} API 호출 시작 ===`);
+      console.log('API 호출 URL:', url);
+      
+      const config = {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        timeout: 10000 // 10초 타임아웃
-      });
+        credentials: 'include'
+      };
+      console.log('API 호출 설정:', config);
       
-             console.log('DB 응답 성공!');
-       console.log('응답 전체:', response);
-       console.log('응답 데이터:', response.data);
-       console.log('데이터 타입:', typeof response.data);
-       console.log('content 필드:', response.data.content);
-       console.log('content 길이:', response.data.content ? response.data.content.length : 'content 없음');
-       
-       const products = response.data.content || response.data || [];
-       console.log('최종 설정될 products:', products);
-       
-       // 🔍 디버깅: 첫 번째 요양사 데이터 상세 확인
-       if (products.length > 0) {
-         console.log('🔍 첫 번째 요양사 전체 데이터:', products[0]);
-         console.log('🔍 certificatesString:', products[0].certificatesString);
-         console.log('🔍 careerString:', products[0].careerString);
-         console.log('🔍 startDateString:', products[0].startDateString);
-         console.log('🔍 endDateString:', products[0].endDateString);
-         console.log('🔍 username:', products[0].username);
-         console.log('🔍 userGender:', products[0].userGender);
-       }
-       
-       setProducts(products);
+      const response = await fetch(url, config);
+      console.log('API 응답 상태:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log(`=== ${apiName} API 응답 데이터 ===`);
+      console.log('응답 데이터 타입:', typeof data);
+      console.log('응답 데이터 길이:', Array.isArray(data) ? data.length : 'Not an array');
+      console.log('응답 데이터 전체:', data);
+      
+      if (Array.isArray(data) && data.length > 0) {
+        console.log(`첫 번째 ${apiName} 데이터:`, data[0]);
+        console.log(`첫 번째 ${apiName} 필드들:`);
+        Object.keys(data[0]).forEach(key => {
+          console.log(`  ${key}: ${data[0][key]}`);
+        });
+      }
+      
+      setProducts(data || []);
+      console.log(`=== ${apiName} 데이터 설정 완료 ===`);
       
     } catch (error) {
-      console.error('DB 연결 실패:', error);
-      setIsServerConnected(false);
+      console.error('=== fetchProducts 오류 ===');
+      console.error('오류 메시지:', error.message);
+      console.error('오류 스택:', error.stack);
       setProducts([]);
-      
-      // 상세한 에러 정보 출력
-      if (error.response) {
-        console.error('서버 응답 에러:', error.response.status, error.response.data);
-        alert(`서버 오류: ${error.response.status} - ${error.response.data?.message || '알 수 없는 오류'}`);
-      } else if (error.request) {
-        console.error('네트워크 오류:', error.request);
-        alert('서버에 연결할 수 없습니다. 네트워크 상태를 확인해주세요.');
-      } else {
-        console.error('요청 설정 오류:', error.message);
-        alert(`요청 오류: ${error.message}`);
-      }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -1239,14 +1181,6 @@ const AdminProductList = () => {
     } catch (error) {
       console.error('상품 삭제 실패:', error);
       
-      // 더미 데이터에서 삭제 (서버 연결 실패 시)
-      if (!isServerConnected) {
-        const updatedProducts = dummyProducts.filter(p => p.prodId !== productId);
-        setProducts(updatedProducts);
-        alert('상품이 삭제되었습니다. (더미 데이터)');
-        return;
-      }
-      
       // 에러 타입별 메시지 처리
       if (error.response) {
         const status = error.response.status;
@@ -1362,12 +1296,9 @@ const AdminProductList = () => {
       <div className={styles["admin-header"]}>
         <h2>📦 상품 목록</h2>
         <div className={styles["header-info"]}>
-          {!isServerConnected && (
-            <span className={`${styles["server-status"]} ${styles["offline"]}`}>🔴 오프라인 모드 (더미 데이터)</span>
-          )}
-          {isServerConnected && (
-            <span className={`${styles["server-status"]} ${styles["online"]}`}>🟢 서버 연결됨</span>
-          )}
+          <span className={`${styles["server-status"]} ${styles["online"]}`}>
+            🟢 API 모드 (실시간 데이터) - 총 {products.length}개
+          </span>
           <button 
             className={styles["register-btn"]}
             onClick={() => {
@@ -1627,61 +1558,110 @@ const AdminProductList = () => {
               <th>상품 ID</th>
               <th>상품명</th>
               <th>유형</th>
-              <th>희망급여(만원)</th>
-              <th>소개</th>
-              <th>희망근무지역(도/광역시)</th>
-              <th>희망근무지역(시/군/구)</th>
-              <th>희망근무장소</th>
-              <th>희망근무형태</th>
-              <th>희망고용형태</th>
-              <th>학력수준</th>
-              <th>경력근무지</th>
-              <th>입사일</th>
-              <th>퇴사일</th>
-              <th>자격증</th>
-              <th>추가된 날짜</th>
-              <th>수정된 날짜</th>
-              <th>삭제된 날짜</th>
-              <th>상세 설명</th>
+              
+              {/* 요양원/실버타운 선택 시 표시할 헤더 */}
+              {selectedType === '요양원/실버타운' ? (
+                <>
+                  <th>월별이용료</th>
+                  <th>구분</th>
+                  <th>도/광역시</th>
+                  <th>시/구</th>
+                  <th>테마</th>
+                  <th>상세주소</th>
+                  <th>홈페이지URL</th>
+                  <th>연락처</th>
+                  <th>공지사항 제목</th>
+                  <th>공지사항 내용</th>
+                  <th>사진업로드</th>
+                  <th>썸네일</th>
+                  <th>유형</th>
+                  <th>태그</th>
+                </>
+              ) : (
+                /* 요양사 선택 시 표시할 헤더 (기존) */
+                <>
+                  <th>희망급여(만원)</th>
+                  <th>소개</th>
+                  <th>희망근무지역(도/광역시)</th>
+                  <th>희망근무지역(시/군/구)</th>
+                  <th>희망근무장소</th>
+                  <th>희망근무형태</th>
+                  <th>희망고용형태</th>
+                  <th>학력수준</th>
+                  <th>경력근무지</th>
+                  <th>입사일</th>
+                  <th>퇴사일</th>
+                  <th>자격증</th>
+                  <th>추가된 날짜</th>
+                  <th>수정된 날짜</th>
+                  <th>삭제된 날짜</th>
+                  <th>상세 설명</th>
+                </>
+              )}
               <th>관리</th>
             </tr>
           </thead>
           <tbody>
-            {products.length > 0 ? (
-              products.map((p) => (
-                <tr key={p.prodId}>
-                  <td>{p.prodId}</td>
+                          {products.length > 0 ? (
+                products.map((p, index) => (
+                <tr key={selectedType === '요양원/실버타운' ? `facility-${p.facilityId}-${index}` : `caregiver-${p.caregiverId}-${index}`}>
+                  <td>{selectedType === '요양원/실버타운' ? p.facilityId : p.caregiverId}</td>
                   <td>
                     <span 
                       className={styles["product-name-link"]} 
                       onClick={() => handleProductClick(p)}
                     >
-                      {p.prodName}
+                      {selectedType === '요양원/실버타운' ? p.facilityName : p.username}
                     </span>
                   </td>
-                  <td>{p.prodTypeName}</td>
-                  <td>{p.prodPrice || p.price || 0}만원</td>
-                  <td className={styles["detail-cell"]}>{p.prodDetail || p.description || '-'}</td>
-                  <td>{p.location ? p.location.split(' ')[0] : '-'}</td>
-                  <td>{p.location ? p.location.split(' ')[1] : '-'}</td>
-                  <td className={styles["detail-cell"]}>{p.workPlace || '-'}</td>
-                  <td>{p.workType || '-'}</td>
-                  <td>{p.employmentType || '-'}</td>
-                  <td>{p.education || '-'}</td>
-
-                  <td className={styles["detail-cell"]}>{p.careerString || '-'}</td>
-                  <td>{p.startDateString || '-'}</td>
-                  <td>{p.endDateString || '-'}</td>
-                  <td className={styles["detail-cell"]}>{p.certificatesString || '-'}</td>
-                  <td>{p.createdAt || '-'}</td>
-                  <td>{p.updatedAt || '-'}</td>
-                  <td style={{color: p.deletedAt ? '#dc3545' : '#28a745'}}>
-                    {p.deletedAt ? p.deletedAt : '활성'}
-                  </td>
-                  <td className={styles["detail-cell"]}>{p.prodDetail}</td>
+                  <td>{selectedType === '요양원/실버타운' ? '요양원/실버타운' : '요양사'}</td>
+                  
+                  {/* 요양원/실버타운 데이터 */}
+                  {selectedType === '요양원/실버타운' ? (
+                    <>
+                      <td>{p.facilityCharge || '-'}</td>
+                      <td>{p.facilityType || '-'}</td>
+                      <td>{p.facilityAddressLocation || '-'}</td>
+                      <td>{p.facilityAddressCity || '-'}</td>
+                      <td>{p.facilityTheme || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.facilityDetailAddress || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.facilityHomepage || '-'}</td>
+                      <td>{p.facilityPhone || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.noticeTitle || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.noticeContent || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.photoUrl || '-'}</td>
+                      <td>{p.isThumbnail || '일반'}</td>
+                      <td>{p.category || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.facilityTag || '-'}</td>
+                    </>
+                  ) : (
+                    /* 요양사 데이터 - 백엔드 필드명에 맞춰 수정 */
+                    <>
+                      <td>{p.hopeWorkAmount || 0}만원</td>
+                      <td className={styles["detail-cell"]}>{p.introduction || '-'}</td>
+                      <td>{p.hopeWorkAreaLocation || '-'}</td>
+                      <td>{p.hopeWorkAreaCity || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.hopeWorkPlace || '-'}</td>
+                      <td>{p.hopeWorkType || '-'}</td>
+                      <td>{p.hopeEmploymentType || '-'}</td>
+                      <td>{p.educationLevel || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.careerString || '-'}</td>
+                      <td>{p.startDateString || '-'}</td>
+                      <td>{p.endDateString || '-'}</td>
+                      <td className={styles["detail-cell"]}>{p.certificatesString || '-'}</td>
+                      <td>{p.caregiverCreatedAt || '-'}</td>
+                      <td>{p.caregiverUpdateAt || '-'}</td>
+                      <td style={{color: '#28a745'}}>활성</td>
+                      <td className={styles["detail-cell"]}>{p.introduction || '-'}</td>
+                    </>
+                  )}
+                  
                   <td>
                     <button 
-                      onClick={() => handleDeleteProduct(p.prodId, p.prodName)}
+                      onClick={() => handleDeleteProduct(
+                        selectedType === '요양원/실버타운' ? p.facilityId : p.caregiverId, 
+                        selectedType === '요양원/실버타운' ? p.facilityName : p.username
+                      )}
                       style={{
                         background: 'linear-gradient(135deg, #dc3545, #c82333)',
                         color: 'white',
@@ -1709,7 +1689,7 @@ const AdminProductList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="19" className={styles["no-data"]}>
+                <td colSpan={selectedType === '요양원/실버타운' ? "18" : "20"} className={styles["no-data"]}>
                   {isLoading ? '데이터를 불러오는 중...' : '등록된 상품이 없습니다.'}
                 </td>
               </tr>
@@ -1839,9 +1819,9 @@ const AdminProductList = () => {
                     required={formData.prodTypeName === '요양사'}
                   >
                     <option value="">시/군/구를 선택하세요</option>
-                    {cities.map(city => (
-                      <option key={city.id} value={city.name}>
-                        {city.name}
+                    {cities.map((city, index) => (
+                      <option key={city.id || city.name || index} value={city.name || city}>
+                        {city.name || city}
                       </option>
                     ))}
                   </select>
