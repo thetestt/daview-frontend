@@ -1,7 +1,7 @@
 // 📂 src/components/SliderBanner.js
 import React, { useEffect, useRef, useState } from "react";
 import slideImages from "../data/slideImages";
-import "../styles/components/SliderBanner.css";
+import styles from "../styles/components/SliderBanner.module.css";
 
 // 복제된 슬라이드 배열 생성 (구조 보존)
 const cloneSlides = [
@@ -57,12 +57,14 @@ function SliderBanner() {
 
   return (
     <div
-      className="slider-container"
+      className={styles["slider-container"]}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`slider-track ${isTransitioning ? "transition" : ""}`}
+        className={`${styles["slider-track"]} ${
+          isTransitioning ? styles["transition"] : ""
+        }`}
         style={{ transform: `translateX(-${index * 100}%)` }}
         onTransitionEnd={handleTransitionEnd}
       >
@@ -71,26 +73,26 @@ function SliderBanner() {
             <img
               src={item?.image}
               alt={item?.alt || "슬라이드 이미지"}
-              className="slide-image"
+              className={styles["slide-image"]}
             />
           </a>
         ))}
       </div>
 
       {/* 좌우 버튼 */}
-      <button className="nav-button prev" onClick={goToPrev}>
+      <button className={styles["nav-button prev"]} onClick={goToPrev}>
         ‹
       </button>
-      <button className="nav-button next" onClick={goToNext}>
+      <button className={styles["nav-button next"]} onClick={goToNext}>
         ›
       </button>
 
       {/* 인디케이터 */}
-      <div className="indicators">
+      <div className={styles["indicators"]}>
         {slideImages.map((_, i) => (
           <span
             key={i}
-            className={`dot ${i + 1 === index ? "active" : ""}`}
+            className={`${styles.dot} ${i + 1 === index ? styles.active : ""}`}
             onClick={() => setIndex(i + 1)}
           ></span>
         ))}
