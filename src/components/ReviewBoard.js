@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllReviews } from "../api/reviewApi";
+import styles from "../styles/components/ReviewBoard.module.css";
 
 function ReviewBoard() {
   const navigate = useNavigate();
@@ -19,57 +20,34 @@ function ReviewBoard() {
   }, []);
 
   return (
-    <div
-      style={{ maxWidth: "800px", margin: "50px auto", textAlign: "center" }}
-    >
+    <div className={styles["review-container"]}>
       <h2>후기 게시판</h2>
-      <div style={{ textAlign: "right" }}>
+      <div className={styles["review-buttonWrapper"]}>
         <button onClick={() => navigate("/review-write")}>후기 작성</button>
       </div>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          border: "1px solid #ddd",
-        }}
-      >
-        <thead>
-          <tr>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>번호</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>제목</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>
-              작성자
-            </th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>별점</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>
-              작성일자
-            </th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>
-              조회수
-            </th>
+
+      <table className={styles["review-table"]}>
+        <thead className={styles["review-thead"]}>
+          <tr className={styles["review-tr"]}>
+            <th className={styles["review-th"]}>번호</th>
+            <th className={styles["review-th"]}>제목</th>
+            <th className={styles["review-th"]}>작성자</th>
+            <th className={styles["review-th"]}>별점</th>
+            <th className={styles["review-th"]}>작성일자</th>
+            <th className={styles["review-th"]}>조회수</th>
           </tr>
         </thead>
         <tbody>
           {reviews.map((review, index) => (
-            <tr key={review.revId} style={{ borderBottom: "1px solid #ddd" }}>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                {index + 1}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                {review.revTtl}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                {review.memberId}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                {review.revStars}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
+            <tr key={review.revId} className={styles["review-tr"]}>
+              <td className={styles["review-td"]}>{index + 1}</td>
+              <td className={styles["review-td"]}>{review.revTtl}</td>
+              <td className={styles["review-td"]}>{review.memberId}</td>
+              <td className={styles["review-td"]}>{review.revStars}</td>
+              <td className={styles["review-td"]}>
                 {new Date(review.revRegDate).toLocaleDateString()}
               </td>
-              <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                {review.revViews}
-              </td>
+              <td className={styles["review-td"]}>{review.revViews}</td>
             </tr>
           ))}
         </tbody>

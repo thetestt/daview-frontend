@@ -61,6 +61,7 @@
   border: 1px solid #ccc;
   border-radius: 13px;
   overflow: hidden;
+  margin-right: 20px;
 }
 
 .search-icon {
@@ -181,7 +182,7 @@
 .nav-bar a {
   display: block;
   padding: 16px 24px;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
   color: #00334f;
   text-decoration: none;
@@ -189,7 +190,7 @@
 }
 
 .nav-bar a:hover {
-  background-color: #e774bd;
+  background-color: #00334f;
   color: white;
 }
 
@@ -210,6 +211,7 @@
   min-width: 220px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  border-radius: 6px;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -228,28 +230,13 @@
 }
 
 .dropdown-menu li a:hover {
-  background-color: #dad6d8;
-  color: #e774bd;
+  background-color: #00334f;
+  color: #ffffff;
 }
 
 ul {
   list-style-type: none;
   display: flex;
-}
-
-.nav-bar a {
-  display: block;
-  padding: 12px 20px;
-  font-size: 25px;
-  color: #00334f;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.nav-bar a:hover {
-  color: #e774bd;
-  background-color: #dad6d8;
-  text-shadow: none;
 }
 
 .header-search-input {
