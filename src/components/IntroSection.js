@@ -10,8 +10,9 @@ function IntroSection() {
           <h1 className={styles.heroTitle}>
             가족을 위한
             <br />
-            <span className={styles.highlight}>안전한 요양시설</span>을
-            찾아보세요
+            <span className={styles.highlight}>
+              안전한 요양시설을 찾아보세요
+            </span>
           </h1>
           <p className={styles.heroSubtitle}>
             전국 1,200개 이상의 인증된 요양시설에서
@@ -26,13 +27,6 @@ function IntroSection() {
               전문 요양사 찾기
             </Link>
           </div>
-        </div>
-        <div className={styles.heroImage}>
-          <img
-            src="/images/hero-elderly-care.jpg"
-            alt=""
-            className={styles.heroImg}
-          />
         </div>
       </div>
     </section>
