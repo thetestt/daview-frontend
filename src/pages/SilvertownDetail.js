@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 //import silvertowns from "../data/silvertowns";
-import "../styles/pages/SilvertownDetail.css";
-import "../styles/layouts/layout.css";
+import styles from "../styles/pages/Detail.module.css";
+//import "../styles/layouts/layout.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import { fetchSilvertownDetail } from "../api/silvertown";
 import CartButton from "../components/CartButton";
@@ -34,17 +34,17 @@ function SilvertownDetail() {
   return (
     <>
       <FloatingNavButtons />
-      <div className="layout-container">
-        <div className="detail-container">
-          <div className="detail-header">
+      <div className={styles["layout-container"]}>
+        <div className={styles["detail-container"]}>
+          <div className={styles["detail-header"]}>
             <img
               src={data.photos[0] || "/images/default.png"}
               alt="메인"
-              className="main-photo"
+              className={styles["main-photo"]}
             />
-            <div className="detail-info">
+            <div className={styles["detail-info"]}>
               <h2>{data.facilityName}</h2>
-              <p className="price">
+              <p className={styles["price"]}>
                 {data.facilityCharge.toLocaleString()}원/월
               </p>
               <p>
@@ -57,20 +57,16 @@ function SilvertownDetail() {
                 <a href={data.facilityHomepage}>{data.facilityHomepage}</a>
               </p>
               <p>전화번호: {data.facilityPhone}</p>
-              <div className="detail-buttons">
-                {/* 1:1버튼 */}
+              <div className={styles["detail-buttons"]}>
                 <ChatButton facilityId={id} receiverId={data.memberId} />
-                {/* 하트버튼 */}
                 <HeartButton facilityId={id} />
-                {/* <button>상담예약</button>
-                <button>장바구니</button> */}
                 <CartButton data={data} productType="silvertown" />
               </div>
             </div>
-            <div className="map-box">[지도 API]</div>
+            <div className={styles["map-box"]}>[지도 API]</div>
           </div>
 
-          <div className="thumbnail-box">
+          <div className={styles["thumbnail-box"]}>
             {data.photos &&
             data.photos.length > 0 &&
             data.photos.some((url) => url) ? (
@@ -83,61 +79,58 @@ function SilvertownDetail() {
               <img
                 src="/images/default.png"
                 alt="기본 이미지"
-                className="card-thumbnail"
+                className={styles["card-thumbnail"]}
               />
             )}
           </div>
 
-          <div className="tag-section">
+          <div className={styles["tag-section"]}>
             <strong>태그: </strong>
             {data.tags.join(", ")}
           </div>
 
-          <div className="notice-section">
+          <div className={styles["notice-section"]}>
             <h3>공지사항</h3>
             <ul>
               {data.notices.filter((n) => n.noticeIsFixed).length > 0 ? (
-                // 고정 공지 1순위
                 data.notices
                   .filter((n) => n.noticeIsFixed)
                   .map((notice, i) => (
-                    <li key={i} className="fnotice-item">
+                    <li key={i} className={styles["fnotice-item"]}>
                       <Link
                         to={`/notice/${data.facilityId}/${notice.noticeId}`}
-                        className="fnotice-link"
+                        className={styles["fnotice-link"]}
                       >
-                        <span className="fnotice-title">
+                        <span className={styles["fnotice-title"]}>
                           [공지] {notice.noticeTitle}
                         </span>
-                        <span className="fnotice-date">
+                        <span className={styles["fnotice-date"]}>
                           {notice.noticeUpdatedAt?.slice(0, 10)}
                         </span>
                       </Link>
                     </li>
                   ))
               ) : data.notices.length > 0 ? (
-                // 고정이 없다면 최신 1개만
-                <li className="fnotice-item">
+                <li className={styles["fnotice-item"]}>
                   <Link
                     to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
-                    className="fnotice-link"
+                    className={styles["fnotice-link"]}
                   >
-                    <span className="fnotice-title">
+                    <span className={styles["fnotice-title"]}>
                       {data.notices[0].noticeTitle}
                     </span>
-                    <span className="fnotice-date">
+                    <span className={styles["fnotice-date"]}>
                       {data.notices[0].noticeUpdatedAt?.slice(0, 10)}
                     </span>
                   </Link>
                 </li>
               ) : (
-                // 공지가 아예 없을 때
                 <li>등록된 공지사항이 없습니다.</li>
               )}
             </ul>
             <Link
               to={`/notice/${data.facilityId}`}
-              className="notice-full-link"
+              className={styles["notice-full-link"]}
             >
               공지사항 전체 보기
             </Link>

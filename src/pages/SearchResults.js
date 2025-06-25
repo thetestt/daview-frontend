@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { fetchSearchResults } from "../api/SearchResults";
-import "../styles/components/MainList.css"; // ✅ 스타일 적용
+import styles from "../styles/components/MainList.module.css";
 
 function SearchResults() {
   const location = useLocation();
@@ -26,21 +26,26 @@ function SearchResults() {
   }, [query]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">🔍 '{query}' 검색 결과</h2>
+    <div className={styles["p-4"]}>
+      <h2 className={styles["text-xl font-bold mb-4"]}>
+        🔍 '{query}' 검색 결과
+      </h2>
 
       {/* 요양원 */}
       {results.nursinghomes.length > 0 && (
-        <section className="mb-8">
-          <h3 className="text-lg font-semibold mb-2">🏥 요양원</h3>
-          <div className="facility-list">
+        <section className={styles["mb-8"]}>
+          <h3 className={styles["text-lg font-semibold mb-2"]}>🏥 요양원</h3>
+          <div className={styles["facility-list"]}>
             {results.nursinghomes.map((item) => (
-              <div key={item.facilityId} className="facility-card-wrapper">
+              <div
+                key={item.facilityId}
+                className={styles["facility-card-wrapper"]}
+              >
                 <div
-                  className="facility-card-link"
+                  className={styles["facility-card-link"]}
                   onClick={() => navigate(`/nursinghome/${item.facilityId}`)}
                 >
-                  <div className="facility-card">
+                  <div className={styles["facility-card"]}>
                     <img
                       src={
                         item.photoUrl
@@ -48,7 +53,7 @@ function SearchResults() {
                           : "/images/default.png"
                       }
                       alt={item.facilityName}
-                      className="card-thumbnail"
+                      className={styles["card-thumbnail"]}
                     />
                     <h3>{item.facilityName}</h3>
                     <p>
@@ -69,16 +74,19 @@ function SearchResults() {
 
       {/* 실버타운 */}
       {results.silvertowns.length > 0 && (
-        <section className="mb-8">
-          <h3 className="text-lg font-semibold mb-2">🏡 실버타운</h3>
-          <div className="facility-list">
+        <section className={styles["mb-8"]}>
+          <h3 className={styles["text-lg font-semibold mb-2"]}>🏡 실버타운</h3>
+          <div className={styles["facility-list"]}>
             {results.silvertowns.map((item) => (
-              <div key={item.facilityId} className="facility-card-wrapper">
+              <div
+                key={item.facilityId}
+                className={styles["facility-card-wrapper"]}
+              >
                 <div
-                  className="facility-card-link"
+                  className={styles["facility-card-link"]}
                   onClick={() => navigate(`/silvertown/${item.facilityId}`)}
                 >
-                  <div className="facility-card">
+                  <div className={styles["facility-card"]}>
                     <img
                       src={
                         item.photoUrl
@@ -86,7 +94,7 @@ function SearchResults() {
                           : "/images/default.png"
                       }
                       alt={item.facilityName}
-                      className="card-thumbnail"
+                      className={styles["card-thumbnail"]}
                     />
                     <h3>{item.facilityName}</h3>
                     <p>
@@ -107,21 +115,31 @@ function SearchResults() {
 
       {/* 요양사 */}
       {results.caregivers.length > 0 && (
-        <section className="mb-8">
-          <h3 className="text-lg font-semibold mb-2">👩‍⚕️ 요양사</h3>
-          <div className="facility-list">
+        <section className={styles["mb-8"]}>
+          <h3 className={styles["text-lg font-semibold mb-2"]}>👩‍⚕️ 요양사</h3>
+          <div className={styles["facility-list"]}>
             {results.caregivers.map((item) => (
               <Link
                 key={item.caregiverId}
                 to={`/caregiver/${item.caregiverId}`}
-                className="facility-card"
+                className={styles["facility-card"]}
               >
                 {/* 이름 + 성별 */}
-                <h2 className="caregiver-name-box">
-                  <span className="caregiver-name">
+                <h2 className={styles["caregiver-name-box"]}>
+                  <span className={styles["caregiver-name"]}>
                     {item.username || "이름 미정"}
                   </span>
-                  <span className={`caregiver-gender ${item.userGender}`}>
+                  <span
+                    className={`${styles["caregiverGender"]} ${
+                      styles[
+                        item.userGender === "male"
+                          ? "genderMale"
+                          : item.userGender === "female"
+                          ? "genderFemale"
+                          : "genderUnknown"
+                      ]
+                    }`}
+                  >
                     {item.userGender === "male"
                       ? "남"
                       : item.userGender === "female"

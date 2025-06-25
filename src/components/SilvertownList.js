@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/components/MainList.css";
+import styles from "../styles/components/MainList.module.css";
 import { Link } from "react-router-dom";
 import { fetchSilvertowns } from "../api/silvertown"; // ✅ API에서만 불러오기
 
@@ -17,28 +17,31 @@ function SilvertownList() {
   }, []);
 
   return (
-    <div className="facility-list">
+    <div className={styles["facility-list"]}>
       {data
         .filter((town) => town.facilityId) // key가 될 값이 있는지 확인
         .map((town) => (
-          <div key={town.facilityId} className="facility-card-wrapper">
+          <div
+            key={town.facilityId}
+            className={styles["facility-card-wrapper"]}
+          >
             <Link
               to={`/silvertown/${town.facilityId}`}
-              className="facility-card-link"
+              className={styles["facility-card-link"]}
             >
-              <div className="facility-card">
+              <div className={styles["facility-card"]}>
                 {/* ✅ photoUrl 기준으로 이미지 표시 */}
                 {town.photoUrl ? (
                   <img
                     src={`http://localhost:8080${town.photoUrl}`}
                     alt={town.facilityName}
-                    className="card-thumbnail"
+                    className={styles["card-thumbnail"]}
                   />
                 ) : (
                   <img
                     src="/images/default.png"
                     alt="기본 이미지"
-                    className="card-thumbnail"
+                    className={styles["card-thumbnail"]}
                   />
                 )}
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/components/MainList.css";
+import styles from "../styles/components/MainList.module.css";
 import { Link } from "react-router-dom";
 import { fetchFilteredSilvertowns } from "../api/silvertown"; // 🔁 필터 적용 API 함수 사용
 
@@ -20,29 +20,32 @@ function SilvertownSearchResult({ filters }) {
   }, [filters]);
 
   return (
-    <div className="facility-list">
+    <div className={styles["facility-list"]}>
       <h3>실버타운 검색결과</h3>
       {data.length === 0 ? (
         <p>조건에 맞는 결과가 없습니다.</p>
       ) : (
         data.map((town) => (
-          <div key={town.facilityId} className="facility-card-wrapper">
+          <div
+            key={town.facilityId}
+            className={styles["facility-card-wrapper"]}
+          >
             <Link
               to={`/silvertown/${town.facilityId}`}
-              className="facility-card-link"
+              className={styles["facility-card-link"]}
             >
-              <div className="facility-card">
+              <div className={styles["facility-card"]}>
                 {town.photoUrl ? (
                   <img
                     src={`http://localhost:8080${town.photoUrl}`}
                     alt={town.facilityName}
-                    className="card-thumbnail"
+                    className={styles["card-thumbnail"]}
                   />
                 ) : (
                   <img
                     src="/images/default.png"
                     alt="기본 이미지"
-                    className="card-thumbnail"
+                    className={styles["card-thumbnail"]}
                   />
                 )}
                 <h3>{town.facilityName}</h3>

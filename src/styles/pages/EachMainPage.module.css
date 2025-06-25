@@ -1,11 +1,14 @@
-.nursinghome-main {
+.layout-container {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* 탭 메뉴 */
 .tab-menu {
   display: flex;
-  gap: 5px !important;
-  margin-bottom: 0px !important;
+  gap: 5px;
+  margin-bottom: 0px;
 }
 
 .tab-menu button {
@@ -16,8 +19,8 @@
 }
 
 .tab-menu button:hover {
-  background: #e774bd; /* 호버 시 색상 변경 */
-  color: #000; /* 글자색도 변경 가능 */
+  background: #e774bd;
+  color: #000;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -26,33 +29,60 @@
   color: #fff;
 }
 
+/* 필터 박스 */
 .filter-box {
   border: 1px solid #ddd;
   padding: 20px;
   margin-bottom: 20px;
+  background-color: white;
+  border-radius: 6px;
 }
 
+/* 필터 행 */
 .filter-row {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-row label {
+  margin-right: 6px;
+  font-weight: bold;
+}
+
+.filter-row select {
+  padding: 5px;
+}
+
+/* 필터 카테고리 */
+.filter-category {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 16px;
 }
 
 .filter-category > div {
   margin-bottom: 20px;
+  min-width: 200px;
 }
 
 .filter-category label {
   margin-right: 10px;
 }
 
-/* .search-button {
+/* 검색 버튼 */
+.search-button {
+  margin-top: 10px;
   padding: 10px 20px;
-  background: #00334f;
-  color: #fff;
+  background-color: #00334f;
+  color: white;
   border: none;
+  font-weight: bold;
   cursor: pointer;
-} */
+  border-radius: 4px;
+}
 
 .search-button:hover {
   background: #ff4cbd;

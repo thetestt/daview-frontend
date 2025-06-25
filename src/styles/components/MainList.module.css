@@ -49,7 +49,7 @@
   margin-left: 30px;
 }
 
-.caregiver-gender {
+.caregiverGender {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -60,18 +60,18 @@
   font-weight: bold;
   color: white;
   margin-left: 8px;
-  margin-right: 12px; /* ✅ 오른쪽 공간 확보 */
+  margin-right: 12px;
 }
 
-.caregiver-gender.male {
+.genderMale {
   background-color: #2196f3; /* 파랑 */
 }
 
-.caregiver-gender.female {
+.genderFemale {
   background-color: #e91e63; /* 분홍 */
 }
 
-.caregiver-gender.hidden {
+.genderUnknown {
   background-color: #9e9e9e; /* 회색 */
 }
 
