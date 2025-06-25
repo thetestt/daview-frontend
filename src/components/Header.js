@@ -107,10 +107,10 @@ function Header() {
               <span onClick={handleLogout}>로그아웃</span>
             </div>
           ) : (
-            <>
+            <div className={styles["user-actions"]}>
               <Link to="/login">로그인</Link>
               <Link to="/signup">회원가입</Link>
-            </>
+            </div>
           )}
         </div>
       </header>
@@ -119,41 +119,41 @@ function Header() {
       <nav className={styles["nav-bar"]}>
         <ul>
           <li className={styles["dropdown"]}>
-            <a href="/caregiver">요양사</a>
+            <Link to="/caregiver">요양사</Link>
             <ul className={styles["dropdown-menu"]}>
               <li>
-                <a href="/nursinghome">상품 보러가기</a>
-                <a href="/nursinghome">예약하기</a>
+                <Link to="/caregiver">상품 보러가기</Link>
+                <Link to="/caregiver">예약하기</Link>
               </li>
             </ul>
           </li>
           <li className={styles["dropdown"]}>
-            <a href="/nursinghome">요양원</a>
+            <Link to="/nursinghome">요양원</Link>
             <ul className={styles["dropdown-menu"]}>
               <li>
-                <a href="/nursinghome">상품 보러가기</a>
-                <a href="/nursinghome">예약하기</a>
+                <Link to="/nursinghome">상품 보러가기</Link>
+                <Link to="/nursinghome">예약하기</Link>
               </li>
             </ul>
           </li>
           <li className={styles["dropdown"]}>
-            <a href="/silvertown">실버타운</a>
+            <Link to="/silvertown">실버타운</Link>
             <ul className={styles["dropdown-menu"]}>
               <li>
-                <a href="/nursinghome">상품 보러가기</a>
-                <a href="/nursinghome">예약하기</a>
+                <Link to="/silvertown">상품 보러가기</Link>
+                <Link to="/silvertown">예약하기</Link>
               </li>
             </ul>
           </li>
           <li className={styles["dropdown"]}>
-            <a href="#">고객의 소리</a>
+            <Link to="#">고객의 소리</Link>
             <ul className={styles["dropdown-menu"]}>
               <li>
                 <Link to="/notice/00000000-0000-0000-0000-000000000001">
                   공지게시판
                 </Link>
-                <Link to="/review-board">문의하기</Link>
-                <Link to="#">고객 후기</Link>
+                <Link to="/mypage">문의하기</Link>
+                <Link to="/review-board">고객 후기</Link>
               </li>
             </ul>
           </li>
