@@ -95,7 +95,7 @@ const MyPage = () => {
               <Link to="/mypage/myprofile">내 프로필</Link>
             </li>
             <li>
-              <Link to="/FindPasswordPage/CPw">비밀번호 변경</Link>
+              <Link to="/FindPasswordPage/CPw-check">비밀번호 변경</Link>
             </li>
             <li>
               <Link to={`/payments/member/${memberId}`}>주문 내역</Link>
@@ -138,7 +138,7 @@ const MyPage = () => {
             <h2 className={styles["profile-title"]}>비밀번호 변경</h2>
             <div className={styles["profile-item"]}>
               <label>비밀번호</label>
-              <Link to="/FindPasswordPage/CPw" className={styles["mod-btn"]}>
+              <Link to="/FindPasswordPage/CPw-check" className={styles["mod-btn"]}>
                 비밀번호 변경
               </Link>
             </div>
