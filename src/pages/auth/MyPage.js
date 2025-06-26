@@ -18,6 +18,18 @@ const MyPage = () => {
   const [payments, setPayments] = useState([]);
   const memberId = localStorage.getItem("memberId");
 
+  const maskName = (name) => {
+    if (!name) return "";
+    if (name.length === 2) {
+      return name[0] + "*";
+    }
+    if (name.length >= 3) {
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
+    }
+    return name;
+  };
+
+
   const handleChatOpen = async () => {
     try {
       const chatRooms = await getChatRooms(memberId);
@@ -92,18 +104,14 @@ const MyPage = () => {
           <div className={styles["mypage-avatar"]}></div>
           <ul className={styles["mypage-menu"]}>
             <li>
-              <Link to="/mypage/myprofile">내 프로필</Link>
-            </li>
-            <li>
-              <Link to="/FindPasswordPage/CPw-check">비밀번호 변경</Link>
+              <Link to="/mypage/myprofile">내 정보</Link>
             </li>
             <li>
               <Link to={`/payments/member/${memberId}`}>주문 내역</Link>
             </li>
             <li>
-              <button type="button" onClick={handleChatOpen}>
-                1:1 채팅룸
-              </button>
+              <button type="button" onClick={handleChatOpen} className={styles["fake-link"]}>1:1 문의</button>
+
             </li>
             <li>내가 쓴 후기</li>
             <li>
@@ -115,7 +123,7 @@ const MyPage = () => {
 
         <div className={styles["mypage-right"]}>
           <div className={styles["profile-box"]}>
-            <h2 className={styles["profile-title"]}>내 프로필</h2>
+            <h2 className={styles["profile-title"]}>내 정보</h2>
             <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
@@ -123,24 +131,7 @@ const MyPage = () => {
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
-              <div className={styles["value"]}>{profile.name}</div>
-              <button className={styles["mod-btn"]}>수정</button>
-            </div>
-            <div className={styles["profile-item"]}>
-              <label>사용자 전화번호</label>
-              <div className={styles["value"]}>{profile.phone}</div>
-              <button className={styles["mod-btn"]}>수정</button>
-            </div>
-          </div>
-          <br />
-
-          <div className={styles["profile-box"]}>
-            <h2 className={styles["profile-title"]}>비밀번호 변경</h2>
-            <div className={styles["profile-item"]}>
-              <label>비밀번호</label>
-              <Link to="/FindPasswordPage/CPw-check" className={styles["mod-btn"]}>
-                비밀번호 변경
-              </Link>
+              <div className={styles["value"]}>{maskName(profile.name)}</div>
             </div>
           </div>
           <br />
@@ -155,7 +146,7 @@ const MyPage = () => {
           <br />
 
           <div className={styles["profile-box"]}>
-            <h2 className={styles["profile-title"]}>1:1 상담 내역</h2>
+            <h2 className={styles["profile-title"]}>1:1 문의</h2>
             <div className={styles["profile-item"]}>
               <label>상담 건수</label>
               <div className={styles["value"]}>{consults.length} 건</div>
@@ -191,7 +182,7 @@ const MyPage = () => {
           <br />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
