@@ -26,6 +26,7 @@ export const getReviewById = async (revId) => {
   const response = await axios.get(`/api/review/${revId}`);
   return response.data;
 };
+<<<<<<< KJ-F-03
 
 export const getReviewByIdForEdit = async (revId) => {
   const response = await axios.get(`/api/review/${revId}/edit`);
@@ -36,3 +37,5 @@ export const updateReview = async (revId, reviewData) => {
   const response = await axios.put(`/api/review/${revId}/update`, reviewData);
   return response.data;
 };
+=======
+>>>>>>> main
