@@ -136,7 +136,7 @@ const ChatWindow = ({
 
       messageCache.clear(); // ✅ 캐시도 초기화
     };
-  }, [chatroomId, currentUser.memberId]);
+  }, [chatroomId, currentUser.memberId, messageCache]);
 
   // ✅ 메시지 전송 함수
   const sendMessage = (content) => {
