@@ -17,6 +17,10 @@ import PaymentList from "../pages/PaymentListPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
 import ReviewDetail from "../pages/ReviewDetailPage";
+<<<<<<< KJ-F-03
+import ReviewUpdate from "../pages/ReviewUpdatePage";
+=======
+>>>>>>> main
 import SearchResults from "../pages/SearchResults";
 import Silvertown from "../pages/Silvertown";
 import SilvertownDetail from "../pages/SilvertownDetail";
@@ -115,6 +119,10 @@ const AppRouter = () => {
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
         <Route path="/review/:revId" element={<ReviewDetail />} />
+<<<<<<< KJ-F-03
+        <Route path="/review/:revId/update" element={<ReviewUpdate />} />
+=======
+>>>>>>> main
 
         {/* 관리자 외 대시보드 */}
         <Route path="/company/main" element={<CompanyDashboard />} />
@@ -125,7 +133,10 @@ const AppRouter = () => {
 
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        <Route
+          path="/FindPasswordPage/CPw-check"
+          element={<ChangePasswordCheckPage />}
+        />
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
