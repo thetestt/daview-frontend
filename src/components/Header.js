@@ -20,6 +20,7 @@ function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("memberId");
     window.location.href = "/";
   };
 
@@ -64,6 +65,17 @@ function Header() {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
+  const handleMypage = (e) => {
+    e.preventDefault();
+    if (!memberId) {
+      alert("로그인 후 이용해주세요");
+      navigate("/login");
+    } else {
+      alert("1:1 문의는 [마이페이지]에서 이용해주세요");
+      navigate("/mypage");
+    }
+  };
 
   return (
     <div>
@@ -165,7 +177,9 @@ function Header() {
                 <Link to="/notice/00000000-0000-0000-0000-000000000001">
                   공지게시판
                 </Link>
-                <Link to="/mypage">문의하기</Link>
+                <Link to="#" onClick={handleMypage}>
+                  문의하기
+                </Link>
                 <Link to="/review-board">고객 후기</Link>
               </li>
             </ul>

@@ -4,24 +4,24 @@ import MainButton from "../components/MainButton";
 import IntroSection from "../components/IntroSection";
 
 function Home() {
-  const username = localStorage.getItem("username");
-  const role = localStorage.getItem("role");
+  // const username = localStorage.getItem("username");
+  // const role = localStorage.getItem("role");
 
-  let mainMessage;
-  if (role === "user") {
-    mainMessage = `${username}님, 일반 유저 페이지에 오신 걸 환영합니다.`;
-  } else if (role === "caregiver") {
-    mainMessage = `${username}님, 요양사 페이지입니다.`;
-  } else if (role === "company") {
-    mainMessage = `${username}님, 기업 전용 페이지입니다.`;
-  } else {
-    mainMessage = "";
-  }
+  // let mainMessage;
+  // if (role === "user") {
+  //   mainMessage = `${username}님, 일반 유저 페이지에 오신 걸 환영합니다.`;
+  // } else if (role === "caregiver") {
+  //   mainMessage = `${username}님, 요양사 페이지입니다.`;
+  // } else if (role === "company") {
+  //   mainMessage = `${username}님, 기업 전용 페이지입니다.`;
+  // } else {
+  //   mainMessage = "";
+  // }
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   window.location.href = "/login";
+  // };
 
   return (
     <div>
