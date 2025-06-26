@@ -23,6 +23,7 @@ const ChatWindow = ({
   const receivedMessageCacheRef = useRef(new Set());
   const messageCache = receivedMessageCacheRef.current;
   const [isAllowed, setIsAllowed] = useState(null);
+  const [isOpponentOut, setIsOpponentOut] = useState(false);
 
   //const [accessGranted, setAccessGranted] = useState(false);
 
@@ -166,10 +167,19 @@ const ChatWindow = ({
   useEffect(() => {
     console.log("받은 채팅 상대 정보:", chatTargetInfo);
 
+    if (chatTargetInfo && currentUser) {
+      const isSender = chatTargetInfo.senderId === currentUser.memberId;
+      const opponentOut = isSender
+        ? chatTargetInfo.receiverTrashCan
+        : chatTargetInfo.senderTrashCan;
+
+      setIsOpponentOut(opponentOut === true);
+    }
+
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, chatTargetInfo]);
+  }, [messages, chatTargetInfo, currentUser]);
 
   //나가기
   const handleExit = async () => {
@@ -243,8 +253,19 @@ const ChatWindow = ({
           <ChatMessage key={index} message={msg} />
         ))}
         <div ref={endOfMessagesRef} />
+        {/* ❤️ 상대방 나감 안내 & 입력창 처리 */}
+        {isOpponentOut && (
+          <div className={styles["opponent-left"]}>
+            상대방이 방을 나갔습니다.
+          </div>
+        )}
       </div>
-      <ChatInput onSend={sendMessage} className={styles["chat-input"]} />
+
+      <ChatInput
+        onSend={sendMessage}
+        disabled={isOpponentOut}
+        className={styles["chat-input"]}
+      />
     </div>
   );
 };

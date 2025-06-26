@@ -22,6 +22,7 @@ const ChatList = ({ refresh }) => {
   const loadChatRooms = async () => {
     try {
       const basicRooms = await getChatRooms(memberId);
+      console.log("🧾 [기본 채팅방 리스트]", basicRooms);
 
       // 각 방에 대해 getChatRoomInfo 호출해서 상세 정보로 덮어쓰기
       const detailedRooms = await Promise.all(
@@ -55,6 +56,7 @@ const ChatList = ({ refresh }) => {
   const updateSingleRoom = async (roomId) => {
     try {
       const updatedRoom = await getChatRoomInfo(roomId, memberId);
+      console.log("📦getchatRoomInfo 메서드 작동하나?:", updatedRoom);
       if (!updatedRoom) return;
 
       setChatRooms((prevRooms) => {
@@ -83,12 +85,12 @@ const ChatList = ({ refresh }) => {
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
       onConnect: () => {
-        console.log("✅ ChatList WebSocket 연결됨");
+        console.log("✅ ChatList WebSocket 연결됨 우루롹끼");
 
         // ✅ 채팅방 리스트 갱신용 구독
         stompClient.subscribe(`/sub/chat/roomList/${memberId}`, (msg) => {
           const payload = JSON.parse(msg.body);
-          console.log("📩 채팅방 업데이트 수신:", payload);
+          console.log("📩 채팅방 리스드갱신용 chatlist.js :", payload);
           updateSingleRoom(payload.chatroomId);
         });
       },

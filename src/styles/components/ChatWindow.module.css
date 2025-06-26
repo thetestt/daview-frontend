@@ -80,3 +80,10 @@
   font-size: 14px;
   color: #555;
 }
+
+.opponent-left {
+  text-align: center;
+  color: rgb(89, 86, 116);
+  font-style: italic;
+  margin: 1rem 0;
+}

@@ -54,7 +54,7 @@ const ChatRoom = () => {
     if (accessGranted) {
       getChatRoomInfo(chatroomId, memberId)
         .then((data) => {
-          console.log("프론트로 넘어온 데이터 " + data);
+          console.log("프론트로 넘어온 데이터 여기서 받아야 하나보네 " + data);
           console.log(JSON.stringify(data, null, 2)); // data를 콘솔에 출력
           setChatTargetInfo(data);
         })
