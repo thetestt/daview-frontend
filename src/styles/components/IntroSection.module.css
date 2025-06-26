@@ -1,12 +1,12 @@
-.heroSection {
-  padding: 80px 0 60px;
+.introSection {
+  padding: 70px 0 60px;
   background: white;
   color: #2c3e50;
   overflow: hidden;
   height: 450px;
 }
 
-.heroContent {
+.introContent {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -16,11 +16,13 @@
   align-items: center;
 }
 
-.heroText {
+.introText {
   flex: 1 1 500px;
+  opacity: 0; /* 시작 상태 */
+  animation: slideUp 0.8s ease-out forwards;
 }
 
-.heroTitle {
+.introTitle {
   font-size: 3.5rem;
   font-weight: 700;
   line-height: 1.2;
@@ -34,14 +36,14 @@
   -webkit-text-fill-color: transparent;
 }
 
-.heroSubtitle {
+.introSubtitle {
   font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 40px;
   color: #7f8c8d;
 }
 
-.heroButtons {
+.introButtons {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
@@ -76,14 +78,14 @@
   border: 2px solid #00334f;
 }
 
-.heroImage {
-  flex: 1 1 400px;
-  display: flex;
-  justify-content: center;
-}
-
-.heroImg {
-  max-width: 100%;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+/* 애니메이션 */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
