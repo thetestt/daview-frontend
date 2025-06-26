@@ -102,6 +102,7 @@ const AppRouter = () => {
 
         {/* 채팅 */}
         {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
+        <Route path="/chat" element={<ChatRoom />} />
         <Route path="/chat/:chatroomId" element={<ChatRoom />} />
         <Route path="/chatlist" element={<ChatList />} />
 
@@ -125,7 +126,10 @@ const AppRouter = () => {
 
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        <Route
+          path="/FindPasswordPage/CPw-check"
+          element={<ChangePasswordCheckPage />}
+        />
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />

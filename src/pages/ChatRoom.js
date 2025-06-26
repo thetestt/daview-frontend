@@ -27,6 +27,11 @@ const ChatRoom = () => {
       return;
     }
 
+    if (!chatroomId) {
+      setAccessGranted(true); // 리스트만 보여주기 허용
+      return;
+    }
+
     if (skipValidation) {
       setAccessGranted(true);
       return;
