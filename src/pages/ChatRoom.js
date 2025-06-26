@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import ChatList from "./ChatList";
-import { getChatRoomInfo } from "../api/chat";
+import { getChatRoomInfo, markMessagesAsRead } from "../api/chat";
 import axios from "../api/axiosInstance";
 import styles from "../styles/pages/ChatRoom.module.css";
 
@@ -51,14 +51,16 @@ const ChatRoom = () => {
   }, [chatroomId, memberId, navigate, skipValidation]);
 
   useEffect(() => {
-    if (accessGranted) {
+    if (accessGranted && chatroomId && memberId) {
       getChatRoomInfo(chatroomId, memberId)
+        //상대방 정보 가져오기
         .then((data) => {
-          console.log("프론트로 넘어온 데이터 " + data);
+          console.log("프론트로 넘어온 데이터 여기서 받아야 하나보네 " + data);
           console.log(JSON.stringify(data, null, 2)); // data를 콘솔에 출력
           setChatTargetInfo(data);
         })
         .catch((err) => console.error("상대 정보 가져오기 실패", err));
+      markMessagesAsRead(chatroomId, memberId);
     }
   }, [accessGranted, chatroomId, memberId]);
 

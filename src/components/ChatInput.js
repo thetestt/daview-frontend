@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/components/ChatInput.module.css";
 
-const ChatInput = ({ onSend }) => {
+const ChatInput = ({ onSend, disabled = false }) => {
   const [text, setText] = useState("");
 
   const handleSend = () => {
@@ -23,9 +23,13 @@ const ChatInput = ({ onSend }) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="메시지를 입력하세요"
+        placeholder={disabled ? " " : "메시지를 입력하세요"}
+        disabled={disabled}
       />
-      <button onClick={handleSend}>전송</button>
+
+      <button onClick={handleSend} disabled={disabled}>
+        전송
+      </button>
     </div>
   );
 };
