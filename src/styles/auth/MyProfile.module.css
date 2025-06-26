@@ -1,69 +1,156 @@
+.profile-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.profile-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.profile-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #ddd;
+}
+
+.profile-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  color: #222;
+}
+
+.profile-list li span {
+  font-weight: 500;
+}
+
+.match-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.notice {
+  font-size: 13px;
+  color: #e9438f;
+  margin-top: 4px;
+}
+
+.profile-user {
+  align-items: center;
+}
+
+.profile-user .user-id {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.danger {
+  text-align: right;
+  font-weight: 500;
+  color: #d00;
+  cursor: pointer;
+}
 .mypage-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px;
-    height: calc(100vh - -600px);
-  }
-  
-  .mypage-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    text-align: left;
-  }
-  
-  
-  /* 오른쪽 */
-  .mypage-right {
-    flex-grow: 1;
-  }
-  
-  .profile-box {
-    border: 1px solid #bbb;
-    padding: 25px;
-    border-radius: 10px;
-    background: #fdfdfd;
-  }
-  
-  .profile-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  
-  .profile-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    gap: 10px;
-  }
-  
-  .profile-item label {
-    width: 130px;
-    font-weight: 600;
-  }
-  
-  .value {
-    flex-grow: 1;
-    padding: 5px 10px;
-    border-bottom: 1px solid #ccc;
-    margin-right: 10px;
-    color: #000;
-  }
-  
-  .mod-btn {
-    background-color: #0077b6;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .mod-btn.main {
-    margin-top: 20px;
-    float: right;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  height: calc(100vh - -600px);
+}
+
+.mypage-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+
+/* 오른쪽 */
+.mypage-right {
+  flex-grow: 1;
+}
+
+.profile-box {
+  border: 1px solid #bbb;
+  padding: 25px;
+  border-radius: 10px;
+  background: #fdfdfd;
+  max-width: 600px;
+}
+
+.profile-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.profile-item label {
+  width: 130px;
+  font-weight: 600;
+}
+
+.value {
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+  margin-right: 10px;
+  color: #000;
+  width: 300px; 
+}
+
+.mod-btn {
+  background-color: #00334f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.mod-btn:hover {
+  background-color: #01659b;
+  color: white;
+}
+
+.mod-btn.main {
+  margin-top: 20px;
+  float: right;
+}
+
+.fake-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 20px;
+}
+
 
