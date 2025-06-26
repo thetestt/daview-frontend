@@ -1,0 +1,56 @@
+.container {
+    padding: 20px;
+    height: calc(100vh - 310px);
+  }
+  
+  .pageTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+  
+  
+  .tabs {
+    margin-bottom: 20px;
+  }
+  
+  .tabButton {
+    margin-right: 12px;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
+  .tabButton:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .cardGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .card {
+    width: 220px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cardTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .cardText {
+    font-size: 14px;
+    color: #555;
+  }
+  

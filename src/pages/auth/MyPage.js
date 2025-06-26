@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../../styles/auth/MyPage.css";
+import styles from "../../styles/auth/MyPage.module.css";
 import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { getChatRooms } from "../../api/chat";
 
@@ -84,13 +84,13 @@ const MyPage = () => {
   }, [memberId]);
 
   return (
-    <div className="mypage-container">
-      <h1 className="mypage-title">마이 페이지</h1>
+    <div className={styles["mypage-container"]}>
+      <h1 className={styles["mypage-title"]}>마이 페이지</h1>
 
-      <div className="mypage-body">
-        <div className="mypage-left">
-          <div className="mypage-avatar"></div>
-          <ul className="mypage-menu">
+      <div className={styles["mypage-body"]}>
+        <div className={styles["mypage-left"]}>
+          <div className={styles["mypage-avatar"]}></div>
+          <ul className={styles["mypage-menu"]}>
             <li>
               <Link to="/mypage/myprofile">내 프로필</Link>
             </li>
@@ -106,84 +106,86 @@ const MyPage = () => {
               </button>
             </li>
             <li>내가 쓴 후기</li>
-            <li>나의 찜 목록</li>
+            <li>
+            <Link to="/mypage/wishlist">나의 찜 목록</Link>
+            </li>
             <li>내 쿠폰 보기</li>
           </ul>
         </div>
 
-        <div className="mypage-right">
-          <div className="profile-box">
-            <h2 className="profile-title">내 프로필</h2>
-            <div className="profile-item">
+        <div className={styles["mypage-right"]}>
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>내 프로필</h2>
+            <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
-              <div className="value">{profile.username}</div>
-              <button className="mod-btn">수정</button>
+              <div className={styles["value"]}>{profile.username}</div>
+              <button className={styles["mod-btn"]}>수정</button>
             </div>
-            <div className="profile-item">
+            <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
-              <div className="value">{profile.name}</div>
-              <button className="mod-btn">수정</button>
+              <div className={styles["value"]}>{profile.name}</div>
+              <button className={styles["mod-btn"]}>수정</button>
             </div>
-            <div className="profile-item">
+            <div className={styles["profile-item"]}>
               <label>사용자 전화번호</label>
-              <div className="value">{profile.phone}</div>
-              <button className="mod-btn">수정</button>
+              <div className={styles["value"]}>{profile.phone}</div>
+              <button className={styles["mod-btn"]}>수정</button>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">비밀번호 변경</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>비밀번호 변경</h2>
+            <div className={styles["profile-item"]}>
               <label>비밀번호</label>
-              <Link to="/FindPasswordPage/CPw" className="mod-btn">
+              <Link to="/FindPasswordPage/CPw" className={styles["mod-btn"]}>
                 비밀번호 변경
               </Link>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">주문 내역</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>주문 내역</h2>
+            <div className={styles["profile-item"]}>
               <label>주문 건수</label>
-              <div className="value">{payments.length} 건</div>
+              <div className={styles["value"]}>{payments.length} 건</div>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">1:1 상담 내역</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>1:1 상담 내역</h2>
+            <div className={styles["profile-item"]}>
               <label>상담 건수</label>
-              <div className="value">{consults.length} 건</div>
+              <div className={styles["value"]}>{consults.length} 건</div>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">내가 쓴 후기</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>내가 쓴 후기</h2>
+            <div className={styles["profile-item"]}>
               <label>총 후기</label>
-              <div className="value">{reviews.length} 건</div>
+              <div className={styles["value"]}>{reviews.length} 건</div>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">나의 찜 목록</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>나의 찜 목록</h2>
+            <div className={styles["profile-item"]}>
               <label>찜한 시설</label>
-              <div className="value">{favorites.length} 개</div>
+              <div className={styles["value"]}>{favorites.length} 개</div>
             </div>
           </div>
           <br />
 
-          <div className="profile-box">
-            <h2 className="profile-title">내 쿠폰 보기</h2>
-            <div className="profile-item">
+          <div className={styles["profile-box"]}>
+            <h2 className={styles["profile-title"]}>내 쿠폰 보기</h2>
+            <div className={styles["profile-item"]}>
               <label>사용 가능한 쿠폰</label>
-              <div className="value">{coupons.length} 장</div>
+              <div className={styles["value"]}>{coupons.length} 장</div>
             </div>
           </div>
           <br />

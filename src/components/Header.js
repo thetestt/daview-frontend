@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 function Header() {
   const [keyword, setKeyword] = useState("");
   const [username, setUsername] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const memberId = localStorage.getItem("memberId");
 
@@ -19,6 +20,7 @@ function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("memberId");
     window.location.href = "/";
   };
 
@@ -31,12 +33,14 @@ function Header() {
           const isExpired = decoded.exp * 1000 < Date.now();
           if (!isExpired) {
             setUsername(decoded.sub);
+            setUserRole(decoded.role);
             localStorage.setItem("memberId", decoded.memberId);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("username");
             localStorage.removeItem("memberId");
             setUsername(null);
+            setUserRole(null);
           }
         } catch (e) {
           console.error("토큰 에러:", e);
@@ -44,10 +48,12 @@ function Header() {
           localStorage.removeItem("username");
           localStorage.removeItem("memberId");
           setUsername(null);
+          setUserRole(null);
         }
       } else {
         localStorage.removeItem("memberId");
         setUsername(null);
+        setUserRole(null);
       }
     };
 
@@ -59,6 +65,17 @@ function Header() {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
+  const handleMypage = (e) => {
+    e.preventDefault();
+    if (!memberId) {
+      alert("로그인 후 이용해주세요");
+      navigate("/login");
+    } else {
+      alert("1:1 문의는 [마이페이지]에서 이용해주세요");
+      navigate("/mypage");
+    }
+  };
 
   return (
     <div>
@@ -108,6 +125,10 @@ function Header() {
               <span>{username}님</span>
               <Link to="/mypage">마이페이지</Link>
               <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
+              {userRole && userRole.toLowerCase().includes('admin') && (
+                <Link to="/admin" className={styles["admin-link"]}>관리자 페이지</Link>
+              )}
+
               <span onClick={handleLogout}>로그아웃</span>
             </div>
           ) : (
@@ -156,7 +177,9 @@ function Header() {
                 <Link to="/notice/00000000-0000-0000-0000-000000000001">
                   공지게시판
                 </Link>
-                <Link to="/mypage">문의하기</Link>
+                <Link to="#" onClick={handleMypage}>
+                  문의하기
+                </Link>
                 <Link to="/review-board">고객 후기</Link>
               </li>
             </ul>
