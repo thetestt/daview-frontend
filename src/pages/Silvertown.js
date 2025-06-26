@@ -9,6 +9,9 @@ import { getFilterOptions } from "../api/filterOption";
 import { useForceRefresh } from "../utils/forceRefresh";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
 
+//테스트용지루거야아아아앙
+import { getChatRooms } from "../api/chat";
+
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState(null);
@@ -109,6 +112,33 @@ function Silvertown() {
 
     setAppliedFilters(filters);
     setIsSearch(true);
+  };
+
+  //테스트용
+  const [consults, setConsults] = useState([]);
+  const memberId = localStorage.getItem("memberId");
+  const handleChatOpen = async () => {
+    try {
+      const chatRooms = await getChatRooms(memberId);
+
+      if (!chatRooms.length) {
+        alert("채팅방이 없습니다.");
+        setConsults([]);
+        return;
+      }
+
+      setConsults(chatRooms);
+      const chatUrl = `/chat`;
+
+      window.open(
+        chatUrl,
+        "chatWindow",
+        "width=900,height=700,left=200,top=100,noopener,noreferrer"
+      );
+    } catch (error) {
+      console.error("채팅방 열기 실패:", error);
+      alert("채팅방을 여는 데 실패했습니다.");
+    }
   };
 
   return (
@@ -262,6 +292,10 @@ function Silvertown() {
           )}
         </div>
       </div>
+      {/*지울껑아아아아ㅏ아앙*/}
+      <button type="button" onClick={handleChatOpen}>
+        1:1 채팅룸
+      </button>
     </>
   );
 }

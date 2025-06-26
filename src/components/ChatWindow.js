@@ -3,7 +3,12 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
-import { getMessages, exitChatRoom, verifyChatAccess } from "../api/chat";
+import {
+  getMessages,
+  exitChatRoom,
+  verifyChatAccess,
+  markMessagesAsRead,
+} from "../api/chat";
 import styles from "../styles/components/ChatWindow.module.css";
 //import { useNavigate } from "react-router";
 
@@ -26,6 +31,23 @@ const ChatWindow = ({
   const [isOpponentOut, setIsOpponentOut] = useState(false);
 
   //const [accessGranted, setAccessGranted] = useState(false);
+
+  // ✅ 읽음 상태를 서버에 WebSocket으로 알림
+  const sendReadReceipt = () => {
+    const msg = {
+      type: "READ",
+      chatroomId,
+      readerId: currentUser.memberId,
+    };
+
+    if (stompClientRef.current && stompClientRef.current.connected) {
+      stompClientRef.current.publish({
+        destination: "/pub/read",
+        body: JSON.stringify(msg),
+      });
+      console.log("📩 읽음 상태 전송!", msg);
+    }
+  };
 
   //백앤드에서 웹소켓 접속가능 여부 확인
   useEffect(() => {
@@ -54,6 +76,8 @@ const ChatWindow = ({
           }),
         }));
         setMessages(loaded);
+        // 메세지 읽음
+        markMessagesAsRead(chatroomId, currentUser.memberId);
       });
 
       // ✅ WebSocket 연결 및 구독
@@ -63,6 +87,26 @@ const ChatWindow = ({
           webSocketFactory: () => socket,
           debug: (str) => console.log("[WebSocket]", str),
           onConnect: () => {
+            //읽었음 보내기
+            const readSub = stompClient.subscribe(
+              `/sub/chat/read/${chatroomId}`,
+              (message) => {
+                const { readerId } = JSON.parse(message.body);
+                if (readerId !== currentUser.memberId) {
+                  // 상대방이 읽었으면 내 메시지 중 읽힘 표시가 필요한 것들 반영
+                  setMessages((prev) =>
+                    prev.map((msg) =>
+                      msg.senderId === currentUser.memberId &&
+                      msg.isRead === false
+                        ? { ...msg, isRead: true }
+                        : msg
+                    )
+                  );
+                  console.log("📬 상대방이 읽음 처리함");
+                }
+              }
+            );
+
             console.log("✅ WebSocket 연결됨");
 
             //중복코드방지
@@ -75,26 +119,35 @@ const ChatWindow = ({
                   const received = JSON.parse(message.body);
                   console.log("📩 받은 메시지:", received);
 
-                  const cacheKey = `${received.senderId}_${received.sentAt}_${received.content}`;
+                  const cacheKey = `${received.senderId}_${received.sentAt}_${received.content}_${received.receiverId}`;
                   if (receivedMessageCacheRef.current.has(cacheKey)) {
                     return; // ✅ 이미 처리한 메시지라면 무시
                   }
                   receivedMessageCacheRef.current.add(cacheKey);
 
-                  setMessages((prev) => [
-                    ...prev,
-                    {
-                      ...received,
-                      sender:
-                        received.senderId === currentUser.memberId
-                          ? "나"
-                          : "상대방",
-                      time: new Date().toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }),
-                    },
-                  ]);
+                  setMessages((prev) => {
+                    const updated = [
+                      ...prev,
+                      {
+                        ...received,
+                        sender:
+                          received.senderId === currentUser.memberId
+                            ? "나"
+                            : "상대방",
+                        time: new Date().toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }),
+                      },
+                    ];
+
+                    // 🔴 내가 받은 메시지면 즉시 읽음 전송
+                    if (received.senderId !== currentUser.memberId) {
+                      sendReadReceipt();
+                    }
+
+                    return updated;
+                  });
                 }
               );
 
@@ -143,6 +196,7 @@ const ChatWindow = ({
     const msg = {
       chatroomId,
       senderId: currentUser.memberId,
+      receiverId: chatTargetInfo.opponentId,
       content,
       sentAt: new Date().toISOString(),
     };
@@ -162,6 +216,19 @@ const ChatWindow = ({
       console.error("❌ WebSocket 연결되지 않음");
     }
   };
+
+  // ✅ 읽지 않은 메시지 실시간으로 감지해서 읽음 전송
+  useEffect(() => {
+    if (messages.length > 0 && chatroomId && currentUser.memberId) {
+      const hasUnreadFromOpponent = messages.some(
+        (msg) => msg.senderId !== currentUser.memberId && msg.isRead === false
+      );
+
+      if (hasUnreadFromOpponent) {
+        sendReadReceipt();
+      }
+    }
+  }, [messages, chatroomId, currentUser.memberId]);
 
   //상대방 정보 상단에 배치
   useEffect(() => {

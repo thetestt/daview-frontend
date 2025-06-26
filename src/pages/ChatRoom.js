@@ -27,6 +27,11 @@ const ChatRoom = () => {
       return;
     }
 
+    if (!chatroomId) {
+      setAccessGranted(true); // 리스트만 보여주기 허용
+      return;
+    }
+
     if (skipValidation) {
       setAccessGranted(true);
       return;
@@ -64,8 +69,8 @@ const ChatRoom = () => {
     }
   }, [accessGranted, chatroomId, memberId]);
 
-  if (accessGranted === null) return <div>접근 확인 중...</div>;
-  if (!accessGranted) return null;
+  if (chatroomId && accessGranted === null) return <div>접근 확인 중...</div>;
+  if (chatroomId && !accessGranted) return null;
 
   return (
     <div className={styles["chatroom-layout"]}>

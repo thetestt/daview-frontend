@@ -103,6 +103,7 @@ const AppRouter = () => {
 
         {/* 채팅 */}
         {/* <Route path="/chat/:targetId" element={<ChatRoom />} /> */}
+        <Route path="/chat" element={<ChatRoom />} />
         <Route path="/chat/:chatroomId" element={<ChatRoom />} />
         <Route path="/chatlist" element={<ChatList />} />
 

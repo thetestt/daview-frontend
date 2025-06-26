@@ -34,3 +34,17 @@
   margin-top: 4px;
   opacity: 0.7;
 }
+
+.bottom-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.unread-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
