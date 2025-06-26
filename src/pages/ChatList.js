@@ -115,15 +115,35 @@ const ChatList = ({ refresh }) => {
   };
 
   const getDisplayName = (room) => {
+    // 상대가 방을 나갔는지 확인
+    const isSender = memberId === room.senderId;
+    const opponentOut =
+      (isSender && room.receiverTrashCan) || (!isSender && room.senderTrashCan);
+
+    let name = "";
+
     if (room.type === "facility") {
-      return room.facilityName || room.opponentName;
+      name = room.facilityName || room.opponentName;
     } else if (room.type === "caregiver") {
-      return room.userName ? `${room.userName} 요양사` : room.opponentName;
+      name = room.userName ? `${room.userName} 요양사` : room.opponentName;
     } else if (room.type === "user") {
-      return room.userName || room.opponentName;
+      name = room.userName || room.opponentName;
     } else {
-      return room.opponentName;
+      name = room.opponentName;
     }
+
+    // 상대가 나간 경우 문구 붙이기
+    return (
+      <>
+        {name}
+        {opponentOut && (
+          <span className={styles["opponent-out-text"]}>
+            {" "}
+            (채팅불가 사용자)
+          </span>
+        )}
+      </>
+    );
   };
 
   return (

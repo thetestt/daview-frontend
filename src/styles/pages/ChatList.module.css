@@ -65,3 +65,10 @@
   margin-top: 6px;
   align-self: flex-end;
 }
+
+.opponent-out-text {
+  color: #888; /* 옅은 회색 */
+  font-size: 0.75rem; /* 작게 */
+  margin-left: 4px;
+  font-weight: 400;
+}

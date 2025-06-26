@@ -20,3 +20,9 @@
   border-radius: 0 8px 8px 0;
   cursor: pointer;
 }
+
+.chat-input input:disabled {
+  background-color: #f0f0f0; /* 옅은 회색 */
+  color: #888; /* 텍스트 색도 옅게 */
+  /*cursor: not-allowed; /* 마우스 커서도 비활성 느낌 */
+}
