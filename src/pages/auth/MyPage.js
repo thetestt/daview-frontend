@@ -29,7 +29,6 @@ const MyPage = () => {
     return name;
   };
 
-
   const handleChatOpen = async () => {
     try {
       const chatRooms = await getChatRooms(memberId);
@@ -41,9 +40,7 @@ const MyPage = () => {
       }
 
       setConsults(chatRooms);
-
-      const chatroomId = chatRooms[0].chatroomId;
-      const chatUrl = `/chat/${chatroomId}?skipValidation=true`;
+      const chatUrl = `/chat`;
 
       window.open(
         chatUrl,
@@ -110,8 +107,13 @@ const MyPage = () => {
               <Link to={`/payments/member/${memberId}`}>주문 내역</Link>
             </li>
             <li>
-              <button type="button" onClick={handleChatOpen} className={styles["fake-link"]}>1:1 문의</button>
-
+              <button
+                type="button"
+                onClick={handleChatOpen}
+                className={styles["fake-link"]}
+              >
+                1:1 문의
+              </button>
             </li>
             <li>내가 쓴 후기</li>
             <li>
@@ -182,7 +184,7 @@ const MyPage = () => {
           <br />
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
