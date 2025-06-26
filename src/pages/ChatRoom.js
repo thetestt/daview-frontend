@@ -64,8 +64,8 @@ const ChatRoom = () => {
     }
   }, [accessGranted, chatroomId, memberId]);
 
-  if (accessGranted === null) return <div>접근 확인 중...</div>;
-  if (!accessGranted) return null;
+  if (chatroomId && accessGranted === null) return <div>접근 확인 중...</div>;
+  if (chatroomId && !accessGranted) return null;
 
   return (
     <div className={styles["chatroom-layout"]}>

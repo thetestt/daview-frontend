@@ -107,7 +107,7 @@ const MyPage = () => {
             </li>
             <li>내가 쓴 후기</li>
             <li>
-            <Link to="/mypage/wishlist">나의 찜 목록</Link>
+              <Link to="/mypage/wishlist">나의 찜 목록</Link>
             </li>
             <li>내 쿠폰 보기</li>
           </ul>
