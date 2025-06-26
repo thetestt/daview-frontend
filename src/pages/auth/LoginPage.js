@@ -52,7 +52,7 @@ function LoginPage() {
         } else if (role === "caregiver") {
           navigate("/caregiver/main");
         } else if (role === "admin") {
-          navigate("/admin/main");
+          navigate("/admin");
         }
       } else {
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");

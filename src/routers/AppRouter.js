@@ -53,7 +53,7 @@ const AppRouter = () => {
         if (!isExpired) {
           const role = decoded.role.toLowerCase();
 
-          if (role === "admin") navigate("/admin/main");
+          if (role === "admin") navigate("/admin");
           else if (role === "silvertown") navigate("/silvertown/main");
           else if (role === "caregiver") navigate("/caregiver/main");
           else if (role === "nursinghome") navigate("/nursinghome/main");
@@ -112,8 +112,7 @@ const AppRouter = () => {
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
 
-        {/* 관리자 */}
-        <Route path="/admin/main" element={<AdminDashboard />} />
+        {/* 관리자 외 대시보드 */}
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
 
@@ -125,6 +124,7 @@ const AppRouter = () => {
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
+
 
         {/* 찜 */}
         <Route path="/mypage/wishlist" element={<WishlistPage />} /> 
