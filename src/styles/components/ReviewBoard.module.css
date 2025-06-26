@@ -3,10 +3,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin: 0 auto;
-  text-align: center;
 }
 
 .review-buttonWrapper {
@@ -44,4 +42,19 @@
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+}
+
+.review-revttl {
+  border: none;
+  background: none;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.active {
+  background-color: #00334f;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
 }
