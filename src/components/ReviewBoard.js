@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllReviews } from "../api/reviewApi";
 import styles from "../styles/components/ReviewBoard.module.css";
+import { getReviewsByPage, getTotalReviewCount } from "../api/reviewApi";
 
 function ReviewBoard() {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+  const [page, setPage] = useState(1);
+  const reviewsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await getAllReviews();
+        const data = await getReviewsByPage(page, reviewsPerPage);
         setReviews(data);
+
+        const totalResponse = await getTotalReviewCount();
+        setTotalPages(Math.ceil(totalResponse / reviewsPerPage));
       } catch (error) {
         console.error("후기 가져오기 실패:", error);
       }
     };
     fetchReviews();
-  }, []);
+  }, [page]);
 
   return (
     <div className={styles["review-container"]}>
@@ -41,7 +47,14 @@ function ReviewBoard() {
           {reviews.map((review, index) => (
             <tr key={review.revId} className={styles["review-tr"]}>
               <td className={styles["review-td"]}>{index + 1}</td>
-              <td className={styles["review-td"]}>{review.revTtl}</td>
+              <td className={styles["review-td"]}>
+                <button
+                  className={styles["review-revttl"]}
+                  onClick={() => navigate(`/review/${review.revId}`)}
+                >
+                  {review.revTtl}
+                </button>
+              </td>
               <td className={styles["review-td"]}>{review.memberId}</td>
               <td className={styles["review-td"]}>{review.revStars}</td>
               <td className={styles["review-td"]}>
@@ -52,6 +65,26 @@ function ReviewBoard() {
           ))}
         </tbody>
       </table>
+      <div className={styles["review-page"]}>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          이전
+        </button>
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setPage(i + 1)}
+            className={page === i + 1 ? styles.active : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          다음
+        </button>
+      </div>
     </div>
   );
 }

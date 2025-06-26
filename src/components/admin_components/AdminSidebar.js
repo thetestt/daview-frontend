@@ -29,37 +29,109 @@ const AdminSidebar = ({ isCollapsed }) => {
           <>
             <div>
               <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>대시보드</strong>
-              <ul style={{ listStyle: 'none', paddingLeft: '1rem', margin: '0.5rem 0' }}>
-                <li><NavLink to="/admin" style={navStyle}>관리자 홈</NavLink></li>
+              <ul style={{ 
+                listStyle: 'none', 
+                paddingLeft: '1rem', 
+                margin: '0.5rem 0',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin" style={navStyle}>관리자 홈</NavLink>
+                </li>
               </ul>
             </div>
 
             <div style={{ marginTop: '1.5rem' }}>
               <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>서비스 관리</strong>
-              <ul style={{ listStyle: 'none', paddingLeft: '1rem', margin: '0.5rem 0' }}>
-                <li><NavLink to="/admin/products" style={navStyle}>상품 관리</NavLink></li>
-                <li><NavLink to="/admin/reservations" style={navStyle}>예약 관리</NavLink></li>
+              <ul style={{ 
+                listStyle: 'none', 
+                paddingLeft: '1rem', 
+                margin: '0.5rem 0',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/products" style={navStyle}>상품 관리</NavLink>
+                </li>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/reservations" style={navStyle}>예약 관리</NavLink>
+                </li>
               </ul>
             </div>
 
             <div style={{ marginTop: '1.5rem' }}>
               <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>비즈니스 관리</strong>
-              <ul style={{ listStyle: 'none', paddingLeft: '1rem', margin: '0.5rem 0' }}>
-                <li><NavLink to="/admin/business/partners" style={navStyle}>제휴사 관리</NavLink></li>
+              <ul style={{ 
+                listStyle: 'none', 
+                paddingLeft: '1rem', 
+                margin: '0.5rem 0',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/business/partners" style={navStyle}>제휴사 관리</NavLink>
+                </li>
               </ul>
             </div>
 
             <div style={{ marginTop: '1.5rem' }}>
               <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>시스템 관리</strong>
-              <ul style={{ listStyle: 'none', paddingLeft: '1rem', margin: '0.5rem 0' }}>
-                <li><NavLink to="/admin/system/users" style={navStyle}>유저 권한</NavLink></li>
+              <ul style={{ 
+                listStyle: 'none', 
+                paddingLeft: '1rem', 
+                margin: '0.5rem 0',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/system/users" style={navStyle}>유저 권한</NavLink>
+                </li>
               </ul>
             </div>
 
             <div style={{ marginTop: '1.5rem' }}>
               <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>기타 관리</strong>
-              <ul style={{ listStyle: 'none', paddingLeft: '1rem', margin: '0.5rem 0' }}>
-                <li><NavLink to="/admin/etc/logs" style={navStyle}>로그 관리</NavLink></li>
+              <ul style={{ 
+                listStyle: 'none', 
+                paddingLeft: '1rem', 
+                margin: '0.5rem 0',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/etc/logs" style={navStyle}>로그 관리</NavLink>
+                </li>
               </ul>
             </div>
           </>
@@ -76,7 +148,12 @@ const navStyle = ({ isActive }) => ({
   padding: '0.5rem 0',
   borderRadius: '4px',
   transition: 'all 0.3s ease',
-  fontSize: '14px'
+  fontSize: '14px',
+  width: '100%',
+  whiteSpace: 'nowrap',
+  float: 'none',
+  clear: 'both',
+  lineHeight: '1.5'
 });
 
 export default AdminSidebar;

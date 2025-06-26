@@ -10,12 +10,13 @@ import NoticeDetail from "../pages/NoticeDetail";
 import NoticeList from "../pages/NoticeList";
 import NursingHome from "../pages/NursingHome";
 import NursingHomeDetail from "../pages/NursingHomeDetail";
+import Reservation from "../pages/ReservationPage";
 import Payment from "../pages/PaymentPage";
 import PaymentResult from "../pages/PaymentResultPage";
 import PaymentList from "../pages/PaymentListPage";
-import Reservation from "../pages/ReservationPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
+import ReviewDetail from "../pages/ReviewDetailPage";
 import SearchResults from "../pages/SearchResults";
 import Silvertown from "../pages/Silvertown";
 import SilvertownDetail from "../pages/SilvertownDetail";
@@ -28,6 +29,7 @@ import WishlistPage from "../components/WishlistPage";
 import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
+import ChangePasswordCheckPage from "../pages/auth/ChangePasswordCheckPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -37,7 +39,6 @@ import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
 import RegisterPage from "../pages/RegisterPage";
-
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -109,8 +110,11 @@ const AppRouter = () => {
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/payments/member/:memberId" element={<PaymentList />} />
+
+        {/* 후기 */}
         <Route path="/review-board" element={<ReviewBoard />} />
         <Route path="/review-write" element={<ReviewWrite />} />
+        <Route path="/review/:revId" element={<ReviewDetail />} />
 
         {/* 관리자 외 대시보드 */}
         <Route path="/company/main" element={<CompanyDashboard />} />
@@ -121,13 +125,13 @@ const AppRouter = () => {
 
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
+        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
 
-
         {/* 찜 */}
-        <Route path="/mypage/wishlist" element={<WishlistPage />} /> 
+        <Route path="/mypage/wishlist" element={<WishlistPage />} />
 
         {/* 관리자 상품 목록 */}
         <Route path="/admin/products" element={<AdminProductList />} />
