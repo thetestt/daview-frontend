@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../styles/auth/FindIdPage.css";
+import styles from "../../styles/auth/FindIdPage.module.css";
 axios.defaults.withCredentials = true;
 
 function FindIdPage() {
@@ -101,9 +101,9 @@ function FindIdPage() {
   };
 
   return (
-    <div className="find-id-wrapper">
+    <div className={styles["find-id-wrapper"]}>
       <h2>아이디 찾기</h2>
-      <div className="radio-group">
+      <div className={styles["radio-group"]}>
         <label>
           <input
             type="radio"
@@ -126,62 +126,62 @@ function FindIdPage() {
 
       {/* 전화번호 인증*/}
       {method === "phone" ? (
-        <div className="form-group">
+        <div className={styles["form-group"]}>
           <label>이름</label>
           <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
 
           <label>전화번호</label>
-          <div className="phone-inputs">
-            <input placeholder="+82" className="country-code" value="+82" readOnly />
+          <div className={styles["phone-inputs"]}>
+            <input placeholder="+82" className={styles["country-code"]} value="+82" readOnly />
             <input
               type="text"
-              className="phone-input"
+              className={styles["phone-input"]}
               placeholder="휴대전화번호 입력 ((-)제외)"
               value={phone}
               onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
             />
-            <button className="send-code-button" onClick={sendVerificationCode}>인증번호 전송</button>
+            <button className={styles["send-code-button"]} onClick={sendVerificationCode}>인증번호 전송</button>
           </div>
 
-          <div className="verify-section">
+          <div className={styles["verify-section"]}>
             <input
               type="text"
               placeholder="인증번호 6자리 숫자 입력"
               value={phoneCode}
               onChange={(e) => setPhoneCode(e.target.value)}
             />
-            <button className="send-code-button" onClick={verifyPhoneCode}>인증하기</button>
+            <button className={styles["send-code-button"]} onClick={verifyPhoneCode}>인증하기</button>
           </div>
 
-          <div className="signup-links">
+          <div className={styles["signup-links"]}>
             <span>회원가입이 필요하신가요?</span><a href="/signup"> 회원가입하기</a>
           </div>
         </div>
       ) : (
         // 이메일 인증
-        <div className="form-group">
+        <div className={styles["form-group"]}>
           <label>이름</label>
           <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
 
           <label>이메일 주소</label>
-          <div className="email-inputs">
+          <div className={styles["email-inputs"]}>
             <input type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
             <span>@</span>
             <input type="text" placeholder="도메인" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} />
-            <button className="send-code-button" onClick={sendEmailCode}>인증번호 전송</button>
+            <button className={styles["send-code-button"]} onClick={sendEmailCode}>인증번호 전송</button>
           </div>
 
-          <div className="verify-section">
+          <div className={styles["verify-section"]}>
             <input
               type="text"
               placeholder="인증번호 6자리 숫자 입력"
               value={emailCode}
               onChange={(e) => setEmailCode(e.target.value)}
             />
-            <button className="send-code-button" onClick={verifyEmailCode}>인증하기</button>
+            <button className={styles["send-code-button"]} onClick={verifyEmailCode}>인증하기</button>
           </div>
 
-          <div className="signup-links">
+          <div className={styles["signup-links"]}>
             <span>회원가입이 필요하신가요?</span><a href="/signup"> 회원가입하기</a>
           </div>
         </div>

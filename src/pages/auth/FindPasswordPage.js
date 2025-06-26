@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/auth/FindPasswordPage.css";
+import styles from "../../styles/auth/FindPasswordPage.module.css";
 
 function FindPasswordPage() {
   const [method, setMethod] = useState("phone");
@@ -54,32 +54,32 @@ function FindPasswordPage() {
   };
 
   return (
-    <div className="find-password-wrapper">
+    <div className={styles["find-password-wrapper"]}>
       <h2>비밀번호 찾기</h2>
 
       {method === "phone" && (
-        <div className="form-group">
+        <div className={styles["form-group"]}>
           <label>이름</label>
           <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
 
-          <div className="form-group-id">
+          <div className={styles["form-group-id"]}>
             <label>아이디</label>
             <input type="text" placeholder="아이디 입력" value={username} onChange={(e) => setUsername(e.target.value)} />
 
             <br /><br /><label>전화번호</label>
-            <div className="phone-inputs">
-              <input placeholder="+82" className="country-code" value="+82" readOnly />
+            <div className={styles["phone-inputs"]}>
+              <input placeholder="+82" className={styles["country-code"]} value="+82" readOnly />
 
-              <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className="phone-input" value={phone}
+              <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className={styles["phone-input"]} value={phone}
                 onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} />
-              <button className="send-code-button" onClick={sendVerificationCode}>인증번호 전송</button>
+              <button className={styles["send-code-button"]} onClick={sendVerificationCode}>인증번호 전송</button>
           </div>
-          <div className="verify-section">
+          <div className={styles["verify-section"]}>
             <input type="text" placeholder="인증번호 6자리 숫자 입력" value={code} onChange={(e) => setCode(e.target.value)} />
-            <button className="send-code-button" onClick={verifyCode}>인증하기</button>
+            <button className={styles["send-code-button"]} onClick={verifyCode}>인증하기</button>
           </div>
 
-            <div className="signup-links">
+            <div className={styles["signup-links"]}>
               <a href="/findidpage"> 아이디찾기</a><span>|</span><a href="/signup"> 회원가입하기</a>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../../styles/auth/MyProfile.css";
+import styles from "../../styles/auth/MyProfile.module.css";
 import { getPaymentsByMemberId } from "../../api/paymentApi";
 
 const MyProfile = () => {
@@ -35,30 +35,30 @@ const MyProfile = () => {
     }, []);
 
     return (
-        <div className="mypage-container">
-            <h1 className="mypage-title">내 프로필</h1>
+        <div className={styles["mypage-container"]}>
+            <h1 className={styles["mypage-title"]}>내 프로필</h1>
 
-            <div className="mypage-right">
-                <div className="profile-box">
-                    <h2 className="profile-title">내 프로필</h2>
-                    <div className="profile-item">
+            <div className={styles["mypage-right"]}>
+                <div className={styles["profile-box"]}>
+                    <h2 className={styles["profile-title"]}>내 프로필</h2>
+                    <div className={styles["profile-item"]}>
                         <label>사용자 아이디</label>
-                        <div className="value">{profile.username}</div>
-                        <button className="mod-btn">수정</button>
+                        <div className={styles["value"]}>{profile.username}</div>
+                        <button className={styles["mod-btn"]}>수정</button>
                     </div>
-                    <div className="profile-item">
+                    <div className={styles["profile-item"]}>
                         <label>사용자 이름</label>
-                        <div className="value">{profile.name}</div>
-                        <button className="mod-btn">수정</button>
+                        <div className={styles["value"]}>{profile.name}</div>
+                        <button className={styles["mod-btn"]}>수정</button>
                     </div>
-                    <div className="profile-item">
+                    <div className={styles["profile-item"]}>
                         <label>사용자 전화번호</label>
-                        <div className="value">{profile.phone}</div>
-                        <button className="mod-btn">수정</button>
+                        <div className={styles["value"]}>{profile.phone}</div>
+                        <button className={styles["mod-btn"]}>수정</button>
                     </div>
-                    <div className="profile-item">
+                    <div className={styles["profile-item"]}>
                         <label>탈퇴하기</label>
-                        <button className="mod-btn">탈퇴하기</button>
+                        <button className={styles["mod-btn"]}>탈퇴하기</button>
                     </div>
                 </div>
                 <br />

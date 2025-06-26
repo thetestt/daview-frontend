@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../styles/auth/SignupPage.css";
+import styles from "../../styles/auth/SignupPage.module.css";
 import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
@@ -114,9 +114,9 @@ function SignupPage() {
 
   console.log("SignupPage 렌더링 시작");
   return (
-    <div className="signup-container">
+    <div className={styles["signup-container"]}>
       <h2>회원가입</h2>
-      <form className="signup-form" onSubmit={handleSubmit}>
+      <form className={styles["signup-form"]} onSubmit={handleSubmit}>
 
         <label>회원 유형</label>
         <select value={role} onChange={(e) => setRole(e.target.value)}>
@@ -127,15 +127,15 @@ function SignupPage() {
         </select> <br /><br />
 
         <label>아이디</label>
-        <div className="username-check-wrapper">
+        <div className={styles["username-check-wrapper"]}>
           <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" />
-          <button type="button" className="username-check-button" onClick={checkUsername}>중복 확인</button>
+          <button type="button" className={styles["username-check-button"]} onClick={checkUsername}>중복 확인</button>
         </div>
-        {isDuplicate === true && <p className="input-error">이미 사용 중인 아이디입니다.</p>}
-        {isDuplicate === false && <p className="input-success">사용 가능한 아이디입니다.</p>}
+        {isDuplicate === true && <p className={styles["input-error"]}>이미 사용 중인 아이디입니다.</p>}
+        {isDuplicate === false && <p className={styles["input-success"]}>사용 가능한 아이디입니다.</p>}
 
         <label>비밀번호</label>
-        <p className="terms-content">
+        <p className={styles["terms-content"]}>
           비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.
         </p>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
@@ -151,7 +151,7 @@ function SignupPage() {
         <input type="text" value={phone} onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} placeholder="전화번호 입력" />
 
         <label>이메일</label>
-        <div className="email-box">
+        <div className={styles["email-box"]}>
           <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" />
           <span>@</span>
           <input type="text" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} placeholder="도메인" />
@@ -173,9 +173,9 @@ function SignupPage() {
         <label>생년월일</label>
         <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} />
 
-        <div className="terms-row">
-          <label className="terms-label">약관동의</label>
-          <div className="agree-all-line">
+        <div className={styles["terms-row"]}>
+          <label className={styles["terms-label"]}>약관동의</label>
+          <div className={styles["agree-all-line"]}>
             <input
               type="checkbox"
               checked={agreeAll}
@@ -192,7 +192,7 @@ function SignupPage() {
           </div>
         </div>
 
-        <div className="terms-content">
+        <div className={styles["terms-content"]}>
           [이용약관 요약]<br /><br />
           [필수선택약관]<br />
           본 웹사이트는 요양 정보 제공 및 이용자 간 서비스 매칭을 위한 플랫폼입니다. <br />
@@ -206,7 +206,7 @@ function SignupPage() {
 
         </div>
 
-        <label className="agree-check">
+        <label className={styles["agree-check"]}>
           <input
             type="checkbox"
             checked={agreed}
@@ -215,46 +215,46 @@ function SignupPage() {
           <span>약관에 동의합니다</span><br />
         </label>
 
-        <div className="terms-content2">
+        <div className={styles["terms-content2"]}>
           [선택약관]<br />
         </div>
 
-        <label className="agree-check">
+        <label className={styles["agree-check"]}>
           <input
             type="checkbox"
             checked={smsAgree}
             onChange={(e) => setSmsAgree(e.target.checked)}
           />
           <span>SMS 문자 수신 동의</span>
-          <div className="agree-desc">
+          <div className={styles["agree-desc"]}>
             서비스 관련 주요 안내 및 혜택 정보를 문자로 받아보실 수 있습니다.<br />
             수신 동의 시, 이벤트 알림 및 고객 맞춤 정보를 제공해드립니다.<br />
             원치 않으실 경우 언제든지 수신 거부가 가능합니다.<br />
           </div>
         </label>
 
-        <label className="agree-check">
+        <label className={styles["agree-check"]}>
           <input
             type="checkbox"
             checked={emailAgree}
             onChange={(e) => setEmailAgree(e.target.checked)}
           />
           <span>이메일 수신 동의</span>
-          <div className="agree-desc">
+          <div className={styles["agree-desc"]}>
             다양한 혜택, 프로모션 및 신규 서비스 안내 메일을 보내드립니다.<br />
             수신 동의 시, 맞춤형 정보와 소식지를 정기적으로 받아보실 수 있습니다.<br />
             이메일은 언제든지 수신 거부를 통해 해지하실 수 있습니다.<br />
           </div>
         </label>
 
-        <label className="agree-check">
+        <label className={styles["agree-check"]}>
           <input
             type="checkbox"
             checked={pushAgree}
             onChange={(e) => setPushAgree(e.target.checked)}
           />
           <span>앱 푸시 알림 동의</span>
-          <div className="agree-desc">
+          <div className={styles["agree-desc"]}>
             앱을 통해 실시간 알림, 혜택 정보, 이벤트 소식을 받아보실 수 있습니다.<br />
             푸시 알림은 설정에서 언제든지 ON/OFF 변경이 가능합니다.<br />
             중요한 정보 누락 없이 빠르게 전달받을 수 있습니다.<br />

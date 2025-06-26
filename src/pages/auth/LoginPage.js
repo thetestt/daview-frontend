@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../../styles/auth/LoginPage.css";
+import styles from "../../styles/auth/LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -66,13 +66,13 @@ function LoginPage() {
   };
 
   return (
-    <div className="page-wrapper">
-      <div className="login-container">
-        <div className="login-inner">
-          <p className="login-subtitle">전국 모든 요양원 / 실버타운</p>
-          <h1 className="login-logo">다뷰</h1>
+    <div className={styles["page-wrapper"]}>
+      <div className={styles["login-container"]}>
+        <div className={styles["login-inner"]}>
+          <p className={styles["login-subtitle"]}>전국 모든 요양원 / 실버타운</p>
+          <h1 className={styles["login-logo"]}>다뷰</h1>
 
-          <form onSubmit={handleLogin} className="login-form">
+          <form onSubmit={handleLogin} className={styles["login-form"]}>
             <input
               type="text"
               placeholder="아이디"
@@ -86,7 +86,7 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button type="submit" className="login-button">
+            <button type="submit" className={styles["login-button"]}>
               로그인
             </button>
 
@@ -98,14 +98,14 @@ function LoginPage() {
               카카오로 로그인하기
             </button>
 
-            <div className="kakao-login">
+            <div className={styles["kakao-login"]}>
               카카오로 로그인 시 자동 회원가입 처리됩니다.
             </div>
 
-            {errorMsg && <p className="error-message">{errorMsg}</p>}
+            {errorMsg && <p className={styles["error-message"]}>{errorMsg}</p>}
           </form>
 
-          <div className="login-links">
+          <div className={styles["login-links"]}>
             <a href="/findidpage">아이디찾기</a>
             <span>|</span>
             <a href="/findpasswordpage">비밀번호찾기</a>

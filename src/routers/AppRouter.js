@@ -24,6 +24,7 @@ import FindIdResultPage from "../pages/auth/FindIdResultPage";
 import FindPasswordPage from "../pages/auth/FindPasswordPage";
 import LoginPage from "../pages/auth/LoginPage";
 import MyPage from "../pages/auth/MyPage";
+import WishlistPage from "../components/WishlistPage";
 import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
@@ -36,6 +37,7 @@ import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
 import RegisterPage from "../pages/RegisterPage";
+
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -123,6 +125,9 @@ const AppRouter = () => {
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
+
+        {/* 찜 */}
+        <Route path="/mypage/wishlist" element={<WishlistPage />} /> 
 
         {/* 관리자 상품 목록 */}
         <Route path="/admin/products" element={<AdminProductList />} />
