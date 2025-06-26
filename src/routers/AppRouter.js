@@ -28,6 +28,7 @@ import WishlistPage from "../components/WishlistPage";
 import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
+import ChangePasswordCheckPage from "../pages/auth/ChangePasswordCheckPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -121,6 +122,7 @@ const AppRouter = () => {
 
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
+        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
 
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
