@@ -737,10 +737,7 @@ const AdminProductList = () => {
         company_name: formData.company_name,
         start_date: formData.start_date,
         end_date: formData.end_date,
-        certificate_name: formData.certificate_name,
-        caregiver_created_at: formData.caregiver_created_at,
-        caregiver_update_at: formData.caregiver_update_at,
-        caregiver_deleted_at: formData.caregiver_deleted_at
+        certificate_name: formData.certificate_name
       };
 
       // 실제 axios POST 요청
@@ -1831,167 +1828,159 @@ const AdminProductList = () => {
               {/* 요양사 전용 필드들 */}
               {formData.prodTypeName === '요양사' && (
                 <>
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>성별 *</label>
-                      <select
-                        name="userGender"
-                        value={formData.userGender}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">성별을 선택하세요</option>
-                        <option value="여자">여자</option>
-                        <option value="남자">남자</option>
-                        <option value="무관">무관</option>
-                      </select>
-                    </div>
+                  <div className={styles["form-group"]}>
+                    <label>성별 *</label>
+                    <select
+                      name="userGender"
+                      value={formData.userGender}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="">성별을 선택하세요</option>
+                      <option value="여자">여자</option>
+                      <option value="남자">남자</option>
+                      <option value="무관">무관</option>
+                    </select>
+                  </div>
 
-                    <div className={styles["form-group"]}>
-                      <label>희망근무장소</label>
-                      <div className={styles["checkbox-group"]}>
-                        {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
-                          <label key={workPlace} className={styles["checkbox-label"]}>
-                            <input
-                              type="checkbox"
-                              checked={(formData.hope_work_place || '').includes(workPlace)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_work_place: prev.hope_work_place ? `${prev.hope_work_place},${workPlace}` : workPlace
-                                  }));
-                                } else {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_work_place: (prev.hope_work_place || '').split(',').filter(w => w !== workPlace).join(',')
-                                  }));
-                                }
-                              }}
-                            />
-                            <span>{workPlace}</span>
-                          </label>
-                        ))}
-                      </div>
+                  <div className={styles["form-group"]}>
+                    <label>자격증</label>
+                    <div className={styles["checkbox-group"]}>
+                      {['요양보호사', '사회복지사', '간호조무사', '일반'].map(cert => (
+                        <label key={cert} className={styles["checkbox-label"]}>
+                          <input
+                            type="checkbox"
+                            checked={(formData.certificate_name || '').includes(cert)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  certificate_name: prev.certificate_name ? `${prev.certificate_name},${cert}` : cert
+                                }));
+                              } else {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  certificate_name: (prev.certificate_name || '').split(',').filter(c => c !== cert).join(',')
+                                }));
+                              }
+                            }}
+                          />
+                          <span>{cert}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>희망근무형태 *</label>
-                      <div className={styles["checkbox-group"]}>
-                        {['출퇴근', '입주'].map(workType => (
-                          <label key={workType} className={styles["checkbox-label"]}>
-                            <input
-                              type="checkbox"
-                              checked={(formData.hope_work_type || '').includes(workType)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_work_type: prev.hope_work_type ? `${prev.hope_work_type},${workType}` : workType
-                                  }));
-                                } else {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_work_type: (prev.hope_work_type || '').split(',').filter(w => w !== workType).join(',')
-                                  }));
-                                }
-                              }}
-                            />
-                            <span>{workType}</span>
-                          </label>
-                        ))}
-                      </div>
+                  <div className={styles["form-group"]}>
+                    <label>희망근무장소</label>
+                    <div className={styles["checkbox-group"]}>
+                      {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
+                        <label key={workPlace} className={styles["checkbox-label"]}>
+                          <input
+                            type="checkbox"
+                            checked={(formData.hope_work_place || '').includes(workPlace)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_work_place: prev.hope_work_place ? `${prev.hope_work_place},${workPlace}` : workPlace
+                                }));
+                              } else {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_work_place: (prev.hope_work_place || '').split(',').filter(w => w !== workPlace).join(',')
+                                }));
+                              }
+                            }}
+                          />
+                          <span>{workPlace}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>희망고용형태 *</label>
-                      <div className={styles["checkbox-group"]}>
-                        {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
-                          <label key={empType} className={styles["checkbox-label"]}>
-                            <input
-                              type="checkbox"
-                              checked={(formData.hope_employment_type || '').includes(empType)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_employment_type: prev.hope_employment_type ? `${prev.hope_employment_type},${empType}` : empType
-                                  }));
-                                } else {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    hope_employment_type: (prev.hope_employment_type || '').split(',').filter(e => e !== empType).join(',')
-                                  }));
-                                }
-                              }}
-                            />
-                            <span>{empType}</span>
-                          </label>
-                        ))}
-                      </div>
+                  <div className={styles["form-group"]}>
+                    <label>희망근무형태 *</label>
+                    <div className={styles["checkbox-group"]}>
+                      {['출퇴근', '입주'].map(workType => (
+                        <label key={workType} className={styles["checkbox-label"]}>
+                          <input
+                            type="checkbox"
+                            checked={(formData.hope_work_type || '').includes(workType)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_work_type: prev.hope_work_type ? `${prev.hope_work_type},${workType}` : workType
+                                }));
+                              } else {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_work_type: (prev.hope_work_type || '').split(',').filter(w => w !== workType).join(',')
+                                }));
+                              }
+                            }}
+                          />
+                          <span>{workType}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>자격증</label>
-                      <div className={styles["checkbox-group"]}>
-                        {['요양보호사', '사회복지사', '간호조무사', '일반'].map(cert => (
-                          <label key={cert} className={styles["checkbox-label"]}>
-                            <input
-                              type="checkbox"
-                              checked={(formData.certificate_name || '').includes(cert)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    certificate_name: prev.certificate_name ? `${prev.certificate_name},${cert}` : cert
-                                  }));
-                                } else {
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    certificate_name: (prev.certificate_name || '').split(',').filter(c => c !== cert).join(',')
-                                  }));
-                                }
-                              }}
-                            />
-                            <span>{cert}</span>
-                          </label>
-                        ))}
-                      </div>
+                  <div className={styles["form-group"]}>
+                    <label>희망고용형태 *</label>
+                    <div className={styles["checkbox-group"]}>
+                      {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
+                        <label key={empType} className={styles["checkbox-label"]}>
+                          <input
+                            type="checkbox"
+                            checked={(formData.hope_employment_type || '').includes(empType)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_employment_type: prev.hope_employment_type ? `${prev.hope_employment_type},${empType}` : empType
+                                }));
+                              } else {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  hope_employment_type: (prev.hope_employment_type || '').split(',').filter(e => e !== empType).join(',')
+                                }));
+                              }
+                            }}
+                          />
+                          <span>{empType}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>학력수준</label>
-                      <select
-                        name="education_level"
-                        value={formData.education_level}
-                        onChange={handleInputChange}
-                      >
-                        <option value="">선택하세요</option>
-                        <option value="고등학교 졸업">고등학교 졸업</option>
-                        <option value="전문대학 졸업">전문대학 졸업</option>
-                        <option value="대학교 졸업">대학교 졸업</option>
-                        <option value="대학원 졸업">대학원 졸업</option>
-                      </select>
-                    </div>
 
-                    <div className={styles["form-group"]}>
-                      <label>경력근무지</label>
-                      <input
-                        type="text"
-                        name="company_name"
-                        value={formData.company_name}
-                        onChange={handleInputChange}
-                        placeholder="이전 근무지를 입력하세요"
-                      />
-                    </div>
+
+                  <div className={styles["form-group"]}>
+                    <label>학력수준</label>
+                    <select
+                      name="education_level"
+                      value={formData.education_level}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">선택하세요</option>
+                      <option value="고등학교 졸업">고등학교 졸업</option>
+                      <option value="전문대학 졸업">전문대학 졸업</option>
+                      <option value="대학교 졸업">대학교 졸업</option>
+                      <option value="대학원 졸업">대학원 졸업</option>
+                    </select>
+                  </div>
+
+                  <div className={styles["form-group"]}>
+                    <label>경력근무지</label>
+                    <input
+                      type="text"
+                      name="company_name"
+                      value={formData.company_name}
+                      onChange={handleInputChange}
+                      placeholder="이전 근무지를 입력하세요"
+                    />
                   </div>
                 </>
               )}
@@ -2291,38 +2280,44 @@ const AdminProductList = () => {
                 />
               </div>
 
-              <div className={styles["form-row"]}>
-                <div className={styles["form-group"]}>
-                  <label>추가된 날짜</label>
-                  <input
-                    type="date"
-                    name="caregiver_created_at"
-                    value={formData.caregiver_created_at}
-                    onChange={handleInputChange}
-                  />
-                </div>
+                             <div className={styles["form-row"]}>
+                 <div className={styles["form-group"]}>
+                   <label>추가된 날짜</label>
+                   <input
+                     type="date"
+                     name="caregiver_created_at"
+                     value={formData.caregiver_created_at}
+                     onChange={handleInputChange}
+                     disabled
+                     style={{backgroundColor: '#f5f5f5', cursor: 'not-allowed'}}
+                   />
+                 </div>
 
-                <div className={styles["form-group"]}>
-                  <label>수정된 날짜</label>
-                  <input
-                    type="date"
-                    name="caregiver_update_at"
-                    value={formData.caregiver_update_at}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
+                 <div className={styles["form-group"]}>
+                   <label>수정된 날짜</label>
+                   <input
+                     type="date"
+                     name="caregiver_update_at"
+                     value={formData.caregiver_update_at}
+                     onChange={handleInputChange}
+                     disabled
+                     style={{backgroundColor: '#f5f5f5', cursor: 'not-allowed'}}
+                   />
+                 </div>
+               </div>
 
-              <div className={styles["form-group"]}>
-                <label>삭제된 날짜</label>
-                <input
-                  type="date"
-                  name="caregiver_deleted_at"
-                  value={formData.caregiver_deleted_at}
-                  onChange={handleInputChange}
-                  placeholder="삭제된 경우에만 입력"
-                />
-              </div>
+               <div className={styles["form-group"]}>
+                 <label>삭제된 날짜</label>
+                 <input
+                   type="date"
+                   name="caregiver_deleted_at"
+                   value={formData.caregiver_deleted_at}
+                   onChange={handleInputChange}
+                   placeholder="삭제된 경우에만 입력"
+                   disabled
+                   style={{backgroundColor: '#f5f5f5', cursor: 'not-allowed'}}
+                 />
+               </div>
 
               <div className={styles["form-group"]}>
                 <label>상세 설명</label>

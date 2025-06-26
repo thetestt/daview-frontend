@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../../styles/auth/ChangePasswordPage.css";
+import styles from "../../styles/auth/ChangePasswordPage.module.css";
 
 function ChangePasswordPage() {
   const location = useLocation();
@@ -39,7 +39,7 @@ function ChangePasswordPage() {
   };
 
   return (
-    <div className="change-password-container">
+    <div className={styles["change-password-container"]}>
       <h2>비밀번호 변경</h2>
 
       <input

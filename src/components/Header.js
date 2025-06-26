@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 function Header() {
   const [keyword, setKeyword] = useState("");
   const [username, setUsername] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const memberId = localStorage.getItem("memberId");
 
@@ -32,12 +33,14 @@ function Header() {
           const isExpired = decoded.exp * 1000 < Date.now();
           if (!isExpired) {
             setUsername(decoded.sub);
+            setUserRole(decoded.role);
             localStorage.setItem("memberId", decoded.memberId);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("username");
             localStorage.removeItem("memberId");
             setUsername(null);
+            setUserRole(null);
           }
         } catch (e) {
           console.error("토큰 에러:", e);
@@ -45,10 +48,12 @@ function Header() {
           localStorage.removeItem("username");
           localStorage.removeItem("memberId");
           setUsername(null);
+          setUserRole(null);
         }
       } else {
         localStorage.removeItem("memberId");
         setUsername(null);
+        setUserRole(null);
       }
     };
 
@@ -120,6 +125,10 @@ function Header() {
               <span>{username}님</span>
               <Link to="/mypage">마이페이지</Link>
               <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
+              {userRole && userRole.toLowerCase().includes('admin') && (
+                <Link to="/admin" className={styles["admin-link"]}>관리자 페이지</Link>
+              )}
+
               <span onClick={handleLogout}>로그아웃</span>
             </div>
           ) : (
