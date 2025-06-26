@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< KJ-F-03
 import { useLocation, useNavigate, useParams } from "react-router";
-=======
-import { useNavigate, useParams } from "react-router";
->>>>>>> main
 import { getReviewById } from "../api/reviewApi";
 import styles from "../styles/components/ReviewDetail.module.css";
 
 function ReviewDetail() {
   const navigate = useNavigate();
-<<<<<<< KJ-F-03
   const location = useLocation();
   const fromEdit = location.state?.fromEdit;
   const editedReview = location.state?.editedReview;
@@ -19,13 +14,6 @@ function ReviewDetail() {
 
   useEffect(() => {
     if (!revId || fromEdit) return;
-=======
-  const { revId } = useParams();
-  const [review, setReview] = useState(null);
-
-  useEffect(() => {
-    if (!revId) return;
->>>>>>> main
 
     const fetchReview = async () => {
       try {
@@ -36,7 +24,6 @@ function ReviewDetail() {
       }
     };
     fetchReview();
-<<<<<<< KJ-F-03
   }, [revId, fromEdit]);
 
   const handleUpdateClick = () => {
@@ -47,9 +34,6 @@ function ReviewDetail() {
       navigate(`/review/${revId}/update`);
     }
   };
-=======
-  }, [revId]);
->>>>>>> main
 
   if (!review) return <p>리뷰를 불러오는 중...</p>;
 
@@ -71,13 +55,9 @@ function ReviewDetail() {
       </div>
       <div>
         <button onClick={() => navigate("/review-board")}>목록으로</button>
-<<<<<<< KJ-F-03
         <button type="submit" onClick={handleUpdateClick}>
           후기 수정
         </button>
-=======
-        <button>후기 수정</button>
->>>>>>> main
       </div>
     </div>
   );
