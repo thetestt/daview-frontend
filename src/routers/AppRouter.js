@@ -139,9 +139,6 @@ const AppRouter = () => {
         {/* 찜 */}
         <Route path="/mypage/wishlist" element={<WishlistPage />} />
 
-        {/* 관리자 상품 목록 */}
-        <Route path="/admin/products" element={<AdminProductList />} />
-
         {/* 관리자 레이아웃 공통 적용 */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
