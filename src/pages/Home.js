@@ -2,6 +2,8 @@ import React from "react";
 // import SlideBanner from "../components/SliderBanner";
 import MainButton from "../components/MainButton";
 import IntroSection from "../components/IntroSection";
+import ReviewSection from "../components/ReviewSection";
+import CallSection from "../components/CallSection";
 
 function Home() {
   // const username = localStorage.getItem("username");
@@ -28,6 +30,8 @@ function Home() {
       {/* <SlideBanner /> */}
       <IntroSection />
       <MainButton />
+      <ReviewSection />
+      <CallSection />
 
       {/* <p>{mainMessage}</p>
       {role && (

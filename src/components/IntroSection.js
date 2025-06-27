@@ -10,7 +10,7 @@ function IntroSection() {
           <h1 className={styles.introTitle}>
             가족을 위한
             <br />
-            <span className={styles.highlight}>
+            <span className={styles.introHighlight}>
               안전한 요양시설을 찾아보세요
             </span>
           </h1>
@@ -20,10 +20,10 @@ function IntroSection() {
             전문적이고 따뜻한 케어를 제공합니다
           </p>
           <div className={styles.introButtons}>
-            <Link to="/nursinghome" className={styles.primaryButton}>
+            <Link to="/nursinghome" className={styles.introPrimaryButton}>
               요양시설 둘러보기
             </Link>
-            <Link to="/caregiver" className={styles.secondaryButton}>
+            <Link to="/caregiver" className={styles.introSecondaryButton}>
               전문 요양사 찾기
             </Link>
           </div>

@@ -4,7 +4,7 @@ import { createReservation } from "../api/reservationApi";
 import { v4 as uuidv4 } from "uuid";
 import CartCountModal from "./CartCountModal";
 import CartConfirmModal from "./CartConfirmModal";
-import "../styles/components/CartButton.css";
+import styles from "../styles/components/CartButton.module.css";
 
 function CartButton({ data, productType }) {
   const navigate = useNavigate();
@@ -100,40 +100,60 @@ function CartButton({ data, productType }) {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         >
-          <div className="modal-container">
-            <h3 className="modal-title">예약할 인원을 선택하세요.</h3>
+          <div className={styles["modal-container"]}>
+            <h3 className={styles["modal-title"]}>예약할 인원을 선택하세요.</h3>
 
-            <div className="modal-buttons">
+            <div className={styles["modal-buttons"]}>
               <button
-                className="modal-button modal-button-num"
+                className={styles["modal-button-num"]}
                 onClick={() => setRsvCnt(Math.max(1, rsvCnt - 1))}
+                onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+                onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
               >
                 -
               </button>
-              <span className="modal-quantity">{rsvCnt}</span>
+              <span className={styles["modal-quantity"]}>{rsvCnt}</span>
               <button
-                className="modal-button modal-button-num"
+                className={styles["modal-button-num"]}
                 onClick={() => setRsvCnt(rsvCnt + 1)}
+                onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+                onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
               >
                 +
               </button>
             </div>
 
-            <div className="modal-buttons">
+            <div className={styles["modal-buttons"]}>
               <button
-                className="modal-button modal-button-blue"
+                className={styles["modal-button-blue"]}
                 onClick={() => {
                   setIsModalOpen(false);
                   setIsConfirmOpen(true);
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = "scale(1.1)";
+                  e.target.style.boxShadow = "0px 4px 12px rgba(0, 0, 0, 0.2)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = "scale(1)";
+                  e.target.style.boxShadow = "none";
                 }}
               >
                 확인
               </button>
               <button
-                className="modal-button modal-button-gray"
+                className={styles["modal-button-gray"]}
                 onClick={() => {
                   alert("예약이 취소되었습니다.");
                   setIsModalOpen(false);
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = "scale(1.1)";
+                  e.target.style.boxShadow = "0px 4px 12px rgba(0, 0, 0, 0.2)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = "scale(1)";
+                  e.target.style.boxShadow = "none";
                 }}
               >
                 취소

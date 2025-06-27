@@ -30,7 +30,7 @@
   color: #2c3e50;
 }
 
-.highlight {
+.introHighlight {
   background: linear-gradient(45deg, #00334f, #004d7a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -49,8 +49,8 @@
   flex-wrap: wrap;
 }
 
-.primaryButton,
-.secondaryButton {
+.introPrimaryButton,
+.introSecondaryButton {
   padding: 16px 32px;
   border-radius: 50px;
   font-weight: 600;
@@ -59,26 +59,25 @@
   transition: all 0.3s ease;
 }
 
-.primaryButton:hover,
-.secondaryButton:hover {
+.introPrimaryButton:hover,
+.introSecondaryButton:hover {
   background: #004d7a;
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 0 4px #66ccff, 0 0 4px #66ccff;
 }
 
-.primaryButton {
+.introPrimaryButton {
   background: #00334f;
   color: white;
 }
 
-.secondaryButton {
+.introSecondaryButton {
   background: white;
   color: #00334f;
   border: 2px solid #00334f;
 }
 
-/* 애니메이션 */
 @keyframes slideUp {
   0% {
     opacity: 0;
