@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import ChatList from "./ChatList";
-import { getChatRoomInfo, markMessagesAsRead } from "../api/chat";
+import {
+  getChatRoomInfo,
+  //markMessagesAsRead
+} from "../api/chat";
 import axios from "../api/axiosInstance";
 import styles from "../styles/pages/ChatRoom.module.css";
 
@@ -56,18 +59,25 @@ const ChatRoom = () => {
   }, [chatroomId, memberId, navigate, skipValidation]);
 
   useEffect(() => {
-    if (accessGranted && chatroomId && memberId) {
+    if (accessGranted && chatroomId && memberId && !chatTargetInfo) {
       getChatRoomInfo(chatroomId, memberId)
         //상대방 정보 가져오기
         .then((data) => {
           console.log("프론트로 넘어온 데이터 여기서 받아야 하나보네 " + data);
           console.log(JSON.stringify(data, null, 2)); // data를 콘솔에 출력
-          setChatTargetInfo(data);
+          //setChatTargetInfo(data);
+          // ✅ 데이터가 유효할 때만 상태 변경
+          if (data && data.opponentId) {
+            setChatTargetInfo(data);
+          } else {
+            console.warn("❗ 유효하지 않은 채팅 상대 데이터:", data);
+          }
         })
+
         .catch((err) => console.error("상대 정보 가져오기 실패", err));
-      markMessagesAsRead(chatroomId, memberId);
+      //markMessagesAsRead(chatroomId, memberId);
     }
-  }, [accessGranted, chatroomId, memberId]);
+  }, [accessGranted, chatroomId, memberId, chatTargetInfo]);
 
   if (chatroomId && accessGranted === null) return <div>접근 확인 중...</div>;
   if (chatroomId && !accessGranted) return null;

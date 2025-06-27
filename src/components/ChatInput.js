@@ -22,7 +22,7 @@ const ChatInput = ({ onSend, disabled = false }) => {
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyDown}
         placeholder={disabled ? " " : "메시지를 입력하세요"}
         disabled={disabled}
       />

@@ -7,7 +7,7 @@ import {
   getMessages,
   exitChatRoom,
   verifyChatAccess,
-  markMessagesAsRead,
+  //markMessagesAsRead,
 } from "../api/chat";
 import styles from "../styles/components/ChatWindow.module.css";
 //import { useNavigate } from "react-router";
@@ -25,8 +25,8 @@ const ChatWindow = ({
   const isActivatedRef = useRef(false);
   //const navigate = useNavigate();
   // ✅ 메시지 중복 방지용
-  const receivedMessageCacheRef = useRef(new Set());
-  const messageCache = receivedMessageCacheRef.current;
+  //const receivedMessageCacheRef = useRef(new Set());
+  //const messageCache = receivedMessageCacheRef.current;
   const [isAllowed, setIsAllowed] = useState(null);
   const [isOpponentOut, setIsOpponentOut] = useState(false);
 
@@ -41,6 +41,7 @@ const ChatWindow = ({
     };
 
     if (stompClientRef.current && stompClientRef.current.connected) {
+      console.log("✅ WebSocket 연결됨 → 읽음 메시지 보냄", msg);
       stompClientRef.current.publish({
         destination: "/pub/read",
         body: JSON.stringify(msg),
@@ -77,7 +78,7 @@ const ChatWindow = ({
         }));
         setMessages(loaded);
         // 메세지 읽음
-        markMessagesAsRead(chatroomId, currentUser.memberId);
+        //markMessagesAsRead(chatroomId, currentUser.memberId);
       });
 
       // ✅ WebSocket 연결 및 구독
@@ -87,22 +88,27 @@ const ChatWindow = ({
           webSocketFactory: () => socket,
           debug: (str) => console.log("[WebSocket]", str),
           onConnect: () => {
-            //읽었음 보내기
+            //읽rl
             const readSub = stompClient.subscribe(
-              `/sub/chat/read/${chatroomId}`,
+              `/sub/chat/read/${chatroomId}`, //읽음 알림 구독채널
               (message) => {
-                const { readerId } = JSON.parse(message.body);
-                if (readerId !== currentUser.memberId) {
+                const { readerId, chatMessageIds } = JSON.parse(message.body); //누가 읽었는지 확인
+                console.log("📬 읽음수신", message.body);
+                if (
+                  readerId !== currentUser.memberId &&
+                  Array.isArray(chatMessageIds)
+                ) {
                   // 상대방이 읽었으면 내 메시지 중 읽힘 표시가 필요한 것들 반영
                   setMessages((prev) =>
                     prev.map((msg) =>
                       msg.senderId === currentUser.memberId &&
-                      msg.isRead === false
+                      chatMessageIds.includes(msg.chatMessageId)
                         ? { ...msg, isRead: true }
                         : msg
                     )
                   );
-                  console.log("📬 상대방이 읽음 처리함");
+                  console.log("📬 읽음수신");
+                  console.log("🧪 chatroomId", chatroomId);
                 }
               }
             );
@@ -119,13 +125,19 @@ const ChatWindow = ({
                   const received = JSON.parse(message.body);
                   console.log("📩 받은 메시지:", received);
 
-                  const cacheKey = `${received.senderId}_${received.sentAt}_${received.content}_${received.receiverId}`;
-                  if (receivedMessageCacheRef.current.has(cacheKey)) {
-                    return; // ✅ 이미 처리한 메시지라면 무시
-                  }
-                  receivedMessageCacheRef.current.add(cacheKey);
-
+                  // ✅ chatMessageId 기준 중복 메시지 방지
                   setMessages((prev) => {
+                    const isDuplicate = prev.some(
+                      (msg) => msg.chatMessageId === received.chatMessageId
+                    );
+                    if (isDuplicate) {
+                      console.log(
+                        "🚫 중복 메시지 무시됨:",
+                        received.chatMessageId
+                      );
+                      return prev;
+                    }
+
                     const updated = [
                       ...prev,
                       {
@@ -153,6 +165,8 @@ const ChatWindow = ({
 
               subscriptionRef.current = sub;
             }
+
+            console.log("📡 구독 설정 완료: /sub/chat/read/" + chatroomId);
           },
           onStompError: (frame) => {
             console.error("❌ WebSocket 오류:", frame);
@@ -187,9 +201,9 @@ const ChatWindow = ({
         console.log("🧹 WebSocket 연결 해제");
       }
 
-      messageCache.clear(); // ✅ 캐시도 초기화
+      //messageCache.clear(); // ✅ 캐시도 초기화
     };
-  }, [chatroomId, currentUser.memberId, messageCache]);
+  }, [chatroomId, currentUser.memberId]);
 
   // ✅ 메시지 전송 함수
   const sendMessage = (content) => {
@@ -218,14 +232,21 @@ const ChatWindow = ({
   };
 
   // ✅ 읽지 않은 메시지 실시간으로 감지해서 읽음 전송
+  const hasSentReadRef = useRef(false);
   useEffect(() => {
-    if (messages.length > 0 && chatroomId && currentUser.memberId) {
+    if (
+      messages.length > 0 &&
+      chatroomId &&
+      currentUser.memberId &&
+      !hasSentReadRef.current
+    ) {
       const hasUnreadFromOpponent = messages.some(
         (msg) => msg.senderId !== currentUser.memberId && msg.isRead === false
       );
 
       if (hasUnreadFromOpponent) {
         sendReadReceipt();
+        hasSentReadRef.current = true;
       }
     }
   }, [messages, chatroomId, currentUser.memberId]);
@@ -246,7 +267,7 @@ const ChatWindow = ({
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, chatTargetInfo, currentUser]);
+  }, [chatTargetInfo]);
 
   //나가기
   const handleExit = async () => {
@@ -263,6 +284,22 @@ const ChatWindow = ({
       }
     }
   };
+
+  useEffect(() => {
+    console.log("💬 현재 메시지 리스트:", messages);
+
+    messages.forEach((msg, index) => {
+      console.log(
+        `📦 메시지 ${index} → ID: ${msg.chatMessageId}, 내용: ${msg.content}`
+      );
+      console.log("📦 전체 메시지 리스트:");
+      messages.forEach((msg, idx) => {
+        console.log(
+          `📨 [${idx}] ID: ${msg.chatMessageId}, 내용: ${msg.content}`
+        );
+      });
+    });
+  }, [messages]);
 
   if (isAllowed === null) return <div>채팅방 접근 확인 중...</div>;
   if (isAllowed === false) return null;
@@ -317,7 +354,7 @@ const ChatWindow = ({
 
       <div className={styles["message-list"]}>
         {messages.map((msg, index) => (
-          <ChatMessage key={index} message={msg} />
+          <ChatMessage key={`${msg.chatMessageId}`} message={msg} />
         ))}
         <div ref={endOfMessagesRef} />
         {/* ❤️ 상대방 나감 안내 & 입력창 처리 */}
