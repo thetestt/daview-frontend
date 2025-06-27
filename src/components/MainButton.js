@@ -12,7 +12,7 @@ function MainButton() {
 
   return (
     <section className={styles.mainBtnSection}>
-      <div className={styles.mainBtnContainer}>
+      <div className={styles.mainBtnToTalContainer}>
         <div className={styles.mainBtnSectionHeader}>
           <h2 className={styles.mainBtnSectionTitle}>
             어떤 서비스를 찾고 계신가요?
