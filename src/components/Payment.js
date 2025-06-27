@@ -9,6 +9,7 @@ function Payment() {
   const reservations = location.state?.reservations || [];
   const totalPrice = location.state?.totalPrice || 0;
   const [loading, setLoading] = useState(true);
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -124,6 +125,7 @@ function Payment() {
               <label>상담 예정일 *</label>
               <input
                 type="date"
+                max={new Date().toISOString().split("T")[0]}
                 name="consultDate"
                 value={userInfo.consultDate}
                 onChange={handleChange}
@@ -143,7 +145,18 @@ function Payment() {
             </div>
           </div>
           <div style={{ marginTop: "30px" }}>
-            <strong>총 결제 금액: {totalPrice.toLocaleString()} 원</strong>
+            <label>
+              <input
+                type="checkbox"
+                checked={isAgreed}
+                onChange={(e) => setIsAgreed(e.target.checked)}
+              />
+              예약에 관한 내용을 확인하였으며, <br />
+              결제에 동의합니다.
+            </label>
+            <div>
+              <strong>총 결제 금액: {totalPrice.toLocaleString()} 원</strong>
+            </div>
           </div>
           <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button
@@ -163,6 +176,7 @@ function Payment() {
               totalPrice={totalPrice}
               userInfo={userInfo}
               memberId={memberId}
+              isAgreed={isAgreed}
             />
           </div>
         </>
