@@ -50,17 +50,17 @@ export const exitChatRoom = async (chatroomId, memberId) => {
   return res.data; // { success: true }
 };
 
-// ✅ 6. 채팅방 입장 시 읽음 처리 API 추가
-export const markMessagesAsRead = async (chatroomId, memberId) => {
-  try {
-    console.log("📨 읽음 처리 백앤드호출!!!!!!!:", chatroomId, memberId);
-    await axios.post(`/api/chat/${chatroomId}/read`, null, {
-      params: { memberId },
-    });
-  } catch (err) {
-    console.error("❌ 메시지 읽음 처리 실패:", err);
-  }
-};
+// // ✅ 6. 채팅방 입장 시 읽음 처리 API 추가
+// export const markMessagesAsRead = async (chatroomId, memberId) => {
+//   try {
+//     console.log("📨 읽음 처리 백앤드호출!!!!!!!:", chatroomId, memberId);
+//     await axios.post(`/api/chat/${chatroomId}/read`, null, {
+//       params: { memberId },
+//     });
+//   } catch (err) {
+//     console.error("❌ 메시지 읽음 처리 실패:", err);
+//   }
+// };
 
 //채팅방 검증
 export const verifyChatAccess = async (chatroomId, memberId) => {
