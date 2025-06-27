@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getReviewById } from "../api/reviewApi";
 import styles from "../styles/components/ReviewDetail.module.css";
 
@@ -28,7 +28,7 @@ function ReviewDetail() {
 
   const handleUpdateClick = () => {
     if (!memberId) {
-      alert("로그인 후 수정할 수 있습니다.");
+      alert("로그인 후 이용해주세요.");
       navigate(`/login`);
     } else {
       navigate(`/review/${revId}/update`);
