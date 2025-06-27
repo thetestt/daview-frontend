@@ -1,0 +1,195 @@
+.revSection {
+  padding: 100px 0;
+  background: white;
+}
+
+.revSecContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.revSecSectionHeader {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.revSecSectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.revSecSectionSubtitle {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+.revSecNoReviews {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.revSecCardContainer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.revSecNavButton {
+  background: #f8fafb;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #00334f;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.revSecNavButton:hover {
+  background: #00334f;
+  color: white;
+  transform: scale(1.1);
+}
+
+.revSecCard {
+  width: 600px;
+  height: 300px;
+  background: #f8fafb;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid #e1e8ed;
+}
+
+.revSecCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #00334f;
+}
+
+.revSecContent {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.revSecText {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #2c3e50;
+  font-style: italic;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.revSecAuthor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.revSecAuthorInfo h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
+}
+
+.revSecAuthorRole {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+}
+
+.revSecFacilityName {
+  color: #00334f;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.revSecRating {
+  display: flex;
+  gap: 3px;
+}
+
+.revSecStar {
+  font-size: 1.4rem;
+  color: #ffd700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.revSecIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.revSecIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.revSecIndicator.revSecActive {
+  background: #00334f;
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .revSection {
+    padding: 60px 0;
+  }
+
+  .revSecContainer {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .revSecNavButton {
+    order: 2;
+  }
+
+  .revSecCard {
+    order: 1;
+    padding: 30px 20px;
+    width: 100%;
+    height: auto;
+    min-height: 250px;
+  }
+
+  .revSecAuthor {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
