@@ -1067,8 +1067,12 @@ const AdminProductList = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     
-    if (!editFormData.prodName || !editFormData.prodTypeName) {
-      alert('필수 항목을 모두 입력해주세요.');
+    // ✅ 필수 검증을 완화: 기존 데이터가 있으면 빈 값도 허용
+    const currentProdName = editFormData.prodName || originalEditData.prodName;
+    const currentProdTypeName = editFormData.prodTypeName || originalEditData.prodTypeName;
+    
+    if (!currentProdName || !currentProdTypeName) {
+      alert('상품명과 상품유형은 필수입니다. 기존 값이 없는 경우 입력해주세요.');
       return;
     }
 
@@ -1111,8 +1115,20 @@ const AdminProductList = () => {
         console.log('👨‍⚕️ 요양사 수정 URL:', updateUrl);
       }
 
+      // ✅ 변경된 필드에 prodTypeName 추가 (서버에서 구분용)
+      const finalUpdateData = {
+        ...changedFields,
+        prodTypeName: selectedProduct.prodTypeName // 서버에서 상품 유형 구분용
+      };
+      
+      console.log('📝 최종 전송 데이터:', finalUpdateData);
+      
+      // 올바른 엔드포인트로 수정 (통합 API 사용)
+      const correctUpdateUrl = `http://localhost:8080/api/admin/products/${selectedProduct.prodId}`;
+      console.log('🔄 실제 사용할 URL:', correctUpdateUrl);
+      
       // 실제 axios PUT 요청 (변경된 필드만 전송)
-      const response = await axios.put(updateUrl, changedFields, {
+      const response = await axios.put(correctUpdateUrl, finalUpdateData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -3023,26 +3039,24 @@ const AdminProductList = () => {
               // 수정 모드
               <form onSubmit={handleEditSubmit} className={styles["register-form"]}>
                 <div className={styles["form-group"]}>
-                  <label>상품명 *</label>
+                  <label>상품명 <span style={{color: '#666', fontSize: '12px'}}>(변경할 경우만 입력)</span></label>
                   <input
                     type="text"
                     name="prodName"
                     value={editFormData.prodName}
                     onChange={handleEditInputChange}
-                    placeholder="상품명을 입력하세요"
-                    required
+                    placeholder={`현재: ${originalEditData.prodName || '값 없음'} (변경하려면 새 값을 입력하세요)`}
                   />
                 </div>
 
                 <div className={styles["form-group"]}>
-                  <label>상품 유형 *</label>
+                  <label>상품 유형 <span style={{color: '#666', fontSize: '12px'}}>(현재: {originalEditData.prodTypeName || '미설정'})</span></label>
                   <select
                     name="prodTypeName"
                     value={editFormData.prodTypeName}
                     onChange={handleEditInputChange}
-                    required
                   >
-                    <option value="">유형을 선택하세요</option>
+                    <option value="">현재 값 유지 ({originalEditData.prodTypeName || '미설정'})</option>
                     <option value="요양사">👨‍⚕️ 요양사</option>
                     <option value="기업">🏢 기업</option>
                   </select>
@@ -3050,18 +3064,17 @@ const AdminProductList = () => {
 
                 {/* 요양사일 때만 표시되는 필드 */}
                 {editFormData.prodTypeName === '요양사' && (
-                  <div className={styles["form-group"]}>
-                    <label>희망급여(만원) *</label>
-                    <input
-                      type="number"
-                      name="hope_work_amount"
-                      value={editFormData.hope_work_amount}
-                      onChange={handleEditInputChange}
-                      placeholder="희망급여를 입력하세요"
-                      min="0"
-                      required
-                    />
-                  </div>
+                                      <div className={styles["form-group"]}>
+                      <label>희망급여(만원) <span style={{color: '#666', fontSize: '12px'}}>(변경할 경우만 입력)</span></label>
+                      <input
+                        type="number"
+                        name="hope_work_amount"
+                        value={editFormData.hope_work_amount}
+                        onChange={handleEditInputChange}
+                        placeholder={`현재: ${originalEditData.hope_work_amount || '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
+                        min="0"
+                      />
+                    </div>
                 )}
 
                 {/* 요양사 전용 필드들 */}
@@ -3102,15 +3115,14 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>월별이용료(만원) *</label>
+                      <label>월별이용료(만원) <span style={{color: '#666', fontSize: '12px'}}>(변경할 경우만 입력)</span></label>
                       <input
                         type="number"
                         name="facility_charge"
                         value={editFormData.facility_charge}
                         onChange={handleEditInputChange}
-                        placeholder="월별이용료를 입력하세요"
+                        placeholder={`현재: ${originalEditData.facility_charge || originalEditData.monthlyFee || '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
                         min="0"
-                        required
                       />
                     </div>
 
