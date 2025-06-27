@@ -157,7 +157,7 @@
 
 /* 관리자 페이지 버튼 특별 스타일 */
 .admin-link {
-  background: linear-gradient(135deg, #dc3545, #c82333) !important;
+  background: linear-gradient(135deg, #00334f, #002238) !important;
   color: white !important;
   padding: 8px 16px !important;
   border-radius: 6px !important;
@@ -165,13 +165,13 @@
   font-weight: 600 !important;
   text-decoration: none !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+  box-shadow: 0 2px 4px rgba(0, 51, 79, 0.3) !important;
 }
 
 .admin-link:hover {
-  background: linear-gradient(135deg, #c82333, #a71e2a) !important;
+  background: linear-gradient(135deg, #002238, #001426) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4) !important;
+  box-shadow: 0 4px 8px rgba(0, 51, 79, 0.4) !important;
 }
 
 .auto-buttons a {
