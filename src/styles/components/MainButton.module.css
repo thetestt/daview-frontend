@@ -1,20 +1,20 @@
-.mainButtonSection {
+.mainBtnSection {
   padding: 60px 0;
   background: #f8fafb;
 }
 
-.container {
+.mainBtnToTalContainer {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-.sectionHeader {
+.mainBtnSectionHeader {
   text-align: center;
   margin-bottom: 80px;
 }
 
-.sectionTitle {
+.mainBtnSectionTitle {
   font-size: 2rem;
   font-weight: 700;
   color: #2c3e50;
@@ -22,7 +22,7 @@
   position: relative;
 }
 
-.sectionTitle::after {
+.mainBtnSectionTitle::after {
   content: "";
   position: absolute;
   bottom: -10px;
@@ -34,7 +34,7 @@
   border-radius: 2px;
 }
 
-.sectionSubtitle {
+.mainBtnSectionSubtitle {
   font-size: 1.2rem;
   color: #7f8c8d;
   line-height: 1.6;
@@ -42,14 +42,14 @@
   margin: 0 auto;
 }
 
-.mainButtonContainer {
+.mainBtnContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
   margin-top: 60px;
 }
 
-.buttonCard {
+.mainBtnCard {
   background: white;
   border-radius: 25px;
   overflow: hidden;
@@ -63,7 +63,7 @@
   text-align: center;
 }
 
-.buttonCard::before {
+.mainBtnCard::before {
   content: "";
   position: absolute;
   top: 0;
@@ -75,16 +75,16 @@
   transition: transform 0.3s ease;
 }
 
-.buttonCard:hover {
+.mainBtnCard:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.buttonCard:hover::before {
+.mainBtnCard:hover::before {
   transform: scaleX(1);
 }
 
-.circleImageContainer {
+.mainBtnCircleImageContainer {
   position: relative;
   width: 250px;
   height: 250px;
@@ -95,23 +95,23 @@
   transition: all 0.3s ease;
 }
 
-.buttonCard:hover .circleImageContainer {
+.mainBtnCard:hover .mainBtnCircleImageContainer {
   transform: scale(1.05);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.circleImage {
+.mainBtnCircleImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.buttonCard:hover .circleImage {
+.mainBtnCard:hover .mainBtnCircleImage {
   transform: scale(1.1);
 }
 
-.imageOverlay {
+.mainBtnImageOverlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -126,21 +126,21 @@
   border-radius: 50%;
 }
 
-.buttonCard:hover .imageOverlay {
+.mainBtnCard:hover .mainBtnImageOverlay {
   opacity: 1;
 }
 
-.overlayText {
+.mainBtnOverlayText {
   font-size: 1.2rem;
   color: white;
   font-weight: 600;
 }
 
-.cardContent {
+.mainBtnCardContent {
   text-align: center;
 }
 
-.cardTitle {
+.mainBtnCardTitle {
   font-size: 2.3rem;
   font-weight: 700;
   color: #2c3e50;
@@ -148,26 +148,26 @@
   transition: color 0.3s ease;
 }
 
-.buttonCard:hover .cardTitle {
+.mainBtnCard:hover .mainBtnCardTitle {
   color: #00334f;
 }
 
-.cardDescription {
+.mainBtnCardDescription {
   color: #7f8c8d;
   line-height: 1.6;
   margin-bottom: 25px;
   font-size: 1.1rem;
 }
 
-.buttonCard:hover .exploreButton {
+.mainBtnCard:hover .mainBtnExploreButton {
   background: #004d7a;
   transform: translateY(-2px);
 }
 
-.arrow {
+.mainBtnArrow {
   transition: transform 0.3s ease;
 }
 
-.buttonCard:hover .arrow {
+.mainBtnCard:hover .mainBtnArrow {
   transform: translateX(3px);
 }

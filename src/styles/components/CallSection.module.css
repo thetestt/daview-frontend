@@ -1,0 +1,128 @@
+.callSecSection {
+  padding: 100px 0;
+  background: #f8fafb;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.callSecContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.callSecTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.callSecSubtitle {
+  font-size: 1.3rem;
+  margin-bottom: 40px;
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+.callSecButtons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 50px;
+  flex-wrap: nowrap;
+}
+
+.callSecPrimaryCall {
+  background: #00334f;
+  color: white;
+  padding: 18px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: none;
+  width: 180px;
+  min-width: 180px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.callSecPrimaryCall:hover {
+  background: #004d7a;
+  transform: translateY(-2px);
+}
+
+.callSecSecondaryCall {
+  background: white;
+  color: #00334f;
+  padding: 18px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 2px solid #00334f;
+  width: 180px;
+  min-width: 180px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.callSecSecondaryCall:hover {
+  background: #00334f;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.callSecFeatures {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.callSecFeature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #7f8c8d;
+  min-width: 120px;
+}
+
+.callSecFeatureIcon {
+  background: #00334f;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .callSecTitle {
+    font-size: 2.5rem;
+  }
+
+  .callSecButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .callSecFeatures {
+    gap: 20px;
+  }
+
+  .callSecFeature {
+    min-width: auto;
+  }
+}
