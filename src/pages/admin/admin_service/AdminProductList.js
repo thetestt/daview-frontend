@@ -1,9 +1,10 @@
 // 📁 src/pages/admin/AdminProductList.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import styles from '../../../styles/admin/AdminProductList.module.css';
 
-// 정적 지역 데이터 (하드코딩)
+/* eslint-disable no-unused-vars */
+// 정적 지역 데이터 (하드코딩) - 향후 사용 예정
 const regions = [
   { id: 1, name: '서울특별시' },
   { id: 2, name: '부산광역시' },
@@ -24,7 +25,7 @@ const regions = [
   { id: 17, name: '제주특별자치도' }
 ];
 
-// 정적 시/군/구 데이터 (하드코딩)
+// 정적 시/군/구 데이터 (하드코딩) - 향후 사용 예정
 const cityData = {
   1: [ // 서울특별시
     '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
@@ -94,7 +95,7 @@ const cityData = {
   ]
 };
 
-// 더미 데이터
+// 더미 데이터 - 개발용/테스트용
 const dummyProducts = [
   {
     prodId: 1,
@@ -389,12 +390,14 @@ const AdminProductList = () => {
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState(''); // 선택된 상품 유형
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(10); // 페이지 크기 상태
+  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
+  const [totalElements, setTotalElements] = useState(0); // 전체 데이터 수
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isServerConnected, setIsServerConnected] = useState(false); // 기본적으로 오프라인 모드로 시작
+  // const [isServerConnected, setIsServerConnected] = useState(false); // 향후 서버 연결 상태 체크용
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [users, setUsers] = useState([]); // 회원 목록
   const [selectedRegionId, setSelectedRegionId] = useState(''); // 선택된 지역 ID
@@ -409,7 +412,7 @@ const AdminProductList = () => {
   const [filterEmploymentType, setFilterEmploymentType] = useState('');
 
   // 정적 지역 데이터 (하드코딩) - AdminCaregiverList.js와 동일
-  const regions = [
+  const regionsInComponent = [
     { id: 1, name: '서울특별시' },
     { id: 2, name: '부산광역시' },
     { id: 3, name: '대구광역시' },
@@ -430,7 +433,7 @@ const AdminProductList = () => {
   ];
 
   // 정적 시/군/구 데이터 (하드코딩)
-  const cityData = {
+  const cityDataInComponent = {
     1: [ // 서울특별시
       '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
       '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
@@ -587,8 +590,9 @@ const AdminProductList = () => {
   const [originalEditData, setOriginalEditData] = useState({});
 
   // 실제 API 데이터 필터링 함수
+    // eslint-disable-next-line no-unused-vars
   const filterApiData = (data, searchTerm = '', typeFilter = '') => {
-    let filteredData = Array.isArray(data) ? [...data] : [];
+      let filteredData = Array.isArray(data) ? [...data] : [];
     
     // 검색어 필터링
     if (searchTerm.trim()) {
@@ -611,28 +615,48 @@ const AdminProductList = () => {
   };
 
   // 상품 목록 가져오기
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      console.log('=== fetchProducts 시작 ===');
-      console.log('현재 선택된 상품 유형:', selectedType);
+      // console.log('=== fetchProducts 시작 ===');
+      // console.log('현재 선택된 상품 유형:', selectedType);
+      // console.log('현재 페이지:', page, '페이지 크기:', size);
       
-      let url, apiName;
+      let baseUrl, apiName;
       
       // ✅ 수정: 올바른 API 엔드포인트 사용
       if (selectedType === '기업') {
-        url = 'http://localhost:8080/api/admin/products?type=요양원/실버타운';
+        baseUrl = 'http://localhost:8080/api/admin/products';
         apiName = '기업';
       } else if (selectedType === '요양사') {
-        url = 'http://localhost:8080/api/admin/products?type=요양사';
+        baseUrl = 'http://localhost:8080/api/admin/products';
         apiName = '요양사';
       } else {
         // 전체 조회 시 요양사 데이터만 조회 (기본값)
-        url = 'http://localhost:8080/api/admin/products?type=요양사';
+        baseUrl = 'http://localhost:8080/api/admin/products';
         apiName = '요양사';
       }
       
-      console.log(`=== ${apiName} API 호출 시작 ===`);
-      console.log('API 호출 URL:', url);
+      // URL 파라미터 구성
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('size', size.toString());
+      
+      if (selectedType === '기업') {
+        params.append('type', '요양원/실버타운');
+      } else if (selectedType === '요양사') {
+        params.append('type', '요양사');
+      } else {
+        params.append('type', '요양사'); // 기본값
+      }
+      
+      if (search.trim()) {
+        params.append('search', search.trim());
+      }
+      
+      const url = `${baseUrl}?${params.toString()}`;
+      
+      // console.log(`=== ${apiName} API 호출 시작 ===`);
+      // console.log('API 호출 URL:', url);
       
       const config = {
         method: 'GET',
@@ -642,34 +666,44 @@ const AdminProductList = () => {
         },
         credentials: 'include'
       };
-      console.log('API 호출 설정:', config);
+      // console.log('API 호출 설정:', config);
       
       const response = await fetch(url, config);
-      console.log('API 응답 상태:', response.status);
+      // console.log('API 응답 상태:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log(`=== ${apiName} API 응답 데이터 ===`);
-      console.log('응답 데이터 타입:', typeof data);
-      console.log('응답 데이터 전체:', data);
+      // console.log(`=== ${apiName} API 응답 데이터 ===`);
+      // console.log('응답 데이터 타입:', typeof data);
+      // console.log('응답 데이터 전체:', data);
       
       // ✅ 수정: AdminProductController 응답 구조에 맞게 처리
       const productList = data.content || data || [];
-      console.log('처리된 상품 목록 길이:', Array.isArray(productList) ? productList.length : 'Not an array');
+      // console.log('처리된 상품 목록 길이:', Array.isArray(productList) ? productList.length : 'Not an array');
+      // console.log('페이지네이션 정보:', {
+      //   totalElements: data.totalElements,
+      //   totalPages: data.totalPages,
+      //   currentPage: data.number,
+      //   size: data.size,
+      //   first: data.first,
+      //   last: data.last
+      // });
       
-      if (Array.isArray(productList) && productList.length > 0) {
-        console.log(`첫 번째 ${apiName} 데이터:`, productList[0]);
-        console.log(`첫 번째 ${apiName} 필드들:`);
-        Object.keys(productList[0]).forEach(key => {
-          console.log(`  ${key}: ${productList[0][key]}`);
-        });
-      }
+      // if (Array.isArray(productList) && productList.length > 0) {
+      //   console.log(`첫 번째 ${apiName} 데이터:`, productList[0]);
+      //   console.log(`첫 번째 ${apiName} 필드들:`);
+      //   Object.keys(productList[0]).forEach(key => {
+      //     console.log(`  ${key}: ${productList[0][key]}`);
+      //   });
+      // }
       
       setProducts(productList);
-      console.log(`=== ${apiName} 데이터 설정 완료 ===`);
+      setTotalPages(data.totalPages || 0);
+      setTotalElements(data.totalElements || 0);
+      // console.log(`=== ${apiName} 데이터 설정 완료 ===`);
       
     } catch (error) {
       console.error('=== fetchProducts 오류 ===');
@@ -677,11 +711,12 @@ const AdminProductList = () => {
       console.error('오류 스택:', error.stack);
       setProducts([]);
     }
-  };
+  }, [page, size, selectedType, search]); // useCallback 의존성 배열 추가
 
   // 검색 버튼 클릭 핸들러
   const handleSearch = () => {
-    console.log('검색 실행:', search, '유형:', selectedType);
+    // console.log('검색 실행:', search, '유형:', selectedType);
+    setPage(0); // 검색 시 첫 페이지로 이동
     fetchProducts();
   };
 
@@ -695,6 +730,7 @@ const AdminProductList = () => {
   // 유형 필터 변경 핸들러
   const handleTypeChange = (e) => {
     setSelectedType(e.target.value);
+    setPage(0); // 필터 변경 시 첫 페이지로 이동
   };
 
   // 필터 초기화 핸들러
@@ -707,6 +743,7 @@ const AdminProductList = () => {
     setFilterEmploymentType('');
     setSelectedRegionId('');
     setCities([]);
+    setPage(0); // 필터 초기화 시 첫 페이지로 이동
   };
 
   // 회원 목록 조회 (role별 필터링)
@@ -1184,10 +1221,10 @@ const AdminProductList = () => {
       return;
     }
     
-    // 디버깅 로그 추가
-    if (name === 'facility_name' || name === 'facility_charge') {
-      console.log(`🔥 handleInputChange - ${name}:`, value);
-    }
+    // 디버깅 로그 (필요시 주석 해제)
+    // if (name === 'facility_name' || name === 'facility_charge') {
+    //   console.log(`🔥 handleInputChange - ${name}:`, value);
+    // }
     
     setFormData(prev => {
       const updated = {
@@ -1195,10 +1232,10 @@ const AdminProductList = () => {
         [name]: value
       };
       
-      // 중요 필드 변경 시 로그 출력
-      if (name === 'facility_name' || name === 'facility_charge') {
-        console.log(`✅ formData 업데이트 완료 - ${name}:`, updated[name]);
-      }
+      // 중요 필드 변경 시 로그 출력 (필요시 주석 해제)
+      // if (name === 'facility_name' || name === 'facility_charge') {
+      //   console.log(`✅ formData 업데이트 완료 - ${name}:`, updated[name]);
+      // }
       
       return updated;
     });
@@ -1315,8 +1352,8 @@ const AdminProductList = () => {
     setEditSelectedRegionId(regionId);
     
     // 해당 지역의 시/군/구 목록 설정
-    if (regionId && cityData[regionId]) {
-      const cityList = cityData[regionId].map((cityName, index) => ({
+    if (regionId && cityDataInComponent[regionId]) {
+      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
@@ -1468,11 +1505,11 @@ const AdminProductList = () => {
   // 지역 선택 시 시/군/구 목록 로드 (등록 모달용)
   const handleRegionChange = (e) => {
     const regionId = e.target.value;
-    console.log('🔥 AdminProductList - 선택된 지역 ID:', regionId);
+    // console.log('🔥 AdminProductList - 선택된 지역 ID:', regionId);
     setSelectedRegionId(regionId);
     
     // 폼 데이터의 지역 설정
-    const selectedRegion = regions.find(r => r.id.toString() === regionId);
+    const selectedRegion = regionsInComponent.find(r => r.id.toString() === regionId);
     console.log('🌍 선택된 지역 객체:', selectedRegion);
     
     // 상품 유형에 따라 다른 필드에 저장
@@ -1491,9 +1528,9 @@ const AdminProductList = () => {
     }
 
     // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
-    console.log('🏙️ cityData[regionId]:', cityData[regionId]);
-    if (regionId && cityData[regionId]) {
-      const cityList = cityData[regionId].map((cityName, index) => ({
+    console.log('🏙️ cityDataInComponent[regionId]:', cityDataInComponent[regionId]);
+    if (regionId && cityDataInComponent[regionId]) {
+      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
@@ -1546,8 +1583,8 @@ const AdminProductList = () => {
     }
 
     // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
-    if (regionId && cityData[regionId]) {
-      const cityList = cityData[regionId].map((cityName, index) => ({
+    if (regionId && cityDataInComponent[regionId]) {
+      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
@@ -1576,18 +1613,18 @@ const AdminProductList = () => {
 
   // 초기 및 조건 변경 시 자동 호출
   useEffect(() => {
-    console.log('🔥 useEffect 트리거:', { page, size, selectedType });
+    // console.log('🔥 useEffect 트리거:', { page, size, selectedType });
     if (selectedType) { // selectedType이 있을 때만 호출
       fetchProducts();
     }
-  }, [page, size, selectedType]); // selectedType 추가
+  }, [page, size, selectedType, fetchProducts]); // fetchProducts 추가
 
   // 필터 초기화 시 데이터 다시 로드
   useEffect(() => {
     if (search === '' && selectedType === '') {
       fetchProducts();
     }
-  }, [search, selectedType]);
+  }, [search, selectedType, fetchProducts]); // fetchProducts 추가
 
   return (
     <div style={{ padding: '1rem' }}>
@@ -1595,7 +1632,7 @@ const AdminProductList = () => {
         <h2>📦 상품 목록</h2>
         <div className={styles["header-info"]}>
           <span className={`${styles["server-status"]} ${styles["online"]}`}>
-            🟢 API 모드 (실시간 데이터) - 총 {products.length}개
+            🟢 API 모드 (실시간 데이터) - 총 {totalElements}개
           </span>
           <button 
             className={styles["register-btn"]}
@@ -1661,7 +1698,7 @@ const AdminProductList = () => {
                   className={styles["region-filter"]}
                 >
                   <option value="">선택</option>
-                  {regions.map(region => (
+                  {regionsInComponent.map(region => (
                     <option key={region.id} value={region.id}>
                       {region.name}
                     </option>
@@ -1829,7 +1866,7 @@ const AdminProductList = () => {
       <div className={styles["results-summary"]}>
         <span className={styles["results-count"]}>
           {selectedType ? `${selectedType} ` : '전체 '}
-          총 <strong>{products.length}</strong>개 상품
+          총 <strong>{totalElements}</strong>개 상품
         </span>
         {selectedType && (
           <span className={styles["type-indicator"]}>
@@ -1996,10 +2033,86 @@ const AdminProductList = () => {
         </table>
       </div>
 
-      <div style={{ marginTop: '1rem' }}>
-        <button onClick={() => setPage((prev) => Math.max(prev - 1, 0))}>◀ 이전</button>
-        <span style={{ margin: '0 1rem' }}>페이지: {page + 1}</span>
-        <button onClick={() => setPage((prev) => prev + 1)}>다음 ▶</button>
+      {/* 페이지네이션 */}
+      <div className={styles["pagination-container"]}>
+        <div className={styles["pagination-info"]}>
+          <span>
+            총 <strong>{totalElements}</strong>개 중 {page * size + 1}-{Math.min((page + 1) * size, totalElements)}개 표시
+          </span>
+        </div>
+        
+        <div className={styles["pagination-controls"]}>
+          <button 
+            onClick={() => setPage(0)}
+            disabled={page === 0}
+            className={styles["pagination-btn"]}
+          >
+            ⏮️ 처음
+          </button>
+          
+          <button 
+            onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+            disabled={page === 0}
+            className={styles["pagination-btn"]}
+          >
+            ◀ 이전
+          </button>
+          
+          <div className={styles["page-numbers"]}>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
+              const startPage = Math.max(0, Math.min(page - 2, totalPages - 5));
+              const pageNumber = startPage + index;
+              
+              if (pageNumber >= totalPages) return null;
+              
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => setPage(pageNumber)}
+                  className={`${styles["page-number"]} ${page === pageNumber ? styles["active"] : ''}`}
+                >
+                  {pageNumber + 1}
+                </button>
+              );
+            })}
+          </div>
+          
+          <button 
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
+            disabled={page >= totalPages - 1}
+            className={styles["pagination-btn"]}
+          >
+            다음 ▶
+          </button>
+          
+          <button 
+            onClick={() => setPage(totalPages - 1)}
+            disabled={page >= totalPages - 1}
+            className={styles["pagination-btn"]}
+          >
+            마지막 ⏭️
+          </button>
+        </div>
+        
+        <div className={styles["page-size-selector"]}>
+          <label>페이지당 표시: </label>
+          <select 
+            value={size} 
+            onChange={(e) => {
+              const newSize = parseInt(e.target.value);
+              // size 변경 시 page도 조정 (현재 위치 유지하려면)
+              const newPage = Math.floor((page * size) / newSize);
+              setPage(newPage);
+              setSize(newSize); // 페이지 크기 변경
+            }}
+            className={styles["page-size-select"]}
+          >
+            <option value={5}>5개</option>
+            <option value={10}>10개</option>
+            <option value={20}>20개</option>
+            <option value={50}>50개</option>
+          </select>
+        </div>
       </div>
 
       {/* 등록 모달 */}
@@ -2105,7 +2218,7 @@ const AdminProductList = () => {
                       <select
                         value={selectedRegionId}
                         onChange={(e) => {
-                          console.log('🔥 AdminProductList 드롭다운 onChange 이벤트 발생!', e.target.value);
+                          // console.log('🔥 AdminProductList 드롭다운 onChange 이벤트 발생!', e.target.value);
                           handleRegionChange(e);
                         }}
                         required
@@ -2377,7 +2490,7 @@ const AdminProductList = () => {
                         <select
                           value={selectedRegionId}
                           onChange={(e) => {
-                            console.log('🔥 AdminProductList 지역 드롭다운 onChange 이벤트 발생!', e.target.value);
+                            // console.log('🔥 AdminProductList 지역 드롭다운 onChange 이벤트 발생!', e.target.value);
                             handleRegionChange(e);
                           }}
                           required
@@ -2571,36 +2684,7 @@ const AdminProductList = () => {
                    <div className={styles["form-group"]}>
                      <label>시설 특성</label>
                      
-                     {/* 부거형태 (실버타운만) */}
-                     {formData.facility_type === '실버타운' && (
-                       <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>
-                         <h4 style={{margin: '0 0 12px 0', fontSize: '15px', fontWeight: 'bold', color: '#495057'}}>🏠 주거형태</h4>
-                         <div className={styles["checkbox-group"]}>
-                           {['아파트형', '호텔형', '빌라형', '주택형', '단독빌딩', '일반빌딩'].map(tag => (
-                             <label key={tag} className={styles["checkbox-label"]}>
-                               <input
-                                 type="checkbox"
-                                 checked={(formData.facility_tag || '').includes(tag)}
-                                 onChange={(e) => {
-                                   if (e.target.checked) {
-                                     setFormData(prev => ({
-                                       ...prev,
-                                       facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                     }));
-                                   } else {
-                                     setFormData(prev => ({
-                                       ...prev,
-                                       facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                     }));
-                                   }
-                                 }}
-                               />
-                               <span>{tag}</span>
-                             </label>
-                           ))}
-                         </div>
-                       </div>
-                     )}
+
                      
                      {/* 시설관리 */}
                      <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>

@@ -1,5 +1,5 @@
 // 📁 src/components/admin_components/AdminSidebar.js
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 //import './AdminSidebar.css'; // (선택사항) 스타일 분리 시
 
@@ -63,6 +63,14 @@ const AdminSidebar = ({ isCollapsed }) => {
                   clear: 'both'
                 }}>
                   <NavLink to="/admin/products" style={navStyle}>상품 관리</NavLink>
+                </li>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/users" style={navStyle}>유저 관리</NavLink>
                 </li>
                 <li style={{ 
                   display: 'block', 
