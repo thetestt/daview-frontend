@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../assets/daview-logo.png";
 import styles from "../styles/components/Header.module.css";
 import { jwtDecode } from "jwt-decode";
+import { createOrGetChatRoom } from "../api/chat";
 
 function Header() {
   const [keyword, setKeyword] = useState("");
@@ -10,6 +11,8 @@ function Header() {
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const memberId = localStorage.getItem("memberId");
+  const ADMIN_ID = 45;
+  const ADMIN_FCID = "00000000-0000-0000-0000-000000000001";
 
   const handleSearch = () => {
     if (keyword.trim()) {
@@ -66,15 +69,37 @@ function Header() {
     };
   }, []);
 
-  const handleMypage = (e) => {
+  const handleMypage = async (e) => {
     e.preventDefault();
     if (!memberId) {
       alert("로그인 후 이용해주세요");
       navigate("/login");
-    } else {
-      alert("1:1 문의는 [마이페이지]에서 이용해주세요");
-      navigate("/mypage");
     }
+
+    try {
+      const res = await createOrGetChatRoom({
+        memberId,
+        receiverId: ADMIN_ID,
+        facilityId: ADMIN_FCID,
+      });
+
+      const chatUrl = `/chat/${res.chatroomId}?skipValidation=true`;
+
+      // 새 탭에서 채팅창 열기
+      window.open(
+        chatUrl,
+        "chatWithAdmin",
+        "width=900,height=700,left=200,top=100,noopener,noreferrer"
+      );
+    } catch (err) {
+      console.error("❌ 관리자 채팅 연결 실패:", err);
+      alert("1:1 문의 채팅을 시작할 수 없습니다.");
+    }
+
+    // else {
+    //   alert("1:1 문의는 [마이페이지]에서 이용해주세요");
+    //   navigate("/mypage");
+    // }
   };
 
   return (
@@ -125,8 +150,10 @@ function Header() {
               <span>{username}님</span>
               <Link to="/mypage">마이페이지</Link>
               <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
-              {userRole && userRole.toLowerCase().includes('admin') && (
-                <Link to="/admin" className={styles["admin-link"]}>관리자 페이지</Link>
+              {userRole && userRole.toLowerCase().includes("admin") && (
+                <Link to="/admin" className={styles["admin-link"]}>
+                  관리자 페이지
+                </Link>
               )}
 
               <span onClick={handleLogout}>로그아웃</span>
