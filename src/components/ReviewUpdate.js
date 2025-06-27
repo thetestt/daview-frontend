@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { getReviewByIdForEdit, updateReview } from "../api/reviewApi";
 import styles from "../styles/components/ReviewUpdate.module.css";
+import { getProdNmList } from "../api/paymentApi";
 
 function ReviewUpdate() {
   const navigate = useNavigate();
   const { revId } = useParams();
   const [review, setReview] = useState(null);
+  const [prodNmList, setProdNmList] = useState([]);
 
   useEffect(() => {
     if (!revId) return;
 
     const fetchReview = async () => {
       try {
-        const data = await getReviewByIdForEdit(revId);
-        setReview(data);
+        const reviewData = await getReviewByIdForEdit(revId);
+        setReview(reviewData);
+
+        const prodList = await getProdNmList(reviewData.memberId);
+        setProdNmList(prodList);
       } catch (error) {
         console.error("후기 조회 실패: ", error);
       }
@@ -48,13 +53,13 @@ function ReviewUpdate() {
       <form onSubmit={handleSubmit}>
         <div>
           <label>상품명</label>
-          <input
-            type="type"
-            name="prodNm"
-            placeholder="상품명을 입력하세요"
-            value={review.prodNm}
-            onChange={handleChange}
-          />
+          <select name="prodNm" value={review.prodNm} onChange={handleChange}>
+            {prodNmList.map((name, idx) => (
+              <option key={idx} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label>제목</label>
@@ -78,7 +83,7 @@ function ReviewUpdate() {
         <div>
           <label>별점</label>
           <input
-            type="text"
+            type="number"
             name="revStars"
             placeholder="1~5 사이의 별점을 입력하세요"
             value={review.revStars}

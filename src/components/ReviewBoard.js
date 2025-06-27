@@ -9,6 +9,7 @@ function ReviewBoard() {
   const [page, setPage] = useState(1);
   const reviewsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
+  const memberId = localStorage.getItem("memberId");
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -25,11 +26,20 @@ function ReviewBoard() {
     fetchReviews();
   }, [page]);
 
+  const handleWriteClick = () => {
+    if (!memberId) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
+    } else {
+      navigate("/review-write");
+    }
+  };
+
   return (
     <div className={styles["review-container"]}>
       <h2>후기 게시판</h2>
       <div className={styles["review-buttonWrapper"]}>
-        <button onClick={() => navigate("/review-write")}>후기 작성</button>
+        <button onClick={handleWriteClick}>후기 작성</button>
       </div>
 
       <table className={styles["review-table"]}>

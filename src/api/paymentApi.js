@@ -23,3 +23,8 @@ export const getPaymentsByMemberId = async (memberId) => {
   );
   return response.data;
 };
+
+export const getProdNmList = async (memberId) => {
+  const response = await axios.get(`${PAYMENT_API}/prod/${memberId}`);
+  return response.data;
+};
