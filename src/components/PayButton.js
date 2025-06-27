@@ -4,7 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { updateReservationStatus } from "../api/reservationApi";
 
-const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
+const PayButton = ({
+  reservations,
+  totalPrice,
+  userInfo,
+  memberId,
+  isAgreed,
+}) => {
   const navigate = useNavigate();
 
   const handlePayment = async () => {
@@ -12,6 +18,10 @@ const PayButton = ({ reservations, totalPrice, userInfo, memberId }) => {
       !userInfo.name || !userInfo.phone || !userInfo.consultDate;
     if (requiredFields) {
       alert("이름, 연락처, 상담 예정일은 필수 입력입니다.");
+      return;
+    }
+    if (!isAgreed) {
+      alert("유의사항에 동의하셔야 결제할 수 있습니다.");
       return;
     }
 
