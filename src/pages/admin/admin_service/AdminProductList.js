@@ -1137,7 +1137,21 @@ const AdminProductList = () => {
 
       // 성공 응답 처리
       if (response.status === 200 || response.status === 201) {
-        const productType = selectedProduct.prodTypeName === '기업' ? '기업' : '요양사';
+        let productType;
+        
+        // 시설 유형을 먼저 확인 (순서에 관계없이 작동)
+        const facilityType = editFormData.facility_type || selectedProduct.facility_type || selectedProduct.facilityType;
+        
+        if (facilityType === '실버타운') {
+          productType = '실버타운';
+        } else if (facilityType === '요양원') {
+          productType = '요양원';
+        } else if (selectedProduct.prodTypeName === '기업' || editFormData.prodTypeName === '기업') {
+          productType = '기업';
+        } else {
+          productType = '요양사';
+        }
+        
         const changedCount = Object.keys(changedFields).length;
         alert(`${productType} 정보가 성공적으로 수정되었습니다. (${changedCount}개 항목 변경)`);
         console.log(`✅ ${productType} 수정 완료 - 변경된 항목: ${Object.keys(changedFields).join(', ')}`);
@@ -1172,7 +1186,21 @@ const AdminProductList = () => {
       } else if (error.request) {
         // 네트워크 에러 처리
         console.warn('서버 연결 실패:', error.message);
-        const productType = selectedProduct.prodTypeName === '기업' ? '기업' : '요양사';
+        
+        let productType;
+        // 시설 유형을 먼저 확인 (순서에 관계없이 작동)
+        const facilityType = editFormData.facility_type || selectedProduct.facility_type || selectedProduct.facilityType;
+        
+        if (facilityType === '실버타운') {
+          productType = '실버타운';
+        } else if (facilityType === '요양원') {
+          productType = '요양원';
+        } else if (selectedProduct.prodTypeName === '기업' || editFormData.prodTypeName === '기업') {
+          productType = '기업';
+        } else {
+          productType = '요양사';
+        }
+        
         const changedCount = Object.keys(changedFields).length;
         alert(`네트워크 연결을 확인해주세요. ${productType} ${changedCount}개 항목 변경이 서버에 반영되지 않았습니다.`);
         setIsEditMode(false);
@@ -1378,45 +1406,155 @@ const AdminProductList = () => {
       setEditCities([]);
     }
 
+    // 안전한 값 추출 함수
+    const getSafeValue = (value) => {
+      if (value === undefined || value === null || value === 'undefined') {
+        return '';
+      }
+      return String(value);
+    };
+
+    const getSafeNumericValue = (value) => {
+      if (value === undefined || value === null || value === 'undefined' || value === '') {
+        return '';
+      }
+      return String(value);
+    };
+
     const originalData = {
       // 공통 필드
-      prodName: selectedProduct.prodName,
-      prodTypeName: selectedProduct.prodTypeName,
-      member_id: selectedProduct.member_id || '',
+      prodName: getSafeValue(selectedProduct.prodName || selectedProduct.facilityName || selectedProduct.username),
+      prodTypeName: getSafeValue(selectedProduct.prodTypeName || selectedProduct.facilityType || (selectedProduct.facility_type ? '기업' : '요양사')),
+      member_id: getSafeValue(selectedProduct.member_id),
       
-      // 요양사 전용 필드
-      userGender: selectedProduct.userGender || '',
-      hope_work_amount: selectedProduct.hope_work_amount?.toString() || '',
-      introduction: selectedProduct.introduction || '',
-      hope_work_area_location: selectedProduct.hope_work_area_location || '',
-      hope_work_area_city: selectedProduct.hope_work_area_city || '',
-      hope_work_place: selectedProduct.hope_work_place || '',
-      hope_work_type: selectedProduct.hope_work_type || '',
-      hope_employment_type: selectedProduct.hope_employment_type || '',
-      education_level: selectedProduct.education_level || '',
-      company_name: selectedProduct.careerString || selectedProduct.company_name || '',
-      certificate_name: selectedProduct.certificatesString || selectedProduct.certificate_name || '',
+      // 요양사 전용 필드 - 다양한 필드명 대응
+      userGender: getSafeValue(selectedProduct.userGender),
+      hope_work_amount: getSafeNumericValue(
+        selectedProduct.hope_work_amount || 
+        selectedProduct.hopeWorkAmount || 
+        selectedProduct.prodPrice || 
+        selectedProduct.price
+      ),
+      introduction: getSafeValue(
+        selectedProduct.introduction || 
+        selectedProduct.prodDetail || 
+        selectedProduct.description
+      ),
+      hope_work_area_location: getSafeValue(
+        selectedProduct.hope_work_area_location || 
+        selectedProduct.hopeWorkAreaLocation || 
+        selectedProduct.location?.split(' ')[0]
+      ),
+      hope_work_area_city: getSafeValue(
+        selectedProduct.hope_work_area_city || 
+        selectedProduct.hopeWorkAreaCity || 
+        selectedProduct.location?.split(' ')[1]
+      ),
+      hope_work_place: getSafeValue(
+        selectedProduct.hope_work_place || 
+        selectedProduct.hopeWorkPlace || 
+        selectedProduct.workPlace
+      ),
+      hope_work_type: getSafeValue(
+        selectedProduct.hope_work_type || 
+        selectedProduct.hopeWorkType || 
+        selectedProduct.workType
+      ),
+      hope_employment_type: getSafeValue(
+        selectedProduct.hope_employment_type || 
+        selectedProduct.hopeEmploymentType || 
+        selectedProduct.employmentType
+      ),
+      education_level: getSafeValue(
+        selectedProduct.education_level || 
+        selectedProduct.educationLevel || 
+        selectedProduct.education
+      ),
+      company_name: getSafeValue(
+        selectedProduct.company_name || 
+        selectedProduct.careerString || 
+        selectedProduct.startDateString + ' ~ ' + selectedProduct.endDateString
+      ).replace('undefined ~ undefined', ''),
+      certificate_name: getSafeValue(
+        selectedProduct.certificate_name || 
+        selectedProduct.certificatesString
+      ),
       
-      // 기업 전용 필드
-      facility_name: selectedProduct.facility_name || '',
-      facility_charge: selectedProduct.facility_charge?.toString() || '',
-      facility_type: selectedProduct.facility_type || '',
-      facility_theme: selectedProduct.facility_theme || '',
-      facility_detail_address: selectedProduct.facility_detail_address || '',
-      facility_homepage: selectedProduct.facility_homepage || '',
-      facility_phone: selectedProduct.facility_phone || '',
-      default_message: selectedProduct.default_message || '',
+      // 기업 전용 필드 - 다양한 필드명 대응
+      facility_name: getSafeValue(
+        selectedProduct.facility_name || 
+        selectedProduct.facilityName || 
+        selectedProduct.prodName
+      ),
+      facility_charge: getSafeNumericValue(
+        selectedProduct.facility_charge || 
+        selectedProduct.facilityCharge || 
+        selectedProduct.monthlyFee || 
+        selectedProduct.prodPrice || 
+        selectedProduct.price
+      ),
+      facility_type: getSafeValue(
+        selectedProduct.facility_type || 
+        selectedProduct.facilityType || 
+        selectedProduct.prodTypeName
+      ),
+      facility_theme: getSafeValue(
+        selectedProduct.facility_theme || 
+        selectedProduct.facilityTheme || 
+        selectedProduct.theme
+      ),
+      facility_detail_address: getSafeValue(
+        selectedProduct.facility_detail_address || 
+        selectedProduct.facilityDetailAddress || 
+        selectedProduct.address
+      ),
+      facility_homepage: getSafeValue(
+        selectedProduct.facility_homepage || 
+        selectedProduct.facilityHomepage || 
+        selectedProduct.homepage
+      ),
+      facility_phone: getSafeValue(
+        selectedProduct.facility_phone || 
+        selectedProduct.facilityPhone || 
+        selectedProduct.phoneNumber
+      ),
+      default_message: getSafeValue(
+        selectedProduct.default_message || 
+        selectedProduct.defaultMessage || 
+        selectedProduct.description || 
+        selectedProduct.prodDetail
+      ),
+      
+      // 주소 정보 (기업용)
+      hope_work_area_location: getSafeValue(
+        selectedProduct.hope_work_area_location || 
+        selectedProduct.facilityAddressLocation || 
+        selectedProduct.location
+      ),
+      hope_work_area_city: getSafeValue(
+        selectedProduct.hope_work_area_city || 
+        selectedProduct.facilityAddressCity || 
+        selectedProduct.city
+      ),
       
       // facility_photo 테이블 관련
-      photo_url: selectedProduct.photo_url || '',
-      is_thumbnail: selectedProduct.is_thumbnail || false,
+      photo_url: getSafeValue(selectedProduct.photo_url || selectedProduct.photoUrl),
+      is_thumbnail: selectedProduct.is_thumbnail || selectedProduct.isThumbnail || false,
       
       // facility_tag 테이블 관련
-      category: selectedProduct.category || '',
-      facility_tag: selectedProduct.facility_tag || '',
+      category: getSafeValue(selectedProduct.category),
+      facility_tag: getSafeValue(
+        selectedProduct.facility_tag || 
+        selectedProduct.facilityTag
+      ),
       
       // 공통 필드
-      prodDetail: selectedProduct.prodDetail || ''
+      prodDetail: getSafeValue(
+        selectedProduct.prodDetail || 
+        selectedProduct.introduction || 
+        selectedProduct.description || 
+        selectedProduct.default_message
+      )
     };
     
     // 원본 데이터와 수정 폼 데이터 설정
@@ -2885,103 +3023,152 @@ const AdminProductList = () => {
                       <label>{selectedProduct.prodTypeName === '기업' ? '월별이용료' : '희망급여'}</label>
                                              <div className={`${styles["field-value"]} ${styles["price"]}`}>
                         {selectedProduct.prodTypeName === '기업' ? 
-                          `${selectedProduct.facility_charge || selectedProduct.hope_work_amount}만원` :
-                          `${selectedProduct.hope_work_amount}만원`
+                          `${selectedProduct.facility_charge || selectedProduct.facilityCharge || selectedProduct.monthlyFee || selectedProduct.prodPrice || '미설정'}만원` :
+                          `${selectedProduct.hope_work_amount || selectedProduct.hopeWorkAmount || selectedProduct.prodPrice || '미설정'}만원`
                         }
                       </div>
                     </div>
 
-                    {/* 기업 전용 필드들 */}
+                    {/* 기업 전용 필드들 (요양원, 실버타운 포함) */}
                     {selectedProduct.prodTypeName === '기업' && (
                       <>
                         <div className={styles["detail-field"]}>
-                          <label>테마</label>
+                          <label>시설유형</label>
                           <div className={styles["field-value"]}>
-                            {selectedProduct.facility_theme || '-'}
+                            {selectedProduct.facility_type || selectedProduct.facilityType || selectedProduct.prodTypeName || '-'}
                           </div>
                         </div>
-                        
+
+                        <div className={styles["detail-field"]}>
+                          <label>지역</label>
+                          <div className={styles["field-value"]}>
+                            {(selectedProduct.hope_work_area_location || selectedProduct.facilityAddressLocation) && 
+                             (selectedProduct.hope_work_area_city || selectedProduct.facilityAddressCity) ? 
+                              `${selectedProduct.hope_work_area_location || selectedProduct.facilityAddressLocation} ${selectedProduct.hope_work_area_city || selectedProduct.facilityAddressCity}` :
+                              selectedProduct.location || '-'}
+                          </div>
+                        </div>
+
                         <div className={styles["detail-field"]}>
                           <label>상세주소</label>
                           <div className={styles["field-value"]}>
-                            {selectedProduct.facility_detail_address || '-'}
+                            {selectedProduct.facility_detail_address || selectedProduct.facilityDetailAddress || selectedProduct.address || '-'}
                           </div>
                         </div>
                         
                         <div className={styles["detail-field"]}>
                           <label>연락처</label>
                           <div className={styles["field-value"]}>
-                            {selectedProduct.facility_phone || '-'}
+                            {selectedProduct.facility_phone || selectedProduct.facilityPhone || selectedProduct.phoneNumber || '-'}
                           </div>
                         </div>
                         
-                                                 <div className={styles["detail-field"]}>
-                           <label>홈페이지URL</label>
-                           <div className={styles["field-value"]}>
-                             {selectedProduct.facility_homepage ? (
-                               <a href={selectedProduct.facility_homepage} target="_blank" rel="noopener noreferrer">
-                                 {selectedProduct.facility_homepage}
-                               </a>
-                             ) : '-'}
-                           </div>
-                         </div>
-                         
-                         <div className={styles["detail-field"]}>
-                           <label>카테고리</label>
-                           <div className={styles["field-value"]}>
-                             {selectedProduct.category || '-'}
-                           </div>
-                         </div>
-                         
-                         <div className={styles["detail-field"]}>
-                           <label>시설 태그</label>
-                           <div className={styles["field-value"]}>
-                             {selectedProduct.facility_tag || '-'}
-                           </div>
-                         </div>
-                         
+                        <div className={styles["detail-field"]}>
+                          <label>홈페이지URL</label>
+                          <div className={styles["field-value"]}>
+                            {(selectedProduct.facility_homepage || selectedProduct.facilityHomepage || selectedProduct.homepage) ? (
+                              <a href={selectedProduct.facility_homepage || selectedProduct.facilityHomepage || selectedProduct.homepage} target="_blank" rel="noopener noreferrer">
+                                {selectedProduct.facility_homepage || selectedProduct.facilityHomepage || selectedProduct.homepage}
+                              </a>
+                            ) : '-'}
+                          </div>
+                        </div>
 
+                        <div className={styles["detail-field"]}>
+                          <label>테마</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.facility_theme || selectedProduct.facilityTheme || selectedProduct.theme || '-'}
+                          </div>
+                        </div>
                          
-                         <div className={styles["detail-field"]}>
-                           <label>사진 URL</label>
-                           <div className={styles["field-value"]}>
-                             {selectedProduct.photo_url ? (
-                               <a href={selectedProduct.photo_url} target="_blank" rel="noopener noreferrer">
-                                 {selectedProduct.photo_url}
-                               </a>
-                             ) : '-'}
-                           </div>
-                         </div>
+                        <div className={styles["detail-field"]}>
+                          <label>{(selectedProduct.facility_type || selectedProduct.facilityType) === '요양원' ? '업종' : (selectedProduct.facility_type || selectedProduct.facilityType) === '실버타운' ? '주거형태' : '카테고리'}</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.category || '-'}
+                          </div>
+                        </div>
                          
-                         <div className={styles["detail-field"]}>
-                           <label>썸네일 여부</label>
-                           <div className={styles["field-value"]}>
-                             {selectedProduct.is_thumbnail ? '썸네일' : '일반 사진'}
-                           </div>
-                         </div>
-                       </>
-                     )}
+                        <div className={styles["detail-field"]}>
+                          <label>{(selectedProduct.facility_type || selectedProduct.facilityType) === '실버타운' ? '시설 특성' : '서비스·프로그램'}</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.facility_tag || selectedProduct.facilityTag || '-'}
+                          </div>
+                        </div>
+                         
+                        <div className={styles["detail-field"]}>
+                          <label>사진 URL</label>
+                          <div className={styles["field-value"]}>
+                            {(selectedProduct.photo_url || selectedProduct.photoUrl) ? (
+                              <a href={selectedProduct.photo_url || selectedProduct.photoUrl} target="_blank" rel="noopener noreferrer">
+                                {selectedProduct.photo_url || selectedProduct.photoUrl}
+                              </a>
+                            ) : '-'}
+                          </div>
+                        </div>
+                         
+                        <div className={styles["detail-field"]}>
+                          <label>썸네일 여부</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.is_thumbnail || selectedProduct.isThumbnail ? '썸네일' : '일반 사진'}
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     {/* 요양사 전용 필드들 */}
                     {selectedProduct.prodTypeName === '요양사' && (
                       <>
                         <div className={styles["detail-field"]}>
-                          <label>경력근무지</label>
+                          <label>성별</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.userGender || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>희망근무지역</label>
+                          <div className={styles["field-value"]}>
+                            {(selectedProduct.hope_work_area_location || selectedProduct.hopeWorkAreaLocation) && 
+                             (selectedProduct.hope_work_area_city || selectedProduct.hopeWorkAreaCity) ? 
+                              `${selectedProduct.hope_work_area_location || selectedProduct.hopeWorkAreaLocation} ${selectedProduct.hope_work_area_city || selectedProduct.hopeWorkAreaCity}` :
+                              selectedProduct.location || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>희망근무장소</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.hope_work_place || selectedProduct.hopeWorkPlace || selectedProduct.workPlace || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>희망근무형태</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.hope_work_type || selectedProduct.hopeWorkType || selectedProduct.workType || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>희망고용형태</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.hope_employment_type || selectedProduct.hopeEmploymentType || selectedProduct.employmentType || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>학력</label>
+                          <div className={styles["field-value"]}>
+                            {selectedProduct.education_level || selectedProduct.educationLevel || selectedProduct.education || '-'}
+                          </div>
+                        </div>
+
+                        <div className={styles["detail-field"]}>
+                          <label>경력정보</label>
                           <div className={styles["field-value"]}>
                             {(selectedProduct.careerString && selectedProduct.careerString !== '경력 정보 없음') 
                               ? selectedProduct.careerString 
                               : (selectedProduct.company_name || '-')}
-                          </div>
-                        </div>
-                        
-                        <div className={styles["detail-field"]}>
-                          <label>근무기간</label>
-                          <div className={styles["field-value"]}>
-                            {(selectedProduct.startDateString && selectedProduct.endDateString) 
-                              ? `${selectedProduct.startDateString} ~ ${selectedProduct.endDateString}`
-                              : (selectedProduct.start_date && selectedProduct.end_date)
-                                ? `${selectedProduct.start_date} ~ ${selectedProduct.end_date}`
-                                : '-'}
                           </div>
                         </div>
                         
@@ -2995,32 +3182,18 @@ const AdminProductList = () => {
                         </div>
                       </>
                     )}
+
+
                     
-                    <div className={styles["detail-field"]}>
-                      <label>추가된 날짜</label>
-                      <div className={styles["field-value"]}>
-                        {selectedProduct.caregiver_created_at || '-'}
-                      </div>
-                    </div>
-                    
-                    <div className={styles["detail-field"]}>
-                      <label>수정된 날짜</label>
-                      <div className={styles["field-value"]}>
-                        {selectedProduct.caregiver_update_at || '-'}
-                      </div>
-                    </div>
-                    
-                    <div className={styles["detail-field"]}>
-                      <label>삭제된 날짜</label>
-                      <div className={styles["field-value"]} style={{color: selectedProduct.caregiver_deleted_at ? '#dc3545' : '#28a745'}}>
-                        {selectedProduct.caregiver_deleted_at ? selectedProduct.caregiver_deleted_at : '활성'}
-                      </div>
-                    </div>
-                    
+                    {/* 공통 필드 - 상세 설명 */}
                     <div className={styles["detail-field"]}>
                       <label>상세 설명</label>
-                                             <div className={`${styles["field-value"]} ${styles["description"]}`}>
-                        {selectedProduct.prodDetail}
+                      <div className={`${styles["field-value"]} ${styles["description"]}`}>
+                        {selectedProduct.prodDetail || 
+                         selectedProduct.introduction || 
+                         selectedProduct.description || 
+                         selectedProduct.default_message || 
+                         selectedProduct.defaultMessage || '-'}
                       </div>
                     </div>
                   </div>
@@ -3071,7 +3244,7 @@ const AdminProductList = () => {
                         name="hope_work_amount"
                         value={editFormData.hope_work_amount}
                         onChange={handleEditInputChange}
-                        placeholder={`현재: ${originalEditData.hope_work_amount || '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
+                        placeholder={`현재: ${originalEditData.hope_work_amount && originalEditData.hope_work_amount !== 'undefined' ? originalEditData.hope_work_amount : '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
                         min="0"
                       />
                     </div>
@@ -3098,7 +3271,7 @@ const AdminProductList = () => {
                 )}
 
                 {/* 기업 전용 필드들 */}
-                {editFormData.prodTypeName === '기업' && (
+                {(editFormData.prodTypeName === '기업' || editFormData.prodTypeName === '요양원' || editFormData.prodTypeName === '실버타운' || editFormData.facility_type === '요양원' || editFormData.facility_type === '실버타운') && (
                   <>
                     <div className={styles["form-group"]}>
                       <label>시설 유형 *</label>
@@ -3121,7 +3294,7 @@ const AdminProductList = () => {
                         name="facility_charge"
                         value={editFormData.facility_charge}
                         onChange={handleEditInputChange}
-                        placeholder={`현재: ${originalEditData.facility_charge || originalEditData.monthlyFee || '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
+                        placeholder={`현재: ${(originalEditData.facility_charge && originalEditData.facility_charge !== 'undefined') ? originalEditData.facility_charge : (originalEditData.monthlyFee && originalEditData.monthlyFee !== 'undefined') ? originalEditData.monthlyFee : '미설정'}만원 (변경하려면 새 값을 입력하세요)`}
                         min="0"
                       />
                     </div>
@@ -3141,13 +3314,13 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>{editFormData.facility_type === '요양원' ? '업종' : '카테고리'}</label>
+                      <label>{editFormData.facility_type === '요양원' ? '업종' : editFormData.facility_type === '실버타운' ? '주거형태' : '카테고리'}</label>
                       <select
                         name="category"
                         value={editFormData.category}
                         onChange={handleEditInputChange}
                       >
-                        <option value="">{editFormData.facility_type === '요양원' ? '업종을 선택하세요' : '카테고리를 선택하세요'}</option>
+                        <option value="">{editFormData.facility_type === '요양원' ? '업종을 선택하세요' : editFormData.facility_type === '실버타운' ? '주거형태를 선택하세요' : '카테고리를 선택하세요'}</option>
                         {editFormData.facility_type === '요양원' ? (
                           <>
                             <option value="요양원">요양원</option>
@@ -3182,92 +3355,123 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>시설 태그</label>
+                      <label>시설 특성</label>
                       
-                      {/* 프로그램 */}
-                      <div style={{marginBottom: '15px'}}>
-                        <h4 style={{margin: '10px 0 8px 0', fontSize: '14px', fontWeight: 'bold', color: '#333'}}>프로그램</h4>
-                        <div className={styles["checkbox-group"]}>
-                          {['재활물리치료', '체육교실', '노래교실', '문화공연'].map(tag => (
-                            <label key={tag} className={styles["checkbox-label"]}>
-                              <input
-                                type="checkbox"
-                                checked={(editFormData.facility_tag || '').includes(tag)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                    }));
-                                  } else {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                    }));
-                                  }
-                                }}
-                              />
-                              <span>{tag}</span>
-                            </label>
-                          ))}
+                      {/* 시설관리 */}
+                      <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>
+                        <h4 style={{margin: '0 0 12px 0', fontSize: '15px', fontWeight: 'bold', color: '#495057'}}>⚕️ 시설관리</h4>
+                        
+                        {/* 서비스/프로그램 또는 시설 */}
+                        <div style={{marginBottom: '15px'}}>
+                          <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>
+                            {editFormData.facility_type === '실버타운' ? '시설' : '서비스·프로그램'}
+                          </h5>
+                          <div className={styles["checkbox-group"]}>
+                            {editFormData.facility_type === '실버타운' ? 
+                              ['수영장', '도서관', '영화관', '병원'].map(tag => (
+                                <label key={tag} className={styles["checkbox-label"]}>
+                                  <input
+                                    type="checkbox"
+                                    checked={(editFormData.facility_tag || '').includes(tag)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setEditFormData(prev => ({
+                                          ...prev,
+                                          facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                        }));
+                                      } else {
+                                        setEditFormData(prev => ({
+                                          ...prev,
+                                          facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                        }));
+                                      }
+                                    }}
+                                  />
+                                  <span>{tag}</span>
+                                </label>
+                              )) :
+                              ['재활물리치료', '체육교실', '노래교실', '문화공연'].map(tag => (
+                                <label key={tag} className={styles["checkbox-label"]}>
+                                  <input
+                                    type="checkbox"
+                                    checked={(editFormData.facility_tag || '').includes(tag)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setEditFormData(prev => ({
+                                          ...prev,
+                                          facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                        }));
+                                      } else {
+                                        setEditFormData(prev => ({
+                                          ...prev,
+                                          facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                        }));
+                                      }
+                                    }}
+                                  />
+                                  <span>{tag}</span>
+                                </label>
+                              ))
+                            }
+                          </div>
                         </div>
-                      </div>
 
-                                             {/* 주변환경 */}
-                       <div style={{marginBottom: '15px'}}>
-                         <h4 style={{margin: '10px 0 8px 0', fontSize: '14px', fontWeight: 'bold', color: '#333'}}>주변환경</h4>
-                        <div className={styles["checkbox-group"]}>
-                          {['산', '바다', '강/호수'].map(tag => (
-                            <label key={tag} className={styles["checkbox-label"]}>
-                              <input
-                                type="checkbox"
-                                checked={(editFormData.facility_tag || '').includes(tag)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                    }));
-                                  } else {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                    }));
-                                  }
-                                }}
-                              />
-                              <span>{tag}</span>
-                            </label>
-                          ))}
+                        {/* 주변환경 */}
+                        <div style={{marginBottom: '15px'}}>
+                          <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>주변환경</h5>
+                          <div className={styles["checkbox-group"]}>
+                            {['산', '바다', '강/호수'].map(tag => (
+                              <label key={tag} className={styles["checkbox-label"]}>
+                                <input
+                                  type="checkbox"
+                                  checked={(editFormData.facility_tag || '').includes(tag)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setEditFormData(prev => ({
+                                        ...prev,
+                                        facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                      }));
+                                    } else {
+                                      setEditFormData(prev => ({
+                                        ...prev,
+                                        facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                      }));
+                                    }
+                                  }}
+                                />
+                                <span>{tag}</span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* 기타 */}
-                      <div style={{marginBottom: '15px'}}>
-                        <h4 style={{margin: '10px 0 8px 0', fontSize: '14px', fontWeight: 'bold', color: '#333'}}>기타</h4>
-                        <div className={styles["checkbox-group"]}>
-                          {['자유면회', '주차가능'].map(tag => (
-                            <label key={tag} className={styles["checkbox-label"]}>
-                              <input
-                                type="checkbox"
-                                checked={(editFormData.facility_tag || '').includes(tag)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                    }));
-                                  } else {
-                                    setEditFormData(prev => ({
-                                      ...prev,
-                                      facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                    }));
-                                  }
-                                }}
-                              />
-                              <span>{tag}</span>
-                            </label>
-                          ))}
+                        {/* 편의시설 */}
+                        <div style={{marginBottom: '0'}}>
+                          <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>편의시설</h5>
+                          <div className={styles["checkbox-group"]}>
+                            {['자유면회', '주차가능'].map(tag => (
+                              <label key={tag} className={styles["checkbox-label"]}>
+                                <input
+                                  type="checkbox"
+                                  checked={(editFormData.facility_tag || '').includes(tag)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setEditFormData(prev => ({
+                                        ...prev,
+                                        facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                      }));
+                                    } else {
+                                      setEditFormData(prev => ({
+                                        ...prev,
+                                        facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                      }));
+                                    }
+                                  }}
+                                />
+                                <span>{tag}</span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
