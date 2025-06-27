@@ -582,6 +582,9 @@ const AdminProductList = () => {
     // 공통 필드
     prodDetail: ''
   });
+  
+  // 수정 시 원본 데이터 저장용
+  const [originalEditData, setOriginalEditData] = useState({});
 
   // 실제 API 데이터 필터링 함수
   const filterApiData = (data, searchTerm = '', typeFilter = '') => {
@@ -1027,36 +1030,52 @@ const AdminProductList = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     
-    if (!editFormData.prodName || !editFormData.prodTypeName || !editFormData.prodPrice) {
+    if (!editFormData.prodName || !editFormData.prodTypeName) {
       alert('필수 항목을 모두 입력해주세요.');
       return;
     }
 
+    // 변경된 필드만 찾기
+    const changedFields = {};
+    
     try {
       setIsLoading(true);
       
-      // 서버로 전송할 데이터 준비
-      const submitData = {
-        prodName: editFormData.prodName.trim(),
-        prodTypeName: editFormData.prodTypeName,
-        prodPrice: parseInt(editFormData.prodPrice),
-        prodDetail: editFormData.prodDetail ? editFormData.prodDetail.trim() : '',
-        province: editFormData.province || '',
-        city: editFormData.city || '',
-        preferredWorkLocation: editFormData.preferredWorkLocation || '',
-        preferredWorkMethod: editFormData.preferredWorkMethod || '',
-        preferredWorkType: editFormData.preferredWorkType || '',
-        education: editFormData.education || '',
-        introduction: editFormData.introduction ? editFormData.introduction.trim() : '',
-        careerWorkplace: editFormData.careerWorkplace || '',
-        startDate: editFormData.startDate || '',
-        endDate: editFormData.endDate || '',
-        certifications: editFormData.certifications || '',
-        member_id: selectedProduct.member_id
-      };
+      Object.keys(editFormData).forEach(key => {
+        const originalValue = originalEditData[key];
+        const currentValue = editFormData[key];
+        
+        // 값이 변경되었는지 확인 (빈 문자열과 undefined/null은 같은 것으로 처리)
+        const normalizedOriginal = originalValue || '';
+        const normalizedCurrent = currentValue || '';
+        
+        if (normalizedOriginal !== normalizedCurrent) {
+          changedFields[key] = currentValue;
+          console.log(`🔄 변경된 필드: ${key}`, `"${originalValue}" → "${currentValue}"`);
+        }
+      });
+      
+      // 변경사항이 없으면 경고
+      if (Object.keys(changedFields).length === 0) {
+        alert('변경된 내용이 없습니다.');
+        setIsLoading(false);
+        return;
+      }
+      
+      console.log('📝 변경된 필드들:', changedFields);
+      
+      // 상품 유형에 따라 다른 API 엔드포인트 사용
+      let updateUrl;
+      if (selectedProduct.prodTypeName === '기업') {
+        updateUrl = `/admin/facilities/${selectedProduct.facilityId || selectedProduct.prodId}`;
+        console.log('🏢 기업 수정 URL:', updateUrl);
+      } else {
+        updateUrl = `/admin/caregivers/${selectedProduct.caregiverId || selectedProduct.prodId}`;
+        console.log('👨‍⚕️ 요양사 수정 URL:', updateUrl);
+      }
 
-      // 실제 axios PUT 요청
-      const response = await axios.put(`/admin/products/${selectedProduct.prodId}`, submitData, {
+      // 실제 axios PUT 요청 (변경된 필드만 전송)
+      const response = await axios.put(updateUrl, changedFields, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -1065,7 +1084,11 @@ const AdminProductList = () => {
 
       // 성공 응답 처리
       if (response.status === 200 || response.status === 201) {
-        alert('상품이 성공적으로 수정되었습니다.');
+        const productType = selectedProduct.prodTypeName === '기업' ? '기업' : '요양사';
+        const changedCount = Object.keys(changedFields).length;
+        alert(`${productType} 정보가 성공적으로 수정되었습니다. (${changedCount}개 항목 변경)`);
+        console.log(`✅ ${productType} 수정 완료 - 변경된 항목: ${Object.keys(changedFields).join(', ')}`);
+        
         setIsEditMode(false);
         setIsDetailModalOpen(false);
         fetchProducts(); // 목록 새로고침
@@ -1094,37 +1117,12 @@ const AdminProductList = () => {
           alert(`상품 수정에 실패했습니다: ${message}`);
         }
       } else if (error.request) {
-        // 네트워크 에러 - 더미 데이터로 폴백
-        console.warn('서버 연결 실패, 더미 데이터로 수정합니다:', error.message);
-        
-        const index = dummyProducts.findIndex(p => p.prodId === selectedProduct.prodId);
-        if (index !== -1) {
-          const updatedProduct = {
-            ...selectedProduct,
-            prodName: editFormData.prodName,
-            prodTypeName: editFormData.prodTypeName,
-            prodPrice: parseInt(editFormData.prodPrice),
-            prodDetail: editFormData.prodDetail,
-            province: editFormData.province,
-            city: editFormData.city,
-            preferredWorkLocation: editFormData.preferredWorkLocation,
-            preferredWorkMethod: editFormData.preferredWorkMethod,
-            preferredWorkType: editFormData.preferredWorkType,
-            education: editFormData.education,
-            introduction: editFormData.introduction,
-            careerWorkplace: editFormData.careerWorkplace,
-            startDate: editFormData.startDate,
-            endDate: editFormData.endDate,
-            certifications: editFormData.certifications
-          };
-          
-          dummyProducts[index] = updatedProduct;
-          setSelectedProduct(updatedProduct);
-        }
-        
-        alert('네트워크 연결을 확인해주세요. 임시로 로컬 데이터가 수정되었습니다.');
+        // 네트워크 에러 처리
+        console.warn('서버 연결 실패:', error.message);
+        const productType = selectedProduct.prodTypeName === '기업' ? '기업' : '요양사';
+        const changedCount = Object.keys(changedFields).length;
+        alert(`네트워크 연결을 확인해주세요. ${productType} ${changedCount}개 항목 변경이 서버에 반영되지 않았습니다.`);
         setIsEditMode(false);
-        fetchProducts();
       } else {
         // 기타 에러
         alert('상품 수정 중 오류가 발생했습니다.');
@@ -1327,7 +1325,7 @@ const AdminProductList = () => {
       setEditCities([]);
     }
 
-    setEditFormData({
+    const originalData = {
       // 공통 필드
       prodName: selectedProduct.prodName,
       prodTypeName: selectedProduct.prodTypeName,
@@ -1356,8 +1354,6 @@ const AdminProductList = () => {
       facility_phone: selectedProduct.facility_phone || '',
       default_message: selectedProduct.default_message || '',
       
-
-      
       // facility_photo 테이블 관련
       photo_url: selectedProduct.photo_url || '',
       is_thumbnail: selectedProduct.is_thumbnail || false,
@@ -1368,7 +1364,11 @@ const AdminProductList = () => {
       
       // 공통 필드
       prodDetail: selectedProduct.prodDetail || ''
-    });
+    };
+    
+    // 원본 데이터와 수정 폼 데이터 설정
+    setOriginalEditData(originalData);
+    setEditFormData(originalData);
     setIsEditMode(true);
   };
 
@@ -1410,19 +1410,29 @@ const AdminProductList = () => {
     try {
       setIsLoading(true);
       
-      // 실제 API 호출 시도 - 요양사의 경우 caregiver API 사용
+      // 상품 유형에 따라 다른 API 엔드포인트 사용
       const token = localStorage.getItem('token');
       console.log('🔑 Token for delete request:', token);
-      console.log('🎯 Delete URL:', `/admin/caregivers/${productId}`);
       
-      const response = await axios.delete(`/admin/caregivers/${productId}`, {
+      let deleteUrl;
+      if (selectedType === '기업') {
+        deleteUrl = `/admin/facilities/${productId}`;
+        console.log('🏢 기업 삭제 URL:', deleteUrl);
+      } else {
+        deleteUrl = `/admin/caregivers/${productId}`;
+        console.log('👨‍⚕️ 요양사 삭제 URL:', deleteUrl);
+      }
+      
+      const response = await axios.delete(deleteUrl, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
       if (response.status === 200) {
-        alert('상품이 성공적으로 삭제되었습니다.');
+        const productType = selectedType === '기업' ? '기업' : '요양사';
+        alert(`${productType}이 성공적으로 삭제되었습니다. (데이터는 보관됩니다)`);
+        console.log(`🗑️ ${productType} 삭제 완료:`, productName);
         // 목록 새로고침
         fetchProducts();
       }
@@ -1994,8 +2004,8 @@ const AdminProductList = () => {
 
       {/* 등록 모달 */}
       {isModalOpen && (
-        <div className={styles["modal-overlay"]} onClick={handleCloseModal}>
-          <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
+        <div className={styles["modal-overlay"]}>
+          <div className={styles["modal-content"]}>
             <div className={styles["modal-header"]}>
               <h3>🛍️ 새 상품 등록</h3>
               <button className={styles["close-btn"]} onClick={handleCloseModal}>✖</button>
@@ -2739,8 +2749,8 @@ const AdminProductList = () => {
 
       {/* 상세 정보 모달 */}
       {isDetailModalOpen && selectedProduct && (
-        <div className={styles["modal-overlay"]} onClick={handleCloseDetailModal}>
-          <div className={styles["detail-modal-content"]} onClick={(e) => e.stopPropagation()}>
+        <div className={styles["modal-overlay"]}>
+          <div className={styles["detail-modal-content"]}>
             <div className={styles["modal-header"]}>
               <h3>{isEditMode ? '✏️ 상품 수정' : '📋 상품 상세 정보'}</h3>
               <button className={styles["close-btn"]} onClick={handleCloseDetailModal}>✖</button>
