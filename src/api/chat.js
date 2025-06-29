@@ -34,11 +34,12 @@ export const createOrGetChatRoom = async ({
   return res.data; // { chatroomId: "..." }
 };
 
-// ✅ 4. 단일 채팅방 정보 가져오기 (메시지 수신 시 리스트 갱신용)
+// ✅ 4. 단일 채팅방 상대방 정보 가져오기 (메시지 수신 시 리스트 갱신)
 export const getChatRoomInfo = async (chatroomId, memberId) => {
   const res = await axios.get(`/api/chat/rooms/${chatroomId}/info`, {
     params: { memberId },
   });
+
   return res.data;
 };
 
