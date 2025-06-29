@@ -1,6 +1,5 @@
 import React from "react";
 import { createPayment, mapReservationsToPayment } from "../api/paymentApi";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { updateReservationStatus } from "../api/reservationApi";
 
@@ -26,9 +25,7 @@ const PayButton = ({
     }
 
     try {
-      const pymId = uuidv4();
       const result = await createPayment({
-        pymId,
         impUid: "imp_test_123456789",
         merchantUid: `mid_${new Date().getTime()}`,
         rsvId: reservations[0]?.rsvId,
@@ -45,6 +42,9 @@ const PayButton = ({
         pymNum: "1234-5678-9012",
       });
 
+      const updated = result?.data ?? result;
+      const pymId = updated.pymId;
+
       const mappingList = reservations.map((rsv) => ({
         pymId,
         rsvId: rsv.rsvId,
@@ -52,9 +52,8 @@ const PayButton = ({
 
       await mapReservationsToPayment(mappingList);
 
-      for (const rsv of reservations) {
-        await updateReservationStatus(rsv.rsvId);
-      }
+      const rsvIds = reservations.map(rsv => rsv.rsvId);
+      await updateReservationStatus(rsvIds);
 
       alert("결제 테스트 완료");
       console.log(result);
