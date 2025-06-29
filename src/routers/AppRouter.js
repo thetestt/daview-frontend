@@ -31,16 +31,22 @@ import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import ChangePasswordCheckPage from "../pages/auth/ChangePasswordCheckPage";
+import ChangeIdPage from "../pages/auth/ChangeIdPage";
+import CouponPage from "../pages/auth/CouponPage";
+import WithdrawPage from "../pages/auth/WithdrawPage"
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
 import AdminDashboard from "../pages/admin/AdminDashboard"; //관리자 대시보드
 import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //관리자 상품 목록
 import AdminUserList from "../pages/admin/admin_service/AdminUserList"; //관리자 유저 목록
+import AdminReservationList from "../pages/admin/admin_service/AdminReservationList"; //관리자 예약 목록
+import AdminPaymentList from '../pages/admin/admin_service/AdminPaymentList';
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
 import RegisterPage from "../pages/RegisterPage";
+import RefundAccountPage from "../pages/auth/RefundAccountPage";
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -124,28 +130,33 @@ const AppRouter = () => {
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
 
+        {/* 마이페이지 */}
         {/* 아이디찾기 */}
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
-
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route
-          path="/FindPasswordPage/CPw-check"
-          element={<ChangePasswordCheckPage />}
-        />
-
+        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        {/* 아이디변경*/}
+        <Route path="mypage/ChangeIdPage" element={<ChangeIdPage />} />
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
-
         {/* 찜 */}
         <Route path="/mypage/wishlist" element={<WishlistPage />} />
+        {/* 쿠폰 */}
+        <Route path="/mypage/mycoupon" element={<CouponPage />} />
+        {/* 환불계좌 */}
+        <Route path="/mypage/myprofile/refundaccount" element={<RefundAccountPage />} />
+        {/* 회원탈퇴 */}
+        <Route path="/mypage/myprofile/withdraw" element={<WithdrawPage />} />
 
         {/* 관리자 레이아웃 공통 적용 */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProductList />} />
           <Route path="users" element={<AdminUserList />} />
-          {/* 나중에 추가될 예약관리, 리뷰관리 등도 여기에 작성 */}
+          <Route path="reservations" element={<AdminReservationList />} />
+          <Route path="payments" element={<AdminPaymentList />} />
+          {/* 나중에 추가될 리뷰관리 등도 여기에 작성 */}
         </Route>
       </Routes>
     </>

@@ -405,6 +405,11 @@ const AdminProductList = () => {
   const [editSelectedRegionId, setEditSelectedRegionId] = useState(''); // 수정 시 선택된 지역 ID
   const [editCities, setEditCities] = useState([]); // 수정 시 시/군/구 목록
   
+  // 파일 업로드 관련 상태
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  
   // 요양사 검색 필터 상태들
   const [filterGender, setFilterGender] = useState('');
   const [filterCertificate, setFilterCertificate] = useState('');
@@ -589,6 +594,82 @@ const AdminProductList = () => {
   // 수정 시 원본 데이터 저장용
   const [originalEditData, setOriginalEditData] = useState({});
 
+  // 파일 업로드 함수
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      setSelectedFile(null);
+      setFilePreview('');
+      return;
+    }
+
+    // 파일 유효성 검사
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('지원하는 이미지 형식: JPG, PNG, GIF, BMP, WEBP');
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert('파일 크기는 10MB 이하만 가능합니다.');
+      return;
+    }
+
+    setSelectedFile(file);
+
+    // 미리보기 생성
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFilePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 파일 업로드 실행
+  const uploadFile = async () => {
+    if (!selectedFile) {
+      alert('파일을 먼저 선택해주세요.');
+      return null;
+    }
+
+    setIsUploading(true);
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', selectedFile);
+
+    try {
+      const response = await axios.post('http://localhost:8080/admin/facilities/upload/photo', uploadFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.data.success) {
+        console.log('파일 업로드 성공:', response.data);
+        return response.data.fileUrl; // 업로드된 파일의 URL 반환
+      } else {
+        throw new Error(response.data.message || '업로드 실패');
+      }
+    } catch (error) {
+      console.error('파일 업로드 실패:', error);
+      alert('파일 업로드에 실패했습니다: ' + (error.response?.data?.message || error.message));
+      return null;
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // 파일 제거
+  const handleFileRemove = () => {
+    setSelectedFile(null);
+    setFilePreview('');
+    // photo_url 필드도 초기화
+    setFormData(prev => ({
+      ...prev,
+      photo_url: ''
+    }));
+  };
+
   // 실제 API 데이터 필터링 함수
     // eslint-disable-next-line no-unused-vars
   const filterApiData = (data, searchTerm = '', typeFilter = '') => {
@@ -749,11 +830,8 @@ const AdminProductList = () => {
   // 회원 목록 조회 (role별 필터링)
   const fetchUsers = async (role = null) => {
     try {
-      // 실제 서버에서 DB 데이터 조회
-      let url = 'http://localhost:8080/api/admin/products/get-users';
-      if (role) {
-        url += `?role=${role}`;
-      }
+      // 새로운 관리자용 유저 API 사용
+      let url = `http://localhost:8080/api/admin/users/by-role/${role}`;
       
       const response = await axios.get(url, {
         headers: {
@@ -764,16 +842,30 @@ const AdminProductList = () => {
       });
       
       if (response.data.success) {
-        setUsers(response.data.users);
-        console.log(`실제 DB 회원 데이터 로드 완료 (${role || '전체'}):`, response.data.users.length, '명');
+        // 새로운 API 응답 구조에 맞춰서 처리
+        const userList = response.data.users || [];
+        // AdminUserDto를 기존 형식으로 변환
+        const convertedUsers = userList.map(user => {
+          const roleText = user.role === 'USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : user.role;
+          return {
+            member_id: user.memberId,
+            username: user.username,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            suggested_product_name: `${user.name}님의 ${roleText}` // 추천 상품명 생성
+          };
+        });
+        
+        setUsers(convertedUsers);
+        console.log(`실제 DB 회원 데이터 로드 완료 (${role || '전체'}):`, convertedUsers.length, '명');
       } else {
         console.error('회원 목록 조회 실패:', response.data.message);
-        // 실패 시 빈 배열로 설정
         setUsers([]);
       }
     } catch (error) {
       console.error('회원 목록 조회 오류:', error);
-      // 오류 발생 시 빈 배열로 설정
       setUsers([]);
     }
   };
@@ -851,7 +943,7 @@ const AdminProductList = () => {
         const facilityFields = [
           'facility_name', 'facility_charge', 'facility_type', 'facility_theme',
           'facility_address_location', 'facility_address_city', 'facility_detail_address',
-          'facility_homepage', 'facility_phone', 'default_message', 'photo_url',
+          'facility_homepage', 'facility_phone', 'default_message', 'photoUrl',
           'is_thumbnail', 'category', 'facility_tag'
         ];
         
@@ -870,6 +962,19 @@ const AdminProductList = () => {
       if (formData.prodTypeName === '기업') {
         console.log('🔵 기업 브랜치 실행');
         
+        // 파일 업로드 처리 (기업인 경우만)
+        let uploadedPhotoUrl = '';
+        if (selectedFile) {
+          console.log('📸 파일 업로드 시작:', selectedFile.name);
+          uploadedPhotoUrl = await uploadFile();
+          if (!uploadedPhotoUrl) {
+            alert('파일 업로드에 실패했습니다. 다시 시도해주세요.');
+            setIsLoading(false);
+            return;
+          }
+          console.log('📸 파일 업로드 성공:', uploadedPhotoUrl);
+        }
+        
         // 기업 전용 필드만 포함하고 나머지는 완전히 제외
         submitData = {
           prodName: formData.prodName.trim(),
@@ -886,7 +991,7 @@ const AdminProductList = () => {
           facility_phone: formData.facility_phone.trim(),
           facility_homepage: formData.facility_homepage ? formData.facility_homepage.trim() : '',
           default_message: formData.default_message ? formData.default_message.trim() : '',
-          photo_url: formData.photo_url ? formData.photo_url.trim() : '',
+          photoUrl: uploadedPhotoUrl || '', // 업로드된 파일 URL 사용
           is_thumbnail: formData.is_thumbnail ? 1 : 0,
           category: formData.category,
           facility_tag: formData.facility_tag
@@ -1009,6 +1114,11 @@ const AdminProductList = () => {
         // 지역 선택 초기화
         setSelectedRegionId('');
         setCities([]);
+        
+        // 파일 업로드 관련 상태 초기화
+        setSelectedFile(null);
+        setFilePreview('');
+        setIsUploading(false);
         
         // 모달 닫기
         setIsModalOpen(false);
@@ -1352,6 +1462,11 @@ const AdminProductList = () => {
     });
     setSelectedRegionId('');
     setCities([]);
+    
+    // 파일 업로드 관련 상태 초기화
+    setSelectedFile(null);
+    setFilePreview('');
+    setIsUploading(false);
   };
 
   // 상세 모달 열기
@@ -1781,7 +1896,7 @@ const AdminProductList = () => {
   }, [search, selectedType, fetchProducts]); // fetchProducts 추가
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className={styles["product-list-container"]}>
       <div className={styles["admin-header"]}>
         <h2>📦 상품 목록</h2>
         <div className={styles["header-info"]}>
@@ -2812,14 +2927,81 @@ const AdminProductList = () => {
 
                    <div className={styles["form-row"]}>
                      <div className={styles["form-group"]}>
-                       <label>사진 URL</label>
-                       <input
-                         type="text"
-                         name="photo_url"
-                         value={formData.photo_url}
-                         onChange={handleInputChange}
-                         placeholder="시설 사진 URL"
-                       />
+                       <label>시설 사진 업로드 *</label>
+                       <div style={{marginBottom: '10px'}}>
+                         <input
+                           type="file"
+                           accept="image/*"
+                           onChange={handleFileSelect}
+                           style={{
+                             padding: '8px',
+                             border: '1px solid #ddd',
+                             borderRadius: '4px',
+                             width: '100%'
+                           }}
+                         />
+                         <small style={{color: '#666', fontSize: '12px'}}>
+                           지원 형식: JPG, PNG, GIF, BMP, WEBP (최대 10MB)
+                         </small>
+                       </div>
+                       
+                       {/* 파일 미리보기 */}
+                       {filePreview && (
+                         <div style={{
+                           marginTop: '10px',
+                           padding: '10px',
+                           border: '1px solid #ddd',
+                           borderRadius: '4px',
+                           backgroundColor: '#f9f9f9'
+                         }}>
+                           <div style={{marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                             <span style={{fontSize: '13px', fontWeight: 'bold'}}>선택된 파일:</span>
+                             <button 
+                               type="button" 
+                               onClick={handleFileRemove}
+                               style={{
+                                 background: '#dc3545',
+                                 color: 'white',
+                                 border: 'none',
+                                 borderRadius: '3px',
+                                 padding: '2px 6px',
+                                 fontSize: '11px',
+                                 cursor: 'pointer'
+                               }}
+                             >
+                               제거
+                             </button>
+                           </div>
+                           <img 
+                             src={filePreview} 
+                             alt="미리보기"
+                             style={{
+                               maxWidth: '200px',
+                               maxHeight: '150px',
+                               borderRadius: '4px',
+                               border: '1px solid #ccc'
+                             }}
+                           />
+                           <div style={{marginTop: '5px', fontSize: '12px', color: '#666'}}>
+                             {selectedFile?.name} ({(selectedFile?.size / 1024 / 1024).toFixed(2)}MB)
+                           </div>
+                         </div>
+                       )}
+
+                       {/* 업로드 진행 상태 */}
+                       {isUploading && (
+                         <div style={{
+                           marginTop: '10px',
+                           padding: '8px',
+                           backgroundColor: '#e3f2fd',
+                           border: '1px solid #2196f3',
+                           borderRadius: '4px',
+                           fontSize: '13px',
+                           color: '#1976d2'
+                         }}>
+                           📤 파일 업로드 중...
+                         </div>
+                       )}
                      </div>
 
                      <div className={styles["form-group"]}>

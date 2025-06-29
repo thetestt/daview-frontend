@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createReservation } from "../api/reservationApi";
-import { v4 as uuidv4 } from "uuid";
 import CartCountModal from "./CartCountModal";
 import CartConfirmModal from "./CartConfirmModal";
 import styles from "../styles/components/CartButton.module.css";
@@ -24,12 +23,10 @@ function CartButton({ data, productType }) {
 
   const handleAddToCart = async () => {
     try {
-      const generatedUuid = uuidv4();
 
       const reservationData =
         productType === "caregiver"
           ? {
-              rsvId: generatedUuid,
               memberId,
               prodType: 3, // 요양사
               prodId: data.caregiverId,
@@ -55,7 +52,6 @@ function CartButton({ data, productType }) {
                   : "/images/default.png",
             }
           : {
-              rsvId: generatedUuid,
               memberId,
               prodType: productType === "silvertown" ? 2 : 1, // 실버타운:2, 요양원:1
               prodId: data.facilityId,

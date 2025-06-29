@@ -70,7 +70,7 @@ function FindPasswordPage() {
             <div className={styles["phone-inputs"]}>
               <input placeholder="+82" className={styles["country-code"]} value="+82" readOnly />
 
-              <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className={styles["phone-input"]} value={phone}
+              <input type="text" placeholder="휴대전화번호 '-' 없이 입력" className={styles["phone-input"]} value={phone}
                 onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} />
               <button className={styles["send-code-button"]} onClick={sendVerificationCode}>인증번호 전송</button>
           </div>

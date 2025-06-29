@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../styles/auth/ChangePasswordPage.module.css";
+import styles from "../../styles/auth/ChangeIdPage.module.css";
 
 function ChangeIdPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 🔧 초기값 location에서 받아오기
   const [username, setUsername] = useState(location.state?.username || "");
   const [isDuplicate, setIsDuplicate] = useState(null);
 
@@ -43,7 +42,7 @@ function ChangeIdPage() {
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
-            setIsDuplicate(null); // 입력 바뀌면 메시지 초기화
+            setIsDuplicate(null);
           }}
           placeholder="아이디 입력"
         />
@@ -51,9 +50,7 @@ function ChangeIdPage() {
           type="button"
           className={styles["username-check-button"]}
           onClick={checkUsername}
-        >
-          중복 확인
-        </button>
+        >중복 확인</button>
       </div>
       {isDuplicate === true && (
         <p className={styles["input-error"]}>이미 사용 중인 아이디입니다.</p>

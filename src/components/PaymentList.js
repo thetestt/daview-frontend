@@ -95,7 +95,7 @@ const PaymentList = () => {
                 />
                 <div>상품명: {rsv.prodNm || "정보 없음"}</div>
                 <div>상품상세: {rsv.prodDetail || "정보 없음"}</div>
-                <div>예약 인원: {rsv.prodCnt || 1}</div>
+                <div>예약 인원: {rsv.rsvCnt || 1}</div>
                 <div>상품금액: {rsv.prodPrice?.toLocaleString() || 0} 원</div>
                 <div>예약일시: {new Date(rsv.rsvDate).toLocaleString()}</div>
               </div>

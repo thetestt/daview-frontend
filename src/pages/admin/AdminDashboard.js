@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "../../styles/admin/AdminDashboard.module.css";
 
 // 정적 지역 데이터 (AdminProductList.js와 동일)
@@ -93,328 +94,272 @@ const cityData = {
 };
 
 function AdminDashboard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRegionId, setSelectedRegionId] = useState('');
-  const [cities, setCities] = useState([]);
-  const [formData, setFormData] = useState({
-    prodName: '',
-    prodTypeName: '',
-    member_id: '',
-    // 기업 전용 필드
-    facility_type: '',
-    facility_name: '',
-    facility_charge: '',
-    facility_theme: '',
-    hope_work_area_location: '',
-    hope_work_area_city: '',
-    facility_detail_address: '',
-    facility_phone: '',
-    facility_homepage: '',
-    default_message: '',
-    prodDetail: ''
+  const [dashboardData, setDashboardData] = useState({
+    totalUsers: 0,
+    activeUsers: 0,
+    newUsersToday: 0,
+    newUsersThisWeek: 0,
+    newUsersThisMonth: 0,
+    roleStatistics: [],
+    statusStatistics: [],
+    monthlySignupStats: []
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  // 대시보드 데이터 로드
+  const loadDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setFormData({
-      prodName: '',
-      prodTypeName: '',
-      member_id: '',
-      facility_type: '',
-      facility_name: '',
-      facility_charge: '',
-      facility_theme: '',
-      hope_work_area_location: '',
-      hope_work_area_city: '',
-      facility_detail_address: '',
-      facility_phone: '',
-      facility_homepage: '',
-      default_message: '',
-      prodDetail: ''
-    });
-    setSelectedRegionId('');
-    setCities([]);
-  };
+      // 병렬로 API 호출
+      const [statsResponse, signupResponse] = await Promise.all([
+        axios.get('http://localhost:8080/api/admin/users/statistics', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }),
+        axios.get('http://localhost:8080/api/admin/users/statistics/signup', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        })
+      ]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    console.log('🔍 Input changed:', { name, value });
-    setFormData(prev => {
-      const newData = {
-        ...prev,
-        [name]: value
-      };
-      console.log('🔍 Updated formData:', newData);
-      return newData;
-    });
-  };
+      if (statsResponse.data.success && signupResponse.data.success) {
+        const stats = statsResponse.data.data;
+        const signupStats = signupResponse.data.data;
 
-  const handleRegionChange = (e) => {
-    const regionId = e.target.value;
-    setSelectedRegionId(regionId);
-    
-    if (regionId) {
-      const regionData = regions.find(region => region.id === parseInt(regionId));
-      setCities(cityData[regionId] || []);
-      setFormData(prev => ({
-        ...prev,
-        hope_work_area_location: regionData ? regionData.name : '',
-        hope_work_area_city: ''
-      }));
-    } else {
-      setCities([]);
-      setFormData(prev => ({
-        ...prev,
-        hope_work_area_location: '',
-        hope_work_area_city: ''
-      }));
+        // 임시로 월별 데이터에서 신규 가입자 수 계산
+        const thisMonthSignup = signupStats[0]?.count || 0;
+        const thisWeekSignup = Math.floor(thisMonthSignup / 4); // 대략적인 주간 계산
+        const todaySignup = Math.floor(thisMonthSignup / 30); // 대략적인 일일 계산
+
+        setDashboardData({
+          totalUsers: stats.totalUsers || 0,
+          activeUsers: stats.activeUsers || 0,
+          newUsersToday: todaySignup,
+          newUsersThisWeek: thisWeekSignup,
+          newUsersThisMonth: thisMonthSignup,
+          roleStatistics: stats.roleStatistics || [],
+          statusStatistics: stats.statusStatistics || [],
+          monthlySignupStats: signupStats || []
+        });
+      }
+
+    } catch (error) {
+      console.error('대시보드 데이터 로드 실패:', error);
+      
+      // 부분적으로라도 데이터를 로드할 수 있는지 시도
+      try {
+        const basicStatsResponse = await axios.get('http://localhost:8080/api/admin/users/statistics', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (basicStatsResponse.data.success) {
+          const stats = basicStatsResponse.data.data;
+          setDashboardData({
+            totalUsers: stats.totalUsers || 0,
+            activeUsers: stats.activeUsers || 0,
+            newUsersToday: 0,
+            newUsersThisWeek: 0,
+            newUsersThisMonth: 0,
+            roleStatistics: stats.roleStatistics || [],
+            statusStatistics: stats.statusStatistics || [],
+            monthlySignupStats: []
+          });
+          setError('일부 데이터를 불러오는데 실패했습니다. (기본 통계만 표시)');
+        } else {
+          setError('대시보드 데이터를 불러오는데 실패했습니다.');
+        }
+      } catch (fallbackError) {
+        setError('대시보드 데이터를 불러오는데 실패했습니다.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleCityChange = (e) => {
-    const { value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      hope_work_area_city: value
-    }));
-  };
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // 실제 제출 로직 구현
-    alert('상품이 등록되었습니다.');
-    handleCloseModal();
-  };
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className={styles["dashboard-container"]}>
+        <div className={styles["loading"]}>
+          <div className={styles["loading-spinner"]}></div>
+          <p>대시보드 데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className={styles["dashboard-container"]}>
+        <div className={styles["error"]}>
+          <h3>⚠️ 오류 발생</h3>
+          <p>{error}</p>
+          <button onClick={loadDashboardData} className={styles["retry-btn"]}>
+            다시 시도
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={styles["admindashboard-container"]}>
-      <h2>관리자 대시보드</h2>
-      <button 
-        onClick={handleOpenModal}
-        className={styles["register-btn"]}
-      >
-        상품 등록
-      </button>
+    <div className={styles["dashboard-container"]}>
+      <div className={styles["dashboard-header"]}>
+        <h2>📊 관리자 대시보드</h2>
+        <button 
+          onClick={loadDashboardData} 
+          className={styles["refresh-btn"]}
+          disabled={isLoading}
+        >
+          🔄 새로고침
+        </button>
+      </div>
 
-      {/* 상품 등록 모달 */}
-      {isModalOpen && (
-        <div className={styles["modal-overlay"]} onClick={handleCloseModal}>
-          <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
-            <div className={styles["modal-header"]}>
-              <h3>🛍️ 새 상품 등록</h3>
-              <button className={styles["close-btn"]} onClick={handleCloseModal}>✖</button>
-            </div>
-            
-            <form onSubmit={handleSubmit} className={styles["register-form"]}>
-              <div className={styles["form-row"]}>
-                <div className={styles["form-group"]}>
-                  <label>상품명 *</label>
-                  <input
-                    type="text"
-                    name="prodName"
-                    value={formData.prodName}
-                    onChange={handleInputChange}
-                    placeholder="상품명을 입력하세요"
-                    required
-                  />
-                </div>
-
-                <div className={styles["form-group"]}>
-                  <label>상품 유형 *</label>
-                  <select
-                    name="prodTypeName"
-                    value={formData.prodTypeName}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value="">유형을 선택하세요</option>
-                    <option value="요양사">👨‍⚕️ 요양사</option>
-                    <option value="기업">🏢 기업</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* 기업 전용 필드들 */}
-              {formData.prodTypeName === '기업' && (
-                <>
-                  <div className={styles["form-group"]}>
-                    <label>시설 유형 *</label>
-                    <select
-                      name="facility_type"
-                      value={formData.facility_type}
-                      onChange={handleInputChange}
-                      required
-                    >
-                      <option value="">시설 유형을 선택하세요</option>
-                      <option value="요양원">요양원</option>
-                      <option value="실버타운">실버타운</option>
-                    </select>
-                  </div>
-
-                  {/* 요양원 또는 실버타운 선택시 지역 드롭다운 표시 */}
-                  {console.log('🔍 Checking facility_type condition:', { 
-                    facility_type: formData.facility_type, 
-                    condition: (formData.facility_type === '요양원' || formData.facility_type === '실버타운')
-                  })}
-                  {(formData.facility_type === '요양원' || formData.facility_type === '실버타운') && (
-                    <div className={styles["form-row"]}>
-                      <div className={styles["form-group"]}>
-                        <label>지역(도/광역시) *</label>
-                        <select
-                          value={selectedRegionId}
-                          onChange={handleRegionChange}
-                          required
-                        >
-                          <option value="">지역을 선택하세요</option>
-                          {regions.map(region => (
-                            <option key={region.id} value={region.id}>
-                              {region.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className={styles["form-group"]}>
-                        <label>시/군/구 *</label>
-                        <select
-                          name="hope_work_area_city"
-                          value={formData.hope_work_area_city}
-                          onChange={handleCityChange}
-                          disabled={!selectedRegionId}
-                          required
-                        >
-                          <option value="">시/군/구를 선택하세요</option>
-                          {cities.map((city, index) => (
-                            <option key={index} value={city}>
-                              {city}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>시설명 *</label>
-                      <input
-                        type="text"
-                        name="facility_name"
-                        value={formData.facility_name}
-                        onChange={handleInputChange}
-                        placeholder="시설명을 입력하세요"
-                        required
-                      />
-                    </div>
-
-                    <div className={styles["form-group"]}>
-                      <label>월별이용료 * (만원)</label>
-                      <input
-                        type="number"
-                        name="facility_charge"
-                        value={formData.facility_charge}
-                        onChange={handleInputChange}
-                        placeholder="월별 이용료를 입력하세요"
-                        min="0"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles["form-group"]}>
-                    <label>테마</label>
-                    <select
-                      name="facility_theme"
-                      value={formData.facility_theme}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">테마를 선택하세요</option>
-                      <option value="자연친화">자연친화</option>
-                      <option value="의료특화">의료특화</option>
-                      <option value="문화생활">문화생활</option>
-                    </select>
-                  </div>
-
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>상세주소 *</label>
-                      <input
-                        type="text"
-                        name="facility_detail_address"
-                        value={formData.facility_detail_address}
-                        onChange={handleInputChange}
-                        placeholder="상세주소를 입력하세요"
-                        required
-                      />
-                    </div>
-
-                    <div className={styles["form-group"]}>
-                      <label>연락처 *</label>
-                      <input
-                        type="tel"
-                        name="facility_phone"
-                        value={formData.facility_phone}
-                        onChange={handleInputChange}
-                        placeholder="시설 연락처"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>홈페이지URL</label>
-                      <input
-                        type="url"
-                        name="facility_homepage"
-                        value={formData.facility_homepage}
-                        onChange={handleInputChange}
-                        placeholder="시설 홈페이지 URL"
-                      />
-                    </div>
-
-                    <div className={styles["form-group"]}>
-                      <label>기본 메시지</label>
-                      <input
-                        type="text"
-                        name="default_message"
-                        value={formData.default_message}
-                        onChange={handleInputChange}
-                        placeholder="기본 안내 메시지를 입력하세요"
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              <div className={styles["form-group"]}>
-                <label>상세설명</label>
-                <textarea
-                  name="prodDetail"
-                  value={formData.prodDetail}
-                  onChange={handleInputChange}
-                  placeholder="상세설명을 입력하세요"
-                  rows="3"
-                />
-              </div>
-
-              <div className={styles["form-actions"]}>
-                <button type="button" onClick={handleCloseModal} className={styles["cancel-btn"]}>
-                  취소
-                </button>
-                <button type="submit" className={styles["submit-btn"]}>
-                  등록
-                </button>
-              </div>
-            </form>
+      {/* 주요 통계 카드 */}
+      <div className={styles["stats-grid"]}>
+        <div className={styles["stat-card"]}>
+          <div className={styles["stat-icon"]}>👥</div>
+          <div className={styles["stat-content"]}>
+            <h3>전체 회원수</h3>
+            <div className={styles["stat-number"]}>{dashboardData.totalUsers.toLocaleString()}</div>
+            <p className={styles["stat-description"]}>등록된 전체 회원</p>
           </div>
         </div>
-      )}
+
+        <div className={styles["stat-card"]}>
+          <div className={styles["stat-icon"]}>✅</div>
+          <div className={styles["stat-content"]}>
+            <h3>활성 사용자</h3>
+            <div className={styles["stat-number"]}>{dashboardData.activeUsers.toLocaleString()}</div>
+            <p className={styles["stat-description"]}>현재 활성 상태</p>
+          </div>
+        </div>
+
+        <div className={styles["stat-card"]}>
+          <div className={styles["stat-icon"]}>📅</div>
+          <div className={styles["stat-content"]}>
+            <h3>이번 달 신규</h3>
+            <div className={styles["stat-number"]}>{dashboardData.newUsersThisMonth.toLocaleString()}</div>
+            <p className={styles["stat-description"]}>이번 달 가입자</p>
+          </div>
+        </div>
+
+        <div className={styles["stat-card"]}>
+          <div className={styles["stat-icon"]}>🌟</div>
+          <div className={styles["stat-content"]}>
+            <h3>오늘 신규</h3>
+            <div className={styles["stat-number"]}>{dashboardData.newUsersToday.toLocaleString()}</div>
+            <p className={styles["stat-description"]}>오늘 가입자</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 차트 섹션 */}
+      <div className={styles["charts-grid"]}>
+        {/* 역할별 분포 */}
+        <div className={styles["chart-card"]}>
+          <h3>👨‍💼 역할별 회원 분포</h3>
+          <div className={styles["role-chart"]}>
+            {dashboardData.roleStatistics.map((role, index) => (
+              <div key={index} className={styles["role-item"]}>
+                <div className={styles["role-info"]}>
+                  <span className={styles["role-name"]}>
+                    {role.role === 'USER' ? '👤 일반 사용자' : 
+                     role.role === 'ADMIN' ? '👑 관리자' : 
+                     role.role === 'CAREGIVER' ? '🏥 요양사' : 
+                     role.role === 'COMPANY' ? '🏢 기업' : role.role}
+                  </span>
+                  <span className={styles["role-count"]}>{role.count}명</span>
+                </div>
+                <div className={styles["role-bar"]}>
+                  <div 
+                    className={styles["role-bar-fill"]} 
+                    style={{ 
+                      width: `${(role.count / dashboardData.totalUsers) * 100}%`,
+                      backgroundColor: 
+                        role.role === 'USER' ? '#4CAF50' :
+                        role.role === 'ADMIN' ? '#FF9800' :
+                        role.role === 'CAREGIVER' ? '#2196F3' :
+                        role.role === 'COMPANY' ? '#9C27B0' : '#757575'
+                    }}
+                  ></div>
+                </div>
+                <span className={styles["role-percentage"]}>
+                  {((role.count / dashboardData.totalUsers) * 100).toFixed(1)}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 가입 통계 */}
+        <div className={styles["chart-card"]}>
+          <h3>📈 월별 가입 추이</h3>
+          <div className={styles["signup-chart"]}>
+            {dashboardData.monthlySignupStats.slice(0, 6).map((month, index) => (
+              <div key={index} className={styles["month-item"]}>
+                <div className={styles["month-bar"]}>
+                  <div 
+                    className={styles["month-bar-fill"]} 
+                    style={{ 
+                      height: `${(month.count / Math.max(...dashboardData.monthlySignupStats.map(m => m.count))) * 100}%`
+                    }}
+                  ></div>
+                </div>
+                <div className={styles["month-info"]}>
+                  <div className={styles["month-name"]}>{month.month}</div>
+                  <div className={styles["month-count"]}>{month.count}명</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 상태별 통계 */}
+      <div className={styles["status-section"]}>
+        <h3>📊 회원 상태 현황</h3>
+        <div className={styles["status-cards"]}>
+          {dashboardData.statusStatistics.map((status, index) => (
+            <div key={index} className={styles["status-card"]}>
+              <div className={`${styles["status-icon"]} ${styles[status.status?.toLowerCase()]}`}>
+                {status.status === 'ACTIVE' ? '🟢' : '🔴'}
+              </div>
+              <div className={styles["status-content"]}>
+                <h4>{status.status === 'ACTIVE' ? '활성 회원' : '비활성 회원'}</h4>
+                <div className={styles["status-number"]}>{status.count.toLocaleString()}</div>
+                <div className={styles["status-percentage"]}>
+                  {((status.count / dashboardData.totalUsers) * 100).toFixed(1)}%
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 활동 로그 섹션 (추후 구현) */}
+      <div className={styles["activity-section"]}>
+        <h3>📋 최근 활동</h3>
+        <div className={styles["activity-placeholder"]}>
+          <p>🚧 활동 로그 기능은 곧 추가될 예정입니다.</p>
+          <p>최근 로그인, 주요 활동 내역 등을 확인할 수 있습니다.</p>
+        </div>
+      </div>
     </div>
   );
 }
