@@ -20,7 +20,7 @@ function SignupPage() {
   const [emailAgree, setEmailAgree] = useState(false);
   const [pushAgree, setPushAgree] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(null); // null, true, false
-
+  
   useEffect(() => {
     console.log("SignupPage 렌더링 시작");
     const allChecked = agreed && smsAgree && emailAgree && pushAgree;
@@ -87,6 +87,11 @@ function SignupPage() {
       alert("아이디 중복 확인을 해주세요.");
       return;
     }
+    if (!name || !emailId || !emailDomain || !password || !role || !gender) {
+      alert("필수값이 입력되지 않았습니다.");
+      return;
+    }
+    
 
     const email = `${emailId}@${emailDomain}`;
 
@@ -99,6 +104,9 @@ function SignupPage() {
       gender,
       birth,
       role,
+      smsAgree,
+      emailAgree,
+      pushAgree,
     },
       { withCredentials: true }
     )
@@ -148,7 +156,7 @@ function SignupPage() {
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" />
 
         <label>전화번호</label>
-        <input type="text" value={phone} onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} placeholder="전화번호 입력" />
+        <input type="text" value={phone} onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} placeholder="휴대전화번호 '-' 없이 입력" />
 
         <label>이메일</label>
         <div className={styles["email-box"]}>

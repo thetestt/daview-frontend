@@ -54,43 +54,56 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+    const handleLoadProfile = async () => {
+      const token = localStorage.getItem("token");
+      const memberId = localStorage.getItem("memberId");
 
-    axios
-      .get("/api/mypage/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log("프로필 응답", res.data);
+      if (!token || !memberId) return;
+
+      console.log("[프론트] 사용하는 토큰:", token);
+      console.log("[프론트] memberId:", memberId);
+
+      try {
+        const res = await axios.get("/api/mypage/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("프로필 응답:", res.data);
         setProfile(res.data);
-      })
-      .catch((err) => console.error("프로필 가져오기 실패:", err));
+      } catch (err) {
+        console.error("프로필 가져오기 실패:", err);
+      }
 
-    //   axios
-    //     .get("/api/mypage/consults", {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     })
-    //     .then((res) => setConsults(res.data))
-    //     .catch((err) => console.error("상담내역 불러오기 실패", err));
+      try {
+        const res = await getChatRooms(memberId);
+        setConsults(res ?? []);
+      } catch (err) {
+        console.error("1:1 문의 가져오기 실패:", err);
+      }
 
-    //   axios
-    //     .get("/api/mypage/reviews", {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     })
-    //     .then((res) => setReviews(res.data))
-    //     .catch((err) => console.error("리뷰 불러오기 실패", err));
+      try {
+        const res = await getPaymentsByMemberId(memberId);
+        setPayments(res ?? []);
+      } catch (err) {
+        console.error("주문 내역 불러오기 실패:", err);
+      }
 
-    getPaymentsByMemberId(memberId)
-      .then((res) => setPayments(res ?? []))
-      .catch((err) => console.error("주문 내역 불러오기 실패", err));
+      try {
+        const res = await axios.get("/coupon/my", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("쿠폰 응답:", res.data);
+        setCoupons(res.data);
+      } catch (err) {
+        console.error("쿠폰 불러오기 실패:", err);
+      }
+    };
 
-    //   // 나중에 백엔드 붙이면 아래 axios 요청 추가 예정
-    //   setFavorites([]); // 임시 빈 배열
-    //   setCoupons([]); // 임시 빈 배열
-  }, [memberId]);
+    handleLoadProfile();
+  }, []);
 
   return (
     <div className={styles["mypage-container"]}>
@@ -119,7 +132,9 @@ const MyPage = () => {
             <li>
               <Link to="/mypage/wishlist">나의 찜 목록</Link>
             </li>
-            <li>내 쿠폰 보기</li>
+            <li>
+            <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
+            </li>
           </ul>
         </div>
 
@@ -129,7 +144,7 @@ const MyPage = () => {
             <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
-              <button className={styles["mod-btn"]}>수정</button>
+              <button className={styles["mod-btn"]}>변경</button>
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
@@ -145,7 +160,6 @@ const MyPage = () => {
               <div className={styles["value"]}>{payments.length} 건</div>
             </div>
           </div>
-          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>1:1 문의</h2>
@@ -161,15 +175,6 @@ const MyPage = () => {
             <div className={styles["profile-item"]}>
               <label>총 후기</label>
               <div className={styles["value"]}>{reviews.length} 건</div>
-            </div>
-          </div>
-          <br />
-
-          <div className={styles["profile-box"]}>
-            <h2 className={styles["profile-title"]}>나의 찜 목록</h2>
-            <div className={styles["profile-item"]}>
-              <label>찜한 시설</label>
-              <div className={styles["value"]}>{favorites.length} 개</div>
             </div>
           </div>
           <br />

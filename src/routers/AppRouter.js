@@ -31,6 +31,9 @@ import MyProfile from "../pages/auth/MyProfile";
 import SignupPage from "../pages/auth/SignupPage";
 import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import ChangePasswordCheckPage from "../pages/auth/ChangePasswordCheckPage";
+import ChangeIdPage from "../pages/auth/ChangeIdPage";
+import CouponPage from "../pages/auth/CouponPage";
+import WithdrawPage from "../pages/auth/WithdrawPage"
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -41,6 +44,7 @@ import AdminUserList from "../pages/admin/admin_service/AdminUserList"; //관리
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
 import RegisterPage from "../pages/RegisterPage";
+import RefundAccountPage from "../pages/auth/RefundAccountPage";
 
 const AppRouter = () => {
   const navigate = useNavigate();
@@ -124,21 +128,24 @@ const AppRouter = () => {
         <Route path="/company/main" element={<CompanyDashboard />} />
         <Route path="/caregiver/main" element={<CaregiverDashboard />} />
 
+        {/* 마이페이지 */}
         {/* 아이디찾기 */}
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
-
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route
-          path="/FindPasswordPage/CPw-check"
-          element={<ChangePasswordCheckPage />}
-        />
-
+        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        {/* 아이디변경*/}
+        <Route path="mypage/ChangeIdPage" element={<ChangeIdPage />} />
         {/* 내 프로필 */}
         <Route path="/mypage/myprofile" element={<MyProfile />} />
-
         {/* 찜 */}
         <Route path="/mypage/wishlist" element={<WishlistPage />} />
+        {/* 쿠폰 */}
+        <Route path="/mypage/mycoupon" element={<CouponPage />} />
+        {/* 환불계좌 */}
+        <Route path="/mypage/myprofile/refundaccount" element={<RefundAccountPage />} />
+        {/* 회원탈퇴 */}
+        <Route path="/mypage/myprofile/withdraw" element={<WithdrawPage />} />
 
         {/* 관리자 레이아웃 공통 적용 */}
         <Route path="/admin" element={<AdminLayout />}>

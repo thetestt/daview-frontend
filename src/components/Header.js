@@ -24,8 +24,9 @@ function Header() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("memberId");
+    localStorage.removeItem("role");
     window.location.href = "/";
-  };
+  };  
 
   useEffect(() => {
     const handleStorageChange = () => {
