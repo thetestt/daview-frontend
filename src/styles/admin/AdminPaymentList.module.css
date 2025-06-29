@@ -1,8 +1,8 @@
-/* AdminUserList.module.css */
+/* AdminPaymentList.module.css */
 
-.user-list-container {
-  padding: 1.5rem; /* AdminLayout에서 패딩을 제거했으므로 여기서 제공 */
-  background: #f8f9fa; /* 일관된 배경색 */
+.payment-list-container {
+  padding: 1.5rem;
+  background: #f8f9fa;
   min-height: 100vh;
 }
 
@@ -59,7 +59,7 @@
 
 .filter-row {
   display: grid;
-  grid-template-columns: 200px 300px auto auto;
+  grid-template-columns: 160px 300px auto;
   gap: 1rem;
   align-items: center;
 }
@@ -77,7 +77,7 @@
   margin-bottom: 2px;
 }
 
-.role-filter,
+.status-filter,
 .search-input {
   padding: 8px 16px;
   border: 2px solid #e9ecef;
@@ -90,14 +90,14 @@
   box-sizing: border-box;
 }
 
-.role-filter:focus,
+.status-filter:focus,
 .search-input:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-.role-filter:hover,
+.status-filter:hover,
 .search-input:hover {
   border-color: #007bff;
 }
@@ -165,13 +165,13 @@
   margin-bottom: 1rem;
 }
 
-.user-table {
+.payment-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
 
-.user-table th {
+.payment-table th {
   background: #f8f9fa;
   color: #495057;
   font-weight: 600;
@@ -181,91 +181,113 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  white-space: nowrap;
 }
 
-.user-table td {
+.payment-table td {
   padding: 0.75rem;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
 }
 
-.user-table tbody tr:hover {
+.payment-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.payment-table tbody tr:hover {
   background: #f8f9fa;
 }
 
-/* 배지 스타일 */
-.role-badge,
+/* 상품명 스타일 */
+.product-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* 가격 스타일 */
+.price {
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+/* 상태 배지 */
 .status-badge {
-  padding: 0.25rem 0.75rem;
+  padding: 4px 8px;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
 }
 
-.role-badge.user {
-  background: #e3f2fd;
-  color: #1976d2;
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
 }
 
-.role-badge.caregiver {
-  background: #f3e5f5;
-  color: #7b1fa2;
-}
-
-.role-badge.company {
-  background: #e8f5e8;
-  color: #388e3c;
-}
-
-.role-badge.admin {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.status-badge.active {
+.status-badge.completed {
   background: #d4edda;
   color: #155724;
 }
 
-.status-badge.inactive {
+.status-badge.failed {
   background: #f8d7da;
   color: #721c24;
 }
 
-/* 상태 변경 버튼 */
-.status-btn {
-  padding: 6px 12px;
+.status-badge.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.refunded {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* 상세 버튼 */
+.detail-btn {
+  background: #007bff;
+  color: white;
   border: none;
+  padding: 5px 10px;
   border-radius: 6px;
   font-size: 12px;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  white-space: nowrap;
+  min-width: 50px;
 }
 
-.status-btn.activate {
-  background: #28a745;
-  color: white;
+.detail-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
 }
 
-.status-btn.activate:hover:not(:disabled) {
-  background: #1e7e34;
+/* 로딩 */
+.loading-message,
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-size: 1.1rem;
 }
 
-.status-btn.deactivate {
-  background: #dc3545;
-  color: white;
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 123, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #007bff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
 }
 
-.status-btn.deactivate:hover:not(:disabled) {
-  background: #c82333;
-}
-
-.status-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* 모달 */
@@ -284,9 +306,9 @@
 
 .modal-content {
   background: white;
-  border-radius: 8px;
-  max-width: 600px;
+  border-radius: 12px;
   width: 90%;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -343,135 +365,203 @@
   font-size: 0.9rem;
 }
 
+.detail-item span {
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  color: #495057;
+  font-size: 0.9rem;
+}
 
+/* 상태 변경 액션 */
+.status-actions {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
 
-/* 페이지네이션 스타일 */
+.status-actions h4 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.status-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 70px;
+}
+
+.status-btn.complete {
+  background: #28a745;
+  color: white;
+}
+
+.status-btn.complete:hover:not(:disabled) {
+  background: #1e7e34;
+  transform: translateY(-1px);
+}
+
+.status-btn.cancel {
+  background: #dc3545;
+  color: white;
+}
+
+.status-btn.cancel:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.status-btn.refund {
+  background: #6c757d;
+  color: white;
+}
+
+.status-btn.refund:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.status-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 페이지네이션 */
 .pagination-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding: 20px;
+  padding: 1.5rem;
   background: white;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 12px 12px;
+  border-top: 1px solid #e9ecef;
+  margin-top: -1px;
 }
 
 .pagination-info {
   display: flex;
   align-items: center;
-  flex: 1;
+  gap: 1rem;
 }
 
 .showing-text {
-  color: #666;
-  font-size: 14px;
+  color: #6c757d;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .pagination-center {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex: 1;
-  justify-content: center;
+  gap: 0.5rem;
 }
 
 .pagination-btn {
-  padding: 6px 12px;
-  border: 1px solid #ddd;
+  padding: 6px 10px;
+  border: 1px solid #dee2e6;
   background: white;
-  cursor: pointer;
+  color: #495057;
   border-radius: 6px;
-  transition: all 0.2s ease;
-  font-size: 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 500;
-  min-width: 60px;
+  transition: all 0.3s ease;
+  min-width: 50px;
 }
 
 .pagination-btn.nav-btn {
-  color: #666;
-  background: white;
-  border-color: #ddd;
+  padding: 6px 12px;
+  font-weight: 600;
+  min-width: 60px;
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: #f8f9fa;
-  border-color: #007bff;
-  color: #007bff;
+  background: #e9ecef;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
 }
 
 .pagination-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
-  color: #ccc;
+  transform: none;
 }
 
 .page-numbers {
   display: flex;
-  gap: 4px;
-  margin: 0 12px;
+  gap: 0.25rem;
 }
 
 .page-btn {
   padding: 6px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #dee2e6;
   background: white;
-  cursor: pointer;
+  color: #495057;
   border-radius: 6px;
-  transition: all 0.2s ease;
-  min-width: 32px;
-  font-size: 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 35px;
 }
 
 .page-btn:hover {
-  background: #f8f9fa;
-  border-color: #007bff;
-  color: #007bff;
+  background: #e9ecef;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
 }
 
 .page-btn.active {
-  background: #007bff;
-  border-color: #007bff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  font-weight: 600;
+  border-color: #0056b3;
 }
 
 .pagination-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex: 1;
-  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .control-label {
-  color: #666;
-  font-size: 14px;
+  color: #6c757d;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .page-size-select {
   padding: 6px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #dee2e6;
   border-radius: 6px;
   background: white;
+  color: #495057;
+  font-size: 0.9rem;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-width: 70px;
+  transition: all 0.3s ease;
 }
 
 .page-size-select:hover {
-  border-color: #007bff;
+  border-color: #adb5bd;
 }
 
 .page-size-select:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
  

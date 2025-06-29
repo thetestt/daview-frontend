@@ -80,68 +80,22 @@ const AdminSidebar = ({ isCollapsed }) => {
                 }}>
                   <NavLink to="/admin/reservations" style={navStyle}>예약 관리</NavLink>
                 </li>
-              </ul>
-            </div>
-
-            <div style={{ marginTop: '1.5rem' }}>
-              <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>비즈니스 관리</strong>
-              <ul style={{ 
-                listStyle: 'none', 
-                paddingLeft: '1rem', 
-                margin: '0.5rem 0',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
                 <li style={{ 
                   display: 'block', 
                   marginBottom: '8px', 
                   width: '100%',
                   clear: 'both'
                 }}>
-                  <NavLink to="/admin/business/partners" style={navStyle}>제휴사 관리</NavLink>
+                  <NavLink to="/admin/payments" style={navStyle}>결제 관리</NavLink>
                 </li>
               </ul>
             </div>
 
-            <div style={{ marginTop: '1.5rem' }}>
-              <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>시스템 관리</strong>
-              <ul style={{ 
-                listStyle: 'none', 
-                paddingLeft: '1rem', 
-                margin: '0.5rem 0',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <li style={{ 
-                  display: 'block', 
-                  marginBottom: '8px', 
-                  width: '100%',
-                  clear: 'both'
-                }}>
-                  <NavLink to="/admin/system/users" style={navStyle}>유저 권한</NavLink>
-                </li>
-              </ul>
-            </div>
 
-            <div style={{ marginTop: '1.5rem' }}>
-              <strong style={{ fontSize: '14px', color: '#bdc3c7' }}>기타 관리</strong>
-              <ul style={{ 
-                listStyle: 'none', 
-                paddingLeft: '1rem', 
-                margin: '0.5rem 0',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <li style={{ 
-                  display: 'block', 
-                  marginBottom: '8px', 
-                  width: '100%',
-                  clear: 'both'
-                }}>
-                  <NavLink to="/admin/etc/logs" style={navStyle}>로그 관리</NavLink>
-                </li>
-              </ul>
-            </div>
+
+
+
+
           </>
         )}
       </nav>

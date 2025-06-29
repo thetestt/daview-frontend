@@ -1,205 +1,372 @@
-.admindashboard-container {
-    height: calc(100vh - 270px);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
+.dashboard-container {
+    padding: 1.5rem; /* AdminLayout에서 패딩을 제거했으므로 여기서 제공 */
+    background: #f8f9fa; /* 일관된 배경색 */
+    min-height: 100vh;
 }
 
-.register-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-}
-
-.register-btn:hover {
-    background-color: #0056b3;
-}
-
-/* 모달 스타일 */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 12px;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
+.dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #e9ecef;
-    background-color: #f8f9fa;
-    border-radius: 12px 12px 0 0;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
 }
 
-.modal-header h3 {
+.dashboard-header h2 {
+    color: #2c3e50;
     margin: 0;
-    color: #495057;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 700;
 }
 
-.close-btn {
-    background: none;
+.refresh-btn {
+    padding: 0.75rem 1.5rem;
+    background: #007bff;
+    color: white;
     border: none;
-    font-size: 20px;
-    color: #6c757d;
+    border-radius: 8px;
     cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    transition: background-color 0.2s;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.close-btn:hover {
-    background-color: #e9ecef;
-    color: #495057;
+.refresh-btn:hover:not(:disabled) {
+    background: #0056b3;
+    transform: translateY(-1px);
 }
 
-/* 폼 스타일 */
-.register-form {
-    padding: 24px;
-}
-
-.form-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
-.form-group input:disabled,
-.form-group select:disabled {
-    background-color: #f8f9fa;
-    color: #6c757d;
+.refresh-btn:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.form-actions {
+/* 로딩 및 에러 상태 */
+.loading, .error {
     display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    text-align: center;
 }
 
-.cancel-btn,
-.submit-btn {
-    padding: 12px 24px;
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error h3 {
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.retry-btn {
+    padding: 0.75rem 1.5rem;
+    background: #dc3545;
+    color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
 }
 
-.cancel-btn {
-    background-color: #6c757d;
-    color: white;
+.retry-btn:hover {
+    background: #c82333;
 }
 
-.cancel-btn:hover {
-    background-color: #5a6268;
+/* 주요 통계 카드 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.submit-btn {
-    background-color: #28a745;
-    color: white;
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
 }
 
-.submit-btn:hover {
-    background-color: #218838;
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        margin: 10px;
-    }
-    
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    
-    .form-group {
-        margin-bottom: 16px;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .cancel-btn,
-    .submit-btn {
-        width: 100%;
-    }
-} 
+.stat-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.stat-content h3 {
+    margin: 0 0 0.5rem 0;
+    color: #495057;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.stat-description {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+/* 차트 섹션 */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+}
+
+.chart-card h3 {
+    margin: 0 0 1.5rem 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* 역할별 분포 차트 */
+.role-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.role-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.role-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 150px;
+}
+
+.role-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.role-count {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.role-bar {
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 1rem;
+}
+
+.role-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.role-percentage {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6c757d;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* 가입 통계 차트 */
+.signup-chart {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    height: 200px;
+    padding: 1rem 0;
+}
+
+.month-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.month-bar {
+    width: 100%;
+    height: 150px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+}
+
+.month-bar-fill {
+    width: 100%;
+    background: linear-gradient(to top, #007bff, #0056b3);
+    border-radius: 4px;
+    transition: height 0.5s ease;
+    min-height: 4px;
+}
+
+.month-info {
+    text-align: center;
+}
+
+.month-name {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.month-count {
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* 상태별 통계 */
+.status-section {
+    margin-bottom: 2rem;
+}
+
+.status-section h3 {
+    margin: 0 0 1.5rem 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.status-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.status-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.status-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.status-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: #495057;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.status-percentage {
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* 활동 로그 섹션 */
+.activity-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+}
+
+.activity-section h3 {
+    margin: 0 0 1.5rem 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.activity-placeholder {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
+.activity-placeholder p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+ 
