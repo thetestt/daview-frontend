@@ -10,12 +10,10 @@ function ReviewSection() {
     const fetchReview = async () => {
       try {
         const reviews = await getAllReviews();
-        console.log("전체 후기 데이터:", reviews);
 
         const fiveStarReviews = reviews.filter(
           (review) => review.revStars === 5
         );
-        console.log("5점 후기들:", fiveStarReviews);
 
         const formattedReviews = fiveStarReviews.map((review) => ({
           name: `고객${review.memberId}`,

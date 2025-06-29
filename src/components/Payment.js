@@ -125,7 +125,7 @@ function Payment() {
               <label>상담 예정일 *</label>
               <input
                 type="date"
-                max={new Date().toISOString().split("T")[0]}
+                min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
                 name="consultDate"
                 value={userInfo.consultDate}
                 onChange={handleChange}
