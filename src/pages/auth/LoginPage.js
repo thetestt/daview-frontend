@@ -31,12 +31,15 @@ function LoginPage() {
         const token = response.data.token;
         const decoded = jwtDecode(token);
 
+        console.log("로그인 응답", response.data);
+        console.log("토큰 디코딩 결과", decoded);
+
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role);
         localStorage.setItem("memberId", decoded.memberId);
 
-        window.dispatchEvent(new Event("storage"));
+        window.location.reload();
 
         console.log("로그인 성공!");
         console.log("토큰:", token);

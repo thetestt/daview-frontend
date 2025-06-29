@@ -136,7 +136,7 @@ function FindIdPage() {
             <input
               type="text"
               className={styles["phone-input"]}
-              placeholder="휴대전화번호 입력 ((-)제외)"
+              placeholder="휴대전화번호 '-' 없이 입력"
               value={phone}
               onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
             />
