@@ -10,6 +10,12 @@ const AdminUserList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  
+  // 페이지네이션 상태 추가
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // 유저 목록 가져오기
   const fetchUsers = useCallback(async () => {
@@ -20,6 +26,10 @@ const AdminUserList = () => {
       let url = 'http://localhost:8080/api/admin/users';
       const params = new URLSearchParams();
       
+      // 페이지네이션 파라미터 추가
+      params.append('page', currentPage.toString());
+      params.append('size', pageSize.toString());
+      
       if (search.trim()) {
         params.append('search', search.trim());
       }
@@ -28,9 +38,7 @@ const AdminUserList = () => {
         params.append('role', selectedRole);
       }
       
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
+      url += `?${params.toString()}`;
       
       const response = await axios.get(url, {
         headers: {
@@ -41,11 +49,19 @@ const AdminUserList = () => {
       });
 
       if (response.data.success) {
-        setUsers(response.data.users || []);
-        console.log('유저 목록 조회 완료:', response.data.users?.length || 0, '명');
+        const userData = response.data.data;
+        setUsers(userData.users || []);
+        setTotalPages(userData.totalPages || 0);
+        setTotalElements(userData.totalElements || 0);
+        console.log('유저 목록 조회 완료:', userData.users?.length || 0, '명');
+        console.log('전체 유저 수:', userData.totalElements);
+        console.log('총 페이지 수:', userData.totalPages);
+        console.log('현재 페이지:', currentPage + 1);
       } else {
         console.error('유저 목록 조회 실패:', response.data.message);
         setUsers([]);
+        setTotalPages(0);
+        setTotalElements(0);
       }
       
     } catch (error) {
@@ -60,12 +76,12 @@ const AdminUserList = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [search, selectedRole]);
+  }, [search, selectedRole, currentPage, pageSize]);
 
   // 검색 핸들러
   const handleSearch = () => {
     console.log('유저 검색 실행:', search, '역할:', selectedRole);
-    fetchUsers();
+    setCurrentPage(0); // 검색 시 첫 페이지로
   };
 
   // Enter 키 검색 핸들러
@@ -78,12 +94,38 @@ const AdminUserList = () => {
   // 역할 필터 변경 핸들러
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
+    setCurrentPage(0); // 필터 변경 시 첫 페이지로
   };
 
   // 필터 초기화 핸들러
   const handleResetFilters = () => {
     setSearch('');
     setSelectedRole('');
+    setCurrentPage(0); // 초기화 시 첫 페이지로
+  };
+
+  // 페이지네이션 핸들러들
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // 페이지 크기 변경 핸들러
+  const handlePageSizeChange = (e) => {
+    const newSize = parseInt(e.target.value);
+    setPageSize(newSize);
+    setCurrentPage(0); // 첫 페이지로 이동
   };
 
   // 유저 상세 보기
@@ -142,12 +184,12 @@ const AdminUserList = () => {
   }, [fetchUsers]);
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className={styles["user-list-container"]}>
       <div className={styles["admin-header"]}>
         <h2>👥 유저 관리</h2>
         <div className={styles["header-info"]}>
           <span className={`${styles["server-status"]} ${styles["online"]}`}>
-            🟢 실시간 데이터 - 총 {users.length}명
+            🟢 실시간 데이터 - 총 {totalElements}명 (페이지 {currentPage + 1}/{totalPages})
           </span>
         </div>
       </div>
@@ -164,8 +206,6 @@ const AdminUserList = () => {
             >
               <option value="">▼ 전체 보기</option>
               <option value="USER">👤 일반 사용자</option>
-              <option value="CAREGIVER">👩‍⚕️ 요양사</option>
-              <option value="COMPANY">🏢 기업</option>
               <option value="ADMIN">👑 관리자</option>
             </select>
           </div>
@@ -219,40 +259,43 @@ const AdminUserList = () => {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map(user => (
-                <tr key={user.id} onClick={() => handleUserClick(user)} style={{ cursor: 'pointer' }}>
-                  <td>{user.id}</td>
-                  <td>{user.name || '미입력'}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phone || '미입력'}</td>
-                  <td>
-                    <span className={`${styles["role-badge"]} ${styles[user.role?.toLowerCase() || 'user']}`}>
-                      {user.role === 'USER' ? '👤 사용자' : 
-                       user.role === 'CAREGIVER' ? '👩‍⚕️ 요양사' :
-                       user.role === 'COMPANY' ? '🏢 기업' :
-                       user.role === 'ADMIN' ? '👑 관리자' : user.role}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`${styles["status-badge"]} ${styles[user.status?.toLowerCase() || 'active']}`}>
-                      {user.status === 'ACTIVE' ? '🟢 활성' : '🔴 비활성'}
-                    </span>
-                  </td>
-                  <td>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '미상'}</td>
-                  <td>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggleUserStatus(user.id, user.status);
-                      }}
-                      className={`${styles["status-btn"]} ${user.status === 'ACTIVE' ? styles["deactivate"] : styles["activate"]}`}
-                      disabled={isLoading}
-                    >
-                      {user.status === 'ACTIVE' ? '비활성화' : '활성화'}
-                    </button>
-                  </td>
-                </tr>
-              ))
+              users.map(user => {
+                const userStatus = user.withdrawn === 0 ? 'ACTIVE' : 'INACTIVE';
+                const statusText = userStatus === 'ACTIVE' ? '🟢 활성' : '🔴 비활성';
+                
+                return (
+                  <tr key={user.memberId} onClick={() => handleUserClick(user)} style={{ cursor: 'pointer' }}>
+                    <td>{user.memberId}</td>
+                    <td>{user.name || '미입력'}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phone || '미입력'}</td>
+                    <td>
+                      <span className={`${styles["role-badge"]} ${styles[user.role?.toLowerCase() || 'user']}`}>
+                        {user.role === 'USER' ? '👤 사용자' : 
+                         user.role === 'ADMIN' ? '👑 관리자' : user.role}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`${styles["status-badge"]} ${styles[userStatus?.toLowerCase() || 'active']}`}>
+                        {statusText}
+                      </span>
+                    </td>
+                    <td>{user.createAt ? new Date(user.createAt).toLocaleDateString() : '미상'}</td>
+                    <td>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleUserStatus(user.memberId, userStatus);
+                        }}
+                        className={`${styles["status-btn"]} ${userStatus === 'ACTIVE' ? styles["deactivate"] : styles["activate"]}`}
+                        disabled={isLoading}
+                      >
+                        {userStatus === 'ACTIVE' ? '비활성화' : '활성화'}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
@@ -262,6 +305,73 @@ const AdminUserList = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* 페이지네이션 */}
+      <div className={styles["pagination-wrapper"]}>
+        {/* 왼쪽: 표시 개수 정보 */}
+        <div className={styles["pagination-info"]}>
+          {totalElements > 0 && (
+            <span className={styles["showing-text"]}>
+              테이블 총 {currentPage * pageSize + 1}-{Math.min((currentPage + 1) * pageSize, totalElements)}개 표시
+            </span>
+          )}
+        </div>
+
+        {/* 중앙: 페이지 버튼들 */}
+        {totalPages > 1 && (
+          <div className={styles["pagination-center"]}>
+            <button 
+              onClick={handlePreviousPage}
+              disabled={currentPage === 0}
+              className={`${styles["pagination-btn"]} ${styles["nav-btn"]}`}
+            >
+              ◀ 이전
+            </button>
+            
+            <div className={styles["page-numbers"]}>
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, index) => {
+                const startPage = Math.max(0, Math.min(currentPage - 2, totalPages - 5));
+                const pageNum = startPage + index;
+                
+                if (pageNum >= totalPages) return null;
+                
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageClick(pageNum)}
+                    className={`${styles["page-btn"]} ${pageNum === currentPage ? styles["active"] : ''}`}
+                  >
+                    {pageNum + 1}
+                  </button>
+                );
+              })}
+            </div>
+            
+            <button 
+              onClick={handleNextPage}
+              disabled={currentPage >= totalPages - 1}
+              className={`${styles["pagination-btn"]} ${styles["nav-btn"]}`}
+            >
+              다음 ▶
+            </button>
+          </div>
+        )}
+
+        {/* 오른쪽: 페이지당 표시 개수 선택 */}
+        <div className={styles["pagination-controls"]}>
+          <span className={styles["control-label"]}>페이지당 표시</span>
+          <select 
+            value={pageSize} 
+            onChange={handlePageSizeChange}
+            className={styles["page-size-select"]}
+          >
+            <option value={5}>5개</option>
+            <option value={10}>10개</option>
+            <option value={20}>20개</option>
+            <option value={50}>50개</option>
+          </select>
+        </div>
       </div>
 
       {/* 유저 상세 모달 */}
@@ -276,7 +386,10 @@ const AdminUserList = () => {
             <div className={styles["modal-body"]}>
               <div className={styles["detail-grid"]}>
                 <div className={styles["detail-item"]}>
-                  <strong>ID:</strong> {selectedUser.id}
+                  <strong>ID:</strong> {selectedUser.memberId}
+                </div>
+                <div className={styles["detail-item"]}>
+                  <strong>사용자명:</strong> {selectedUser.username || '미입력'}
                 </div>
                 <div className={styles["detail-item"]}>
                   <strong>이름:</strong> {selectedUser.name || '미입력'}
@@ -291,22 +404,17 @@ const AdminUserList = () => {
                   <strong>역할:</strong> 
                   <span className={`${styles["role-badge"]} ${styles[selectedUser.role?.toLowerCase() || 'user']}`}>
                     {selectedUser.role === 'USER' ? '👤 사용자' : 
-                     selectedUser.role === 'CAREGIVER' ? '👩‍⚕️ 요양사' :
-                     selectedUser.role === 'COMPANY' ? '🏢 기업' :
                      selectedUser.role === 'ADMIN' ? '👑 관리자' : selectedUser.role}
                   </span>
                 </div>
                 <div className={styles["detail-item"]}>
                   <strong>상태:</strong>
-                  <span className={`${styles["status-badge"]} ${styles[selectedUser.status?.toLowerCase() || 'active']}`}>
-                    {selectedUser.status === 'ACTIVE' ? '🟢 활성' : '🔴 비활성'}
+                  <span className={`${styles["status-badge"]} ${styles[(selectedUser.withdrawn === 0 ? 'active' : 'inactive')]}`}>
+                    {selectedUser.withdrawn === 0 ? '🟢 활성' : '🔴 비활성'}
                   </span>
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>가입일:</strong> {selectedUser.createdAt ? new Date(selectedUser.createdAt).toLocaleString() : '미상'}
-                </div>
-                <div className={styles["detail-item"]}>
-                  <strong>최근 로그인:</strong> {selectedUser.lastLoginAt ? new Date(selectedUser.lastLoginAt).toLocaleString() : '없음'}
+                  <strong>가입일:</strong> {selectedUser.createAt ? new Date(selectedUser.createAt).toLocaleString() : '미상'}
                 </div>
               </div>
             </div>

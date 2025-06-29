@@ -830,11 +830,8 @@ const AdminProductList = () => {
   // 회원 목록 조회 (role별 필터링)
   const fetchUsers = async (role = null) => {
     try {
-      // 실제 서버에서 DB 데이터 조회
-      let url = 'http://localhost:8080/api/admin/products/get-users';
-      if (role) {
-        url += `?role=${role}`;
-      }
+      // 새로운 관리자용 유저 API 사용
+      let url = `http://localhost:8080/api/admin/users/by-role/${role}`;
       
       const response = await axios.get(url, {
         headers: {
@@ -845,16 +842,30 @@ const AdminProductList = () => {
       });
       
       if (response.data.success) {
-        setUsers(response.data.users);
-        console.log(`실제 DB 회원 데이터 로드 완료 (${role || '전체'}):`, response.data.users.length, '명');
+        // 새로운 API 응답 구조에 맞춰서 처리
+        const userList = response.data.users || [];
+        // AdminUserDto를 기존 형식으로 변환
+        const convertedUsers = userList.map(user => {
+          const roleText = user.role === 'USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : user.role;
+          return {
+            member_id: user.memberId,
+            username: user.username,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            suggested_product_name: `${user.name}님의 ${roleText}` // 추천 상품명 생성
+          };
+        });
+        
+        setUsers(convertedUsers);
+        console.log(`실제 DB 회원 데이터 로드 완료 (${role || '전체'}):`, convertedUsers.length, '명');
       } else {
         console.error('회원 목록 조회 실패:', response.data.message);
-        // 실패 시 빈 배열로 설정
         setUsers([]);
       }
     } catch (error) {
       console.error('회원 목록 조회 오류:', error);
-      // 오류 발생 시 빈 배열로 설정
       setUsers([]);
     }
   };
@@ -1885,7 +1896,7 @@ const AdminProductList = () => {
   }, [search, selectedType, fetchProducts]); // fetchProducts 추가
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className={styles["product-list-container"]}>
       <div className={styles["admin-header"]}>
         <h2>📦 상품 목록</h2>
         <div className={styles["header-info"]}>
