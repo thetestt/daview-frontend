@@ -169,6 +169,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  table-layout: fixed;
 }
 
 .reservation-table th {
@@ -184,11 +185,38 @@
   white-space: nowrap;
 }
 
+/* 각 열의 너비 설정 */
+.reservation-table th:nth-child(1) { width: 100px; text-align: center; } /* 예약번호 - 중앙 정렬 */
+.reservation-table th:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; } /* 예약자 - 왼쪽 정렬 */
+.reservation-table th:nth-child(3) { width: 200px; text-align: left; padding-left: 12px; } /* 상품명 - 왼쪽 정렬 */
+.reservation-table th:nth-child(4) { width: 110px; text-align: center; } /* 상품타입 - 중앙 정렬 */
+.reservation-table th:nth-child(5) { width: 140px; text-align: center; } /* 예약일시 - 중앙 정렬 */
+.reservation-table th:nth-child(6) { width: 80px; text-align: center; } /* 수량 - 중앙 정렬 */
+.reservation-table th:nth-child(7) { width: 120px; text-align: center; } /* 금액 - 중앙 정렬 */
+.reservation-table th:nth-child(8) { width: 100px; text-align: center; } /* 상태 - 중앙 정렬 */
+.reservation-table th:nth-child(9) { width: 130px; text-align: center; } /* 등록일 - 중앙 정렬 */
+.reservation-table th:nth-child(10) { width: 100px; text-align: center; } /* 관리 - 중앙 정렬 */
+
 .reservation-table td {
   padding: 0.75rem;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* 데이터 셀들도 동일한 너비 설정 */
+.reservation-table td:nth-child(1) { width: 100px; text-align: center; } /* 예약번호 - 중앙 정렬 */
+.reservation-table td:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; } /* 예약자 - 왼쪽 정렬 */
+.reservation-table td:nth-child(3) { width: 200px; text-align: left; padding-left: 12px; } /* 상품명 - 왼쪽 정렬 */
+.reservation-table td:nth-child(4) { width: 110px; text-align: center; } /* 상품타입 - 중앙 정렬 */
+.reservation-table td:nth-child(5) { width: 140px; text-align: center; } /* 예약일시 - 중앙 정렬 */
+.reservation-table td:nth-child(6) { width: 80px; text-align: center; } /* 수량 - 중앙 정렬 */
+.reservation-table td:nth-child(7) { width: 120px; text-align: center; } /* 금액 - 중앙 정렬 */
+.reservation-table td:nth-child(8) { width: 100px; text-align: center; } /* 상태 - 중앙 정렬 */
+.reservation-table td:nth-child(9) { width: 130px; text-align: center; } /* 등록일 - 중앙 정렬 */
+.reservation-table td:nth-child(10) { width: 100px; text-align: center; } /* 관리 - 중앙 정렬 */
 
 .reservation-table tbody tr {
   cursor: pointer;
@@ -221,6 +249,8 @@
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  display: inline-block;
+  white-space: nowrap;
   white-space: nowrap;
 }
 

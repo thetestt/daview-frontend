@@ -32,7 +32,7 @@
 }
 
 .toggle-button.expanded {
-  left: 250px;
+  left: 215px;
 }
 
 .toggle-button:hover {
@@ -41,7 +41,7 @@
 
 .main-content {
   flex: 1;
-  padding: 0; /* 각 페이지에서 자체적으로 패딩 관리 */
+  padding: 1rem; /* 기본 패딩 추가 */
   min-height: 100vh;
   background-color: transparent; /* 각 페이지에서 배경색 관리 */
   overflow: auto;
@@ -53,7 +53,8 @@
 }
 
 .main-content.sidebar-expanded {
-  margin-left: 250px;
+  margin-left: 10px;
+  transition: margin-left 0.3s ease;
 }
 
 /* 반응형 디자인 */
