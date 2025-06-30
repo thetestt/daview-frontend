@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../styles/auth/WithdrawPage.module.css";
 import { useNavigate } from "react-router-dom";
+import { createOrGetChatRoom } from "../../api/chat";
 
 function WithdrawPage() {
   const [profile, setProfile] = useState(null);
@@ -12,6 +13,9 @@ function WithdrawPage() {
   const [customReason, setCustomReason] = useState("");
   const [showExtraMsg, setShowExtraMsg] = useState(false);
   const navigate = useNavigate();
+
+  const ADMIN_ID = 45;
+  const ADMIN_FCID = "00000000-0000-0000-0000-000000000001";
 
   const token = localStorage.getItem("token");
 
@@ -84,6 +88,30 @@ function WithdrawPage() {
     setShowExtraMsg(r !== "직접 입력");
   };
 
+  const memberId = localStorage.getItem("memberId");
+
+  const handleContactAdmin = async () => {
+
+    try {
+      const res = await createOrGetChatRoom({
+        memberId,
+        receiverId: ADMIN_ID,
+        facilityId: ADMIN_FCID,
+      });
+
+      const chatUrl = `/chat/${res.chatroomId}?skipValidation=true`;
+
+      window.open(
+        chatUrl,
+        "chatWithAdmin",
+        "width=900,height=700,left=200,top=100,noopener,noreferrer"
+      );
+    } catch (err) {
+      console.error("관리자 채팅 연결 실패:", err);
+      alert("1:1 문의 채팅을 시작할 수 없습니다.");
+    }
+  };
+
   return (
     <div className={styles["withdraw-container"]}>
       {profile && (
@@ -144,9 +172,7 @@ function WithdrawPage() {
                     <div className={styles["extra-msg"]}>
                       <p>{EXTRA_MSGS[selectedReason]}</p>
                       <div className={styles["btn-row"]}>
-                        <button className={styles["gray"]} onClick={() =>
-                          window.location.href = "http://localhost:3000/chat/a2b03cb6-a234-40aa-a926-1312761771a3?skipValidation=true"
-                        }>문의하기</button>
+                        <button className={styles["gray"]} onClick={handleContactAdmin}>문의하기</button>
                         <button className={styles["with-btn"]} onClick={handleWithdraw}>그래도 탈퇴하기</button>
                       </div>
                     </div>

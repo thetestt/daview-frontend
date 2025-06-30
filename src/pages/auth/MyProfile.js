@@ -11,14 +11,10 @@ const MyProfile = () => {
     name: "",
     phone: "",
   });
-  const [consults, setConsults] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [coupons, setCoupons] = useState([]);
-  const [payments, setPayments] = useState([]);
+
   const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
-  const [isMarketingAgreed, setIsMarketingAgreed] = useState(false);
+
 
   const [agreeSms, setAgreeSms] = useState(false);
   const [agreeEmail, setAgreeEmail] = useState(false);
@@ -81,9 +77,7 @@ const MyProfile = () => {
     if (!token) return;
 
     axios.get("/api/mypage/profile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}`, },
     })
       .then((res) => {
         console.log("프로필 응답", res.data);
@@ -107,7 +101,8 @@ const MyProfile = () => {
           <div className={styles["profile-item"]}>
             <label>사용자 아이디</label>
             <div className={styles["value"]}>{profile.username}</div>
-            <button className={styles["mod-btn"]}>변경</button>
+            <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
+              state: { username: profile.username } })}>변경</button>
           </div>
           <div className={styles["profile-item"]}>
             <label>사용자 이름</label>
@@ -191,7 +186,8 @@ const MyProfile = () => {
           className={styles["profile-box"]}
           onClick={() =>
             navigate("/mypage/myprofile/withdraw", {
-              state: { username: profile.username },})}>
+              state: { username: profile.username },
+            })}>
           <div className={styles["profile-item"]}>
             <label>회원 탈퇴</label>
             <div className={styles["arrow"]}>&gt;</div>
