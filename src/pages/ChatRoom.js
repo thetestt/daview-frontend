@@ -21,6 +21,17 @@ const ChatRoom = () => {
   const skipValidation = searchParams.get("skipValidation") === "true";
   const triggerListRefresh = () => setRefreshList((prev) => !prev);
 
+  //읽음표시 window에서 List로 전달하기
+  const [readChatroomIds, setReadChatroomIds] = useState([]);
+
+  const handleReadChatroom = (chatroomId) => {
+    setReadChatroomIds((prev) => [...new Set([...prev, chatroomId])]);
+  };
+
+  const handleNewMessage = () => {
+    triggerListRefresh(); // ChatList 다시 불러오기
+  };
+
   useEffect(() => {
     if (!memberId) {
       alert("권한이 없습니다. 로그인 후 이용해주세요.");
@@ -79,18 +90,18 @@ const ChatRoom = () => {
   }, [accessGranted, chatroomId, memberId]);
 
   useEffect(() => {
-  if (chatTargetInfo) {
-    console.log("✅ chatwindow. chatTargetInfo 전달 값:", chatTargetInfo);
-  }
-}, [chatTargetInfo]);
+    if (chatTargetInfo) {
+      console.log("✅ chatwindow. chatTargetInfo 전달 값:", chatTargetInfo);
+    }
+  }, [chatTargetInfo]);
 
   if (chatroomId && accessGranted === null) return <div>접근 확인 중...</div>;
   if (chatroomId && !accessGranted) return null;
 
   return (
-    <div className={styles["chatroom-layout"]}>
+    <div className={styles["chatroom-layout"]} style={{ display: "flex" }}>
       <div className={styles["chatlist-area"]}>
-        <ChatList refresh={refreshList} />
+        <ChatList refresh={refreshList} readChatroomIds={readChatroomIds} />
       </div>
 
       <div className={styles["chatwindow-area"]}>
@@ -100,6 +111,8 @@ const ChatRoom = () => {
             chatroomId={chatroomId}
             currentUser={{ memberId, username }}
             chatTargetInfo={chatTargetInfo}
+            onRead={handleReadChatroom}
+            onNewMessage={handleNewMessage}
             onExitChat={() => {
               setChatTargetInfo(null);
               triggerListRefresh();
