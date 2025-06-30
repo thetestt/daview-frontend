@@ -1,14 +1,13 @@
-// 📁 src/pages/admin/admin_service/AdminUserList.js
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import styles from '../../../styles/admin/AdminUserList.module.css';
+import styles from '../../../styles/admin/AdminReviewList.module.css';
 
-const AdminUserList = () => {
-  const [users, setUsers] = useState([]);
+const AdminReviewList = () => {
+  const [reviews, setReviews] = useState([]);
   const [search, setSearch] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedStars, setSelectedStars] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedReview, setSelectedReview] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   
   // 페이지네이션 상태 추가
@@ -17,13 +16,13 @@ const AdminUserList = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  // 유저 목록 가져오기
-  const fetchUsers = useCallback(async () => {
+  // 후기 목록 가져오기
+  const fetchReviews = useCallback(async () => {
     try {
       setIsLoading(true);
-      console.log('=== fetchUsers 시작 ===');
+      console.log('=== fetchReviews 시작 ===');
       
-      let url = 'http://localhost:8080/api/admin/users';
+      let url = 'http://localhost:8080/api/admin/reviews';
       const params = new URLSearchParams();
       
       // 페이지네이션 파라미터 추가
@@ -34,8 +33,8 @@ const AdminUserList = () => {
         params.append('search', search.trim());
       }
       
-      if (selectedRole) {
-        params.append('role', selectedRole);
+      if (selectedStars) {
+        params.append('stars', selectedStars);
       }
       
       url += `?${params.toString()}`;
@@ -49,25 +48,25 @@ const AdminUserList = () => {
       });
 
       if (response.data.success) {
-        const userData = response.data.data;
-        setUsers(userData.users || []);
-        setTotalPages(userData.totalPages || 0);
-        setTotalElements(userData.totalElements || 0);
-        console.log('유저 목록 조회 완료:', userData.users?.length || 0, '명');
-        console.log('전체 유저 수:', userData.totalElements);
-        console.log('총 페이지 수:', userData.totalPages);
+        const reviewData = response.data.data;
+        setReviews(reviewData.reviews || []);
+        setTotalPages(reviewData.totalPages || 0);
+        setTotalElements(reviewData.totalElements || 0);
+        console.log('후기 목록 조회 완료:', reviewData.reviews?.length || 0, '개');
+        console.log('전체 후기 수:', reviewData.totalElements);
+        console.log('총 페이지 수:', reviewData.totalPages);
         console.log('현재 페이지:', currentPage + 1);
       } else {
-        console.error('유저 목록 조회 실패:', response.data.message);
-        setUsers([]);
+        console.error('후기 목록 조회 실패:', response.data.message);
+        setReviews([]);
         setTotalPages(0);
         setTotalElements(0);
       }
       
     } catch (error) {
-      console.error('=== fetchUsers 오류 ===');
+      console.error('=== fetchReviews 오류 ===');
       console.error('오류 메시지:', error.message);
-      setUsers([]);
+      setReviews([]);
       
       if (error.response?.status === 401) {
         alert('로그인이 필요합니다. 다시 로그인해주세요.');
@@ -76,11 +75,11 @@ const AdminUserList = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [search, selectedRole, currentPage, pageSize]);
+  }, [search, selectedStars, currentPage, pageSize]);
 
   // 검색 핸들러
   const handleSearch = () => {
-    console.log('유저 검색 실행:', search, '역할:', selectedRole);
+    console.log('후기 검색 실행:', search, '평점:', selectedStars);
     setCurrentPage(0); // 검색 시 첫 페이지로
   };
 
@@ -91,16 +90,16 @@ const AdminUserList = () => {
     }
   };
 
-  // 역할 필터 변경 핸들러
-  const handleRoleChange = (e) => {
-    setSelectedRole(e.target.value);
+  // 평점 필터 변경 핸들러
+  const handleStarsChange = (e) => {
+    setSelectedStars(e.target.value);
     setCurrentPage(0); // 필터 변경 시 첫 페이지로
   };
 
   // 필터 초기화 핸들러
   const handleResetFilters = () => {
     setSearch('');
-    setSelectedRole('');
+    setSelectedStars('');
     setCurrentPage(0); // 초기화 시 첫 페이지로
   };
 
@@ -128,37 +127,32 @@ const AdminUserList = () => {
     setCurrentPage(0); // 첫 페이지로 이동
   };
 
-  // 유저 상세 보기
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
+  // 후기 상세 보기
+  const handleReviewClick = (review) => {
+    setSelectedReview(review);
     setIsDetailModalOpen(true);
   };
 
   // 상세 모달 닫기
   const handleCloseDetailModal = () => {
     setIsDetailModalOpen(false);
-    setSelectedUser(null);
+    setSelectedReview(null);
   };
 
-  // 유저 탈퇴 처리
-  const handleWithdrawUser = async (userId, currentStatus) => {
-    if (currentStatus === 'INACTIVE') {
-      alert('이미 탈퇴한 유저입니다.');
-      return;
-    }
-    
-    const confirmWithdraw = window.confirm(
-      `해당 유저를 탈퇴 처리하시겠습니까?\n\n탈퇴 처리 시 사용자명과 전화번호를 제외한 모든 개인정보가 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`
+  // 후기 삭제 처리
+  const handleDeleteReview = async (reviewId) => {
+    const confirmDelete = window.confirm(
+      `이 후기를 정말 삭제하시겠습니까?\n\n삭제된 후기는 복구할 수 없습니다.`
     );
 
-    if (!confirmWithdraw) {
+    if (!confirmDelete) {
       return;
     }
 
     try {
       setIsLoading(true);
       
-      const response = await axios.patch(`http://localhost:8080/api/admin/users/${userId}/withdraw`, {}, {
+      const response = await axios.delete(`http://localhost:8080/api/admin/reviews/${reviewId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -166,30 +160,35 @@ const AdminUserList = () => {
       });
 
       if (response.status === 200) {
-        alert('유저가 성공적으로 탈퇴 처리되었습니다.');
-        fetchUsers(); // 목록 새로고침
+        alert('후기가 성공적으로 삭제되었습니다.');
+        fetchReviews(); // 목록 새로고침
       }
 
     } catch (error) {
-      console.error('유저 탈퇴 처리 실패:', error);
-      alert(`유저 탈퇴 처리에 실패했습니다: ${error.response?.data?.message || error.message}`);
+      console.error('후기 삭제 실패:', error);
+      alert(`후기 삭제에 실패했습니다: ${error.response?.data?.message || error.message}`);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // 평점 별표 표시 함수
+  const renderStars = (stars) => {
+    return '★'.repeat(stars) + '☆'.repeat(5 - stars);
+  };
+
   // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchReviews();
+  }, [fetchReviews]);
 
   return (
-    <div className={styles["user-list-container"]}>
+    <div className={styles["review-list-container"]}>
       <div className={styles["admin-header"]}>
-        <h2>👥 유저 관리</h2>
+        <h2>⭐ 후기 관리</h2>
         <div className={styles["header-info"]}>
           <span className={`${styles["server-status"]} ${styles["online"]}`}>
-            🟢 실시간 데이터 - 총 {totalElements}명 (페이지 {currentPage + 1}/{totalPages})
+            🟢 실시간 데이터 - 총 {totalElements}개 (페이지 {currentPage + 1}/{totalPages})
           </span>
         </div>
       </div>
@@ -198,15 +197,18 @@ const AdminUserList = () => {
       <div className={styles["filter-section"]}>
         <div className={styles["filter-row"]}>
           <div className={styles["filter-group"]}>
-            <label>역할</label>
+            <label>평점</label>
             <select 
-              value={selectedRole} 
-              onChange={handleRoleChange}
-              className={styles["role-filter"]}
+              value={selectedStars} 
+              onChange={handleStarsChange}
+              className={styles["stars-filter"]}
             >
               <option value="">▼ 전체 보기</option>
-              <option value="USER">👤 일반 사용자</option>
-              <option value="ADMIN">👑 관리자</option>
+              <option value="5">⭐⭐⭐⭐⭐ 5점</option>
+              <option value="4">⭐⭐⭐⭐☆ 4점</option>
+              <option value="3">⭐⭐⭐☆☆ 3점</option>
+              <option value="2">⭐⭐☆☆☆ 2점</option>
+              <option value="1">⭐☆☆☆☆ 1점</option>
             </select>
           </div>
           
@@ -215,7 +217,7 @@ const AdminUserList = () => {
             <div className={styles["search-container"]}>
               <input
                 type="text"
-                placeholder="이름, 이메일, 전화번호로 검색"
+                placeholder="작성자명, 상품명, 제목으로 검색"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyPress={handleSearchKeyPress}
@@ -242,66 +244,56 @@ const AdminUserList = () => {
         </div>
       </div>
 
-      {/* 유저 목록 테이블 */}
+      {/* 후기 목록 테이블 */}
       <div className={styles["table-container"]}>
-        <table className={styles["user-table"]}>
+        <table className={styles["review-table"]}>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>사용자명</th>
-              <th>이름</th>
-              <th>이메일</th>
-              <th>전화번호</th>
-              <th>역할</th>
-              <th>상태</th>
-              <th>가입일</th>
+              <th>후기ID</th>
+              <th>작성자</th>
+              <th>상품명</th>
+              <th>제목</th>
+              <th>평점</th>
+              <th>조회수</th>
+              <th>작성일</th>
               <th>관리</th>
             </tr>
           </thead>
           <tbody>
-            {users.length > 0 ? (
-              users.map((user, index) => {
-                const userStatus = user.withdrawn === 0 ? 'ACTIVE' : 'INACTIVE';
-                const statusText = userStatus === 'ACTIVE' ? '🟢 활성' : '🔴 비활성';
-                
-                return (
-                  <tr key={`user-${user.memberId || index}`} onClick={() => handleUserClick(user)} style={{ cursor: 'pointer' }}>
-                    <td>{user.memberId}</td>
-                    <td>{user.username || '미입력'}</td>
-                    <td>{user.name || '미입력'}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phone || '미입력'}</td>
-                    <td>
-                      <span className={`${styles["role-badge"]} ${styles[user.role?.toLowerCase() || 'user']}`}>
-                        {user.role === 'USER' ? '👤 사용자' : 
-                         user.role === 'ADMIN' ? '👑 관리자' : user.role}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`${styles["status-badge"]} ${styles[userStatus?.toLowerCase() || 'active']}`}>
-                        {statusText}
-                      </span>
-                    </td>
-                    <td>{user.createAt ? new Date(user.createAt).toLocaleDateString() : '미상'}</td>
-                    <td>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleWithdrawUser(user.memberId, userStatus);
-                        }}
-                        className={`${styles["status-btn"]} ${userStatus === 'ACTIVE' ? styles["withdraw"] : styles["withdrawn"]}`}
-                        disabled={isLoading || userStatus === 'INACTIVE'}
-                      >
-                        {userStatus === 'ACTIVE' ? '탈퇴' : '탈퇴됨'}
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
+            {reviews.length > 0 ? (
+              reviews.map((review, index) => (
+                <tr key={`review-${review.revId || index}`} onClick={() => handleReviewClick(review)} style={{ cursor: 'pointer' }}>
+                  <td>{review.revId}</td>
+                  <td>{review.memberName || review.memberUsername || '탈퇴회원'}</td>
+                  <td>{review.prodNm || '상품 정보 없음'}</td>
+                  <td className={styles["title-cell"]}>
+                    {review.revTtl?.length > 20 ? review.revTtl.substring(0, 20) + '...' : review.revTtl}
+                  </td>
+                  <td>
+                    <span className={styles["stars-display"]}>
+                      {renderStars(review.revStars)} ({review.revStars})
+                    </span>
+                  </td>
+                  <td>{review.revViews || 0}</td>
+                  <td>{review.revRegDate ? new Date(review.revRegDate).toLocaleDateString() : '미상'}</td>
+                  <td>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteReview(review.revId);
+                      }}
+                      className={`${styles["action-btn"]} ${styles["delete"]}`}
+                      disabled={isLoading}
+                    >
+                      삭제
+                    </button>
+                  </td>
+                </tr>
+              ))
             ) : (
               <tr>
-                <td colSpan="9" style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
-                  {isLoading ? '로딩 중...' : '유저가 없습니다.'}
+                <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                  {isLoading ? '로딩 중...' : '후기가 없습니다.'}
                 </td>
               </tr>
             )}
@@ -340,7 +332,7 @@ const AdminUserList = () => {
                 
                 return (
                   <button
-                    key={`user-page-${pageNum}`}
+                    key={`page-${pageNum}`}
                     onClick={() => handlePageClick(pageNum)}
                     className={`${styles["page-btn"]} ${pageNum === currentPage ? styles["active"] : ''}`}
                   >
@@ -376,47 +368,46 @@ const AdminUserList = () => {
         </div>
       </div>
 
-      {/* 유저 상세 모달 */}
-      {isDetailModalOpen && selectedUser && (
+      {/* 후기 상세 모달 */}
+      {isDetailModalOpen && selectedReview && (
         <div className={styles["modal-backdrop"]} onClick={handleCloseDetailModal}>
           <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
             <div className={styles["modal-header"]}>
-              <h3>👤 유저 상세 정보</h3>
+              <h3>⭐ 후기 상세 정보</h3>
               <button onClick={handleCloseDetailModal} className={styles["close-btn"]}>✕</button>
             </div>
             
             <div className={styles["modal-body"]}>
               <div className={styles["detail-grid"]}>
                 <div className={styles["detail-item"]}>
-                  <strong>ID:</strong> {selectedUser.memberId}
+                  <strong>후기 ID:</strong> {selectedReview.revId}
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>사용자명:</strong> {selectedUser.username || '미입력'}
+                  <strong>작성자:</strong> {selectedReview.memberName || selectedReview.memberUsername || '탈퇴회원'}
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>이름:</strong> {selectedUser.name || '미입력'}
+                  <strong>상품명:</strong> {selectedReview.prodNm || '상품 정보 없음'}
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>이메일:</strong> {selectedUser.email}
+                  <strong>제목:</strong> {selectedReview.revTtl}
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>전화번호:</strong> {selectedUser.phone || '미입력'}
-                </div>
-                <div className={styles["detail-item"]}>
-                  <strong>역할:</strong> 
-                  <span className={`${styles["role-badge"]} ${styles[selectedUser.role?.toLowerCase() || 'user']}`}>
-                    {selectedUser.role === 'USER' ? '👤 사용자' : 
-                     selectedUser.role === 'ADMIN' ? '👑 관리자' : selectedUser.role}
+                  <strong>평점:</strong>
+                  <span className={styles["stars-display"]}>
+                    {renderStars(selectedReview.revStars)} ({selectedReview.revStars}점)
                   </span>
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>상태:</strong>
-                  <span className={`${styles["status-badge"]} ${styles[(selectedUser.withdrawn === 0 ? 'active' : 'inactive')]}`}>
-                    {selectedUser.withdrawn === 0 ? '🟢 활성' : '🔴 비활성'}
-                  </span>
+                  <strong>조회수:</strong> {selectedReview.revViews || 0}회
                 </div>
                 <div className={styles["detail-item"]}>
-                  <strong>가입일:</strong> {selectedUser.createAt ? new Date(selectedUser.createAt).toLocaleString() : '미상'}
+                  <strong>작성일:</strong> {selectedReview.revRegDate ? new Date(selectedReview.revRegDate).toLocaleString() : '미상'}
+                </div>
+                <div className={styles["detail-item"]} style={{ gridColumn: '1 / -1' }}>
+                  <strong>내용:</strong>
+                  <div className={styles["review-content"]}>
+                    {selectedReview.revCont || '내용이 없습니다.'}
+                  </div>
                 </div>
               </div>
             </div>
@@ -427,4 +418,4 @@ const AdminUserList = () => {
   );
 };
 
-export default AdminUserList; 
+export default AdminReviewList; 
