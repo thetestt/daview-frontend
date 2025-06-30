@@ -14,6 +14,7 @@ import Reservation from "../pages/ReservationPage";
 import Payment from "../pages/PaymentPage";
 import PaymentResult from "../pages/PaymentResultPage";
 import PaymentList from "../pages/PaymentListPage";
+import RefundList from "../pages/RefundListPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
 import ReviewDetail from "../pages/ReviewDetailPage";
@@ -120,6 +121,7 @@ const AppRouter = () => {
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/payments/member/:memberId" element={<PaymentList />} />
+        <Route path="/refunds/:memberId" element={<RefundList />} />
 
         {/* 후기 */}
         <Route path="/review-board" element={<ReviewBoard />} />
@@ -136,7 +138,10 @@ const AppRouter = () => {
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        <Route
+          path="/FindPasswordPage/CPw-check"
+          element={<ChangePasswordCheckPage />}
+        />
         {/* 아이디변경*/}
         <Route path="mypage/ChangeIdPage" element={<ChangeIdPage />} />
         {/* 내 프로필 */}
@@ -146,7 +151,10 @@ const AppRouter = () => {
         {/* 쿠폰 */}
         <Route path="/mypage/mycoupon" element={<CouponPage />} />
         {/* 환불계좌 */}
-        <Route path="/mypage/myprofile/refundaccount" element={<RefundAccountPage />} />
+        <Route
+          path="/mypage/myprofile/refundaccount"
+          element={<RefundAccountPage />}
+        />
         {/* 회원탈퇴 */}
         <Route path="/mypage/myprofile/withdraw" element={<WithdrawPage />} />
 
