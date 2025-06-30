@@ -174,29 +174,32 @@ const ChatList = ({
               onClick={() => handleEnterRoom(room.chatroomId)}
             >
               <div className={styles["chat-title"]}>{getDisplayName(room)}</div>
+              <div className={styles["chat-preview-wrapper"]}>
+                <div className={styles["chat-preview"]}>
+                  <span>
+                    {room.lastMessage
+                      ? room.lastMessage.length > 38
+                        ? `${room.lastMessage.slice(0, 38)}...`
+                        : room.lastMessage
+                      : ""}
+                  </span>
+                  <span className={styles["chat-time"]}>
+                    {room.sentAt
+                      ? new Date(room.sentAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : ""}
+                  </span>
+                </div>
 
-              <div className={styles["chat-preview"]}>
-                <span>
-                  {room.lastMessage
-                    ? room.lastMessage.length > 38
-                      ? `${room.lastMessage.slice(0, 38)}...`
-                      : room.lastMessage
-                    : ""}
-                </span>
-                <span className={styles["chat-time"]}>
-                  {room.sentAt
-                    ? new Date(room.sentAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : ""}
-                </span>
+                {/* ✅ 읽지 않은 메시지만 뱃지 표시 */}
+                {!isRead && room.unreadCount > 0 && (
+                  <div className={styles["unread-badge"]}>
+                    {room.unreadCount}
+                  </div>
+                )}
               </div>
-
-              {/* ✅ 읽지 않은 메시지만 뱃지 표시 */}
-              {!isRead && room.unreadCount > 0 && (
-                <div className={styles["unread-badge"]}>{room.unreadCount}</div>
-              )}
             </div>
           );
         })}

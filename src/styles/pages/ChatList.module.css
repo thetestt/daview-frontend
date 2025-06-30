@@ -39,6 +39,7 @@
   font-size: 16px;
   color: #222;
   margin-bottom: 6px;
+  margin-left: 7px;
 }
 
 .chat-preview {
@@ -47,6 +48,7 @@
   align-items: center;
   font-size: 14px;
   color: #555;
+  margin-left: 10px;
 }
 
 .chat-time {
@@ -55,15 +57,16 @@
   white-space: nowrap;
   margin-left: 8px;
 }
-
 .unread-badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
   background-color: #ff3b30;
   color: white;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 20px;
-  margin-top: 6px;
-  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 12px;
 }
 
 .opponent-out-text {
@@ -123,4 +126,5 @@
   border: none;
   cursor: pointer;
   z-index: 10;
+  margin-right: 15px;
 }
