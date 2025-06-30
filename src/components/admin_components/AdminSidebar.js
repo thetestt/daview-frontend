@@ -89,6 +89,14 @@ const AdminSidebar = ({ isCollapsed }) => {
                 }}>
                   <NavLink to="/admin/payments" style={navStyle}>결제 관리</NavLink>
                 </li>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/reviews" style={navStyle}>후기 관리</NavLink>
+                </li>
               </ul>
             </div>
 

@@ -256,8 +256,8 @@ const AdminPaymentList = () => {
                 </td>
               </tr>
             ) : (
-              payments.map((payment) => (
-                <tr key={`payment-${payment.paymentId}`}>
+              payments.map((payment, index) => (
+                <tr key={`payment-${payment.paymentId || payment.pymId || index}`}>
                   <td className={styles['payment-id']}>
                     {payment.pymId || payment.paymentId}
                   </td>
@@ -318,7 +318,7 @@ const AdminPaymentList = () => {
                 
                 return (
                   <button
-                    key={pageNum}
+                    key={`payment-page-${pageNum}`}
                     onClick={() => handlePageChange(pageNum)}
                     className={`${styles["page-btn"]} ${pageNum === currentPage ? styles["active"] : ''}`}
                   >
