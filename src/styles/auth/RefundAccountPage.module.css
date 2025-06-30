@@ -1,66 +1,88 @@
 .change-password-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 24px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .change-password-container h2 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .change-password-container label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 6px;
-    margin-top: 16px;
-  }
-  
-  .change-password-container input,
-  .change-password-container select {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
-  .change-password-container input:disabled {
-    background-color: #f9f9f9;
-  }
-  
-  .change-password-container button {
-    width: 48%;
-    padding: 10px;
-    margin-top: 12px;
-    margin-right: 2%;
-    font-size: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color:  #00334f;
-    color: #fff;
-    transition: background-color 0.2s ease;
-  }
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 
-  .change-password-container button:hover {
-    background-color:  #01659b;
-  }
-  
-  .change-password-container button:last-child {
-    background-color: #ccc;
-    color: #333;
-    margin-right: 0;
-  }
-  
-  .change-password-container button:hover {
-    opacity: 0.9;
-  }
-  
+.change-password-container h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.change-password-container label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.change-password-container input,
+.change-password-container select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.change-password-container input:disabled {
+  background-color: #f9f9f9;
+}
+
+.save-btn {
+  width: 48%;
+  padding: 10px;
+  margin-top: 12px;
+  margin-right: 2%;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color:  #00334f;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+  background-color:  #01659b;
+}
+
+
+.save-btn:hover {
+  opacity: 0.9;
+}
+
+.pass-btn {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+  font-size: 1rem;
+  background: #00334f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pass-btn:hover {
+  background: #01659b;
+  color: white;
+}
+
+.pass-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pass-btn.gray {
+  background: #ddd;
+  color: #333;
+}
+
