@@ -59,7 +59,7 @@
 
 .filter-row {
   display: grid;
-  grid-template-columns: 200px 300px auto auto;
+  grid-template-columns: 200px 1fr;
   gap: 1rem;
   align-items: center;
 }
@@ -108,8 +108,7 @@
   align-items: center;
 }
 
-.search-btn,
-.reset-btn {
+.search-btn {
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
@@ -144,16 +143,7 @@
   box-shadow: none;
 }
 
-.reset-btn {
-  background: linear-gradient(135deg, #6c757d, #545b62);
-  color: white;
-}
 
-.reset-btn:hover {
-  background: linear-gradient(135deg, #545b62, #495057);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
 
 /* 테이블 */
 .table-container {
@@ -169,6 +159,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  table-layout: fixed;
 }
 
 .user-table th {
@@ -183,11 +174,36 @@
   z-index: 10;
 }
 
+/* 각 열의 너비 설정 */
+.user-table th:nth-child(1) { width: 70px; text-align: center; }  /* ID - 중앙 정렬 */
+.user-table th:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; } /* 사용자명 - 왼쪽 정렬 */
+.user-table th:nth-child(3) { width: 100px; text-align: left; padding-left: 12px; } /* 이름 - 왼쪽 정렬 */
+.user-table th:nth-child(4) { width: 220px; text-align: left; padding-left: 12px; } /* 이메일 - 왼쪽 정렬 */
+.user-table th:nth-child(5) { width: 130px; text-align: center; } /* 전화번호 - 중앙 정렬 */
+.user-table th:nth-child(6) { width: 100px; text-align: center; } /* 역할 - 중앙 정렬 */
+.user-table th:nth-child(7) { width: 80px; text-align: center; }  /* 상태 - 중앙 정렬 */
+.user-table th:nth-child(8) { width: 100px; text-align: center; } /* 가입일 - 중앙 정렬 */
+.user-table th:nth-child(9) { width: 90px; text-align: center; } /* 관리 - 중앙 정렬 */
+
 .user-table td {
   padding: 0.75rem;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* 데이터 셀들도 동일한 너비 설정 */
+.user-table td:nth-child(1) { width: 70px; text-align: center; }  /* ID - 중앙 정렬 */
+.user-table td:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; }  /* 사용자명 - 왼쪽 정렬 */
+.user-table td:nth-child(3) { width: 100px; text-align: left; padding-left: 12px; }  /* 이름 - 왼쪽 정렬 */
+.user-table td:nth-child(4) { width: 220px; text-align: left; padding-left: 12px; }  /* 이메일 - 왼쪽 정렬 */
+.user-table td:nth-child(5) { width: 130px; text-align: center; }  /* 전화번호 - 중앙 정렬 */
+.user-table td:nth-child(6) { width: 100px; text-align: center; }  /* 역할 - 중앙 정렬 */
+.user-table td:nth-child(7) { width: 80px; text-align: center; }   /* 상태 - 중앙 정렬 */
+.user-table td:nth-child(8) { width: 100px; text-align: center; }  /* 가입일 - 중앙 정렬 */
+.user-table td:nth-child(9) { width: 90px; text-align: center; }  /* 관리 - 중앙 정렬 */
 
 .user-table tbody tr:hover {
   background: #f8f9fa;
@@ -198,6 +214,8 @@
 .status-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
+  display: inline-block;
+  white-space: nowrap;
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
@@ -243,24 +261,30 @@
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  min-width: 70px;
 }
 
-.status-btn.activate {
-  background: #28a745;
-  color: white;
-}
-
-.status-btn.activate:hover:not(:disabled) {
-  background: #1e7e34;
-}
-
-.status-btn.deactivate {
+.status-btn.withdraw {
   background: #dc3545;
   color: white;
 }
 
-.status-btn.deactivate:hover:not(:disabled) {
+.status-btn.withdraw:hover:not(:disabled) {
   background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.status-btn.withdrawn {
+  background: #6c757d;
+  color: white;
+  cursor: not-allowed;
+}
+
+.status-btn.withdrawn:hover {
+  background: #6c757d;
+  transform: none;
+  box-shadow: none;
 }
 
 .status-btn:disabled {

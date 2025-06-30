@@ -59,7 +59,7 @@
 
 .filter-row {
   display: grid;
-  grid-template-columns: 160px 300px auto;
+  grid-template-columns: 160px 1fr;
   gap: 1rem;
   align-items: center;
 }
@@ -108,8 +108,7 @@
   align-items: center;
 }
 
-.search-btn,
-.reset-btn {
+.search-btn {
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
@@ -144,16 +143,7 @@
   box-shadow: none;
 }
 
-.reset-btn {
-  background: linear-gradient(135deg, #6c757d, #545b62);
-  color: white;
-}
 
-.reset-btn:hover {
-  background: linear-gradient(135deg, #545b62, #495057);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
 
 /* 테이블 */
 .table-container {
@@ -169,6 +159,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  table-layout: fixed;
 }
 
 .payment-table th {
@@ -184,11 +175,36 @@
   white-space: nowrap;
 }
 
+/* 각 열의 너비 설정 */
+.payment-table th:nth-child(1) { width: 160px; text-align: center; } /* 결제ID - 중앙 정렬 */
+.payment-table th:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; } /* 고객명 - 왼쪽 정렬 */
+.payment-table th:nth-child(3) { width: 120px; text-align: left; padding-left: 12px; } /* 회원명 - 왼쪽 정렬 */
+.payment-table th:nth-child(4) { width: 180px; text-align: left; padding-left: 12px; } /* 상품명 - 왼쪽 정렬 */
+.payment-table th:nth-child(5) { width: 120px; text-align: center; } /* 결제금액 - 중앙 정렬 */
+.payment-table th:nth-child(6) { width: 100px; text-align: center; } /* 결제방법 - 중앙 정렬 */
+.payment-table th:nth-child(7) { width: 100px; text-align: center; } /* 상태 - 중앙 정렬 */
+.payment-table th:nth-child(8) { width: 140px; text-align: center; } /* 결제일시 - 중앙 정렬 */
+.payment-table th:nth-child(9) { width: 100px; text-align: center; } /* 관리 - 중앙 정렬 */
+
 .payment-table td {
   padding: 0.75rem;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* 데이터 셀들도 동일한 너비 설정 */
+.payment-table td:nth-child(1) { width: 160px; text-align: center; } /* 결제ID - 중앙 정렬 */
+.payment-table td:nth-child(2) { width: 120px; text-align: left; padding-left: 12px; } /* 고객명 - 왼쪽 정렬 */
+.payment-table td:nth-child(3) { width: 120px; text-align: left; padding-left: 12px; } /* 회원명 - 왼쪽 정렬 */
+.payment-table td:nth-child(4) { width: 180px; text-align: left; padding-left: 12px; } /* 상품명 - 왼쪽 정렬 */
+.payment-table td:nth-child(5) { width: 120px; text-align: center; } /* 결제금액 - 중앙 정렬 */
+.payment-table td:nth-child(6) { width: 100px; text-align: center; } /* 결제방법 - 중앙 정렬 */
+.payment-table td:nth-child(7) { width: 100px; text-align: center; } /* 상태 - 중앙 정렬 */
+.payment-table td:nth-child(8) { width: 140px; text-align: center; } /* 결제일시 - 중앙 정렬 */
+.payment-table td:nth-child(9) { width: 100px; text-align: center; } /* 관리 - 중앙 정렬 */
 
 .payment-table tbody tr {
   cursor: pointer;
@@ -221,6 +237,7 @@
   font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
+  display: inline-block;
 }
 
 .status-badge.pending {

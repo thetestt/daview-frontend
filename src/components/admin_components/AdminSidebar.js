@@ -7,14 +7,15 @@ const AdminSidebar = ({ isCollapsed }) => {
 
   return (
     <aside style={{ 
-      width: isCollapsed ? '0px' : '250px', 
+      width: isCollapsed ? '0px' : '220px', 
       background: '#2c3e50', 
       color: '#fff', 
       padding: isCollapsed ? '0' : '1rem',
       transition: 'all 0.3s ease',
       position: 'relative',
-      height: '100vh',
-      overflow: 'hidden',
+      minHeight: '100vh',
+      height: 'auto',
+      overflow: 'visible',
       flexShrink: 0,
       opacity: isCollapsed ? 0 : 1
     }}>
@@ -87,6 +88,14 @@ const AdminSidebar = ({ isCollapsed }) => {
                   clear: 'both'
                 }}>
                   <NavLink to="/admin/payments" style={navStyle}>결제 관리</NavLink>
+                </li>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/reviews" style={navStyle}>후기 관리</NavLink>
                 </li>
               </ul>
             </div>

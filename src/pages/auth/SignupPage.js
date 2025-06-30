@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "../../styles/auth/SignupPage.module.css";
 import { useNavigate } from "react-router-dom";
+import styles from "../../styles/auth/SignupPage.module.css";
+
 
 function SignupPage() {
   const [agreed, setAgreed] = useState(false);
@@ -19,31 +20,28 @@ function SignupPage() {
   const [smsAgree, setSmsAgree] = useState(false);
   const [emailAgree, setEmailAgree] = useState(false);
   const [pushAgree, setPushAgree] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(null); // null, true, false
-  
+  const [isDuplicate, setIsDuplicate] = useState(null);
+  const [smsCode, setSmsCode] = useState("");
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log("SignupPage 렌더링 시작");
     const allChecked = agreed && smsAgree && emailAgree && pushAgree;
     setAgreeAll(allChecked);
   }, [agreed, smsAgree, emailAgree, pushAgree]);
 
-  const navigate = useNavigate();
-
   const formatPhoneNumber = (value) => {
     const onlyNums = value.replace(/\D/g, '');
-
     if (onlyNums.length < 4) return onlyNums;
     if (onlyNums.length < 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
   };
-
 
   const checkUsername = async () => {
     if (!username) {
       alert("아이디를 입력해주세요.");
       return;
     }
-
     try {
       const res = await axios.get(`http://localhost:8080/api/auth/check-username?username=${username}`);
       if (res.data === true) {
@@ -54,41 +52,82 @@ function SignupPage() {
         setIsDuplicate(false);
       }
     } catch (err) {
-      console.error("중복 확인 오류", err);
       alert("중복 확인 중 오류 발생");
     }
   };
 
-  const handleSubmit = (e) => {
-    const nameRegex = /^[가-힣]{1,7}$/;
+  const sendSmsCode = async () => {
+    try {
+      const cleanPhone = phone.replace(/-/g, "");
+      await axios.post("http://localhost:8080/api/auth/signup/send-sms-code", {
+        phone: cleanPhone,
+      });
+      alert("인증번호가 전송되었습니다.");
+    } catch (err) {
+      const msg = err.response?.data || "문자 전송 실패";
+      alert(msg);
+    }
+  };
+  
+  const verifySmsCode = async () => {
+    try {
+      const cleanPhone = phone.replace(/-/g, "");
+      const res = await axios.post("http://localhost:8080/api/auth/signup/verify-sms-code", {
+        phone: cleanPhone,
+        code: smsCode,
+      });
+      if (res.status === 200) {
+        alert("전화번호 인증 성공!");
+        setIsPhoneVerified(true);
+      }
+    } catch (err) {
+      alert("인증 실패. 인증번호를 확인해주세요.");
+    }
+  };
+  
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const nameRegex = /^[가-힣]{1,7}$/;
     if (!nameRegex.test(name)) {
       alert("이름은 한글 1~7자만 입력 가능합니다.");
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{10,16}$/;
-
     if (!passwordRegex.test(password)) {
       alert("비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.");
       return;
     }
 
-    e.preventDefault();
     if (!agreed) {
       alert("필수약관에 동의해주세요.");
       return;
     }
+
     if (password !== passwordConfirm) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+
     if (isDuplicate !== false) {
       alert("아이디 중복 확인을 해주세요.");
       return;
     }
+
+    if (!isPhoneVerified) {
+      alert("전화번호 인증을 완료해주세요.");
+      return;
+    }
+
     if (!name || !emailId || !emailDomain || !password || !role || !gender) {
       alert("필수값이 입력되지 않았습니다.");
+      return;
+    }
+
+    if (!name || !phone) {
+      alert("이름과 전화번호를 모두 입력해주세요.");
       return;
     }
     
@@ -107,18 +146,16 @@ function SignupPage() {
       smsAgree,
       emailAgree,
       pushAgree,
-    },
-      { withCredentials: true }
-    )
+    }, { withCredentials: true })
       .then(() => {
         alert("회원가입 성공!");
         navigate("/login");
       })
       .catch((err) => {
-        console.error("회원가입 실패", err);
         alert("회원가입 실패!\n" + (err.response?.data?.message || "서버 오류"));
       });
   };
+
 
   console.log("SignupPage 렌더링 시작");
   return (
@@ -156,7 +193,27 @@ function SignupPage() {
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" />
 
         <label>전화번호</label>
-        <input type="text" value={phone} onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} placeholder="휴대전화번호 '-' 없이 입력" />
+        <div className={styles["phone-inputs"]}>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+            placeholder="휴대전화번호 '-' 없이 입력"
+          />
+          <button className={styles["username-check-button"]} type="button" onClick={sendSmsCode}>인증번호 전송</button>
+        </div>
+
+        <label>전화번호 인증</label>
+        <div className={styles["verify-section"]}>
+          <input
+            type="text"
+            placeholder="인증번호 입력"
+            value={smsCode}
+            onChange={(e) => setSmsCode(e.target.value)}
+          />
+          <button className={styles["username-check-button"]} type="button" onClick={verifySmsCode}>인증하기</button>
+        </div>
+
 
         <label>이메일</label>
         <div className={styles["email-box"]}>

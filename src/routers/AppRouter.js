@@ -14,6 +14,7 @@ import Reservation from "../pages/ReservationPage";
 import Payment from "../pages/PaymentPage";
 import PaymentResult from "../pages/PaymentResultPage";
 import PaymentList from "../pages/PaymentListPage";
+import RefundList from "../pages/RefundListPage";
 import ReviewBoard from "../pages/ReviewBoardPage";
 import ReviewWrite from "../pages/ReviewWritePage";
 import ReviewDetail from "../pages/ReviewDetailPage";
@@ -43,6 +44,7 @@ import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //
 import AdminUserList from "../pages/admin/admin_service/AdminUserList"; //관리자 유저 목록
 import AdminReservationList from "../pages/admin/admin_service/AdminReservationList"; //관리자 예약 목록
 import AdminPaymentList from '../pages/admin/admin_service/AdminPaymentList';
+import AdminReviewList from '../pages/admin/admin_service/AdminReviewList'; //관리자 후기 목록
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
@@ -120,6 +122,7 @@ const AppRouter = () => {
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<PaymentResult />} />
         <Route path="/payments/member/:memberId" element={<PaymentList />} />
+        <Route path="/refunds/:memberId" element={<RefundList />} />
 
         {/* 후기 */}
         <Route path="/review-board" element={<ReviewBoard />} />
@@ -136,7 +139,10 @@ const AppRouter = () => {
         <Route path="/FindIdPage/result" element={<FindIdResultPage />} />
         {/* 비밀번호변경 */}
         <Route path="/FindPasswordPage/CPw" element={<ChangePasswordPage />} />
-        <Route path="/FindPasswordPage/CPw-check" element={<ChangePasswordCheckPage />} />
+        <Route
+          path="/FindPasswordPage/CPw-check"
+          element={<ChangePasswordCheckPage />}
+        />
         {/* 아이디변경*/}
         <Route path="mypage/ChangeIdPage" element={<ChangeIdPage />} />
         {/* 내 프로필 */}
@@ -146,7 +152,10 @@ const AppRouter = () => {
         {/* 쿠폰 */}
         <Route path="/mypage/mycoupon" element={<CouponPage />} />
         {/* 환불계좌 */}
-        <Route path="/mypage/myprofile/refundaccount" element={<RefundAccountPage />} />
+        <Route
+          path="/mypage/myprofile/refundaccount"
+          element={<RefundAccountPage />}
+        />
         {/* 회원탈퇴 */}
         <Route path="/mypage/myprofile/withdraw" element={<WithdrawPage />} />
 
@@ -157,7 +166,7 @@ const AppRouter = () => {
           <Route path="users" element={<AdminUserList />} />
           <Route path="reservations" element={<AdminReservationList />} />
           <Route path="payments" element={<AdminPaymentList />} />
-          {/* 나중에 추가될 리뷰관리 등도 여기에 작성 */}
+          <Route path="reviews" element={<AdminReviewList />} />
         </Route>
       </Routes>
     </>

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import styles from "../../styles/auth/MyPage.module.css";
 import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { getChatRooms } from "../../api/chat";
+import { useNavigate } from "react-router-dom";
+
 
 const MyPage = () => {
   const [profile, setProfile] = useState({
@@ -17,6 +19,8 @@ const MyPage = () => {
   const [coupons, setCoupons] = useState([]);
   const [payments, setPayments] = useState([]);
   const memberId = localStorage.getItem("memberId");
+  const navigate = useNavigate();
+
 
   const maskName = (name) => {
     if (!name) return "";
@@ -144,7 +148,8 @@ const MyPage = () => {
             <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
-              <button className={styles["mod-btn"]}>변경</button>
+              <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
+              state: { username: profile.username } })}>변경</button>
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
@@ -160,6 +165,7 @@ const MyPage = () => {
               <div className={styles["value"]}>{payments.length} 건</div>
             </div>
           </div>
+          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>1:1 문의</h2>

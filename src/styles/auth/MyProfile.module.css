@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 40px 20px;
   font-family: 'Pretendard', sans-serif;
-  height: calc(100vh - -300px);
+  height: calc(100vh - 100px);
 }
 
 .profile-title {
