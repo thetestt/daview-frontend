@@ -5,7 +5,7 @@ import { Client } from "@stomp/stompjs";
 import { getChatRooms } from "../api/chat";
 import styles from "../styles/pages/ChatList.module.css";
 
-const ChatList = ({ refresh }) => {
+const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
   const stompClientRef = useRef(null);
@@ -52,6 +52,7 @@ const ChatList = ({ refresh }) => {
         console.log("✅ ChatList WebSocket 연결됨");
         stompClient.subscribe(`/sub/chat/roomList/${memberId}`, () => {
           loadChatRooms(); // 수신 시 전체 새로고침
+          onNewMessage?.();
         });
       },
     });
@@ -70,9 +71,19 @@ const ChatList = ({ refresh }) => {
     }
   }, [refresh, loadChatRooms]);
 
-  const handleEnterRoom = (chatroomId) => {
+  //클릭시 읽음처리
+  const handleEnterRoom = async (chatroomId) => {
     navigate(`/chat/${chatroomId}?skipValidation=true`);
   };
+
+  // // ✅ 읽음된 채팅방 ID는 무조건 unreadCount 0으로 보정
+  // const displayedRooms = chatRooms.map((room) =>
+  //   readChatroomIds.includes(room.chatroomId)
+  //     ? { ...room, unreadCount: 0 }
+  //     : room
+  // );
+
+  const displayedRooms = chatRooms;
 
   const getDisplayName = (room) => {
     const isSender = memberId === room.senderId;
@@ -107,8 +118,10 @@ const ChatList = ({ refresh }) => {
 
   return (
     <div className={styles["chat-list-container"]}>
-      {chatRooms.map((room) => {
+      {displayedRooms.map((room) => {
         const isActive = String(room.chatroomId) === selectedChatroomId;
+        const isRead = readChatroomIds?.includes(room.chatroomId); // ✅ 읽은 채팅방이면 뱃지 숨김
+
         return (
           <div
             key={room.chatroomId}
@@ -118,6 +131,7 @@ const ChatList = ({ refresh }) => {
             onClick={() => handleEnterRoom(room.chatroomId)}
           >
             <div className={styles["chat-title"]}>{getDisplayName(room)}</div>
+
             <div className={styles["chat-preview"]}>
               <span>
                 {room.lastMessage
@@ -135,7 +149,9 @@ const ChatList = ({ refresh }) => {
                   : ""}
               </span>
             </div>
-            {room.unreadCount > 0 && (
+
+            {/* ✅ 읽지 않은 메시지만 뱃지 표시 */}
+            {!isRead && room.unreadCount > 0 && (
               <div className={styles["unread-badge"]}>{room.unreadCount}</div>
             )}
           </div>

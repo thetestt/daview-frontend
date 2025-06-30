@@ -17,6 +17,7 @@ const ChatWindow = ({
   currentUser,
   chatTargetInfo,
   onExitChat,
+  onRead,
 }) => {
   const [messages, setMessages] = useState([]);
   const stompClientRef = useRef(null);
@@ -29,7 +30,6 @@ const ChatWindow = ({
   //const messageCache = receivedMessageCacheRef.current;
   const [isAllowed, setIsAllowed] = useState(null);
   const [isOpponentOut, setIsOpponentOut] = useState(false);
- 
 
   //const [accessGranted, setAccessGranted] = useState(false);
 
@@ -40,21 +40,24 @@ const ChatWindow = ({
       chatroomId,
       readerId: currentUser.memberId,
     };
-        const client = stompClientRef.current;
+    const client = stompClientRef.current;
 
-        if (client && client.connected) {
-          console.log("✅ WebSocket 연결됨 → 읽음 메시지 보냄", msg);
-          client.publish({
-            destination: "/pub/read",
-            body: JSON.stringify(msg),
-          });
-          console.log("📩 읽음 상태 전송!", msg);
-        } else if (retry < 3) {
-          console.warn("⏳ 아직 연결 안됨 → 100ms 후 재시도");
-          setTimeout(() => sendReadReceipt(retry + 1), 100);
-        } else {
-          console.error("❌ 읽음 전송 실패: WebSocket 미연결");
-        }
+    if (client && client.connected) {
+      console.log("✅ WebSocket 연결됨 → 읽음 메시지 보냄", msg);
+      client.publish({
+        destination: "/pub/read",
+        body: JSON.stringify(msg),
+      });
+
+      onRead?.(chatroomId);
+
+      console.log("📩 읽음 상태 전송!", msg);
+    } else if (retry < 3) {
+      console.warn("⏳ 아직 연결 안됨 → 100ms 후 재시도");
+      setTimeout(() => sendReadReceipt(retry + 1), 100);
+    } else {
+      console.error("❌ 읽음 전송 실패: WebSocket 미연결");
+    }
   };
 
   //백앤드에서 웹소켓 접속가능 여부 확인
@@ -71,7 +74,7 @@ const ChatWindow = ({
       }
       setIsAllowed(true);
       //setAccessGranted(true);
-      
+
       // ✅ WebSocket 연결 및 구독
       if (!stompClientRef.current) {
         const socket = new SockJS("http://localhost:8080/ws-chat");
@@ -80,37 +83,36 @@ const ChatWindow = ({
           debug: (str) => console.log("[WebSocket]", str),
           onConnect: () => {
             console.log("✅ 76 WebSocket 연결됨");
-            
-                  // ✅ 기존 메시지 불러오기
-                  getMessages(chatroomId, currentUser.memberId).then((data) => {
-                    if (!isMounted) return;
-                    const loaded = data.map((msg) => ({
-                      ...msg,
-                      sender: msg.senderId === currentUser.memberId ? "나" : "상대방",
-                      time: new Date(msg.sentAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }),
-                    }));
-                    setMessages(loaded);
 
-                    endOfMessagesRef.current?.scrollIntoView({ behavior: "auto" });
+            // ✅ 기존 메시지 불러오기
+            getMessages(chatroomId, currentUser.memberId).then((data) => {
+              if (!isMounted) return;
+              const loaded = data.map((msg) => ({
+                ...msg,
+                sender: msg.senderId === currentUser.memberId ? "나" : "상대방",
+                time: new Date(msg.sentAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+              }));
+              setMessages(loaded);
 
-                    // 메세지 읽음
-                    // ✅ 여기서 읽지 않은 메시지 확인 후 읽음 처리
-                      const hasUnreadFromOpponent = loaded.some(
-                        (msg) => msg.senderId !== currentUser.memberId && !msg.isRead
-                      );
-                      if (hasUnreadFromOpponent) {
-                              // ✅ 2. 연결 직후 약간의 딜레이 주고 보내기
-                        setTimeout(() => {
-                          console.log("⏳ 읽음 전송 시작");
-                          sendReadReceipt();
-                        }, 300); // 300ms 지연
-                      }
-                    
-                  });
-            //읽rl
+              endOfMessagesRef.current?.scrollIntoView({ behavior: "auto" });
+
+              // 메세지 읽음
+              // ✅ 여기서 읽지 않은 메시지 확인 후 읽음 처리
+              const hasUnreadFromOpponent = loaded.some(
+                (msg) => msg.senderId !== currentUser.memberId && !msg.isRead
+              );
+              if (hasUnreadFromOpponent) {
+                // ✅ 2. 연결 직후 약간의 딜레이 주고 보내기
+                setTimeout(() => {
+                  console.log("⏳ 읽음 전송 시작");
+                  sendReadReceipt();
+                }, 300); // 300ms 지연
+              }
+            });
+            //읽음 알린 받기
             const readSub = stompClient.subscribe(
               `/sub/chat/read/${chatroomId}`, //읽음 알림 구독채널
               (message) => {
@@ -283,16 +285,13 @@ const ChatWindow = ({
         ? chatTargetInfo.receiverTrashCan
         : chatTargetInfo.senderTrashCan;
 
-      setIsOpponentOut(opponentOut === true); 
+      setIsOpponentOut(opponentOut === true);
     }
 
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatTargetInfo, chatroomId]);
-
-
-  
 
   //나가기
   const handleExit = async () => {
@@ -311,19 +310,16 @@ const ChatWindow = ({
   };
 
   useEffect(() => {
-
     messages.forEach((msg, index) => {
-      messages.forEach((msg, idx) => {
-  
-      });
+      messages.forEach((msg, idx) => {});
     });
   }, [messages]);
 
   useEffect(() => {
-  if (endOfMessagesRef.current) {
-    endOfMessagesRef.current.scrollIntoView({ behavior: "auto" });
-  }
-}, [messages]);
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({ behavior: "auto" });
+    }
+  }, [messages]);
 
   if (isAllowed === null) return <div>채팅방 접근 확인 중...</div>;
   if (isAllowed === false) return null;
@@ -338,19 +334,16 @@ const ChatWindow = ({
               <div>
                 <h3>
                   {chatTargetInfo.opponentName}
-                  <span className={styles["facility-type"]}>
-                  </span>
+                  <span className={styles["facility-type"]}></span>
                 </h3>
               </div>
             ) : chatTargetInfo.type === "caregiver" ? (
               <div>
                 <h3>{chatTargetInfo.opponentName} 요양사</h3>
-
               </div>
-            ): chatTargetInfo.type === "admin" ? (
+            ) : chatTargetInfo.type === "admin" ? (
               <div>
                 <h3>{chatTargetInfo.opponentName} </h3>
-
               </div>
             ) : chatTargetInfo.type === "user" ? (
               <div>
@@ -371,7 +364,6 @@ const ChatWindow = ({
 
       <div className={styles["message-list"]}>
         {messages.map((msg, index) => (
-          
           <ChatMessage key={`${msg.chatMessageId}`} message={msg} />
         ))}
         <div ref={endOfMessagesRef} />
