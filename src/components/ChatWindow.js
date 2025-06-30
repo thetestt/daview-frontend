@@ -342,29 +342,31 @@ const ChatWindow = ({
               &lt;
             </button>
             {/* 상대방 정보 */}
-            {chatTargetInfo.type === "facility" ? (
-              <div>
-                <h3>
-                  {chatTargetInfo.opponentName}
-                  <span className={styles["facility-type"]}></span>
-                </h3>
-              </div>
-            ) : chatTargetInfo.type === "caregiver" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName} 요양사</h3>
-              </div>
-            ) : chatTargetInfo.type === "admin" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName} </h3>
-              </div>
-            ) : chatTargetInfo.type === "user" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName}</h3>
-                <p>일반 사용자</p>
-              </div>
-            ) : (
-              <div>정보가 없습니다</div>
-            )}
+            <div className={styles["chat-opponent"]}>
+              {chatTargetInfo.type === "facility" ? (
+                <div>
+                  <h3>
+                    {chatTargetInfo.opponentName}
+                    <span className={styles["facility-type"]}></span>
+                  </h3>
+                </div>
+              ) : chatTargetInfo.type === "caregiver" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName} 요양사</h3>
+                </div>
+              ) : chatTargetInfo.type === "admin" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName} </h3>
+                </div>
+              ) : chatTargetInfo.type === "user" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName}</h3>
+                  <p>&nbsp;다뷰 회원</p>
+                </div>
+              ) : (
+                <div>정보가 없습니다</div>
+              )}
+            </div>
 
             {/* 우측 상단 나가기 버튼 */}
             <button className={styles["exit-chat-btn"]} onClick={handleExit}>

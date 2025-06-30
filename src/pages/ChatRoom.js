@@ -24,9 +24,32 @@ const ChatRoom = () => {
   //읽음표시 window에서 List로 전달하기
   const [readChatroomIds, setReadChatroomIds] = useState([]);
 
-  const handleReadChatroom = (chatroomId) => {
-    setReadChatroomIds((prev) => [...new Set([...prev, chatroomId])]);
+  //✅ 읽음 추가/제거 함수:
+  const markChatroomAsRead = (chatroomId) => {
+    setReadChatroomIds((prev) =>
+      prev.includes(chatroomId) ? prev : [...prev, chatroomId]
+    );
   };
+
+  const removeChatroomFromRead = (chatroomId) => {
+    setReadChatroomIds((prev) => prev.filter((id) => id !== chatroomId));
+  };
+
+  //✅ 채팅방 진입 시 읽음 등록:
+  useEffect(() => {
+    if (chatroomId) {
+      markChatroomAsRead(chatroomId);
+    }
+  }, [chatroomId]);
+
+  //✅ 채팅방 나갈 때 제거 (언마운트 시):
+  useEffect(() => {
+    return () => {
+      if (chatroomId) {
+        removeChatroomFromRead(chatroomId);
+      }
+    };
+  }, [chatroomId]);
 
   const handleNewMessage = () => {
     triggerListRefresh(); // ChatList 다시 불러오기
@@ -101,7 +124,12 @@ const ChatRoom = () => {
   return (
     <div className={styles["chatroom-layout"]} style={{ display: "flex" }}>
       <div className={styles["chatlist-area"]}>
-        <ChatList refresh={refreshList} readChatroomIds={readChatroomIds} />
+        <ChatList
+          refresh={refreshList}
+          readChatroomIds={readChatroomIds}
+          onNewMessage={handleNewMessage}
+          removeChatroomFromRead={removeChatroomFromRead}
+        />
       </div>
 
       <div className={styles["chatwindow-area"]}>
@@ -111,7 +139,6 @@ const ChatRoom = () => {
             chatroomId={chatroomId}
             currentUser={{ memberId, username }}
             chatTargetInfo={chatTargetInfo}
-            onRead={handleReadChatroom}
             onNewMessage={handleNewMessage}
             onExitChat={() => {
               setChatTargetInfo(null);

@@ -5,7 +5,12 @@ import { Client } from "@stomp/stompjs";
 import { getChatRooms } from "../api/chat";
 import styles from "../styles/pages/ChatList.module.css";
 
-const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
+const ChatList = ({
+  refresh,
+  readChatroomIds,
+  onNewMessage,
+  removeChatroomFromRead,
+}) => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
   const stompClientRef = useRef(null);
@@ -14,6 +19,7 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
   const location = useLocation();
   //검색 랜더링
   const [searchTerm, setSearchTerm] = useState("");
+  //방 상태 담기
 
   const selectedChatroomId =
     location.pathname.startsWith("/chat/") && selectedIdFromParams
@@ -75,6 +81,7 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
 
   //클릭시 읽음처리
   const handleEnterRoom = async (chatroomId) => {
+    removeChatroomFromRead?.(chatroomId);
     navigate(`/chat/${chatroomId}?skipValidation=true`);
   };
 
@@ -124,9 +131,6 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
   });
 
   const handleSearch = () => {
-    // 필요 시 검색어를 서버로 보내거나, 검색어에 따라 필터링하도록 추가 가능
-    // 지금은 searchTerm 값이 이미 상태로 저장돼 있으므로, 이 함수는 불필요한 재호출 방지용
-    // 실질적으로는 searchTerm 상태 변화 시 filteredRooms가 자동 업데이트됨
     console.log("검색 실행:", searchTerm);
   };
 
@@ -137,9 +141,6 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
   return (
     <div>
       <div className={styles["chat-search-box"]}>
-        <button className={styles["back-button"]} onClick={handleBackToList}>
-          &lt;
-        </button>
         <input
           type="text"
           placeholder="채팅방을 찾아보세요"
