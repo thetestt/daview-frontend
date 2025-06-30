@@ -29,9 +29,14 @@ function FindIdPage() {
       });
       alert("이메일로 인증번호를 전송했습니다.");
     } catch (err) {
-      console.error(err);
-      alert("이메일 전송 실패");
+      if (err.response?.status === 400) {
+        alert("입력하신 이름과 이메일을 다시 확인해주세요.");
+      } else {
+        alert("이메일 전송 중 오류가 발생했습니다.");
+      }
     }
+    
+    
   };
 
   // 이메일 인증 확인 + 아이디 찾기
@@ -71,9 +76,13 @@ function FindIdPage() {
       });
       alert("인증번호 전송됨");
     } catch (err) {
-      alert("전송 실패");
-      console.error(err);
+      if (err.response?.status === 400) {
+        alert("입력하신 이름과 전화번호를 다시 확인해주세요.");
+      } else {
+        alert("문자 전송 중 오류가 발생했습니다.");
+      }
     }
+    
   };
 
   // 전화 인증 확인 + 아이디 찾기

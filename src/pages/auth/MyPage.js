@@ -160,6 +160,7 @@ const MyPage = () => {
               <div className={styles["value"]}>{payments.length} 건</div>
             </div>
           </div>
+          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>1:1 문의</h2>

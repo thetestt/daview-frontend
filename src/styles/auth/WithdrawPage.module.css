@@ -1,111 +1,117 @@
 .withdraw-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.05);
-  }
-  
-  .withdraw-container h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .withdraw-container h2 span {
-    color: #00334f;
-  }
-  
-  .notice-list {
-    list-style: disc;
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
-    color: #444;
-  }
-  
-  .box {
-    background: #f9f9f9;
-    border-left: 5px solid #00334f;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 5px;
-  }
-  
-  .checkbox-line {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-  
-  button {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    width: 100%;
-    font-size: 1rem;
-    background: #00334f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
 
-  button:hover {
-    background:  #01659b;
-    color: white;
-  }
-  
-  button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .reason-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-  
-  .reason-list label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  textarea {
-    width: 100%;
-    height: 100px;
-    resize: none;
-    padding: 0.75rem;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .extra-msg {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #fff5f5;
-    border: 1px solid #ffd5d5;
-    border-radius: 5px;
-  }
-  
-  .extra-msg p {
-    margin-bottom: 1rem;
-    color: #00334f;
-  }
-  
-  .btn-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  
-  .btn-row .gray {
-    background: #ddd;
-    color: #333;
-  }
-  
+.withdraw-container h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.withdraw-container h2 span {
+  color: #00334f;
+}
+
+.notice-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.box {
+  background: #f9f9f9;
+  border-left: 5px solid #00334f;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 5px;
+}
+
+.checkbox-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+
+.reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.reason-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  resize: none;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.extra-msg {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fff5f5;
+  border: 1px solid #ffd5d5;
+  border-radius: 5px;
+}
+
+.extra-msg p {
+  margin-bottom: 1rem;
+  color: #00334f;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-row .gray {
+  background: #ddd;
+  color: #333;
+}
+
+.withdraw-btn {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+  font-size: 1rem;
+  background: #00334f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.withdraw-btn:hover {
+  background: #01659b;
+  color: white;
+}
+
+.withdraw-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.withdraw-btn.gray {
+  background: #ddd;
+  color: #333;
+}
+

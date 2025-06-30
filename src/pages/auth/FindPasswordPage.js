@@ -48,9 +48,13 @@ function FindPasswordPage() {
       });
       alert("인증번호 전송됨");
     } catch (err) {
-      alert("전송 실패");
-      console.error(err);
-    }
+      if (err.response?.status === 400) {
+        alert("입력하신 정보를 다시 확인해주세요.");
+      } else {
+        alert("문자 전송 중 오류가 발생했습니다.");
+      }
+    }    
+    
   };
 
   return (

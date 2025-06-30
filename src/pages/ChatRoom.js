@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import ChatList from "./ChatList";
-import {
-  getChatRoomInfo,
-  //markMessagesAsRead
-} from "../api/chat";
+import { getChatRooms } from "../api/chat"; // ✅ getChatRoomInfo 제거
 import axios from "../api/axiosInstance";
 import styles from "../styles/pages/ChatRoom.module.css";
 
@@ -16,12 +13,24 @@ const ChatRoom = () => {
 
   const [accessGranted, setAccessGranted] = useState(null);
   const [chatTargetInfo, setChatTargetInfo] = useState(null);
+  const [chatRooms, setChatRooms] = useState([]);
   const memberId = Number(localStorage.getItem("memberId"));
   const username = localStorage.getItem("username");
   const [refreshList, setRefreshList] = useState(false);
-  const triggerListRefresh = () => setRefreshList((prev) => !prev);
 
   const skipValidation = searchParams.get("skipValidation") === "true";
+  const triggerListRefresh = () => setRefreshList((prev) => !prev);
+
+  //읽음표시 window에서 List로 전달하기
+  const [readChatroomIds, setReadChatroomIds] = useState([]);
+
+  const handleReadChatroom = (chatroomId) => {
+    setReadChatroomIds((prev) => [...new Set([...prev, chatroomId])]);
+  };
+
+  const handleNewMessage = () => {
+    triggerListRefresh(); // ChatList 다시 불러오기
+  };
 
   useEffect(() => {
     if (!memberId) {
@@ -58,43 +67,52 @@ const ChatRoom = () => {
     checkAccess();
   }, [chatroomId, memberId, navigate, skipValidation]);
 
+  // 💡 chatroomId 변경 시 대상 정보 초기화
   useEffect(() => {
-    if (accessGranted && chatroomId && memberId && !chatTargetInfo) {
-      getChatRoomInfo(chatroomId, memberId)
-        //상대방 정보 가져오기
-        .then((data) => {
-          console.log("프론트로 넘어온 데이터 여기서 받아야 하나보네 " + data);
-          console.log(JSON.stringify(data, null, 2)); // data를 콘솔에 출력
-          //setChatTargetInfo(data);
-          // ✅ 데이터가 유효할 때만 상태 변경
-          if (data && data.opponentId) {
-            setChatTargetInfo(data);
-          } else {
-            console.warn("❗ 유효하지 않은 채팅 상대 데이터:", data);
-          }
-        })
+    setChatTargetInfo(null);
+  }, [chatroomId]);
 
-        .catch((err) => console.error("상대 정보 가져오기 실패", err));
-      //markMessagesAsRead(chatroomId, memberId);
+  // ✅ chatRooms 불러와서 현재 채팅방 대상 정보 찾기
+  useEffect(() => {
+    if (accessGranted && memberId && chatroomId) {
+      getChatRooms(memberId)
+        .then((rooms) => {
+          setChatRooms(rooms);
+          const matchedRoom = rooms.find(
+            (room) => String(room.chatroomId) === String(chatroomId)
+          );
+          if (matchedRoom) setChatTargetInfo(matchedRoom);
+        })
+        .catch((err) => {
+          console.error("채팅방 목록 불러오기 실패:", err);
+        });
     }
-  }, [accessGranted, chatroomId, memberId, chatTargetInfo]);
+  }, [accessGranted, chatroomId, memberId]);
+
+  useEffect(() => {
+    if (chatTargetInfo) {
+      console.log("✅ chatwindow. chatTargetInfo 전달 값:", chatTargetInfo);
+    }
+  }, [chatTargetInfo]);
 
   if (chatroomId && accessGranted === null) return <div>접근 확인 중...</div>;
   if (chatroomId && !accessGranted) return null;
 
   return (
-    <div className={styles["chatroom-layout"]}>
+    <div className={styles["chatroom-layout"]} style={{ display: "flex" }}>
       <div className={styles["chatlist-area"]}>
-        <ChatList refresh={refreshList} />
+        <ChatList refresh={refreshList} readChatroomIds={readChatroomIds} />
       </div>
 
       <div className={styles["chatwindow-area"]}>
         {chatTargetInfo && accessGranted ? (
           <ChatWindow
+            key={chatroomId}
             chatroomId={chatroomId}
             currentUser={{ memberId, username }}
             chatTargetInfo={chatTargetInfo}
-            //accessGranted={accessGranted}
+            onRead={handleReadChatroom}
+            onNewMessage={handleNewMessage}
             onExitChat={() => {
               setChatTargetInfo(null);
               triggerListRefresh();

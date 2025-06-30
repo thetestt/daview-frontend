@@ -10,10 +10,6 @@ function LoginPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleKakaoLogin = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=REST_API_KEY&redirect_uri=REDIRECT_URI&response_type=code`;
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("로그인 버튼 눌림");
@@ -92,18 +88,6 @@ function LoginPage() {
             <button type="submit" className={styles["login-button"]}>
               로그인
             </button>
-
-            <button
-              type="button"
-              onClick={handleKakaoLogin}
-              className="kakao-login-button"
-            >
-              카카오로 로그인하기
-            </button>
-
-            <div className={styles["kakao-login"]}>
-              카카오로 로그인 시 자동 회원가입 처리됩니다.
-            </div>
 
             {errorMsg && <p className={styles["error-message"]}>{errorMsg}</p>}
           </form>

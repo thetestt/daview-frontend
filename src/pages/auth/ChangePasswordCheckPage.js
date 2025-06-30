@@ -53,6 +53,11 @@ function ChangePasswordCheckPage() {
                 setIsPasswordVerified(false);
                 return;
             }
+            
+            if (currentPassword === newPassword) {
+                alert("새 비밀번호는 기존 비밀번호와 달라야 합니다.");
+                return;
+            }
 
             setIsPasswordVerified(true);
             setPasswordMismatch(false);
@@ -120,7 +125,7 @@ function ChangePasswordCheckPage() {
                 <p className={styles["input-error"]}>비밀번호가 일치하지 않습니다.</p>
             )}
 
-            <button onClick={handleChangePassword}>비밀번호 변경</button>
+            <button className={styles["change-btn"]} onClick={handleChangePassword}>비밀번호 변경</button>
         </div>
     );
 }
