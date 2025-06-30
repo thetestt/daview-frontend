@@ -28,3 +28,16 @@ export const getProdNmList = async (memberId) => {
   const response = await axios.get(`${PAYMENT_API}/prod/${memberId}`);
   return response.data;
 };
+
+export const cancelPaymentByImpUid = async ({ impUid, refundReason }) => {
+  const response = await axios.post(`${PAYMENT_API}/cancel`, {
+    impUid,
+    refundReason,
+  });
+  return response.data;
+};
+
+export const getRefundedPaymentsByMemberId = async (memberId) => {
+  const response = await axios.get(`${PAYMENT_API}/refunds/${memberId}`);
+  return response.data;
+};
