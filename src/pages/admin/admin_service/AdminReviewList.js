@@ -96,12 +96,7 @@ const AdminReviewList = () => {
     setCurrentPage(0); // 필터 변경 시 첫 페이지로
   };
 
-  // 필터 초기화 핸들러
-  const handleResetFilters = () => {
-    setSearch('');
-    setSelectedStars('');
-    setCurrentPage(0); // 초기화 시 첫 페이지로
-  };
+
 
   // 페이지네이션 핸들러들
   const handlePreviousPage = () => {
@@ -231,15 +226,6 @@ const AdminReviewList = () => {
                 {isLoading ? '🔄' : '🔍'} {isLoading ? '검색 중...' : '검색'}
               </button>
             </div>
-          </div>
-
-          <div className={styles["filter-group"]}>
-            <button 
-              onClick={handleResetFilters}
-              className={styles["reset-btn"]}
-            >
-              🔄 초기화
-            </button>
           </div>
         </div>
       </div>

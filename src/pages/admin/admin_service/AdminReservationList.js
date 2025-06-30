@@ -96,12 +96,7 @@ const AdminReservationList = () => {
     setCurrentPage(0); // 필터 변경 시 첫 페이지로
   };
 
-  // 필터 초기화 핸들러
-  const handleResetFilters = () => {
-    setSearch('');
-    setSelectedStatus('');
-    setCurrentPage(0); // 초기화 시 첫 페이지로
-  };
+
 
   // 페이지네이션 핸들러들
   const handlePreviousPage = () => {
@@ -269,7 +264,7 @@ const AdminReservationList = () => {
               value={selectedStatus}
               onChange={handleStatusChange}
             >
-              <option value="">전체 상태</option>
+              <option value="">▼ 전체 보기</option>
               <option value="PENDING">대기중</option>
               <option value="APPROVED">승인됨</option>
               <option value="REJECTED">거절됨</option>
@@ -280,30 +275,23 @@ const AdminReservationList = () => {
 
           <div className={styles["filter-group"]}>
             <label>검색</label>
-            <input
-              type="text"
-              className={styles["search-input"]}
-              placeholder="예약자명, 상품명 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyPress={handleSearchKeyPress}
-            />
-          </div>
-
-          <div className={styles["search-container"]}>
-            <button
-              className={styles["search-btn"]}
-              onClick={handleSearch}
-              disabled={isLoading}
-            >
-              🔍 검색
-            </button>
-            <button
-              className={styles["reset-btn"]}
-              onClick={handleResetFilters}
-            >
-              🔄 초기화
-            </button>
+            <div className={styles["search-container"]}>
+              <input
+                type="text"
+                className={styles["search-input"]}
+                placeholder="예약자명, 상품명 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyPress={handleSearchKeyPress}
+              />
+              <button
+                className={styles["search-btn"]}
+                onClick={handleSearch}
+                disabled={isLoading}
+              >
+                {isLoading ? '🔄' : '🔍'} {isLoading ? '검색 중...' : '검색'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
