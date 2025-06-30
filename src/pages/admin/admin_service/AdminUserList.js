@@ -97,12 +97,7 @@ const AdminUserList = () => {
     setCurrentPage(0); // 필터 변경 시 첫 페이지로
   };
 
-  // 필터 초기화 핸들러
-  const handleResetFilters = () => {
-    setSearch('');
-    setSelectedRole('');
-    setCurrentPage(0); // 초기화 시 첫 페이지로
-  };
+
 
   // 페이지네이션 핸들러들
   const handlePreviousPage = () => {
@@ -207,6 +202,8 @@ const AdminUserList = () => {
               <option value="">▼ 전체 보기</option>
               <option value="USER">👤 일반 사용자</option>
               <option value="ADMIN">👑 관리자</option>
+              <option value="CAREGIVER">👩‍⚕️ 요양사</option>
+              <option value="COMPANY">🏢 기업</option>
             </select>
           </div>
           
@@ -229,15 +226,6 @@ const AdminUserList = () => {
                 {isLoading ? '🔄' : '🔍'} {isLoading ? '검색 중...' : '검색'}
               </button>
             </div>
-          </div>
-
-          <div className={styles["filter-group"]}>
-            <button 
-              onClick={handleResetFilters}
-              className={styles["reset-btn"]}
-            >
-              🔄 초기화
-            </button>
           </div>
         </div>
       </div>
@@ -274,7 +262,9 @@ const AdminUserList = () => {
                     <td>
                       <span className={`${styles["role-badge"]} ${styles[user.role?.toLowerCase() || 'user']}`}>
                         {user.role === 'USER' ? '👤 사용자' : 
-                         user.role === 'ADMIN' ? '👑 관리자' : user.role}
+                         user.role === 'ADMIN' ? '👑 관리자' : 
+                         user.role === 'CAREGIVER' ? '👩‍⚕️ 요양사' :
+                         user.role === 'COMPANY' ? '🏢 기업' : user.role}
                       </span>
                     </td>
                     <td>
@@ -406,7 +396,9 @@ const AdminUserList = () => {
                   <strong>역할:</strong> 
                   <span className={`${styles["role-badge"]} ${styles[selectedUser.role?.toLowerCase() || 'user']}`}>
                     {selectedUser.role === 'USER' ? '👤 사용자' : 
-                     selectedUser.role === 'ADMIN' ? '👑 관리자' : selectedUser.role}
+                     selectedUser.role === 'ADMIN' ? '👑 관리자' : 
+                     selectedUser.role === 'CAREGIVER' ? '👩‍⚕️ 요양사' :
+                     selectedUser.role === 'COMPANY' ? '🏢 기업' : selectedUser.role}
                   </span>
                 </div>
                 <div className={styles["detail-item"]}>

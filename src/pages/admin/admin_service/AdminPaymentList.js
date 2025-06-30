@@ -76,13 +76,7 @@ const AdminPaymentList = () => {
     loadPayments();
   };
 
-  // 초기화
-  const handleReset = () => {
-    setSearchKeyword('');
-    setStatusFilter('all');
-    setCurrentPage(0);
-    setTimeout(() => loadPayments(), 100);
-  };
+
 
   // 결제 상태 변경
   const handleStatusChange = async (paymentId, newStatus) => {
@@ -198,30 +192,23 @@ const AdminPaymentList = () => {
           
           <div className={styles['filter-group']}>
             <label>검색</label>
-            <input
-              type="text"
-              className={styles['search-input']}
-              placeholder="고객명, 결제ID, 상품명으로 검색"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            />
-          </div>
-          
-          <div className={styles['search-container']}>
-            <button 
-              className={styles['search-btn']}
-              onClick={handleSearch}
-              disabled={loading}
-            >
-              🔍 검색
-            </button>
-            <button 
-              className={styles['reset-btn']}
-              onClick={handleReset}
-            >
-              🔄 초기화
-            </button>
+            <div className={styles['search-container']}>
+              <input
+                type="text"
+                className={styles['search-input']}
+                placeholder="고객명, 결제ID, 상품명으로 검색"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              />
+              <button 
+                className={styles['search-btn']}
+                onClick={handleSearch}
+                disabled={loading}
+              >
+                {loading ? '🔄' : '🔍'} {loading ? '검색 중...' : '검색'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
