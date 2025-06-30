@@ -10,6 +10,7 @@ import {
   //markMessagesAsRead,
 } from "../api/chat";
 import styles from "../styles/components/ChatWindow.module.css";
+import { useNavigate } from "react-router";
 //import { useNavigate } from "react-router";
 
 const ChatWindow = ({
@@ -30,6 +31,7 @@ const ChatWindow = ({
   //const messageCache = receivedMessageCacheRef.current;
   const [isAllowed, setIsAllowed] = useState(null);
   const [isOpponentOut, setIsOpponentOut] = useState(false);
+  const navigate = useNavigate();
 
   //const [accessGranted, setAccessGranted] = useState(false);
 
@@ -324,35 +326,47 @@ const ChatWindow = ({
   if (isAllowed === null) return <div>채팅방 접근 확인 중...</div>;
   if (isAllowed === false) return null;
 
+  const handleBackToList = () => {
+    navigate("/chat"); // ✅ 꺽쇠 버튼 클릭 시 리스트 페이지로 이동
+  };
+
   return (
     <div className={styles["chat-window"]}>
       {chatTargetInfo && (
         <div className={styles["chatroom-header"]}>
           <div className={styles["header-content"]}>
+            <button
+              className={styles["back-button"]}
+              onClick={handleBackToList}
+            >
+              &lt;
+            </button>
             {/* 상대방 정보 */}
-            {chatTargetInfo.type === "facility" ? (
-              <div>
-                <h3>
-                  {chatTargetInfo.opponentName}
-                  <span className={styles["facility-type"]}></span>
-                </h3>
-              </div>
-            ) : chatTargetInfo.type === "caregiver" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName} 요양사</h3>
-              </div>
-            ) : chatTargetInfo.type === "admin" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName} </h3>
-              </div>
-            ) : chatTargetInfo.type === "user" ? (
-              <div>
-                <h3>{chatTargetInfo.opponentName}</h3>
-                <p>일반 사용자</p>
-              </div>
-            ) : (
-              <div>정보가 없습니다</div>
-            )}
+            <div className={styles["chat-opponent"]}>
+              {chatTargetInfo.type === "facility" ? (
+                <div>
+                  <h3>
+                    {chatTargetInfo.opponentName}
+                    <span className={styles["facility-type"]}></span>
+                  </h3>
+                </div>
+              ) : chatTargetInfo.type === "caregiver" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName} 요양사</h3>
+                </div>
+              ) : chatTargetInfo.type === "admin" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName} </h3>
+                </div>
+              ) : chatTargetInfo.type === "user" ? (
+                <div>
+                  <h3>{chatTargetInfo.opponentName}</h3>
+                  <p>&nbsp;다뷰 회원</p>
+                </div>
+              ) : (
+                <div>정보가 없습니다</div>
+              )}
+            </div>
 
             {/* 우측 상단 나가기 버튼 */}
             <button className={styles["exit-chat-btn"]} onClick={handleExit}>
