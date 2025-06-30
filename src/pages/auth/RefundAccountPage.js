@@ -118,8 +118,8 @@ function RefundAccountPage() {
         placeholder="계좌번호 '-' 없이 입력"
       />
 
-      <button onClick={handleSave}>저장</button>
-      <button onClick={handleDelete}>해지</button>
+      <button className={styles["save-btn"]} onClick={handleSave}>저장</button>
+      <button className={styles["pass-btn"]} onClick={handleDelete}>해지</button>
     </div>
   );
 }

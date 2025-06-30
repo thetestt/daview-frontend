@@ -270,7 +270,7 @@ function SignupPage() {
         </label><br /><br />
 
 
-        <button type="submit">회원가입</button>
+        <button className={styles["pass-btn"]} type="submit">회원가입</button>
       </form>
     </div>
   );

@@ -110,7 +110,7 @@ function WithdrawPage() {
 
           {agreed && (
             <>
-              <button onClick={() => setReasonVisible(true)}>탈퇴 이유 입력하기</button>
+              <button className={styles["with-btn"]} onClick={() => setReasonVisible(true)}>탈퇴 이유 입력하기</button>
 
               {reasonVisible && (
                 <>
@@ -147,13 +147,13 @@ function WithdrawPage() {
                         <button className={styles["gray"]} onClick={() =>
                           window.location.href = "http://localhost:3000/chat/a2b03cb6-a234-40aa-a926-1312761771a3?skipValidation=true"
                         }>문의하기</button>
-                        <button onClick={handleWithdraw}>그래도 탈퇴하기</button>
+                        <button className={styles["with-btn"]} onClick={handleWithdraw}>그래도 탈퇴하기</button>
                       </div>
                     </div>
                   )}
 
                   {selectedReason === "직접 입력" && customReason.trim() && (
-                    <button onClick={handleWithdraw}>회원 탈퇴하고 계정 삭제하기</button>
+                    <button className={styles["with-btn"]} onClick={handleWithdraw}>회원 탈퇴하고 계정 삭제하기</button>
                   )}
                 </>
               )}
