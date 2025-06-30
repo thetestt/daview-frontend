@@ -53,6 +53,11 @@ function ChangePasswordCheckPage() {
                 setIsPasswordVerified(false);
                 return;
             }
+            
+            if (currentPassword === newPassword) {
+                alert("새 비밀번호는 기존 비밀번호와 달라야 합니다.");
+                return;
+            }
 
             setIsPasswordVerified(true);
             setPasswordMismatch(false);
