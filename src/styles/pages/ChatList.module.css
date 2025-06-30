@@ -72,3 +72,55 @@
   margin-left: 4px;
   font-weight: 400;
 }
+
+.chat-search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background-color: white;
+  width: 100%;
+  max-width: 95%;
+  box-sizing: border-box;
+  margin: 5px auto;
+  height: 40px;
+}
+
+.chat-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+
+  /* 입력 텍스트는 왼쪽 정렬 */
+  text-align: left;
+
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* placeholder는 가운데 정렬 */
+.chat-search-input::placeholder {
+  text-align: center;
+}
+
+.search-icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 22px;
+  color: #00334f;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}

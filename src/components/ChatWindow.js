@@ -10,6 +10,7 @@ import {
   //markMessagesAsRead,
 } from "../api/chat";
 import styles from "../styles/components/ChatWindow.module.css";
+import { useNavigate } from "react-router";
 //import { useNavigate } from "react-router";
 
 const ChatWindow = ({
@@ -30,6 +31,7 @@ const ChatWindow = ({
   //const messageCache = receivedMessageCacheRef.current;
   const [isAllowed, setIsAllowed] = useState(null);
   const [isOpponentOut, setIsOpponentOut] = useState(false);
+  const navigate = useNavigate();
 
   //const [accessGranted, setAccessGranted] = useState(false);
 
@@ -324,11 +326,21 @@ const ChatWindow = ({
   if (isAllowed === null) return <div>채팅방 접근 확인 중...</div>;
   if (isAllowed === false) return null;
 
+  const handleBackToList = () => {
+    navigate("/chat"); // ✅ 꺽쇠 버튼 클릭 시 리스트 페이지로 이동
+  };
+
   return (
     <div className={styles["chat-window"]}>
       {chatTargetInfo && (
         <div className={styles["chatroom-header"]}>
           <div className={styles["header-content"]}>
+            <button
+              className={styles["back-button"]}
+              onClick={handleBackToList}
+            >
+              &lt;
+            </button>
             {/* 상대방 정보 */}
             {chatTargetInfo.type === "facility" ? (
               <div>

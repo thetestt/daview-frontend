@@ -12,6 +12,8 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
   const memberId = Number(localStorage.getItem("memberId"));
   const { chatroomId: selectedIdFromParams } = useParams();
   const location = useLocation();
+  //검색 랜더링
+  const [searchTerm, setSearchTerm] = useState("");
 
   const selectedChatroomId =
     location.pathname.startsWith("/chat/") && selectedIdFromParams
@@ -116,47 +118,88 @@ const ChatList = ({ refresh, readChatroomIds, onNewMessage }) => {
     );
   };
 
+  const filteredRooms = displayedRooms.filter((room) => {
+    const name = getDisplayName(room)?.props?.children?.[0] || ""; // opponentName
+    return name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const handleSearch = () => {
+    // 필요 시 검색어를 서버로 보내거나, 검색어에 따라 필터링하도록 추가 가능
+    // 지금은 searchTerm 값이 이미 상태로 저장돼 있으므로, 이 함수는 불필요한 재호출 방지용
+    // 실질적으로는 searchTerm 상태 변화 시 filteredRooms가 자동 업데이트됨
+    console.log("검색 실행:", searchTerm);
+  };
+
+  const handleBackToList = () => {
+    navigate("/chat"); // ✅ 꺽쇠 버튼 클릭 시 리스트 페이지로 이동
+  };
+
   return (
-    <div className={styles["chat-list-container"]}>
-      {displayedRooms.map((room) => {
-        const isActive = String(room.chatroomId) === selectedChatroomId;
-        const isRead = readChatroomIds?.includes(room.chatroomId); // ✅ 읽은 채팅방이면 뱃지 숨김
+    <div>
+      <div className={styles["chat-search-box"]}>
+        <button className={styles["back-button"]} onClick={handleBackToList}>
+          &lt;
+        </button>
+        <input
+          type="text"
+          placeholder="채팅방을 찾아보세요"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+          className={styles["chat-search-input"]}
+        />
+        <img
+          src="/images/buttonimage/searchicon.png"
+          alt="검색"
+          className={styles["search-icon"]}
+          onClick={handleSearch}
+        />
+      </div>
+      <div className={styles["chat-list-container"]}>
+        {filteredRooms.map((room) => {
+          const isActive = String(room.chatroomId) === selectedChatroomId;
+          const isRead = readChatroomIds?.includes(room.chatroomId); // ✅ 읽은 채팅방이면 뱃지 숨김
 
-        return (
-          <div
-            key={room.chatroomId}
-            className={`${styles["chat-list-item"]} ${
-              isActive ? styles["active"] : ""
-            }`}
-            onClick={() => handleEnterRoom(room.chatroomId)}
-          >
-            <div className={styles["chat-title"]}>{getDisplayName(room)}</div>
+          return (
+            <div
+              key={room.chatroomId}
+              className={`${styles["chat-list-item"]} ${
+                isActive ? styles["active"] : ""
+              }`}
+              onClick={() => handleEnterRoom(room.chatroomId)}
+            >
+              <div className={styles["chat-title"]}>{getDisplayName(room)}</div>
 
-            <div className={styles["chat-preview"]}>
-              <span>
-                {room.lastMessage
-                  ? room.lastMessage.length > 38
-                    ? `${room.lastMessage.slice(0, 38)}...`
-                    : room.lastMessage
-                  : ""}
-              </span>
-              <span className={styles["chat-time"]}>
-                {room.sentAt
-                  ? new Date(room.sentAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  : ""}
-              </span>
+              <div className={styles["chat-preview"]}>
+                <span>
+                  {room.lastMessage
+                    ? room.lastMessage.length > 38
+                      ? `${room.lastMessage.slice(0, 38)}...`
+                      : room.lastMessage
+                    : ""}
+                </span>
+                <span className={styles["chat-time"]}>
+                  {room.sentAt
+                    ? new Date(room.sentAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : ""}
+                </span>
+              </div>
+
+              {/* ✅ 읽지 않은 메시지만 뱃지 표시 */}
+              {!isRead && room.unreadCount > 0 && (
+                <div className={styles["unread-badge"]}>{room.unreadCount}</div>
+              )}
             </div>
-
-            {/* ✅ 읽지 않은 메시지만 뱃지 표시 */}
-            {!isRead && room.unreadCount > 0 && (
-              <div className={styles["unread-badge"]}>{room.unreadCount}</div>
-            )}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
