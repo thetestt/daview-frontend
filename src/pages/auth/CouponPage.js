@@ -35,7 +35,7 @@ function CouponPage() {
           coupons.length > 0 ? (
             coupons.map((coupon, i) => (
               <div key={i} className={styles.card}>
-                🎁 {coupon.description} ({coupon.discount}% 할인)
+                {coupon.description} ({coupon.discount}% 할인)
               </div>
             ))
           ) : (
