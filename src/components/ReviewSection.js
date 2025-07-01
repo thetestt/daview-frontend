@@ -16,7 +16,7 @@ function ReviewSection() {
         );
 
         const formattedReviews = fiveStarReviews.map((review) => ({
-          name: `고객${review.memberId}`,
+          name: `고객${review.revTtl}`,
           role: "이용고객",
           content: review.revCont,
           rating: review.revStars,
