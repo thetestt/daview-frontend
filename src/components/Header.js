@@ -4,6 +4,7 @@ import logoImg from "../assets/daview-logo.png";
 import styles from "../styles/components/Header.module.css";
 import { jwtDecode } from "jwt-decode";
 import { createOrGetChatRoom } from "../api/chat";
+import SiteNoticeBanner from "./SiteNoticeBanner";
 
 function Header() {
   const [keyword, setKeyword] = useState("");
@@ -228,6 +229,9 @@ function Header() {
           </li>
         </ul>
       </nav>
+      
+      {/* 사이트 공지사항 배너 - 네비게이션 바 아래 위치 */}
+      <SiteNoticeBanner />
     </div>
   );
 }
