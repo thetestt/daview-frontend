@@ -9,6 +9,8 @@ import { fetchSilvertownDetail } from "../api/silvertown";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
 import ChatButton from "../components/common/ChatButton";
+//지도
+import NaverMap from "../components/common/NaverMap";
 
 function SilvertownDetail() {
   const { id } = useParams();
@@ -18,6 +20,9 @@ function SilvertownDetail() {
   //   const found = silvertowns.find((item) => item.facilityId === id);
   //   setData(found);
   // }, [id]);
+
+  //지도테스트 데이터
+  // const address = "부산광역시 연제구"; // 예시
 
   useEffect(() => {
     fetchSilvertownDetail(id)
@@ -30,6 +35,8 @@ function SilvertownDetail() {
   console.log("🔥 디테일 data:", { data });
 
   if (!data) return <div>Loading...</div>;
+
+  const address = `${data.facilityAddressLocation} ${data.facilityAddressCity}${data.facilityDetailAddress}`;
 
   return (
     <>
@@ -63,7 +70,7 @@ function SilvertownDetail() {
                 <CartButton data={data} productType="silvertown" />
               </div>
             </div>
-            <div className={styles["map-box"]}>[지도 API]</div>
+            <NaverMap className={styles["map-box"]} address={address} />
           </div>
 
           <div className={styles["thumbnail-box"]}>
