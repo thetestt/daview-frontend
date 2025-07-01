@@ -36,6 +36,7 @@ import ChangeIdPage from "../pages/auth/ChangeIdPage";
 import CouponPage from "../pages/auth/CouponPage";
 import WithdrawPage from "../pages/auth/WithdrawPage"
 import RefundAccountPage from "../pages/auth/RefundAccountPage";
+import MyReviewPage from "../pages/auth/MyReviewPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
@@ -49,6 +50,7 @@ import AdminReviewList from '../pages/admin/admin_service/AdminReviewList'; //�
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
 import RegisterPage from "../pages/RegisterPage";
+
 
 
 const AppRouter = () => {
@@ -186,11 +188,12 @@ const AppRouter = () => {
         <Route path="/mypage/mycoupon" element={<CouponPage />} />
         {/* 환불계좌 */}
         <Route
-          path="/mypage/myprofile/refundaccount"
-          element={<RefundAccountPage />}
-        />
+          path="/mypage/myprofile/refundaccount" element={<RefundAccountPage />}/>
         {/* 회원탈퇴 */}
         <Route path="/mypage/myprofile/withdraw" element={<WithdrawPage />} />
+        {/* 내가 쓴 후기 */}
+        <Route path="/mypage/myprofile/myreview" element={<MyReviewPage />} />
+
 
         {/* 관리자 레이아웃 공통 적용 */}
         <Route path="/admin" element={<AdminLayout />}>
