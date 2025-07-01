@@ -20,8 +20,6 @@ const MyPage = () => {
   const [payments, setPayments] = useState([]);
   const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState("/images/default-profile.png");
-
 
 
   const maskName = (name) => {
@@ -113,7 +111,7 @@ const MyPage = () => {
       } catch (err) {
         console.error("내 후기 불러오기 실패:", err);
       }
-
+      
     };
 
     handleLoadProfile();
@@ -125,8 +123,7 @@ const MyPage = () => {
 
       <div className={styles["mypage-body"]}>
         <div className={styles["mypage-left"]}>
-          <div className={styles.profileCircle}>
-            <img src={profileImage} alt="프로필 이미지" /></div>
+          <div className={styles["mypage-avatar"]}></div>
           <ul className={styles["mypage-menu"]}>
             <li>
               <Link to="/mypage/myprofile">내 정보</Link>
@@ -150,7 +147,7 @@ const MyPage = () => {
               <Link to="/mypage/wishlist">나의 찜 목록</Link>
             </li>
             <li>
-              <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
+            <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
             </li>
           </ul>
         </div>
@@ -162,8 +159,7 @@ const MyPage = () => {
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
               <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
-                state: { username: profile.username }
-              })}>변경</button>
+              state: { username: profile.username } })}>변경</button>
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
