@@ -35,7 +35,7 @@ const NaverMap = ({ address, className }) => {
 
       mapInstance.current = new window.naver.maps.Map(mapRef.current, {
         center: new window.naver.maps.LatLng(37.5665, 126.978), // 기본 중심
-        zoom: 14,
+        zoom: 16,
       });
 
       setIsMapReady(true); // ✅ 지도 준비 완료 표시

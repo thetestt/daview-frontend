@@ -11,11 +11,11 @@ function CaregiverSearchResult({ filters }) {
       try {
         const data = await fetchFilteredCaregivers(filters);
         setCaregivers(data);
+        console.log("🔥 요양사 리스트 검색결과 데이터 :", data);
       } catch (error) {
         console.error("요양사 검색 실패:", error);
       }
     };
-
     if (filters) {
       fetchData();
     }
@@ -35,7 +35,11 @@ function CaregiverSearchResult({ filters }) {
           >
             <h2 className={styles["caregiver-name-box"]}>
               <span className={styles["caregiver-name"]}>
-                {item.username || "이름 미정"}
+                {item.name
+                  ? item.name.length === 2
+                    ? item.name[0] + "*"
+                    : item.name[0] + "*" + item.name.slice(-1)
+                  : "이름 미정"}
               </span>
               <span
                 className={`${styles["caregiverGender"]} ${

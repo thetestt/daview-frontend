@@ -7,7 +7,14 @@ function CaregiverList() {
   const [caregivers, setCaregivers] = useState([]);
 
   useEffect(() => {
-    getCaregivers().then((res) => setCaregivers(res.data));
+    getCaregivers()
+      .then((res) => {
+        setCaregivers(res.data);
+        console.log("🔥 요양사 리스트  받아오는 데이터 :", res.data);
+      })
+      .catch((err) => {
+        console.error("❌ 요양사 목록 불러오기 실패:", err);
+      });
   }, []);
 
   return (
@@ -20,7 +27,11 @@ function CaregiverList() {
         >
           <h2 className={styles["caregiver-name-box"]}>
             <span className={styles["caregiver-name"]}>
-              {item.username || "이름 미정"}
+              {item.name
+                ? item.name.length === 2
+                  ? item.name[0] + "*"
+                  : item.name[0] + "*" + item.name.slice(-1)
+                : "이름 미정"}
             </span>
             <span
               className={`${styles["caregiverGender"]} ${
