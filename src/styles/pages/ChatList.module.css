@@ -39,6 +39,7 @@
   font-size: 16px;
   color: #222;
   margin-bottom: 6px;
+  margin-left: 7px;
 }
 
 .chat-preview {
@@ -47,6 +48,7 @@
   align-items: center;
   font-size: 14px;
   color: #555;
+  margin-left: 10px;
 }
 
 .chat-time {
@@ -55,15 +57,16 @@
   white-space: nowrap;
   margin-left: 8px;
 }
-
 .unread-badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
   background-color: #ff3b30;
   color: white;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 20px;
-  margin-top: 6px;
-  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 12px;
 }
 
 .opponent-out-text {
@@ -71,4 +74,57 @@
   font-size: 0.75rem; /* 작게 */
   margin-left: 4px;
   font-weight: 400;
+}
+
+.chat-search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background-color: white;
+  width: 100%;
+  max-width: 95%;
+  box-sizing: border-box;
+  margin: 5px auto;
+  height: 40px;
+}
+
+.chat-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+
+  /* 입력 텍스트는 왼쪽 정렬 */
+  text-align: left;
+
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* placeholder는 가운데 정렬 */
+.chat-search-input::placeholder {
+  text-align: center;
+}
+
+.search-icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 22px;
+  color: #00334f;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  margin-right: 15px;
 }

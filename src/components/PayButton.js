@@ -44,11 +44,11 @@ const PayButton = ({
     }
 
     const { IMP } = window;
-    IMP.init("imp50047758");
+    IMP.init("test");
 
     IMP.request_pay(
       {
-        channelKey: "channel-key-1fe2d8eb-33a7-4174-b58b-1b68895d47ea",
+        channelKey: "test",
         pay_method: "card",
         merchant_uid: generatedMerchantUid,
         name: reservations.map((r) => r.prodNm).join(", "),

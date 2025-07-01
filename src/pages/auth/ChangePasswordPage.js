@@ -55,7 +55,7 @@ function ChangePasswordPage() {
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
 
-      <button onClick={handleChangePassword}>비밀번호 변경</button>
+      <button className={styles["pass-btn"]} onClick={handleChangePassword}>비밀번호 변경</button>
     </div>
   );
 }

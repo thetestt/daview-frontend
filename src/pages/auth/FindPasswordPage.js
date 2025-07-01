@@ -48,9 +48,13 @@ function FindPasswordPage() {
       });
       alert("인증번호 전송됨");
     } catch (err) {
-      alert("전송 실패");
-      console.error(err);
-    }
+      if (err.response?.status === 400) {
+        alert("입력하신 정보를 다시 확인해주세요.");
+      } else {
+        alert("문자 전송 중 오류가 발생했습니다.");
+      }
+    }    
+    
   };
 
   return (
@@ -70,7 +74,7 @@ function FindPasswordPage() {
             <div className={styles["phone-inputs"]}>
               <input placeholder="+82" className={styles["country-code"]} value="+82" readOnly />
 
-              <input type="text" placeholder="휴대전화번호 입력 ((-)제외)" className={styles["phone-input"]} value={phone}
+              <input type="text" placeholder="휴대전화번호 '-' 없이 입력" className={styles["phone-input"]} value={phone}
                 onChange={(e) => setPhone(formatPhoneNumber(e.target.value))} />
               <button className={styles["send-code-button"]} onClick={sendVerificationCode}>인증번호 전송</button>
           </div>

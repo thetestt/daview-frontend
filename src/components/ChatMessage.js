@@ -10,7 +10,7 @@ const ChatMessage = ({ message }) => {
         isMe ? styles["me"] : styles["you"]
       }`}
     >
-      {isMe && message.isRead === false && (
+      {isMe && !message.isRead && (
         <img
           src="/images/icon/paper-plane.png"
           alt="안읽음"

@@ -292,3 +292,61 @@
   line-height: 1.5;
   font-weight: 400;
 }
+
+.pass-btn {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+  font-size: 1rem;
+  background: #00334f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pass-btn:hover {
+  background: #01659b;
+  color: white;
+}
+
+.pass-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pass-btn.gray {
+  background: #ddd;
+  color: #333;
+}
+
+.phone-inputs,
+.verify-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.phone-inputs input,
+.verify-section input {
+  flex: 8;
+}
+
+.pass-check-button {
+  flex: 2;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #00334f;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.pass-check-button:hover {
+  background-color: #01659b;
+}
+

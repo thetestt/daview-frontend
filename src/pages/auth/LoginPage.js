@@ -10,10 +10,6 @@ function LoginPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleKakaoLogin = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=REST_API_KEY&redirect_uri=REDIRECT_URI&response_type=code`;
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("로그인 버튼 눌림");
@@ -31,12 +27,16 @@ function LoginPage() {
         const token = response.data.token;
         const decoded = jwtDecode(token);
 
+        console.log("로그인 응답", response.data);
+        console.log("토큰 디코딩 결과", decoded);
+
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role);
         localStorage.setItem("memberId", decoded.memberId);
 
-        window.dispatchEvent(new Event("storage"));
+        // 헤더 컴포넌트에게 로그인 상태 변경을 알리기 위해 커스텀 이벤트 발생
+        window.dispatchEvent(new Event('loginStatusChanged'));
 
         console.log("로그인 성공!");
         console.log("토큰:", token);
@@ -44,16 +44,41 @@ function LoginPage() {
 
         // const role = decoded.role.toLowerCase();
         const role = decoded.role ? decoded.role.toLowerCase() : "";
+        
+        // ROLE_ 접두사 제거 (더 안전한 방식)
+        let cleanRole = role;
+        if (role === "role_admin") cleanRole = "admin";
+        else if (role === "role_user") cleanRole = "user";
+        else if (role === "role_company") cleanRole = "company";
+        else if (role === "role_caregiver") cleanRole = "caregiver";
+        else if (role === "role_silvertown") cleanRole = "silvertown";
+        else if (role === "role_nursinghome") cleanRole = "nursinghome";
+        // 기존 형태는 그대로 유지
+        else cleanRole = role;
+        
+        console.log("=== 로그인 후 리다이렉트 디버깅 ===");
+        console.log("원본 role:", decoded.role);
+        console.log("소문자 role:", role);
+        console.log("정리된 role:", cleanRole);
 
-        if (role === "user") {
-          navigate("/");
-        } else if (role === "company") {
-          navigate("/company/main");
-        } else if (role === "caregiver") {
-          navigate("/caregiver/main");
-        } else if (role === "admin") {
-          navigate("/admin");
+        if (cleanRole === "user") {
+          console.log("USER로 리다이렉트");
+          window.location.href = "/";
+        } else if (cleanRole === "company") {
+          console.log("COMPANY로 리다이렉트");
+          window.location.href = "/company/main";
+        } else if (cleanRole === "caregiver") {
+          console.log("CAREGIVER로 리다이렉트");
+          window.location.href = "/caregiver/main";
+        } else if (cleanRole === "admin") {
+          console.log("ADMIN으로 리다이렉트 - /admin으로 이동");
+          window.location.href = "/admin";
+        } else {
+          console.log("알 수 없는 역할:", cleanRole);
         }
+        
+        console.log("navigate 함수 실행 완료");
+        console.log("=== 디버깅 끝 ===");
       } else {
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");
         alert("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
@@ -89,18 +114,6 @@ function LoginPage() {
             <button type="submit" className={styles["login-button"]}>
               로그인
             </button>
-
-            <button
-              type="button"
-              onClick={handleKakaoLogin}
-              className="kakao-login-button"
-            >
-              카카오로 로그인하기
-            </button>
-
-            <div className={styles["kakao-login"]}>
-              카카오로 로그인 시 자동 회원가입 처리됩니다.
-            </div>
 
             {errorMsg && <p className={styles["error-message"]}>{errorMsg}</p>}
           </form>

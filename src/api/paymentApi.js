@@ -60,3 +60,4 @@ export const applyCoupon = async (couponId) => {
   });
   return response.data;
 };
+
