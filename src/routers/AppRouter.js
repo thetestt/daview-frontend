@@ -58,23 +58,56 @@ const AppRouter = () => {
     const token = localStorage.getItem("token");
     const currentPath = window.location.pathname;
 
+    console.log("=== AppRouter useEffect 디버깅 ===");
+    console.log("현재 경로:", currentPath);
+    console.log("토큰 존재 여부:", !!token);
+
     if (token && currentPath === "/login") {
       try {
         const decoded = jwtDecode(token);
         const isExpired = decoded.exp * 1000 < Date.now();
+        console.log("토큰 만료 여부:", isExpired);
+        console.log("디코딩된 role:", decoded.role);
+        
         if (!isExpired) {
           const role = decoded.role.toLowerCase();
+          
+          // ROLE_ 접두사 제거 (더 안전한 방식)
+          let cleanRole = role;
+          if (role === "role_admin") cleanRole = "admin";
+          else if (role === "role_user") cleanRole = "user";
+          else if (role === "role_company") cleanRole = "company";
+          else if (role === "role_caregiver") cleanRole = "caregiver";
+          else if (role === "role_silvertown") cleanRole = "silvertown";
+          else if (role === "role_nursinghome") cleanRole = "nursinghome";
+          // 기존 형태는 그대로 유지
+          else cleanRole = role;
+          
+          console.log("소문자 role:", role);
+          console.log("정리된 role:", cleanRole);
 
-          if (role === "admin") navigate("/admin");
-          else if (role === "silvertown") navigate("/silvertown/main");
-          else if (role === "caregiver") navigate("/caregiver/main");
-          else if (role === "nursinghome") navigate("/nursinghome/main");
-          else if (role === "user") navigate("/");
+          if (cleanRole === "admin") {
+            console.log("AppRouter에서 ADMIN으로 리다이렉트");
+            navigate("/admin");
+          } else if (cleanRole === "silvertown") {
+            console.log("AppRouter에서 SILVERTOWN으로 리다이렉트");
+            navigate("/silvertown/main");
+          } else if (cleanRole === "caregiver") {
+            console.log("AppRouter에서 CAREGIVER로 리다이렉트");
+            navigate("/caregiver/main");
+          } else if (cleanRole === "nursinghome") {
+            console.log("AppRouter에서 NURSINGHOME으로 리다이렉트");
+            navigate("/nursinghome/main");
+          } else if (cleanRole === "user") {
+            console.log("AppRouter에서 USER로 리다이렉트");
+            navigate("/");
+          }
         }
       } catch (e) {
         console.error("토큰 디코딩 실패", e);
       }
     }
+    console.log("=== AppRouter useEffect 끝 ===");
   }, [navigate]);
 
   return (
