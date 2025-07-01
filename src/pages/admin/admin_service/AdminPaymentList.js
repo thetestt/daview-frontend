@@ -219,7 +219,11 @@ const AdminPaymentList = () => {
           <thead>
             <tr>
               <th>결제ID</th>
+              <th>PG결제ID</th>
+              <th>주문번호</th>
+              <th>회원ID</th>
               <th>고객명</th>
+              <th>회원번호</th>
               <th>회원명</th>
               <th>상품명</th>
               <th>결제금액</th>
@@ -232,13 +236,13 @@ const AdminPaymentList = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="9" className={styles['loading-cell']}>
+                <td colSpan="13" className={styles['loading-cell']}>
                   <div className={styles['loading-spinner']}>데이터를 불러오는 중...</div>
                 </td>
               </tr>
             ) : payments.length === 0 ? (
               <tr>
-                <td colSpan="9" className={styles['empty-cell']}>
+                <td colSpan="13" className={styles['empty-cell']}>
                   결제 내역이 없습니다.
                 </td>
               </tr>
@@ -248,7 +252,11 @@ const AdminPaymentList = () => {
                   <td className={styles['payment-id']}>
                     {payment.pymId || payment.paymentId}
                   </td>
+                  <td>{payment.impUid || '-'}</td>
+                  <td>{payment.merchantUid || '-'}</td>
+                  <td>{payment.memberId || '-'}</td>
                   <td>{payment.customerName || payment.custNm || '-'}</td>
+                  <td>{payment.customerPhone || payment.custTel || '-'}</td>
                   <td>{payment.memberName || '-'}</td>
                   <td>{payment.productName || '직접 결제'}</td>
                   <td className={styles['amount']}>

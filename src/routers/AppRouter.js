@@ -46,6 +46,7 @@ import AdminUserList from "../pages/admin/admin_service/AdminUserList"; //관리
 import AdminReservationList from "../pages/admin/admin_service/AdminReservationList"; //관리자 예약 목록
 import AdminPaymentList from '../pages/admin/admin_service/AdminPaymentList';
 import AdminReviewList from '../pages/admin/admin_service/AdminReviewList'; //관리자 후기 목록
+import AdminNoticeList from '../pages/admin/admin_service/AdminNoticeList'; //관리자 공지사항 목록
 
 //import Header from "../components/Header"; 헤더  APP.js에 있어서 주석처리.
 import ChatList from "../pages/ChatList";
@@ -203,6 +204,7 @@ const AppRouter = () => {
           <Route path="reservations" element={<AdminReservationList />} />
           <Route path="payments" element={<AdminPaymentList />} />
           <Route path="reviews" element={<AdminReviewList />} />
+          <Route path="notices" element={<AdminNoticeList />} />
         </Route>
       </Routes>
     </>
