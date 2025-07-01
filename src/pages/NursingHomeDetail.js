@@ -8,6 +8,7 @@ import FloatingNavButtons from "../components/FloatingNavButtons";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
 import ChatButton from "../components/common/ChatButton";
+import NaverMap from "../components/common/NaverMap";
 
 function NursingHomeDetail() {
   const { id } = useParams();
@@ -22,6 +23,8 @@ function NursingHomeDetail() {
   }, [id]);
 
   if (!data) return <div>Loading...</div>;
+
+  const address = `${data.facilityAddressLocation} ${data.facilityAddressCity}${data.facilityDetailAddress}`;
 
   return (
     <>
@@ -55,7 +58,7 @@ function NursingHomeDetail() {
                 <CartButton data={data} productType="nursinghome" />
               </div>
             </div>
-            <div className={styles["map-box"]}>[지도 API]</div>
+            <NaverMap className={styles["map-box"]} address={address} />
           </div>
 
           <div className={styles["thumbnail-box"]}>
