@@ -57,12 +57,14 @@ const SiteNoticeBanner = () => {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation(); // 배너 클릭 이벤트 방지
     setSessionClosed(true);
     setIsVisible(false);
   };
 
-  const handleHideToday = () => {
+  const handleHideToday = (e) => {
+    e.stopPropagation(); // 배너 클릭 이벤트 방지
     setIsVisible(false);
     // 오늘 날짜를 localStorage에 저장하여 24시간 동안 숨김
     const today = new Date().toDateString();
@@ -73,7 +75,8 @@ const SiteNoticeBanner = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = (e) => {
+    e.stopPropagation(); // 배너 클릭 이벤트 방지
     setIsSliding(true);
     setTimeout(() => {
       setCurrentIndex(currentIndex === 0 ? notices.length - 1 : currentIndex - 1);
@@ -81,7 +84,8 @@ const SiteNoticeBanner = () => {
     }, 300);
   };
 
-  const goToNext = () => {
+  const goToNext = (e) => {
+    e.stopPropagation(); // 배너 클릭 이벤트 방지
     setIsSliding(true);
     setTimeout(() => {
       setCurrentIndex(currentIndex === notices.length - 1 ? 0 : currentIndex + 1);
@@ -97,7 +101,7 @@ const SiteNoticeBanner = () => {
 
   return (
     <div className={styles['notice-banner']}>
-      <div className={styles['banner-content']}>
+      <div className={styles['banner-content']} onClick={handleNoticeClick}>
         {/* 공지사항 아이콘 */}
         <div className={styles['notice-icon']}>
           📢
@@ -107,7 +111,6 @@ const SiteNoticeBanner = () => {
         <div className={styles['slide-container']}>
           <div 
             className={`${styles['notice-content']} ${isSliding ? styles['sliding'] : ''}`}
-            onClick={handleNoticeClick}
           >
             <span className={styles['notice-title']}>
               {currentNotice.title}
@@ -125,7 +128,7 @@ const SiteNoticeBanner = () => {
 
         {/* 네비게이션 버튼 */}
         {notices.length > 1 && (
-          <div className={styles['nav-buttons']}>
+          <div className={styles['nav-buttons']} onClick={(e) => e.stopPropagation()}>
             <button 
               className={styles['nav-btn']}
               onClick={goToPrevious}
@@ -167,7 +170,7 @@ const SiteNoticeBanner = () => {
       
       {/* 펼쳐지는 내용 영역 */}
       {isExpanded && (
-        <div className={styles['expanded-content']}>
+        <div className={styles['expanded-content']} onClick={handleNoticeClick}>
           <div className={styles['expanded-inner']}>
             <h3 className={styles['expanded-title']}>{currentNotice.title}</h3>
             <p className={styles['expanded-text']}>{currentNotice.content}</p>

@@ -2,12 +2,12 @@
 .notice-banner {
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, #00334f, #004a6b);
-  color: white;
+  background: #f8fafb;
+  color: #333;
   padding: 6px 0;
-  box-shadow: 0 2px 8px rgba(0, 51, 79, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* 배너 내용 컨테이너 */
@@ -19,6 +19,16 @@
   margin: 0 auto;
   padding: 0 20px;
   gap: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.banner-content:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.banner-content:active {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* 공지사항 아이콘 */
@@ -54,15 +64,13 @@
 .notice-content {
   display: flex;
   flex-direction: row;
-  cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
   gap: 8px;
   align-items: center;
-}
-
-.notice-content:hover {
-  opacity: 0.9;
+  padding: 4px 8px;
+  border-radius: 8px;
+  pointer-events: none; /* 개별 클릭 이벤트 비활성화 */
 }
 
 .notice-content.sliding {
@@ -74,8 +82,8 @@
 .notice-title {
   font-weight: 700;
   font-size: 14px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: #333;
+  text-shadow: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,7 +92,7 @@
 
 .notice-title::after {
   content: " | ";
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(51, 51, 51, 0.6);
   font-weight: 400;
   margin: 0 4px;
 }
@@ -92,7 +100,7 @@
 /* 공지사항 미리보기 */
 .notice-preview {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(51, 51, 51, 0.8);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -103,7 +111,7 @@
 /* 펼쳐지기 화살표 */
 .expand-arrow {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(51, 51, 51, 0.7);
   margin-left: 8px;
   transition: transform 0.2s ease;
 }
@@ -114,13 +122,14 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  pointer-events: auto; /* 버튼 클릭 활성화 */
 }
 
 /* 네비게이션 버튼 */
 .nav-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  color: white;
+  color: #333;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -134,7 +143,7 @@
 }
 
 .nav-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   transform: scale(1.1);
 }
 
@@ -145,17 +154,17 @@
 /* 페이지 인디케이터 */
 .page-indicator {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(51, 51, 51, 0.8);
   margin: 0 4px;
   font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 /* 오늘은 보지않기 버튼 */
 .hide-today-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  color: white;
+  color: #333;
   padding: 6px 12px;
   border-radius: 16px;
   cursor: pointer;
@@ -166,10 +175,11 @@
   backdrop-filter: blur(4px);
   white-space: nowrap;
   margin-right: 8px;
+  pointer-events: auto; /* 버튼 클릭 활성화 */
 }
 
 .hide-today-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
 }
 
@@ -179,9 +189,9 @@
 
 /* 닫기 버튼 */
 .close-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  color: white;
+  color: #333;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -194,10 +204,11 @@
   transition: all 0.2s ease;
   flex-shrink: 0;
   backdrop-filter: blur(4px);
+  pointer-events: auto; /* 버튼 클릭 활성화 */
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   transform: scale(1.1);
 }
 
@@ -266,6 +277,31 @@
   .slide-container {
     height: 26px;
   }
+  
+  /* 확장 배너 모바일 스타일 */
+  .expanded-content {
+    height: 220px; /* 모바일에서는 조금 더 작은 고정 높이 */
+  }
+  
+  .expanded-inner {
+    padding: 20px 15px;
+  }
+  
+  .expanded-title {
+    font-size: 18px;
+    margin: 0 0 12px 0;
+  }
+  
+  .expanded-text {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    padding-right: 8px;
+  }
+  
+  .expanded-date {
+    font-size: 12px;
+  }
 }
 
 /* 애니메이션 효과 */
@@ -284,9 +320,9 @@
   }
 }
 
-/* 호버 시 그라데이션 효과 */
+/* 호버 시 배경 효과 */
 .notice-banner:hover {
-  background: linear-gradient(135deg, #004a6b, #005b82);
+  background: #f0f3f4;
 }
 
 /* 배너 숨김 애니메이션 */
@@ -307,47 +343,92 @@
 
 /* 펼쳐지는 내용 영역 */
 .expanded-content {
-  background: linear-gradient(135deg, #004a6b, #003550);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f2f6f7;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   animation: expandDown 0.3s ease-out;
   overflow: hidden;
+  height: 250px; /* 고정 높이 설정 */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.expanded-content:hover {
+  background: #eef2f3;
+}
+
+.expanded-content:active {
+  background: #e8eef0;
 }
 
 .expanded-inner {
-  padding: 20px;
+  padding: 30px 20px;
   max-width: 1200px;
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .expanded-title {
-  color: white;
-  font-size: 18px;
+  color: #333;
+  font-size: 20px;
   font-weight: 700;
-  margin: 0 0 12px 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin: 0 0 15px 0;
+  text-shadow: none;
+  flex-shrink: 0;
 }
 
 .expanded-text {
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 14px;
-  line-height: 1.6;
+  color: rgba(51, 51, 51, 0.9);
+  font-size: 15px;
+  line-height: 1.7;
   margin: 0 0 15px 0;
   white-space: pre-wrap;
+  flex: 1;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 8px;
+}
+
+/* 텍스트 영역 스크롤바 스타일링 */
+.expanded-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.expanded-text::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.expanded-text::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.expanded-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .expanded-date {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 13px;
   text-align: right;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 @keyframes expandDown {
   from {
-    max-height: 0;
+    transform: translateY(-20px);
     opacity: 0;
   }
   to {
-    max-height: 500px;
+    transform: translateY(0);
     opacity: 1;
   }
 }
