@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PayButton from "./PayButton";
+import { getMyCoupons } from "../api/paymentApi";
 
 function Payment() {
   const location = useLocation();
@@ -10,6 +11,9 @@ function Payment() {
   const totalPrice = location.state?.totalPrice || 0;
   const [loading, setLoading] = useState(true);
   const [isAgreed, setIsAgreed] = useState(false);
+  const [coupons, setCoupons] = useState([]);
+  const [selectedCouponId, setSelectedCouponId] = useState(null);
+  const [discount, setDiscount] = useState(0);
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -25,6 +29,16 @@ function Payment() {
       return;
     }
 
+    const fetchCoupons = async () => {
+      try {
+        const data = await getMyCoupons();
+        setCoupons(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCoupons();
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -38,6 +52,18 @@ function Payment() {
       [name]: value,
     }));
   };
+
+  const handleCouponChange = (e) => {
+    const selectedId = Number(e.target.value);
+    setSelectedCouponId(selectedId);
+
+    const selected = coupons.find((c) => c.couponId === selectedId);
+    setDiscount(selected?.discount ?? 0);
+  };
+
+  const discountedPrice = discount
+    ? Math.floor(totalPrice * (1 - discount / 100))
+    : totalPrice;
 
   const filteredReservations = reservations.filter(
     (reservation) => reservation.rsvType === 1 && reservation.rsvType !== 3
@@ -125,7 +151,9 @@ function Payment() {
               <label>상담 예정일 *</label>
               <input
                 type="date"
-                max={new Date().toISOString().split("T")[0]}
+                min={
+                  new Date(Date.now() + 86400000).toISOString().split("T")[0]
+                }
                 name="consultDate"
                 value={userInfo.consultDate}
                 onChange={handleChange}
@@ -155,7 +183,31 @@ function Payment() {
               결제에 동의합니다.
             </label>
             <div>
-              <strong>총 결제 금액: {totalPrice.toLocaleString()} 원</strong>
+              <br />
+              <strong>상품 금액: {totalPrice.toLocaleString()}원</strong>
+            </div>
+            <div style={{ marginTop: "30px" }}>
+              <label>사용할 쿠폰 선택:</label>
+              <select
+                value={selectedCouponId || ""}
+                onChange={handleCouponChange}
+                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+              >
+                <option value="">-- 쿠폰 선택 안함 --</option>
+                {coupons
+                  .filter((coupon) => !coupon.used)
+                  .map((coupon) => (
+                    <option key={coupon.couponId} value={coupon.couponId}>
+                      {coupon.description} (-{" "}
+                      {coupon.discount != null ? coupon.discount : 0}% 할인)
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div>
+              <strong>
+                총 결제 금액: {discountedPrice.toLocaleString()}원
+              </strong>
             </div>
           </div>
           <div style={{ textAlign: "center", marginTop: "20px" }}>
@@ -173,10 +225,11 @@ function Payment() {
             </button>
             <PayButton
               reservations={reservations}
-              totalPrice={totalPrice}
+              totalPrice={discountedPrice}
               userInfo={userInfo}
               memberId={memberId}
               isAgreed={isAgreed}
+              selectedCouponId={selectedCouponId}
             />
           </div>
         </>
