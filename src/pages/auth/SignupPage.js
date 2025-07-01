@@ -38,10 +38,19 @@ function SignupPage() {
   };
 
   const checkUsername = async () => {
+
+    const usernameRegex = /^[a-z0-9]{4,16}$/;
+
     if (!username) {
       alert("아이디를 입력해주세요.");
       return;
     }
+    
+    if (!usernameRegex.test(username)) {
+      alert("아이디는 영문 소문자와 숫자 조합 4~16자로 입력해주세요.");
+      return;
+    }
+
     try {
       const res = await axios.get(`http://localhost:8080/api/auth/check-username?username=${username}`);
       if (res.data === true) {
@@ -87,7 +96,7 @@ function SignupPage() {
   
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();      
 
     const nameRegex = /^[가-힣]{1,7}$/;
     if (!nameRegex.test(name)) {
@@ -129,8 +138,7 @@ function SignupPage() {
     if (!name || !phone) {
       alert("이름과 전화번호를 모두 입력해주세요.");
       return;
-    }
-    
+    }  
 
     const email = `${emailId}@${emailDomain}`;
 
@@ -172,6 +180,9 @@ function SignupPage() {
         </select> <br /><br />
 
         <label>아이디</label>
+        <p className={styles["terms-content"]}>
+          아이디는 영문 소문자와 숫자 조합 4~16자로 입력해야 합니다.
+        </p>
         <div className={styles["username-check-wrapper"]}>
           <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" />
           <button type="button" className={styles["username-check-button"]} onClick={checkUsername}>중복 확인</button>
