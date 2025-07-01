@@ -40,6 +40,7 @@ function ReviewWrite() {
     try {
       await createReview(review);
       alert("후기가 작성되었습니다.");
+      navigate("/review-board");
     } catch (error) {
       console.error("후기 작성 실패: ", error);
       alert("후기 작성 실패");
