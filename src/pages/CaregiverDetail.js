@@ -7,6 +7,7 @@ import FloatingNavButtons from "../components/FloatingNavButtons";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
 import ChatButton from "../components/common/ChatButton";
+import NaverMap from "../components/common/NaverMap";
 
 function CaregiverDetail() {
   const navigate = useNavigate();
@@ -21,18 +22,12 @@ function CaregiverDetail() {
       .catch((err) => console.error("❌ 요양사 불러오기 실패:", err));
   }, [id]);
 
-  // // ✅ 간이 채팅 연결용 - 추후 chatroom API 연동 예정
-  // const handleChat = () => {
-  //   // 예시: 현재 로그인 사용자 (실제 구현 시 context에서 가져올 예정)
-  //   // const senderId = currentUser.memberId;
-  //   // const receiverId = data.memberId;
-
-  //   // 지금은 목 채팅방 ID 사용
-  //   navigate("/chat/room123");
-  // };
+  console.log("🔥 디테일 data:", { data });
 
   if (!data) return <div>Loading...</div>;
   const genderKey = data.userGender?.toLowerCase?.();
+
+  const address = `${data.hopeWorkAreaLocation} ${data.hopeWorkAreaCity}`;
 
   return (
     <>
@@ -83,7 +78,7 @@ function CaregiverDetail() {
                 <CartButton data={data} productType="caregiver" />
               </div>
             </div>
-            <div className={styles["map-box"]}>[지도 API]</div>
+            <NaverMap className={styles["map-box"]} address={address} />
           </div>
 
           <div className={styles["career-section"]}>
