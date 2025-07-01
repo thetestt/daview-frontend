@@ -104,6 +104,14 @@ const MyPage = () => {
       } catch (err) {
         console.error("쿠폰 불러오기 실패:", err);
       }
+
+      try {
+        const res = await axios.get(`/api/review/member/${memberId}`);
+        setReviews(res.data ?? []);
+      } catch (err) {
+        console.error("내 후기 불러오기 실패:", err);
+      }
+      
     };
 
     handleLoadProfile();
@@ -132,7 +140,9 @@ const MyPage = () => {
                 1:1 문의
               </button>
             </li>
-            <li>내가 쓴 후기</li>
+            <li>
+              <Link to="/mypage/myprofile/myreview">내가 쓴 후기</Link>
+            </li>
             <li>
               <Link to="/mypage/wishlist">나의 찜 목록</Link>
             </li>
