@@ -14,6 +14,7 @@ const PayButton = ({
   memberId,
   isAgreed,
   selectedCouponId,
+  couponDiscount,
 }) => {
   const navigate = useNavigate();
 
@@ -74,6 +75,7 @@ const PayButton = ({
               pymStatus: 2,
               pymMethod: rsp.pay_method,
               pymNum: rsp.apply_num,
+              couponDiscount: couponDiscount,
             });
 
             const updated = result?.data ?? result;

@@ -111,6 +111,9 @@ const PaymentList = () => {
                   ? "결제대기"
                   : "기타"}
               </div>
+              <div>
+                쿠폰 할인 금액: {payment.couponDiscount?.toLocaleString()} 원
+              </div>
               <div>총 결제금액: {payment.pymPrice?.toLocaleString()} 원</div>
 
               <h4 style={{ marginTop: "15px" }}>주문 상품 정보</h4>
