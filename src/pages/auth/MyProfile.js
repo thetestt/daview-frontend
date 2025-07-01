@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import styles from "../../styles/auth/MyProfile.module.css";
-import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { useNavigate } from "react-router-dom";
+import styles from "../../styles/auth/MyProfile.module.css";
 
 const MyProfile = () => {
   const [profile, setProfile] = useState({
@@ -12,33 +10,47 @@ const MyProfile = () => {
     phone: "",
   });
 
-  const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
-
-
   const [agreeSms, setAgreeSms] = useState(false);
   const [agreeEmail, setAgreeEmail] = useState(false);
   const [agreePush, setAgreePush] = useState(false);
 
+  const [profileImage, setProfileImage] = useState("/uploads/profile/default-profile.png");
+  const [showMenu, setShowMenu] = useState(false);
 
   const maskName = (name) => {
     if (!name) return "";
-    if (name.length === 2) {
-      return name[0] + "*";
-    }
-    if (name.length >= 3) {
-      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
-    }
+    if (name.length === 2) return name[0] + "*";
+    if (name.length >= 3) return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
     return name;
   };
 
   const maskPhone = (phone) => {
     if (!phone) return "";
     const parts = phone.split("-");
-    if (parts.length === 3) {
-      return `${parts[0]}-****-${parts[2]}`;
-    }
+    if (parts.length === 3) return `${parts[0]}-****-${parts[2]}`;
     return phone;
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("memberId", localStorage.getItem("memberId"));
+
+      try {
+        await axios.post("/api/mypage/profile-image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const reader = new FileReader();
+        reader.onload = () => setProfileImage(reader.result);
+        reader.readAsDataURL(file);
+      } catch (err) {
+        console.error("이미지 업로드 실패", err);
+        alert("이미지 업로드에 실패했습니다.");
+      }
+    }
   };
 
   const handleMarketingToggle = (type, value) => {
@@ -50,43 +62,37 @@ const MyProfile = () => {
 
     axios.patch("/api/mypage/account/marketing", payload)
       .then(() => {
-        console.log(`[${type}] 마케팅 동의 변경 완료`);
-        if (type === "sms") {
-          setAgreeSms(value);
-          alert(value ? "SMS 수신에 동의하셨습니다." : "SMS 수신을 거부하셨습니다.");
-        }
-        if (type === "email") {
-          setAgreeEmail(value);
-          alert(value ? "Email 수신에 동의하셨습니다." : "Email 수신을 거부하셨습니다.");
-        }
-        if (type === "push") {
-          setAgreePush(value);
-          alert(value ? "Push 알림 수신에 동의하셨습니다." : "Push 알림 수신을 거부하셨습니다.");
-        }
+        if (type === "sms") setAgreeSms(value);
+        if (type === "email") setAgreeEmail(value);
+        if (type === "push") setAgreePush(value);
+        alert(`${type.toUpperCase()} ${value ? "수신 동의" : "수신 거부"} 처리되었습니다.`);
       })
-      .catch(err => {
-        console.error(`[${type}] 동의 변경 실패`, err);
+      .catch((err) => {
+        console.error("마케팅 동의 변경 실패", err);
         alert("마케팅 동의 변경 실패");
       });
   };
 
-
   useEffect(() => {
+    const memberId = localStorage.getItem("memberId");
 
+    // 프로필 이미지 가져오기
+    axios.get(`/api/mypage/profile-image/${memberId}`)
+      .then((res) => setProfileImage(res.data))
+      .catch(() => setProfileImage("/uploads/profile/default-profile.png"));
+
+    // 사용자 정보 가져오기
     const token = localStorage.getItem("token");
     if (!token) return;
 
     axios.get("/api/mypage/profile", {
-      headers: { Authorization: `Bearer ${token}`, },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
-        console.log("프로필 응답", res.data);
         setProfile(res.data);
-
         setAgreeSms(res.data.agreeSms ?? false);
         setAgreeEmail(res.data.agreeEmail ?? false);
         setAgreePush(res.data.agreePush ?? false);
-
       })
       .catch((err) => console.error("프로필 가져오기 실패:", err));
   }, []);
@@ -94,25 +100,51 @@ const MyProfile = () => {
   return (
     <div className={styles["mypage-container"]}>
       <h1 className={styles["myprofile-title"]}>내 정보</h1>
-
       <div className={styles["myprofile-right"]}>
         <div className={styles["profile-box"]}>
           <h2 className={styles["profile-title"]}>회원정보 수정</h2>
           <div className={styles["profile-item"]}>
+            <div className={styles["profile-image-section"]}>
+              <div className={styles.profileCircle}>
+                <img src={profileImage} alt="프로필 이미지" />
+              </div>
+              <div className={styles["image-overlay"]}>
+                <button
+                  className={styles["add-btn"]}
+                  onClick={() => setShowMenu(!showMenu)}
+                >+</button>
+                {showMenu && (
+                  <div className={styles["image-menu"]}>
+                    <button onClick={() => setProfileImage("/uploads/profile/default-profile.png")}>기본 이미지로</button>
+                    <label>
+                      <span>이미지 업로드</span>
+                      <input type="file" accept="image/*" onChange={handleImageChange} hidden />
+                    </label>
+                  </div>
+                )}
+              </div>
+            </div>
             <label>사용자 아이디</label>
             <div className={styles["value"]}>{profile.username}</div>
-            <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
-              state: { username: profile.username } })}>변경</button>
+            <button
+              className={styles["mod-btn"]}
+              onClick={() => navigate("/mypage/ChangeIdPage", {
+                state: { username: profile.username }
+              })}
+            >변경</button>
           </div>
+
           <div className={styles["profile-item"]}>
             <label>사용자 이름</label>
             <div className={styles["value"]}>{maskName(profile.name)}</div>
           </div>
+
           <div className={styles["profile-item"]}>
             <label>사용자 전화번호</label>
             <div className={styles["value"]}>{maskPhone(profile.phone)}</div>
           </div>
         </div>
+
         <br />
 
         <div
@@ -182,6 +214,7 @@ const MyProfile = () => {
         </div>
 
         <br />
+
         <div
           className={styles["profile-box"]}
           onClick={() =>
@@ -196,8 +229,6 @@ const MyProfile = () => {
       </div>
     </div>
   );
-
 };
 
 export default MyProfile;
-
