@@ -105,6 +105,14 @@ const AdminSidebar = ({ isCollapsed }) => {
                 }}>
                   <NavLink to="/admin/notices" style={navStyle}>공지사항 관리</NavLink>
                 </li>
+                <li style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  width: '100%',
+                  clear: 'both'
+                }}>
+                  <NavLink to="/admin/inquiries" style={navStyle}>1:1 문의관리</NavLink>
+                </li>
               </ul>
             </div>
 
