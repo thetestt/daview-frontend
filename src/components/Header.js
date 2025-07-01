@@ -63,10 +63,13 @@ function Header() {
 
     // storage 이벤트 리스너
     window.addEventListener("storage", handleStorageChange);
+    // 로그인 상태 변경 커스텀 이벤트 리스너 추가
+    window.addEventListener("loginStatusChanged", handleStorageChange);
     handleStorageChange(); // 최초 1회 실행
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("loginStatusChanged", handleStorageChange);
     };
   }, []);
 
@@ -149,12 +152,23 @@ function Header() {
           {username ? (
             <div className={styles["user-actions"]}>
               <span>{username}님</span>
-              <Link to="/mypage">마이페이지</Link>
-              <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
-              {userRole && userRole.toLowerCase().includes("admin") && (
-                <Link to="/admin" className={styles["admin-link"]}>
-                  관리자 페이지
-                </Link>
+              
+              {/* 관리자는 관리자 페이지만 표시 */}
+              {userRole && userRole.toLowerCase().includes("admin") ? (
+                <Link to="/admin">관리자 페이지</Link>
+              ) : (
+                <>
+                  <Link to="/mypage">마이페이지</Link>
+                  
+                  {/* role에 따라 다른 버튼 표시 */}
+                  {userRole && (userRole.toLowerCase() === "role_caregiver" || userRole.toLowerCase().includes("caregiver")) ? (
+                    <Link to="/caregiver/main">요양사페이지</Link>
+                  ) : userRole && (userRole.toLowerCase() === "role_company" || userRole.toLowerCase().includes("company")) ? (
+                    <Link to="/company/main">기업페이지</Link>
+                  ) : (
+                    <Link to={`/reservation/member/${memberId}`}>나의예약</Link>
+                  )}
+                </>
               )}
 
               <span onClick={handleLogout}>로그아웃</span>
