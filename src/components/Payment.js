@@ -69,6 +69,8 @@ function Payment() {
     (reservation) => reservation.rsvType === 1 && reservation.rsvType !== 3
   );
 
+  const discountAmount = totalPrice - discountedPrice;
+
   return (
     <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>결제 페이지</h2>
@@ -230,6 +232,7 @@ function Payment() {
               memberId={memberId}
               isAgreed={isAgreed}
               selectedCouponId={selectedCouponId}
+              couponDiscount={discountAmount}
             />
           </div>
         </>
