@@ -257,7 +257,7 @@ const AdminReviewList = () => {
                   </td>
                   <td>
                     <span className={styles["stars-display"]}>
-                      {renderStars(review.revStars)} ({review.revStars})
+                      {renderStars(review.revStars)}
                     </span>
                   </td>
                   <td>{review.revViews || 0}</td>
@@ -380,7 +380,7 @@ const AdminReviewList = () => {
                 <div className={styles["detail-item"]}>
                   <strong>평점:</strong>
                   <span className={styles["stars-display"]}>
-                    {renderStars(selectedReview.revStars)} ({selectedReview.revStars}점)
+                    {renderStars(selectedReview.revStars)}
                   </span>
                 </div>
                 <div className={styles["detail-item"]}>
