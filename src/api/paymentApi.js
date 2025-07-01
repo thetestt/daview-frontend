@@ -41,3 +41,23 @@ export const getRefundedPaymentsByMemberId = async (memberId) => {
   const response = await axios.get(`${PAYMENT_API}/refunds/${memberId}`);
   return response.data;
 };
+
+export const getMyCoupons = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`/coupon/my`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const applyCoupon = async (couponId) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.post("/coupon/use", null, {
+    params: { couponId },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+

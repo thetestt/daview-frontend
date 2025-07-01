@@ -1,5 +1,9 @@
 import React from "react";
-import { createPayment, mapReservationsToPayment } from "../api/paymentApi";
+import {
+  createPayment,
+  mapReservationsToPayment,
+  applyCoupon,
+} from "../api/paymentApi";
 import { useNavigate } from "react-router-dom";
 import { updateReservationStatus } from "../api/reservationApi";
 
@@ -9,6 +13,7 @@ const PayButton = ({
   userInfo,
   memberId,
   isAgreed,
+  selectedCouponId,
 }) => {
   const navigate = useNavigate();
 
@@ -82,6 +87,10 @@ const PayButton = ({
 
             const rsvIds = reservations.map((rsv) => rsv.rsvId);
             await updateReservationStatus(rsvIds);
+
+            if (selectedCouponId) {
+              await applyCoupon(selectedCouponId);
+            }
 
             alert("결제 완료!");
             navigate("/payment-result", {
