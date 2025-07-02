@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from '../../../styles/admin/AdminInquiryList.module.css';
 
 const AdminInquiryList = () => {
@@ -11,8 +12,9 @@ const AdminInquiryList = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
-  const [showReplyModal, setShowReplyModal] = useState(false);
-  const [replyContent, setReplyContent] = useState('');
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
 
   // 상태 옵션
   const statusOptions = [
@@ -23,44 +25,53 @@ const AdminInquiryList = () => {
     { value: 'closed', label: '닫힘' }
   ];
 
-  // 임시 데이터 (백엔드 API 연동 전)
-  const sampleInquiries = [
-    {
-      id: 1,
-      title: '서비스 이용 관련 문의',
-      memberName: '김철수',
-      category: '이용문의',
-      status: 'pending',
-      createdAt: '2025-01-01T10:30:00',
-      content: '서비스 이용 중 문제가 발생했습니다.',
-      reply: null,
-      repliedAt: null
-    },
-    {
-      id: 2,
-      title: '결제 취소 요청',
-      memberName: '이영희',
-      category: '결제',
-      status: 'completed',
-      createdAt: '2024-12-30T14:20:00',
-      content: '결제 취소를 원합니다.',
-      reply: '결제 취소가 완료되었습니다.',
-      repliedAt: '2024-12-31T09:15:00'
-    }
-  ];
-
-  // 문의 목록 로드 (임시)
+  // 문의 목록 로드
   const loadInquiries = async () => {
     setLoading(true);
     try {
-      // 임시로 샘플 데이터 사용
-      setTimeout(() => {
-        setInquiries(sampleInquiries);
-        setTotalElements(sampleInquiries.length);
-        setLoading(false);
-      }, 500);
+      const response = await axios.get('/api/admin/inquiries', {
+        params: {
+          page: currentPage,
+          size: pageSize,
+          search: searchKeyword.trim() || undefined,
+          status: statusFilter !== 'all' ? statusFilter : undefined
+        }
+      });
+
+      if (response.data) {
+        setInquiries(response.data);
+        setTotalElements(response.data.length); // 실제로는 백엔드에서 총 개수를 별도로 받아야 함
+      }
     } catch (error) {
       console.error('문의 목록 로드 실패:', error);
+      alert('문의 목록을 불러오는데 실패했습니다.');
+      
+      // 에러 발생 시 임시 데이터 사용
+      const sampleInquiries = [
+        {
+          chatroomId: 'room-001',
+          senderName: '김철수',
+          receiverName: '관리자',
+          lastMessage: '서비스 이용 중 문제가 발생했습니다.',
+          lastTime: '2025-01-01 10:30:00',
+          status: 'pending',
+          unreadCount: 2,
+          createdAt: '2025-01-01 10:30:00'
+        },
+        {
+          chatroomId: 'room-002',
+          senderName: '이영희',
+          receiverName: '관리자',
+          lastMessage: '결제 취소를 원합니다.',
+          lastTime: '2024-12-30 14:20:00',
+          status: 'completed',
+          unreadCount: 0,
+          createdAt: '2024-12-30 14:20:00'
+        }
+      ];
+      setInquiries(sampleInquiries);
+      setTotalElements(sampleInquiries.length);
+    } finally {
       setLoading(false);
     }
   };
@@ -72,24 +83,16 @@ const AdminInquiryList = () => {
   };
 
   // 상태 변경
-  const handleStatusChange = async (inquiryId, newStatus) => {
+  const handleStatusChange = async (chatroomId, newStatus) => {
     try {
-      const response = await fetch(`/api/admin/inquiries/${inquiryId}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: newStatus })
+      await axios.put(`/api/admin/inquiries/${chatroomId}/status`, {
+        status: newStatus
       });
 
-      if (response.ok) {
-        alert('상태가 변경되었습니다.');
-        loadInquiries();
-        if (selectedInquiry && selectedInquiry.id === inquiryId) {
-          setSelectedInquiry({ ...selectedInquiry, status: newStatus });
-        }
-      } else {
-        throw new Error('상태 변경 실패');
+      alert('상태가 변경되었습니다.');
+      loadInquiries();
+      if (selectedInquiry && selectedInquiry.chatroomId === chatroomId) {
+        setSelectedInquiry({ ...selectedInquiry, status: newStatus });
       }
     } catch (error) {
       console.error('상태 변경 실패:', error);
@@ -97,38 +100,40 @@ const AdminInquiryList = () => {
     }
   };
 
-  // 답변 작성
-  const handleReply = async () => {
-    if (!replyContent.trim()) {
-      alert('답변 내용을 입력해주세요.');
-      return;
-    }
-
+  // 채팅 메시지 로드
+  const loadChatMessages = async (chatroomId) => {
     try {
-      const response = await fetch(`/api/admin/inquiries/${selectedInquiry.id}/reply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content: replyContent })
+      const adminId = 1; // 실제로는 현재 로그인한 관리자 ID를 사용해야 함
+      const response = await axios.get(`/api/admin/inquiries/${chatroomId}/messages`, {
+        params: { adminId }
       });
 
-      if (response.ok) {
-        alert('답변이 등록되었습니다.');
-        setReplyContent('');
-        setShowReplyModal(false);
-        loadInquiries();
-        
-        // 상세 정보 새로고침
-        if (selectedInquiry) {
-          handleViewDetail(selectedInquiry);
-        }
-      } else {
-        throw new Error('답변 등록 실패');
+      if (response.data) {
+        setChatMessages(response.data);
       }
     } catch (error) {
-      console.error('답변 등록 실패:', error);
-      alert('답변 등록에 실패했습니다.');
+      console.error('채팅 메시지 로드 실패:', error);
+      alert('채팅 메시지를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 관리자 답변 전송
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedInquiry) return;
+
+    try {
+      const adminId = 1; // 실제로는 현재 로그인한 관리자 ID를 사용해야 함
+      await axios.post(`/api/admin/inquiries/${selectedInquiry.chatroomId}/reply`, {
+        adminId,
+        content: newMessage
+      });
+
+      setNewMessage('');
+      loadChatMessages(selectedInquiry.chatroomId); // 메시지 새로고침
+      loadInquiries(); // 목록도 새로고침
+    } catch (error) {
+      console.error('메시지 전송 실패:', error);
+      alert('메시지 전송에 실패했습니다.');
     }
   };
 
@@ -136,6 +141,13 @@ const AdminInquiryList = () => {
   const handleViewDetail = (inquiry) => {
     setSelectedInquiry(inquiry);
     setShowDetailModal(true);
+  };
+
+  // 채팅 열기
+  const handleOpenChat = (inquiry) => {
+    setSelectedInquiry(inquiry);
+    setShowChatModal(true);
+    loadChatMessages(inquiry.chatroomId);
   };
 
   // 페이지 변경
@@ -233,13 +245,13 @@ const AdminInquiryList = () => {
         <table className={styles['inquiry-table']}>
           <thead>
             <tr>
-              <th>번호</th>
-              <th>제목</th>
+              <th>채팅방ID</th>
               <th>작성자</th>
-              <th>문의유형</th>
+              <th>최근 메시지</th>
               <th>상태</th>
-              <th>작성일</th>
-              <th>답변일</th>
+              <th>미읽음</th>
+              <th>생성일</th>
+              <th>최근 활동</th>
               <th>관리</th>
             </tr>
           </thead>
@@ -258,28 +270,39 @@ const AdminInquiryList = () => {
               </tr>
             ) : (
               inquiries.map((inquiry, index) => (
-                <tr key={`inquiry-${inquiry.id || index}`}>
-                  <td>{inquiry.id}</td>
-                  <td className={styles['title-cell']}>
-                    <span 
-                      className={styles['inquiry-title']}
-                      onClick={() => handleViewDetail(inquiry)}
-                    >
-                      {inquiry.title}
+                <tr key={`inquiry-${inquiry.chatroomId || index}`}>
+                  <td>{inquiry.chatroomId}</td>
+                  <td>{inquiry.senderName || '-'}</td>
+                  <td className={styles['message-cell']}>
+                    <span className={styles['message-preview']}>
+                      {inquiry.lastMessage || '메시지 없음'}
                     </span>
                   </td>
-                  <td>{inquiry.memberName || '-'}</td>
-                  <td>{inquiry.category || '일반'}</td>
-                  <td>{getStatusBadge(inquiry.status)}</td>
-                  <td>{formatDate(inquiry.createdAt)}</td>
-                  <td>{inquiry.repliedAt ? formatDate(inquiry.repliedAt) : '-'}</td>
+                  <td>{getStatusBadge(inquiry.status || 'pending')}</td>
                   <td>
-                    <button
-                      className={styles['view-btn']}
-                      onClick={() => handleViewDetail(inquiry)}
-                    >
-                      상세보기
-                    </button>
+                    {inquiry.unreadCount > 0 && (
+                      <span className={styles['unread-badge']}>
+                        {inquiry.unreadCount}
+                      </span>
+                    )}
+                  </td>
+                  <td>{formatDate(inquiry.createdAt)}</td>
+                  <td>{formatDate(inquiry.lastTime)}</td>
+                  <td>
+                    <div className={styles['action-buttons']}>
+                      <button
+                        className={styles['chat-btn']}
+                        onClick={() => handleOpenChat(inquiry)}
+                      >
+                        채팅
+                      </button>
+                      <button
+                        className={styles['view-btn']}
+                        onClick={() => handleViewDetail(inquiry)}
+                      >
+                        상세
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -373,52 +396,38 @@ const AdminInquiryList = () => {
                 <h4>기본 정보</h4>
                 <div className={styles['detail-grid']}>
                   <div className={styles['detail-item']}>
-                    <label>문의 번호:</label>
-                    <span>{selectedInquiry.id}</span>
-                  </div>
-                  <div className={styles['detail-item']}>
-                    <label>제목:</label>
-                    <span>{selectedInquiry.title}</span>
+                    <label>채팅방 ID:</label>
+                    <span>{selectedInquiry.chatroomId}</span>
                   </div>
                   <div className={styles['detail-item']}>
                     <label>작성자:</label>
-                    <span>{selectedInquiry.memberName}</span>
-                  </div>
-                  <div className={styles['detail-item']}>
-                    <label>문의유형:</label>
-                    <span>{selectedInquiry.category || '일반'}</span>
+                    <span>{selectedInquiry.senderName}</span>
                   </div>
                   <div className={styles['detail-item']}>
                     <label>상태:</label>
                     <span>{getStatusBadge(selectedInquiry.status)}</span>
                   </div>
                   <div className={styles['detail-item']}>
-                    <label>작성일:</label>
+                    <label>생성일:</label>
                     <span>{formatDate(selectedInquiry.createdAt)}</span>
+                  </div>
+                  <div className={styles['detail-item']}>
+                    <label>최근 활동:</label>
+                    <span>{formatDate(selectedInquiry.lastTime)}</span>
+                  </div>
+                  <div className={styles['detail-item']}>
+                    <label>미읽음 수:</label>
+                    <span>{selectedInquiry.unreadCount || 0}개</span>
                   </div>
                 </div>
               </div>
 
               <div className={styles['detail-section']}>
-                <h4>문의 내용</h4>
+                <h4>최근 메시지</h4>
                 <div className={styles['content-area']}>
-                  {selectedInquiry.content}
+                  {selectedInquiry.lastMessage || '메시지 없음'}
                 </div>
               </div>
-
-              {selectedInquiry.reply && (
-                <div className={styles['detail-section']}>
-                  <h4>답변 내용</h4>
-                  <div className={styles['reply-area']}>
-                    <div className={styles['reply-meta']}>
-                      답변일: {formatDate(selectedInquiry.repliedAt)}
-                    </div>
-                    <div className={styles['reply-content']}>
-                      {selectedInquiry.reply}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className={styles['modal-footer']}>
@@ -428,7 +437,7 @@ const AdminInquiryList = () => {
                   <select 
                     className={styles['status-select']}
                     value={selectedInquiry.status}
-                    onChange={(e) => handleStatusChange(selectedInquiry.id, e.target.value)}
+                    onChange={(e) => handleStatusChange(selectedInquiry.chatroomId, e.target.value)}
                   >
                     {statusOptions.filter(option => option.value !== 'all').map(option => (
                       <option key={option.value} value={option.value}>
@@ -438,14 +447,15 @@ const AdminInquiryList = () => {
                   </select>
                 </div>
                 
-                {!selectedInquiry.reply && (
-                  <button 
-                    className={styles['reply-btn']}
-                    onClick={() => setShowReplyModal(true)}
-                  >
-                    답변하기
-                  </button>
-                )}
+                <button 
+                  className={styles['chat-btn']}
+                  onClick={() => {
+                    setShowDetailModal(false);
+                    handleOpenChat(selectedInquiry);
+                  }}
+                >
+                  채팅하기
+                </button>
                 
                 <button 
                   className={styles['close-btn']}
@@ -459,46 +469,55 @@ const AdminInquiryList = () => {
         </div>
       )}
 
-      {/* 답변 작성 모달 */}
-      {showReplyModal && (
-        <div className={styles['modal-backdrop']} onClick={() => setShowReplyModal(false)}>
-          <div className={styles['reply-modal-content']} onClick={(e) => e.stopPropagation()}>
+      {/* 채팅 모달 */}
+      {showChatModal && selectedInquiry && (
+        <div className={styles['modal-backdrop']} onClick={() => setShowChatModal(false)}>
+          <div className={styles['chat-modal-content']} onClick={(e) => e.stopPropagation()}>
             <div className={styles['modal-header']}>
-              <h3>답변 작성</h3>
+              <h3>1:1 채팅 - {selectedInquiry.senderName}</h3>
               <button 
                 className={styles['modal-close']}
-                onClick={() => setShowReplyModal(false)}
+                onClick={() => setShowChatModal(false)}
               >
                 ×
               </button>
             </div>
             
-            <div className={styles['modal-body']}>
-              <div className={styles['reply-form']}>
-                <label>답변 내용</label>
-                <textarea
-                  className={styles['reply-textarea']}
-                  value={replyContent}
-                  onChange={(e) => setReplyContent(e.target.value)}
-                  placeholder="답변 내용을 입력해주세요..."
-                  rows={10}
-                />
-              </div>
+            <div className={styles['chat-messages']}>
+              {chatMessages.length === 0 ? (
+                <div className={styles['no-messages']}>메시지가 없습니다.</div>
+              ) : (
+                chatMessages.map((message, index) => (
+                  <div 
+                    key={index}
+                    className={`${styles['message']} ${message.senderId === 1 ? styles['admin-message'] : styles['user-message']}`}
+                  >
+                    <div className={styles['message-content']}>
+                      {message.content}
+                    </div>
+                    <div className={styles['message-time']}>
+                      {formatDate(message.sentAt)}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
-            <div className={styles['modal-footer']}>
+            <div className={styles['chat-input-area']}>
+              <input
+                type="text"
+                className={styles['chat-input']}
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="메시지를 입력하세요..."
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              />
               <button 
-                className={styles['submit-btn']}
-                onClick={handleReply}
-                disabled={!replyContent.trim()}
+                className={styles['send-btn']}
+                onClick={handleSendMessage}
+                disabled={!newMessage.trim()}
               >
-                답변 등록
-              </button>
-              <button 
-                className={styles['cancel-btn']}
-                onClick={() => setShowReplyModal(false)}
-              >
-                취소
+                전송
               </button>
             </div>
           </div>
