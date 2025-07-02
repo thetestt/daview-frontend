@@ -6,7 +6,6 @@ import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { getChatRooms } from "../../api/chat";
 import { useNavigate } from "react-router-dom";
 
-
 const MyPage = () => {
   const [profile, setProfile] = useState({
     username: "",
@@ -20,7 +19,6 @@ const MyPage = () => {
   const [payments, setPayments] = useState([]);
   const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
-
 
   const maskName = (name) => {
     if (!name) return "";
@@ -111,7 +109,6 @@ const MyPage = () => {
       } catch (err) {
         console.error("내 후기 불러오기 실패:", err);
       }
-      
     };
 
     handleLoadProfile();
@@ -147,7 +144,7 @@ const MyPage = () => {
               <Link to="/mypage/wishlist">나의 찜 목록</Link>
             </li>
             <li>
-            <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
+              <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
             </li>
           </ul>
         </div>
@@ -158,8 +155,16 @@ const MyPage = () => {
             <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
-              <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
-              state: { username: profile.username } })}>변경</button>
+              <button
+                className={styles["mod-btn"]}
+                onClick={() =>
+                  navigate("/mypage/ChangeIdPage", {
+                    state: { username: profile.username },
+                  })
+                }
+              >
+                변경
+              </button>
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
