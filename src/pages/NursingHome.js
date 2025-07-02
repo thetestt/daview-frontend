@@ -7,6 +7,9 @@ import FloatingNavButtons from "../components/FloatingNavButtons";
 import NursingHomeSearchResult from "../components/NursingHomeSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
+import { motion } from "framer-motion";
+import heroImage from "../assets/silvertownUp.png"; // 업로드한 상단 이미지
+import backgroundShape from "../assets/mwhite.png"; // 포인트 PNG 배경
 
 function NursingHome() {
   const [isSearch, setIsSearch] = useState(false);
@@ -111,8 +114,20 @@ function NursingHome() {
   return (
     <>
       <FloatingNavButtons />
-      <div className={styles["layout-container"]}>
-        <div className={styles["nursinghome-main"]}>
+
+      <div className={styles["nursinghome-main"]}>
+        {/* 상단 히어로 영역 */}
+        <motion.div
+          className={styles["hero-section"]}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className={styles["hero-image"]}>
+            <img src={heroImage} alt="행복한 노년" />
+          </div>
+        </motion.div>
+        <div className={styles["layout-container"]}>
           {/* 상단 탭 */}
           <div className={styles["tab-menu"]}>
             <Link to="/caregiver">
@@ -126,45 +141,68 @@ function NursingHome() {
 
           {/* 필터 박스 */}
           <div className={styles["filter-box"]}>
-            <h2>요양원</h2>
-            <div className={styles["filter-row"]}>
-              <label>지역</label>
-              <select onChange={handleRegionChange}>
-                <option value="">선택</option>
-                {locationOptions.map((region) => (
-                  <option key={region.id} value={region.name}>
-                    {region.name}
-                  </option>
-                ))}
-              </select>
+            {/* 선택 영역만 흰 배경 */}
+            <div className={styles["selector-row"]}>
+              <div className={styles["select-group"]}>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="지역"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>지역</label>
+                  <select onChange={handleRegionChange}>
+                    <option value="">선택</option>
+                    {locationOptions.map((region) => (
+                      <option key={region.id} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="지역"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>시/군/구</label>
+                  <select
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    value={selectedCity}
+                  >
+                    <option value="">선택</option>
+                    {cityOptions.map((city) => (
+                      <option key={city.id} value={city.name}>
+                        {city.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>시/군/구</label>
-              <select
-                onChange={(e) => setSelectedCity(e.target.value)}
-                value={selectedCity}
-              >
-                <option value="">선택</option>
-                {cityOptions.map((city) => (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
-
-              <label>테마</label>
-              <select
-                onChange={(e) => setSelectedTheme(e.target.value)}
-                value={selectedTheme}
-              >
-                <option value="">선택</option>
-                {themeOptions.map((opt) => (
-                  <option key={opt.optionId} value={opt.value}>
-                    {opt.value}
-                  </option>
-                ))}
-              </select>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/layout.png"
+                    alt="지역"
+                    style={{ width: "20px", marginRight: "-3px" }}
+                  />
+                  <label>테마</label>
+                  <select
+                    onChange={(e) => setSelectedTheme(e.target.value)}
+                    value={selectedTheme}
+                  >
+                    <option value="">선택</option>
+                    {themeOptions.map((opt) => (
+                      <option key={opt.optionId} value={opt.value}>
+                        {opt.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
 
+            {/* 카테고리 필터 – 배경 없음 */}
             <div className={styles["filter-category"]}>
               <div>
                 <strong>업종</strong>
@@ -246,13 +284,15 @@ function NursingHome() {
                 ))}
               </div>
             </div>
-
-            <button
-              className={styles["search-button"]}
-              onClick={handleSearchClick}
-            >
-              검색
-            </button>
+            {/* 검색 버튼 오른쪽 정렬 */}
+            <div className={styles["search-button-wrapper"]}>
+              <button
+                className={styles["search-button"]}
+                onClick={handleSearchClick}
+              >
+                검색
+              </button>
+            </div>
           </div>
 
           {/* 검색 결과 */}

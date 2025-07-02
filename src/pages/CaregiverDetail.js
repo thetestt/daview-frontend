@@ -35,16 +35,16 @@ function CaregiverDetail() {
       <div className={styles["layout-container"]}>
         <div className={styles["detail-container"]}>
           <div className={styles["detail-header"]}>
-            <div>
-              <img
-                src={data.photo || "/images/default.png"}
-                alt="증명사진"
-                className={styles["main-photo"]}
-              />
-            </div>
             <div className={styles["detail-info"]}>
               <h2>
-                <span>{data.name || "이름 미정"}</span>
+                <span>
+                  {" "}
+                  {data.name
+                    ? data.name.length === 2
+                      ? data.name[0] + "*"
+                      : data.name[0] + "*" + data.name.slice(-1)
+                    : "이름 미정"}
+                </span>
                 <span
                   className={`${styles["detail-gender"]} ${
                     genderKey === "male"

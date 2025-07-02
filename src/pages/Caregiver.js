@@ -9,6 +9,7 @@ import CaregiverList from "../components/CaregiverList";
 import CaregiverSearchResult from "../components/CaregiverSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
+import { motion } from "framer-motion";
 
 function Caregiver() {
   const [isSearch, setIsSearch] = useState(false);
