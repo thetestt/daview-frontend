@@ -150,6 +150,32 @@ const AdminPaymentList = () => {
     return new Intl.NumberFormat('ko-KR').format(amount) + '원';
   };
 
+  // 결제방법 포맷
+  const formatPaymentMethod = (method) => {
+    if (!method) return '-';
+    
+    // 결제방법 매핑
+    const methodMap = {
+      'card': '신용카드',
+      '카드': '신용카드', 
+      'PG2': 'PG결제',
+      'bank': '계좌이체',
+      'virtual': '가상계좌',
+      'phone': '휴대폰',
+      'samsung': '삼성페이',
+      'kpay': '케이페이',
+      'payco': '페이코',
+      'lpay': '엘페이',
+      'ssgpay': 'SSG페이',
+      'tosspay': '토스페이',
+      'cultureland': '문화상품권',
+      'smartculture': '스마트문상',
+      'happymoney': '해피머니'
+    };
+    
+    return methodMap[method] || method;
+  };
+
   // 페이지네이션 계산
   const totalPages = Math.ceil(totalElements / pageSize);
   const startPage = Math.floor(currentPage / 10) * 10;
@@ -219,7 +245,11 @@ const AdminPaymentList = () => {
           <thead>
             <tr>
               <th>결제ID</th>
+              <th>PG결제ID</th>
+              <th>주문번호</th>
+              <th>회원ID</th>
               <th>고객명</th>
+              <th>회원번호</th>
               <th>회원명</th>
               <th>상품명</th>
               <th>결제금액</th>
@@ -232,13 +262,13 @@ const AdminPaymentList = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="9" className={styles['loading-cell']}>
+                <td colSpan="13" className={styles['loading-cell']}>
                   <div className={styles['loading-spinner']}>데이터를 불러오는 중...</div>
                 </td>
               </tr>
             ) : payments.length === 0 ? (
               <tr>
-                <td colSpan="9" className={styles['empty-cell']}>
+                <td colSpan="13" className={styles['empty-cell']}>
                   결제 내역이 없습니다.
                 </td>
               </tr>
@@ -248,13 +278,17 @@ const AdminPaymentList = () => {
                   <td className={styles['payment-id']}>
                     {payment.pymId || payment.paymentId}
                   </td>
+                  <td>{payment.impUid || '-'}</td>
+                  <td>{payment.merchantUid || '-'}</td>
+                  <td>{payment.memberId || '-'}</td>
                   <td>{payment.customerName || payment.custNm || '-'}</td>
+                  <td>{payment.customerPhone || payment.custTel || '-'}</td>
                   <td>{payment.memberName || '-'}</td>
                   <td>{payment.productName || '직접 결제'}</td>
                   <td className={styles['amount']}>
                     {formatAmount(payment.amount || payment.pymPrice)}
                   </td>
-                  <td>{payment.paymentMethodName || '-'}</td>
+                  <td>{formatPaymentMethod(payment.paymentMethodName || payment.paymentMethod)}</td>
                   <td>
                     {getStatusBadge(payment.status || payment.pymStatus)}
                   </td>
@@ -408,7 +442,7 @@ const AdminPaymentList = () => {
                   </div>
                   <div className={styles['detail-item']}>
                     <label>결제 방법:</label>
-                    <span>{selectedPayment.paymentMethodName || '-'}</span>
+                    <span>{formatPaymentMethod(selectedPayment.paymentMethodName || selectedPayment.paymentMethod)}</span>
                   </div>
                   <div className={styles['detail-item']}>
                     <label>결제일시:</label>

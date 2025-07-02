@@ -32,7 +32,14 @@ function PaymentResult() {
   if (!pymId) return <div>주문 내역이 없습니다.</div>;
   if (!paymentData) return <div>결제 정보를 불러오는 중...</div>;
 
-  const { merchantUid, pymMethod, pymDate, pymStatus, pymPrice } = paymentData;
+  const {
+    merchantUid,
+    pymMethod,
+    pymDate,
+    pymStatus,
+    pymPrice,
+    couponDiscount,
+  } = paymentData;
 
   return (
     <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
@@ -55,7 +62,8 @@ function PaymentResult() {
         <div></div>
         주문 상태:{" "}
         {pymStatus === 2 ? "결제 완료" : pymStatus === 1 ? "결제 대기" : "기타"}
-        <div>총 경제 금액 : {pymPrice?.toLocaleString()} 원</div>
+        <div>쿠폰 할인 금액: {couponDiscount?.toLocaleString()} 원</div>
+        <div>총 결제 금액 : {pymPrice?.toLocaleString()} 원</div>
       </div>
 
       <h3 style={{ marginTop: "30px" }}>주문 상품 정보</h3>

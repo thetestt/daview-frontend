@@ -20,3 +20,24 @@ export const fetchFilteredCaregivers = async (filters) => {
     throw error;
   }
 };
+
+// 요양사 개인 프로필 관리 API
+export const getCaregiverProfile = async () => {
+  try {
+    const response = await axios.get('/api/caregiver/my-profile');
+    return response.data;
+  } catch (error) {
+    console.error("❌ 요양사 프로필 조회 오류:", error);
+    throw error;
+  }
+};
+
+export const updateCaregiverProfile = async (profileData) => {
+  try {
+    const response = await axios.put('/api/caregiver/my-profile', profileData);
+    return response.data;
+  } catch (error) {
+    console.error("❌ 요양사 프로필 수정 오류:", error);
+    throw error;
+  }
+};

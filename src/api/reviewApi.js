@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const REVIEW_API = "/api/review";
+const COMMENT_API = "/api/review-comments";
 
 export const createReview = async (reviewData) => {
   const response = await axios.post(`${REVIEW_API}`, reviewData);
@@ -36,5 +37,42 @@ export const getReviewByIdForEdit = async (revId) => {
 
 export const updateReview = async (revId, reviewData) => {
   const response = await axios.put(`${REVIEW_API}/${revId}/update`, reviewData);
+  return response.data;
+};
+
+export const getCommentsByReview = async (revId) => {
+  const response = await axios.get(`${COMMENT_API}/review/${revId}`);
+  return response.data;
+};
+
+export const addComment = async (
+  revId,
+  commentText,
+  parentCommentId = null,
+  memberId
+) => {
+  const response = await axios.post(`${COMMENT_API}`, {
+    revId,
+    commentText,
+    parentCommentId,
+    memberId,
+  });
+  return response.data;
+};
+
+export const updateComment = async (commentId, commentText) => {
+  const response = await axios.put(`${COMMENT_API}/${commentId}`, {
+    commentText,
+  });
+  return response.data;
+};
+
+export const deleteComment = async (commentId) => {
+  const response = await axios.put(`${COMMENT_API}/${commentId}/delete`);
+  return response.data;
+};
+
+export const getUserName = async (memberId) => {
+  const response = await axios.get(`${REVIEW_API}/name/${memberId}`);
   return response.data;
 };

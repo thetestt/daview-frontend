@@ -6,6 +6,7 @@ import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { getChatRooms } from "../../api/chat";
 import { useNavigate } from "react-router-dom";
 
+
 const MyPage = () => {
   const [profile, setProfile] = useState({
     username: "",
@@ -19,6 +20,9 @@ const MyPage = () => {
   const [payments, setPayments] = useState([]);
   const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState("/images/default-profile.png");
+
+
 
   const maskName = (name) => {
     if (!name) return "";
@@ -109,6 +113,7 @@ const MyPage = () => {
       } catch (err) {
         console.error("내 후기 불러오기 실패:", err);
       }
+
     };
 
     handleLoadProfile();
@@ -120,7 +125,8 @@ const MyPage = () => {
 
       <div className={styles["mypage-body"]}>
         <div className={styles["mypage-left"]}>
-          <div className={styles["mypage-avatar"]}></div>
+          <div className={styles.profileCircle}>
+            <img src={profileImage} alt="프로필 이미지" /></div>
           <ul className={styles["mypage-menu"]}>
             <li>
               <Link to="/mypage/myprofile">내 정보</Link>
@@ -155,16 +161,9 @@ const MyPage = () => {
             <div className={styles["profile-item"]}>
               <label>사용자 아이디</label>
               <div className={styles["value"]}>{profile.username}</div>
-              <button
-                className={styles["mod-btn"]}
-                onClick={() =>
-                  navigate("/mypage/ChangeIdPage", {
-                    state: { username: profile.username },
-                  })
-                }
-              >
-                변경
-              </button>
+              <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
+                state: { username: profile.username }
+              })}>변경</button>
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
