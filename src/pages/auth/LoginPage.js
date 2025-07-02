@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance"; 
 import styles from "../../styles/auth/LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -15,10 +15,9 @@ function LoginPage() {
     console.log("로그인 버튼 눌림");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        { username, password },
-        { withCredentials: true }
+      const response = await axiosInstance.post(
+        "/auth/login", 
+        { username, password }
       );
 
       console.log("로그인 응답", response.data);
@@ -27,58 +26,24 @@ function LoginPage() {
         const token = response.data.token;
         const decoded = jwtDecode(token);
 
-        console.log("로그인 응답", response.data);
-        console.log("토큰 디코딩 결과", decoded);
-
         localStorage.setItem("token", token);
         localStorage.setItem("username", decoded.sub);
         localStorage.setItem("role", decoded.role);
         localStorage.setItem("memberId", decoded.memberId);
 
-        // 헤더 컴포넌트에게 로그인 상태 변경을 알리기 위해 커스텀 이벤트 발생
-        window.dispatchEvent(new Event('loginStatusChanged'));
+        window.dispatchEvent(new Event("loginStatusChanged"));
 
-        console.log("로그인 성공!");
-        console.log("토큰:", token);
-        console.log("디코딩 결과:", decoded);
-
-        // const role = decoded.role.toLowerCase();
-        const role = decoded.role ? decoded.role.toLowerCase() : "";
+        const role = decoded.role?.toLowerCase().replace("role_", "") || "";
         
-        // ROLE_ 접두사 제거 (더 안전한 방식)
-        let cleanRole = role;
-        if (role === "role_admin") cleanRole = "admin";
-        else if (role === "role_user") cleanRole = "user";
-        else if (role === "role_company") cleanRole = "company";
-        else if (role === "role_caregiver") cleanRole = "caregiver";
-        else if (role === "role_silvertown") cleanRole = "silvertown";
-        else if (role === "role_nursinghome") cleanRole = "nursinghome";
-        // 기존 형태는 그대로 유지
-        else cleanRole = role;
-        
-        console.log("=== 로그인 후 리다이렉트 디버깅 ===");
-        console.log("원본 role:", decoded.role);
-        console.log("소문자 role:", role);
-        console.log("정리된 role:", cleanRole);
-
-        if (cleanRole === "user") {
-          console.log("USER로 리다이렉트");
-          window.location.href = "/";
-        } else if (cleanRole === "company") {
-          console.log("COMPANY로 리다이렉트");
-          window.location.href = "/company/main";
-        } else if (cleanRole === "caregiver") {
-          console.log("CAREGIVER로 리다이렉트");
-          window.location.href = "/caregiver/main";
-        } else if (cleanRole === "admin") {
-          console.log("ADMIN으로 리다이렉트 - /admin으로 이동");
-          window.location.href = "/admin";
-        } else {
-          console.log("알 수 없는 역할:", cleanRole);
+        if (role === "user") {
+          navigate("/");
+        } else if (role === "company") {
+          navigate("/company/main");
+        } else if (role === "caregiver") {
+          navigate("/caregiver/main");
+        } else if (role === "admin") {
+          navigate("/admin");
         }
-        
-        console.log("navigate 함수 실행 완료");
-        console.log("=== 디버깅 끝 ===");
       } else {
         setErrorMsg("아이디 또는 비밀번호가 틀렸습니다.");
         alert("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");

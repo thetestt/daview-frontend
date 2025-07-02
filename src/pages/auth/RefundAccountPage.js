@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/RefundAccountPage.module.css";
 
@@ -16,21 +16,19 @@ function RefundAccountPage() {
   const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
-    if (!username || !token) return;
-
     // 이름 불러오기
-    axios.get("/api/mypage/profile", { headers })
+    axiosInstance.get("/mypage/profile")
       .then(res => setName(res.data.name || ""))
       .catch(err => console.log("이름 불러오기 실패", err));
 
     // 계좌 불러오기
-    axios.get(`/api/mypage/account/refund?username=${encodeURIComponent(username)}`, { headers })
+    axiosInstance.get("/mypage/account/refund")
       .then(res => {
         setBankName(res.data.bankName || "");
         setAccountNumber(res.data.accountNumber || "");
       })
       .catch(err => console.log("계좌 조회 실패", err));
-  }, [username, token]);
+  }, []);
 
   const handleSave = async () => {
     if (!bankName || !accountNumber.trim()) {
@@ -42,11 +40,10 @@ function RefundAccountPage() {
     }
 
     try {
-      const res = await axios.post("/api/mypage/account/refund", {
-        username,
+      const res = await axiosInstance.post("/mypage/account/refund", {
         bankName,
         accountNumber,
-      }, { headers });
+      });
 
       console.log("저장 응답:", res.data);
 
@@ -60,7 +57,7 @@ function RefundAccountPage() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/mypage/account/refund?username=${username}`, { headers });
+      await axiosInstance.delete("/mypage/account/refund");
       alert("환불 계좌가 해지되었습니다.");
       setBankName("");
       setAccountNumber("");

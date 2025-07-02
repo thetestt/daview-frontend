@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import styles from "../../styles/auth/MyReviewPage.module.css";
 
 function MyReviewPage() {
     const [reviews, setReviews] = useState([]);
-    const memberId = localStorage.getItem("memberId");
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await axios.get(`/api/review/member/${memberId}`);
-                setReviews(res.data);
+                const response = await axiosInstance.get("/review/my");
+                setReviews(response.data);
             } catch (err) {
                 console.error("후기 불러오기 실패:", err);
             }
