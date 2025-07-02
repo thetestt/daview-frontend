@@ -487,14 +487,14 @@
 }
 
 /* 테이블 스타일 개선 */
-table {
+.product-table {
   border-collapse: collapse;
   background: white;
   min-width: 1200px;
   width: 100%;
 }
 
-table th {
+.product-table th {
   background: linear-gradient(135deg, #343a40, #495057);
   color: white;
   font-weight: 600;
@@ -504,7 +504,7 @@ table th {
   white-space: nowrap;
 }
 
-table td {
+.product-table td {
   text-align: center;
   padding: 10px 6px;
   border-bottom: 1px solid #dee2e6;
@@ -513,7 +513,7 @@ table td {
   word-wrap: break-word;
 }
 
-table tr:hover {
+.product-table tr:hover {
   background-color: #f8f9fa;
 }
 

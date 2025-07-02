@@ -99,6 +99,9 @@ const AppRouter = () => {
           } else if (cleanRole === "caregiver") {
             console.log("AppRouter에서 CAREGIVER로 리다이렉트");
             navigate("/caregiver/main");
+          } else if (cleanRole === "company") {
+            console.log("AppRouter에서 COMPANY로 리다이렉트");
+            navigate("/company/main");
           } else if (cleanRole === "nursinghome") {
             console.log("AppRouter에서 NURSINGHOME으로 리다이렉트");
             navigate("/nursinghome/main");
