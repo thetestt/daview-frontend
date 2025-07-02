@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/ChangePasswordCheckPage.module.css";
 
@@ -41,13 +41,12 @@ function ChangePasswordCheckPage() {
 
 
         try {
-            const checkRes = await axios.post("http://localhost:8080/api/mypage/check-password", {
-                username,
+            const res = await axiosInstance.post("/mypage/check-password", {
                 password: currentPassword,
               });
               
 
-            if (!checkRes.data.success) {
+            if (!res.data.success) {
                 alert("현재 비밀번호가 일치하지 않습니다.");
                 setPasswordMismatch(true);
                 setIsPasswordVerified(false);
@@ -62,8 +61,7 @@ function ChangePasswordCheckPage() {
             setIsPasswordVerified(true);
             setPasswordMismatch(false);
 
-            await axios.post("http://localhost:8080/api/account/change-password", {
-                username,
+            await axiosInstance.post("/auth/account/change-password", {
                 newPassword,
               });
               

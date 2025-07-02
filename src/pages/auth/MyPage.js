@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/auth/MyPage.module.css";
@@ -62,21 +62,15 @@ const MyPage = () => {
   useEffect(() => {
     const handleLoadProfile = async () => {
       const token = localStorage.getItem("token");
-      const memberId = localStorage.getItem("memberId");
 
-      if (!token || !memberId) return;
+      if (!token) return;
 
       console.log("[프론트] 사용하는 토큰:", token);
       console.log("[프론트] memberId:", memberId);
 
       try {
-        const res = await axios.get("/api/mypage/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("프로필 응답:", res.data);
-        setProfile(res.data);
+        const profileRes = await axiosInstance.get("/mypage/profile");
+        setProfile(profileRes.data);
       } catch (err) {
         console.error("프로필 가져오기 실패:", err);
       }
@@ -96,20 +90,15 @@ const MyPage = () => {
       }
 
       try {
-        const res = await axios.get("/coupon/my", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("쿠폰 응답:", res.data);
-        setCoupons(res.data);
+        const couponRes = await axiosInstance.get("/coupon/my");
+        setCoupons(couponRes.data ?? []);
       } catch (err) {
         console.error("쿠폰 불러오기 실패:", err);
       }
 
       try {
-        const res = await axios.get(`/api/review/member/${memberId}`);
-        setReviews(res.data ?? []);
+        const reviewRes = await axiosInstance.get("/review/my");
+        setReviews(reviewRes.data ?? []);
       } catch (err) {
         console.error("내 후기 불러오기 실패:", err);
       }

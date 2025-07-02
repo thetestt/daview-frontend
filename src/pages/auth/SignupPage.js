@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/SignupPage.module.css";
 
@@ -38,21 +38,17 @@ function SignupPage() {
   };
 
   const checkUsername = async () => {
-
     const usernameRegex = /^[a-z0-9]{4,16}$/;
-
     if (!username) {
       alert("아이디를 입력해주세요.");
       return;
     }
-    
     if (!usernameRegex.test(username)) {
       alert("아이디는 영문 소문자와 숫자 조합 4~16자로 입력해주세요.");
       return;
     }
-
     try {
-      const res = await axios.get(`http://localhost:8080/api/auth/check-username?username=${username}`);
+      const res = await axiosInstance.get(`/auth/check-username?username=${username}`);
       if (res.data === true) {
         alert("이미 사용 중인 아이디입니다.");
         setIsDuplicate(true);
@@ -68,7 +64,7 @@ function SignupPage() {
   const sendSmsCode = async () => {
     try {
       const cleanPhone = phone.replace(/-/g, "");
-      await axios.post("http://localhost:8080/api/auth/signup/send-sms-code", {
+      await axiosInstance.post("/auth/signup/send-sms-code", {
         phone: cleanPhone,
       });
       alert("인증번호가 전송되었습니다.");
@@ -81,7 +77,7 @@ function SignupPage() {
   const verifySmsCode = async () => {
     try {
       const cleanPhone = phone.replace(/-/g, "");
-      const res = await axios.post("http://localhost:8080/api/auth/signup/verify-sms-code", {
+      const res = await axiosInstance.post("/auth/signup/verify-sms-code", {
         phone: cleanPhone,
         code: smsCode,
       });
@@ -97,6 +93,7 @@ function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();      
+    console.log("gender:", gender); 
 
     const nameRegex = /^[가-힣]{1,7}$/;
     if (!nameRegex.test(name)) {
@@ -140,29 +137,28 @@ function SignupPage() {
       return;
     }  
 
-    const email = `${emailId}@${emailDomain}`;
-
-    axios.post("http://localhost:8080/api/auth/signup", {
-      username,
-      password,
-      name,
-      phone,
-      email,
-      gender,
-      birth,
-      role,
-      smsAgree,
-      emailAgree,
-      pushAgree,
-    }, { withCredentials: true })
-      .then(() => {
-        alert("회원가입 성공!");
-        navigate("/login");
-      })
-      .catch((err) => {
-        alert("회원가입 실패!\n" + (err.response?.data?.message || "서버 오류"));
-      });
-  };
+      const email = `${emailId}@${emailDomain}`;
+      axiosInstance.post("/auth/signup", {
+        username,
+        password,
+        name,
+        phone,
+        email,
+        gender,
+        birth,
+        role,
+        smsAgree,
+        emailAgree,
+        pushAgree,
+      }, { withCredentials: true })
+        .then(() => {
+          alert("회원가입 성공!");
+          navigate("/login");
+        })
+        .catch((err) => {
+          alert("회원가입 실패!\n" + (err.response?.data?.message || "서버 오류"));
+        });
+    };
 
 
   console.log("SignupPage 렌더링 시작");
