@@ -17,14 +17,14 @@
   color: #00334f;
 }
 
-.notice-list {
+.chj-notice-list {
   list-style: disc;
   padding-left: 1.5rem;
   margin-bottom: 1rem;
   color: #444;
 }
 
-.box {
+.chj-box {
   background: #f9f9f9;
   border-left: 5px solid #00334f;
   padding: 1rem;
@@ -32,7 +32,7 @@
   border-radius: 5px;
 }
 
-.checkbox-line {
+.chj-checkbox-line {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -40,7 +40,7 @@
 }
 
 
-.reason-list {
+.chj-reason-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -53,7 +53,7 @@
   gap: 0.5rem;
 }
 
-textarea {
+.chj-textarea {
   width: 100%;
   height: 100px;
   resize: none;
@@ -64,7 +64,7 @@ textarea {
   border-radius: 5px;
 }
 
-.extra-msg {
+.chj-extra-msg {
   margin-top: 1rem;
   padding: 1rem;
   background: #fff5f5;
@@ -72,23 +72,23 @@ textarea {
   border-radius: 5px;
 }
 
-.extra-msg p {
+.chj-extra-msg p {
   margin-bottom: 1rem;
   color: #00334f;
 }
 
-.btn-row {
+.chj-btn-row {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.btn-row .gray {
+.chj-btn-row .gray {
   background: #ddd;
   color: #333;
 }
 
-.withdraw-btn {
+.chj-withdraw-btn {
   margin-top: 1rem;
   padding: 0.75rem;
   width: 100%;
@@ -100,17 +100,17 @@ textarea {
   cursor: pointer;
 }
 
-.withdraw-btn:hover {
+.chj-withdraw-btn:hover {
   background: #01659b;
   color: white;
 }
 
-.withdraw-btn:disabled {
+.chj-withdraw-btn:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
 
-.withdraw-btn.gray {
+.chj-withdraw-btn.gray {
   background: #ddd;
   color: #333;
 }

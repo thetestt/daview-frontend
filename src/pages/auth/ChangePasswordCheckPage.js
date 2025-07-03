@@ -89,10 +89,10 @@ function ChangePasswordCheckPage() {
 
             />
             {currentPassword === "" && (
-                <p className={styles["input-error"]}>현재 비밀번호를 입력하세요.</p>
+                <p className={styles["chj-input-error"]}>현재 비밀번호를 입력하세요.</p>
             )}
             {passwordMismatch && (
-                <p className={styles["input-error"]}>현재 비밀번호가 일치하지 않습니다.</p>
+                <p className={styles["chj-input-error"]}>현재 비밀번호가 일치하지 않습니다.</p>
             )}
 
 
@@ -103,12 +103,12 @@ function ChangePasswordCheckPage() {
                 onChange={(e) => setNewPassword(e.target.value)}
             />
             {newPassword && isPasswordVerified && currentPassword === newPassword && (
-                <p className={styles["input-error"]}>기존 비밀번호와 동일합니다.</p>
+                <p className={styles["chj-input-error"]}>기존 비밀번호와 동일합니다.</p>
             )}
 
             {newPassword &&
                 !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{10,16}$/.test(newPassword) && (
-                    <p className={styles["input-error"]}>
+                    <p className={styles["chj-input-error"]}>
                         비밀번호는 10~16자, 영문/숫자/기호 포함해야 합니다.
                     </p>
                 )}
@@ -120,10 +120,10 @@ function ChangePasswordCheckPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
             {confirmPassword && newPassword !== confirmPassword && (
-                <p className={styles["input-error"]}>비밀번호가 일치하지 않습니다.</p>
+                <p className={styles["chj-input-error"]}>비밀번호가 일치하지 않습니다.</p>
             )}
 
-            <button className={styles["change-btn"]} onClick={handleChangePassword}>비밀번호 변경</button>
+            <button className={styles["chj-change-btn"]} onClick={handleChangePassword}>비밀번호 변경</button>
         </div>
     );
 }

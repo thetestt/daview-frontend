@@ -1,43 +1,42 @@
-.container {
-    padding: 20px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  .tabs {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    padding: 8px 16px;
-    border: 1px solid #aaa;
-    background-color: #fff;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .active {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .content {
-    min-height: 120px;
-  }
-  
-  .card {
-    padding: 16px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-  }
-  
-  .empty {
-    color: #888;
-  }
-  
+.chj-container {
+  padding: 20px;
+}
+
+.chj-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.chj-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.chj-tabs button {
+  padding: 8px 16px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.chj-active {
+  background-color: #333;
+  color: #fff;
+}
+
+.chj-content {
+  min-height: 120px;
+}
+
+.chj-card {
+  padding: 16px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.chj-empty {
+  color: #888;
+}

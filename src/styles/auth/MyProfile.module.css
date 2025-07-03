@@ -39,7 +39,7 @@
   align-items: flex-start;
 }
 
-.notice {
+.chj-notice {
   font-size: 13px;
   color: #e9438f;
   margin-top: 4px;
@@ -55,7 +55,7 @@
   margin-top: 4px;
 }
 
-.avatar {
+.chj-avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -63,7 +63,7 @@
   border: 1px solid #ccc;
 }
 
-.danger {
+.chj-danger {
   text-align: right;
   font-weight: 500;
   color: #d00;
@@ -117,7 +117,7 @@
   white-space: nowrap;
 }
 
-.value {
+.chj-value {
   padding: 5px 10px;
   border-bottom: 1px solid #ccc;
   margin-right: 10px;
@@ -125,7 +125,7 @@
   width: 300px; 
 }
 
-.mod-btn {
+.chj-mod-btn {
   background-color: #00334f;
   color: white;
   border: none;
@@ -164,7 +164,7 @@
   cursor: pointer;
 }
 
-.switch {
+.chj-switch {
   flex-shrink: 0;
   position: relative;
   display: inline-block;
@@ -172,13 +172,13 @@
   height: 28px;
 }
 
-.switch input {
+.chj-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.chj-slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -190,7 +190,7 @@
   border-radius: 34px;
 }
 
-.slider:before {
+.chj-slider:before {
   position: absolute;
   content: "";
   height: 22px;
@@ -202,11 +202,11 @@
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.chj-input:checked + .slider {
   background-color: #4caf50;
 }
 
-input:checked + .slider:before {
+.chj-input:checked + .slider:before {
   transform: translateX(18px);
 }
 
@@ -225,13 +225,13 @@ input:checked + .slider:before {
   border: 2px solid #bbb;
 }
 
-.image-overlay {
+.chj-image-overlay {
   position: absolute;
   bottom: 0;
   right: 0;
 }
 
-.add-btn {
+.chj-add-btn {
   background-color: #333;
   color: white;
   border-radius: 50%;
@@ -242,7 +242,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-.image-menu {
+.chj-image-menu {
   position: absolute;
   top: 35px;
   right: 0;
@@ -256,7 +256,7 @@ input:checked + .slider:before {
   gap: 10px;
 }
 
-.uploadMenu {
+.chj-uploadMenu {
   position: absolute;
   top: 70px;
   left: 0;
@@ -269,7 +269,7 @@ input:checked + .slider:before {
   z-index: 10;
 }
 
-.uploadMenu button {
+.chj-uploadMenu button {
   background: none;
   border: none;
   padding: 8px;
@@ -277,7 +277,7 @@ input:checked + .slider:before {
   cursor: pointer;
   text-align: left;
 }
-.uploadMenu button:hover {
+.chj-uploadMenu button:hover {
   background-color: #f0f0f0;
 }
 

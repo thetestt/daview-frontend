@@ -18,31 +18,31 @@ function CouponPage() {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>쿠폰</h1>
+    <div className={styles["chj-container"]}>
+      <h1 className={styles["chj-title"]}>쿠폰</h1>
 
-      <div className={styles.tabs}>
-        <button onClick={() => setTab("owned")} className={tab === "owned" ? styles.active : ""}>
+      <div className={styles["chj-tabs"]}>
+        <button onClick={() => setTab("owned")} className={tab === "owned" ? styles["chj-active"] : ""}>
           보유
         </button>
-        <button onClick={() => setTab("claim")} className={tab === "claim" ? styles.active : ""}>
+        <button onClick={() => setTab("claim")} className={tab === "claim" ? styles["chj-active"] : ""}>
           쿠폰받기
         </button>
       </div>
 
-      <div className={styles.content}>
+      <div className={styles["chj-content"]}>
         {tab === "owned" ? (
           coupons.length > 0 ? (
             coupons.map((coupon, i) => (
-              <div key={i} className={styles.card}>
+              <div key={i} className={styles["chj-card"]}>
                 {coupon.description} ({coupon.discount}% 할인)
               </div>
             ))
           ) : (
-            <p className={styles.empty}>보유한 쿠폰이 없습니다</p>
+            <p className={styles["chj-empty"]}>보유한 쿠폰이 없습니다</p>
           )
         ) : (
-          <p className={styles.empty}>현재 받을 수 있는 쿠폰이 없습니다</p>
+          <p className={styles["chj-empty"]}>현재 받을 수 있는 쿠폰이 없습니다</p>
         )}
       </div>
     </div>

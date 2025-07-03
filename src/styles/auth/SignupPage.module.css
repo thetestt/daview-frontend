@@ -268,14 +268,14 @@
 }
 
 
-.input-error {
+.chj-input-error {
   color: red;
   font-size: 0.9rem;
   margin-top: -0.8rem;
   margin-bottom: 1rem;
 }
 
-.input-success {
+.chj-input-success {
   color: green;
   font-size: 0.9rem;
   margin-top: -0.8rem;
@@ -328,7 +328,7 @@
   margin-bottom: 1rem;
 }
 
-.phone-inputs input,
+.chj-phone-inputs input,
 .verify-section input {
   flex: 8;
 }
@@ -349,4 +349,25 @@
 .pass-check-button:hover {
   background-color: #01659b;
 }
+
+.chj-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.chj-select {
+  width: 100%;
+  padding: 0.65rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
 

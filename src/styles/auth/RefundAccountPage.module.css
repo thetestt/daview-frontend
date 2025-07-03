@@ -22,8 +22,7 @@
   margin-top: 16px;
 }
 
-.change-password-container input,
-.change-password-container select {
+.chj-input {
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 10px;
@@ -32,11 +31,20 @@
   font-size: 14px;
 }
 
-.change-password-container input:disabled {
+.chj-input:disabled {
   background-color: #f9f9f9;
 }
 
-.save-btn {
+.chj-select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.chj-save-btn {
   width: 48%;
   padding: 10px;
   margin-top: 12px;
@@ -50,16 +58,12 @@
   transition: background-color 0.2s ease;
 }
 
-.save-btn:hover {
+.chj-save-btn:hover {
   background-color:  #01659b;
-}
-
-
-.save-btn:hover {
   opacity: 0.9;
 }
 
-.pass-btn {
+.chj-pass-btn {
   margin-top: 1rem;
   padding: 0.75rem;
   width: 100%;
@@ -71,18 +75,17 @@
   cursor: pointer;
 }
 
-.pass-btn:hover {
+.chj-pass-btn:hover {
   background: #01659b;
   color: white;
 }
 
-.pass-btn:disabled {
+.chj-pass-btn:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
 
-.pass-btn.gray {
+.chj-pass-btn.gray {
   background: #ddd;
-  color: #333;
+  color:  #333;
 }
-

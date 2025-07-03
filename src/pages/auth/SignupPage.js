@@ -73,7 +73,7 @@ function SignupPage() {
       alert(msg);
     }
   };
-  
+
   const verifySmsCode = async () => {
     try {
       const cleanPhone = phone.replace(/-/g, "");
@@ -89,11 +89,11 @@ function SignupPage() {
       alert("인증 실패. 인증번호를 확인해주세요.");
     }
   };
-  
+
 
   const handleSubmit = (e) => {
-    e.preventDefault();      
-    console.log("gender:", gender); 
+    e.preventDefault();
+    console.log("gender:", gender);
 
     const nameRegex = /^[가-힣]{1,7}$/;
     if (!nameRegex.test(name)) {
@@ -135,30 +135,30 @@ function SignupPage() {
     if (!name || !phone) {
       alert("이름과 전화번호를 모두 입력해주세요.");
       return;
-    }  
+    }
 
-      const email = `${emailId}@${emailDomain}`;
-      axiosInstance.post("/auth/signup", {
-        username,
-        password,
-        name,
-        phone,
-        email,
-        gender,
-        birth,
-        role,
-        smsAgree,
-        emailAgree,
-        pushAgree,
-      }, { withCredentials: true })
-        .then(() => {
-          alert("회원가입 성공!");
-          navigate("/login");
-        })
-        .catch((err) => {
-          alert("회원가입 실패!\n" + (err.response?.data?.message || "서버 오류"));
-        });
-    };
+    const email = `${emailId}@${emailDomain}`;
+    axiosInstance.post("/auth/signup", {
+      username,
+      password,
+      name,
+      phone,
+      email,
+      gender,
+      birth,
+      role,
+      smsAgree,
+      emailAgree,
+      pushAgree,
+    }, { withCredentials: true })
+      .then(() => {
+        alert("회원가입 성공!");
+        navigate("/login");
+      })
+      .catch((err) => {
+        alert("회원가입 실패!\n" + (err.response?.data?.message || "서버 오류"));
+      });
+  };
 
 
   console.log("SignupPage 렌더링 시작");
@@ -168,7 +168,7 @@ function SignupPage() {
       <form className={styles["signup-form"]} onSubmit={handleSubmit}>
 
         <label>회원 유형</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <select value={role} onChange={(e) => setRole(e.target.value)} className={styles["chj-select"]}>
           <option value="">선택하세요</option>
           <option value="user">일반 회원</option>
           <option value="company">기업</option>
@@ -180,32 +180,33 @@ function SignupPage() {
           아이디는 영문 소문자와 숫자 조합 4~16자로 입력해야 합니다.
         </p>
         <div className={styles["username-check-wrapper"]}>
-          <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" />
+          <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" className={styles["chj-input"]} />
           <button type="button" className={styles["username-check-button"]} onClick={checkUsername}>중복 확인</button>
         </div>
-        {isDuplicate === true && <p className={styles["input-error"]}>이미 사용 중인 아이디입니다.</p>}
-        {isDuplicate === false && <p className={styles["input-success"]}>사용 가능한 아이디입니다.</p>}
+        {isDuplicate === true && <p className={styles["chj-input-error"]}>이미 사용 중인 아이디입니다.</p>}
+        {isDuplicate === false && <p className={styles["chj-input-success"]}>사용 가능한 아이디입니다.</p>}
 
         <label>비밀번호</label>
         <p className={styles["terms-content"]}>
           비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.
         </p>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" className={styles["chj-input"]} />
 
         <label>비밀번호 확인</label>
-        <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" />
-        {passwordConfirm && password !== passwordConfirm && (<p className="input-error">비밀번호가 일치하지 않습니다.</p>)}
+        <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" className={styles["chj-input"]} />
+        {passwordConfirm && password !== passwordConfirm && (<p className={styles["chj-input-error"]}>비밀번호가 일치하지 않습니다.</p>)}
 
         <label>이름</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" />
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" className={styles["chj-input"]} />
 
         <label>전화번호</label>
-        <div className={styles["phone-inputs"]}>
+        <div className={styles["chj-phone-inputs"]}>
           <input
             type="text"
             value={phone}
             onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
             placeholder="휴대전화번호 '-' 없이 입력"
+            className={styles["chj-input"]}
           />
           <button className={styles["username-check-button"]} type="button" onClick={sendSmsCode}>인증번호 전송</button>
         </div>
@@ -217,17 +218,17 @@ function SignupPage() {
             placeholder="인증번호 입력"
             value={smsCode}
             onChange={(e) => setSmsCode(e.target.value)}
+            className={styles["chj-input"]}
           />
           <button className={styles["username-check-button"]} type="button" onClick={verifySmsCode}>인증하기</button>
         </div>
 
-
         <label>이메일</label>
         <div className={styles["email-box"]}>
-          <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" />
+          <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" className={styles["chj-input"]} />
           <span>@</span>
-          <input type="text" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} placeholder="도메인" />
-          <select onChange={(e) => setEmailDomain(e.target.value)}>
+          <input type="text" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} placeholder="도메인" className={styles["chj-input"]} />
+          <select onChange={(e) => setEmailDomain(e.target.value)} className={styles["chj-select"]}>
             <option value="">직접 입력</option>
             <option value="naver.com">naver.com</option>
             <option value="gmail.com">gmail.com</option>
@@ -236,15 +237,14 @@ function SignupPage() {
         </div>
 
         <label>성별</label>
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
+        <select value={gender} onChange={(e) => setGender(e.target.value)} className={styles["chj-select"]}>
           <option value="">선택</option>
           <option value="male">남성</option>
           <option value="female">여성</option>
         </select>
 
         <label>생년월일</label>
-        <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} />
-
+        <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} className={styles["chj-input"]} />
         <div className={styles["terms-row"]}>
           <label className={styles["terms-label"]}>약관동의</label>
           <div className={styles["agree-all-line"]}>
