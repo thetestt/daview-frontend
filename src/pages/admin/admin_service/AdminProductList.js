@@ -1479,12 +1479,21 @@ const AdminProductList = () => {
     if (currentLocation) {
       const regionObj = staticRegions.find(r => r.name === currentLocation);
       if (regionObj && staticCityData[regionObj.id]) {
+        setEditSelectedRegionId(regionObj.id);
         const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
           id: index + 1,
           name: cityName
         }));
         setEditCities(cityList);
+      } else {
+        // 지역 정보 로드 실패 시 빈 상태로 초기화
+        setEditSelectedRegionId('');
+        setEditCities([]);
       }
+    } else {
+      // 지역 정보가 없을 때도 빈 상태로 초기화
+      setEditSelectedRegionId('');
+      setEditCities([]);
     }
 
     // 안전한 값 추출 함수
@@ -1766,16 +1775,26 @@ const AdminProductList = () => {
   const handleRegionChange = (e) => {
     const selectedRegion = e.target.value;
     
+    // formData 업데이트
+    setFormData(prev => ({
+      ...prev,
+      hope_work_area_location: selectedRegion,
+      facility_address_location: selectedRegion,
+      hope_work_area_city: '', // 지역 변경 시 시/군/구 초기화
+      facility_address_city: ''
+    }));
+    
     // 선택된 지역에 따라 시/군/구 목록 업데이트
     const regionObj = staticRegions.find(r => r.name === selectedRegion);
     if (regionObj && staticCityData[regionObj.id]) {
+      setSelectedRegionId(regionObj.id); // 시/군/구 드롭다운 활성화
       const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
-      // 기존 상태 변수 이름 유지
       setCities(cityList);
     } else {
+      setSelectedRegionId('');
       setCities([]);
     }
   };
@@ -1783,6 +1802,13 @@ const AdminProductList = () => {
   // 시/군/구 선택 시 (등록 모달용)
   const handleCityChange = (e) => {
     const cityName = e.target.value;
+    
+    // formData 업데이트
+    setFormData(prev => ({
+      ...prev,
+      hope_work_area_city: cityName,
+      facility_address_city: cityName
+    }));
   };
 
   // 수정 모달의 지역 변경 처리 (기업 페이지와 동일한 방식)
@@ -1800,12 +1826,14 @@ const AdminProductList = () => {
     // 선택된 지역에 따라 시/군/구 목록 업데이트
     const regionObj = staticRegions.find(r => r.name === selectedRegion);
     if (regionObj && staticCityData[regionObj.id]) {
+      setEditSelectedRegionId(regionObj.id); // ← 이 부분이 누락되어 있었음
       const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
       setEditCities(cityList);
     } else {
+      setEditSelectedRegionId('');
       setEditCities([]);
     }
   };
@@ -3510,11 +3538,10 @@ const AdminProductList = () => {
                     {/* 기업 지역 선택 */}
                     <div className={styles["form-row"]}>
                       <div className={styles["form-group"]}>
-                        <label>지역(도/광역시) *</label>
+                        <label>지역(도/광역시)</label>
                         <select
                           value={editFormData.facility_address_location || ''}
                           onChange={handleEditRegionChange}
-                          required
                         >
                           <option value="">지역을 선택하세요</option>
                           {staticRegions.map(region => (
@@ -3526,12 +3553,11 @@ const AdminProductList = () => {
                       </div>
 
                       <div className={styles["form-group"]}>
-                        <label>시/군/구 *</label>
+                        <label>시/군/구</label>
                         <select
                           value={editFormData.facility_address_city || ''}
                           onChange={handleEditCityChange}
                           disabled={!editFormData.facility_address_location}
-                          required
                         >
                           <option value="">시/군/구를 선택하세요</option>
                           {editCities.map((city, index) => (
@@ -3966,12 +3992,11 @@ const AdminProductList = () => {
                    editFormData.facility_type) && (
                   <>
                     <div className={styles["form-group"]}>
-                      <label>희망근무지역(도/광역시) *</label>
+                      <label>희망근무지역(도/광역시)</label>
                       <select
                         value={editFormData.hope_work_area_location || ''}
                         onChange={handleEditRegionChange}
                         className={styles["region-select"]}
-                        required
                       >
                         <option value="">지역을 선택하세요</option>
                         {staticRegions.map(region => (
@@ -3983,13 +4008,12 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무지역(시/군/구) *</label>
+                      <label>희망근무지역(시/군/구)</label>
                       <select
                         value={editFormData.hope_work_area_city || ''}
                         onChange={handleEditCityChange}
                         disabled={!editFormData.hope_work_area_location}
                         className={styles["city-select"]}
-                        required
                       >
                         <option value="">시/군/구를 선택하세요</option>
                         {editCities.map(city => (
@@ -4001,7 +4025,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무장소 *</label>
+                      <label>희망근무장소</label>
                       <div className={styles["checkbox-group"]}>
                         {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
                           <label key={workPlace} className={styles["checkbox-label"]}>
@@ -4029,7 +4053,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무형태 *</label>
+                      <label>희망근무형태</label>
                       <div className={styles["checkbox-group"]}>
                         {['출퇴근', '입주'].map(workType => (
                           <label key={workType} className={styles["checkbox-label"]}>
@@ -4057,7 +4081,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망고용형태 *</label>
+                      <label>희망고용형태</label>
                       <div className={styles["checkbox-group"]}>
                         {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
                           <label key={empType} className={styles["checkbox-label"]}>
@@ -4100,14 +4124,13 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>경력 근무 장소 *</label>
+                      <label>경력 근무 장소</label>
                       <input
                         type="text"
                         name="company_name"
                         value={editFormData.company_name}
                         onChange={handleEditInputChange}
                         placeholder="경력 근무 장소를 입력하세요"
-                        required
                       />
                     </div>
 
