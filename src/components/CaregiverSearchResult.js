@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { fetchFilteredCaregivers } from "../api/caregiver";
 import styles from "../styles/components/MainList.module.css";
 import backgroundShape from "../assets/mwhite.png";
+import maleImg from "../assets/male.png";
+import femaleImg from "../assets/female.png";
+import userImg from "../assets/user.png";
 
 function CaregiverSearchResult({ filters }) {
   const [caregivers, setCaregivers] = useState([]);
@@ -44,6 +47,20 @@ function CaregiverSearchResult({ filters }) {
                   className={styles["facility-card-link"]}
                 >
                   <div className={styles["facility-card"]}>
+                    {/* 👤 성별 이미지 출력 */}
+                    <img
+                      src={
+                        item.userGender === "male"
+                          ? maleImg
+                          : item.userGender === "female"
+                          ? femaleImg
+                          : userImg
+                      }
+                      alt="프로필 이미지"
+                      className={styles["card-thumbnail"]}
+                    />
+
+                    {/* 이름 마스킹 + 성별 태그 */}
                     <h2 className={styles["caregiver-name-box"]}>
                       <span className={styles["caregiver-name"]}>
                         {item.name
@@ -70,20 +87,27 @@ function CaregiverSearchResult({ filters }) {
                           : "미정"}
                       </span>
                     </h2>
+
+                    {/* 지역 */}
                     <p>
-                      {item.hopeWorkAreaLocation} {item.hopeWorkAreaCity}
+                      {item.hopeWorkAreaLocation || "지역 미정"}{" "}
+                      {item.hopeWorkAreaCity || ""}
                     </p>
-                    <p>희망근무형태: {item.hopeWorkType || "정보 없음"}</p>
-                    <p>
-                      자격증:{" "}
-                      {Array.isArray(item.certificates)
-                        ? item.certificates.join(", ")
-                        : "없음"}
-                    </p>
-                    <p>
-                      경력:{" "}
-                      {Array.isArray(item.career) ? item.career.length : 0}건
-                    </p>
+
+                    {/* 상세 정보 */}
+                    <div className={styles["card-info-box"]}>
+                      <p>희망근무형태: {item.hopeWorkType || "정보 없음"}</p>
+                      <p>
+                        자격증:{" "}
+                        {Array.isArray(item.certificates)
+                          ? item.certificates.join(", ")
+                          : "없음"}
+                      </p>
+                      <p>
+                        경력:{" "}
+                        {Array.isArray(item.career) ? item.career.length : 0}건
+                      </p>
+                    </div>
                   </div>
                 </Link>
               </div>
