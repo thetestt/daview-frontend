@@ -183,8 +183,8 @@ const CompanyDashboard = () => {
         },
       });
 
-      if (response.data && response.data.filePath) {
-        const uploadedUrl = response.data.filePath;
+      if (response.data && response.data.fileUrl) {
+        const uploadedUrl = response.data.fileUrl;
         setUploadedPhotoUrl(uploadedUrl);
         setEditFormData(prev => ({
           ...prev,
