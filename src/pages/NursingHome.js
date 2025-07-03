@@ -8,7 +8,7 @@ import NursingHomeSearchResult from "../components/NursingHomeSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
 import { motion } from "framer-motion";
-import heroImage from "../assets/silvertownUp.png"; // 업로드한 상단 이미지
+import heroImage from "../assets/nursingroomup.png"; // 업로드한 상단 이미지
 import backgroundShape from "../assets/mwhite.png"; // 포인트 PNG 배경
 
 function NursingHome() {

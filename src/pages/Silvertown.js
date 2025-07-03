@@ -8,9 +8,8 @@ import SilvertownSearchResult from "../components/SilvertownSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { useForceRefresh } from "../utils/forceRefresh";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
-
-//테스트용지루거야아아아앙
-import { getChatRooms } from "../api/chat";
+import heroImage from "../assets/silvertownUp.png"; // 업로드한 상단 이미지
+import { motion } from "framer-motion";
 
 function Silvertown() {
   const [isSearch, setIsSearch] = useState(false);
@@ -114,38 +113,24 @@ function Silvertown() {
     setIsSearch(true);
   };
 
-  //테스트용
-  const [consults, setConsults] = useState([]);
-  const memberId = localStorage.getItem("memberId");
-  const handleChatOpen = async () => {
-    try {
-      const chatRooms = await getChatRooms(memberId);
-
-      if (!chatRooms.length) {
-        alert("채팅방이 없습니다.");
-        setConsults([]);
-        return;
-      }
-
-      setConsults(chatRooms);
-      const chatUrl = `/chat`;
-
-      window.open(
-        chatUrl,
-        "chatWindow",
-        "width=900,height=700,left=200,top=100,noopener,noreferrer"
-      );
-    } catch (error) {
-      console.error("채팅방 열기 실패:", error);
-      alert("채팅방을 여는 데 실패했습니다.");
-    }
-  };
-
   return (
-    <>
+    <div className={styles["page-background"]}>
       <FloatingNavButtons />
-      <div className={styles["layout-container"]}>
-        <div className={styles["silvertown-main"]}>
+
+      <div className={styles["silvertown-main"]}>
+        {/* 상단 히어로 영역 (없다면 공백 이미지라도 사용) */}
+        <motion.div
+          className={styles["hero-section"]}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className={styles["hero-image"]}>
+            <img src={heroImage} alt="행복한 실버타운" />
+          </div>
+        </motion.div>
+
+        <div className={styles["layout-container"]}>
           {/* 상단 탭 */}
           <div className={styles["tab-menu"]}>
             <Link to="/caregiver">
@@ -161,39 +146,63 @@ function Silvertown() {
 
           {/* 필터 영역 */}
           <div className={styles["filter-box"]}>
-            <h2>실버타운</h2>
-            <div className={styles["filter-row"]}>
-              <label>지역</label>
-              <select onChange={handleRegionChange}>
-                <option value="">선택</option>
-                {locationOptions.map((region) => (
-                  <option key={region.id} value={region.name}>
-                    {region.name}
-                  </option>
-                ))}
-              </select>
+            {/* 선택 영역: 흰 배경 박스 */}
+            <div className={styles["selector-row"]}>
+              <div className={styles["select-group"]}>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="지역"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>지역</label>
+                  <select onChange={handleRegionChange}>
+                    <option value="">선택</option>
+                    {locationOptions.map((region) => (
+                      <option key={region.id} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>시/군/구</label>
-              <select onChange={(e) => setSelectedCity(e.target.value)}>
-                <option value="">선택</option>
-                {cityOptions.map((city) => (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="시군구"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>시/군/구</label>
+                  <select onChange={(e) => setSelectedCity(e.target.value)}>
+                    <option value="">선택</option>
+                    {cityOptions.map((city) => (
+                      <option key={city.id} value={city.name}>
+                        {city.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>테마</label>
-              <select onChange={(e) => setSelectedTheme(e.target.value)}>
-                <option value="">선택</option>
-                {themeOptions.map((opt) => (
-                  <option key={opt.optionId} value={opt.value}>
-                    {opt.value}
-                  </option>
-                ))}
-              </select>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/layout.png"
+                    alt="테마"
+                    style={{ width: "20px", marginRight: "-3px" }}
+                  />
+                  <label>테마</label>
+                  <select onChange={(e) => setSelectedTheme(e.target.value)}>
+                    <option value="">선택</option>
+                    {themeOptions.map((opt) => (
+                      <option key={opt.optionId} value={opt.value}>
+                        {opt.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
 
+            {/* 체크박스 필터: 배경 없음 */}
             <div className={styles["filter-category"]}>
               <div>
                 <strong>주거형태</strong>
@@ -209,7 +218,7 @@ function Silvertown() {
                           setSelectedResidence
                         )
                       }
-                    />{" "}
+                    />
                     {opt.value}
                   </label>
                 ))}
@@ -229,7 +238,7 @@ function Silvertown() {
                           setSelectedFacility
                         )
                       }
-                    />{" "}
+                    />
                     {opt.value}
                   </label>
                 ))}
@@ -249,7 +258,7 @@ function Silvertown() {
                           setSelectedEnvironment
                         )
                       }
-                    />{" "}
+                    />
                     {opt.value}
                   </label>
                 ))}
@@ -269,19 +278,22 @@ function Silvertown() {
                           setSelectedEtc
                         )
                       }
-                    />{" "}
+                    />
                     {opt.value}
                   </label>
                 ))}
               </div>
             </div>
 
-            <button
-              className={styles["search-button"]}
-              onClick={handleSearchClick}
-            >
-              검색
-            </button>
+            {/* 검색 버튼: 오른쪽 정렬 */}
+            <div className={styles["search-button-wrapper"]}>
+              <button
+                className={styles["search-button"]}
+                onClick={handleSearchClick}
+              >
+                검색
+              </button>
+            </div>
           </div>
 
           {/* 검색 결과 */}
@@ -292,11 +304,7 @@ function Silvertown() {
           )}
         </div>
       </div>
-      {/*지울껑아아아아ㅏ아앙*/}
-      <button type="button" onClick={handleChatOpen}>
-        1:1 채팅룸
-      </button>
-    </>
+    </div>
   );
 }
 

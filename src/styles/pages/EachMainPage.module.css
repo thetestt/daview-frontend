@@ -1,6 +1,6 @@
 .page-background {
   min-height: 100vh;
-  background: linear-gradient(to top, #e0ebf8, #ffffff);
+  background: linear-gradient(to top, #e4f6ff, #ffffff);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -180,7 +180,7 @@
   margin-right: 6rem; /* 오른쪽 여백 */
   margin-top: -2rem; /* 위쪽 여백 */
   width: 100px;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .search-button:hover {

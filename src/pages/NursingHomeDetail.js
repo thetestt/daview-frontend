@@ -9,10 +9,14 @@ import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
 import ChatButton from "../components/common/ChatButton";
 import NaverMap from "../components/common/NaverMap";
+import { getReviewsByProdNm } from "../api/reviewApi";
 
 function NursingHomeDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchNursinghomeDetail(id)
@@ -21,6 +25,22 @@ function NursingHomeDetail() {
         console.error("디테일 API 오류:", err);
       });
   }, [id]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!data || !data.facilityName) return; // <-- 핵심!
+      try {
+        const res = await getReviewsByProdNm(data.facilityName);
+        setReviews(res);
+      } catch (err) {
+        console.error("리뷰 불러오기 실패", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [data]);
 
   if (!data) return <div>Loading...</div>;
 
@@ -83,6 +103,51 @@ function NursingHomeDetail() {
             <strong>태그: </strong>
             {data.tags.join(", ")}
           </div>
+
+          <ul className={styles["review-list"]}>
+            {isLoading ? (
+              <li>로딩 중...</li>
+            ) : reviews.length > 1 ? (
+              reviews.slice(0, 2).map((review) => (
+                <li key={review.revId} className={styles["review-item"]}>
+                  <Link
+                    to={`/review/${review.revId}`}
+                    className={styles["review-link"]}
+                  >
+                    <span className={styles["review-title"]}>
+                      {review.revTtl}
+                    </span>
+                    <span className={styles["review-date"]}>
+                      {review.revRegDate?.slice(0, 10)}
+                    </span>
+                  </Link>
+                </li>
+              ))
+            ) : reviews.length === 1 ? (
+              <li className={styles["review-item"]}>
+                <Link
+                  to={`/review/${reviews[0].revId}`}
+                  className={styles["review-link"]}
+                >
+                  <span className={styles["review-title"]}>
+                    {reviews[0].revTtl}
+                  </span>
+                  <span className={styles["review-date"]}>
+                    {reviews[0].revRegDate?.slice(0, 10)}
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              <li>등록된 리뷰가 없습니다.</li>
+            )}
+          </ul>
+
+          <Link
+            to={`/review/${data.facilityName}`}
+            className={styles["review-full-link"]}
+          >
+            리뷰 전체 보기
+          </Link>
 
           <div className={styles["notice-section"]}>
             <h3>공지사항</h3>
