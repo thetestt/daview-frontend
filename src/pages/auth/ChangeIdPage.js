@@ -90,12 +90,12 @@ function ChangeIdPage() {
         >중복 확인</button>
       </div>
       {isDuplicate === true && (
-        <p className={styles["input-error"]}>이미 사용 중인 아이디입니다.</p>
+        <p className={styles["chj-input-error"]}>이미 사용 중인 아이디입니다.</p>
       )}
       {isDuplicate === false && (
-        <p className={styles["input-success"]}>사용 가능한 아이디입니다.</p>
+        <p className={styles["chj-input-success"]}>사용 가능한 아이디입니다.</p>
       )}
-      <button type="button" className={styles["change-button"]} onClick={handleChangeUsername}> 아이디 변경하기</button>
+      <button type="button" className={styles["chj-change-button"]} onClick={handleChangeUsername}> 아이디 변경하기</button>
 
     </div>
   );

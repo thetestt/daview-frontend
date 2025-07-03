@@ -110,24 +110,24 @@ const MyProfile = () => {
               </div>
               <div className={styles["image-overlay"]}>
                 <button
-                  className={styles["add-btn"]}
+                  className={styles["chj-add-btn"]}
                   onClick={() => setShowMenu(!showMenu)}
                 >+</button>
                 {showMenu && (
-                  <div className={styles["image-menu"]}>
+                  <div className={styles["chj-image-menu"]}>
                     <button onClick={() => setProfileImage("/uploads/profile/default-profile.png")}>기본 이미지로</button>
                     <label>
                       <span>이미지 업로드</span>
-                      <input type="file" accept="image/*" onChange={handleImageChange} hidden />
+                      <input type="file" className={styles["chj-file"]} accept="image/*" onChange={handleImageChange} hidden />
                     </label>
                   </div>
                 )}
               </div>
             </div>
             <label>사용자 아이디</label>
-            <div className={styles["value"]}>{profile.username}</div>
+            <div className={styles["chj-value"]}>{profile.username}</div>
             <button
-              className={styles["mod-btn"]}
+              className={styles["chj-mod-btn"]}
               onClick={() => navigate("/mypage/ChangeIdPage", {
                 state: { username: profile.username }
               })}
@@ -136,12 +136,12 @@ const MyProfile = () => {
 
           <div className={styles["profile-item"]}>
             <label>사용자 이름</label>
-            <div className={styles["value"]}>{maskName(profile.name)}</div>
+            <div className={styles["chj-value"]}>{maskName(profile.name)}</div>
           </div>
 
           <div className={styles["profile-item"]}>
             <label>사용자 전화번호</label>
-            <div className={styles["value"]}>{maskPhone(profile.phone)}</div>
+            <div className={styles["chj-value"]}>{maskPhone(profile.phone)}</div>
           </div>
         </div>
 
@@ -155,7 +155,7 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>비밀번호 변경하기</label>
-            <div className={styles["arrow"]}>&gt;</div>
+            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
 
@@ -169,7 +169,7 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>환불계좌 관리</label>
-            <div className={styles["arrow"]}>&gt;</div>
+            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
 
@@ -178,37 +178,37 @@ const MyProfile = () => {
         <div className={styles["profile-box"]}>
           <div className={styles["profile-item"]}>
             <label>SMS 수신 동의</label>
-            <label className={styles["switch"]}>
+            <label className={styles["chj-switch"]}>
               <input
                 type="checkbox"
                 checked={agreeSms}
                 onChange={(e) => handleMarketingToggle("sms", e.target.checked)}
               />
-              <span className={styles["slider"]}></span>
+              <span className={styles["chj-slider"]}></span>
             </label>
           </div>
 
           <div className={styles["profile-item"]}>
             <label>Email 수신 동의</label>
-            <label className={styles["switch"]}>
+            <label className={styles["chj-switch"]}>
               <input
                 type="checkbox"
                 checked={agreeEmail}
                 onChange={(e) => handleMarketingToggle("email", e.target.checked)}
               />
-              <span className={styles["slider"]}></span>
+              <span className={styles["chj-slider"]}></span>
             </label>
           </div>
 
           <div className={styles["profile-item"]}>
             <label>Push 알림 수신 동의</label>
-            <label className={styles["switch"]}>
+            <label className={styles["chj-switch"]}>
               <input
                 type="checkbox"
                 checked={agreePush}
                 onChange={(e) => handleMarketingToggle("push", e.target.checked)}
               />
-              <span className={styles["slider"]}></span>
+              <span className={styles["chj-slider"]}></span>
             </label>
           </div>
         </div>
@@ -223,7 +223,7 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>회원 탈퇴</label>
-            <div className={styles["arrow"]}>&gt;</div>
+            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
       </div>

@@ -37,39 +37,39 @@ function WishlistPage() {
   }, [memberId]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles["chj-container"]}>
       <div className={styles.pageTitle}>나의 찜 목록</div>
       <div className={styles.tabs}>
         <button
-          className={styles.tabButton}
+          className={styles["chj-tabButton"]}
           onClick={() => setSelectedType("nursingHomes")}
         >
           요양원
         </button>
         <button
-          className={styles.tabButton}
+          className={styles["chj-tabButton"]}
           onClick={() => setSelectedType("caregivers")}
         >
           요양사
         </button>
         <button
-          className={styles.tabButton}
+          className={styles["chj-tabButton"]}
           onClick={() => setSelectedType("silvertowns")}
         >
           실버타운
         </button>
       </div>
 
-      <div className={styles.cardGrid}>
+      <div className={styles["chj-cardGrid"]}>
         {wishlist[selectedType].map((item) => (
           <div
             key={item.id}
-            className={styles.card}
+            className={styles["chj-card"]}
             onClick={() => handleCardClick(item.id)}
             style={{ cursor: "pointer" }}
           >
-            <div className={styles.cardTitle}>{item.name}</div>
-            <div className={styles.cardText}>ID: {item.id}</div>
+            <div className={styles["chj-cardTitle"]}>{item.name}</div>
+            <div className={styles["chj-cardText"]}>ID: {item.id}</div>
           </div>
         ))}
       </div>

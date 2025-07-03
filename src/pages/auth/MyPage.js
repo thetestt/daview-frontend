@@ -156,7 +156,7 @@ const MyPage = () => {
             </div>
             <div className={styles["profile-item"]}>
               <label>사용자 이름</label>
-              <div className={styles["value"]}>{maskName(profile.name)}</div>
+              <div className={styles["chj-value"]}>{maskName(profile.name)}</div>
             </div>
           </div>
           <br />
@@ -165,7 +165,7 @@ const MyPage = () => {
             <h2 className={styles["profile-title"]}>주문 내역</h2>
             <div className={styles["profile-item"]}>
               <label>주문 건수</label>
-              <div className={styles["value"]}>{payments.length} 건</div>
+              <div className={styles["chj-value"]}>{payments.length} 건</div>
             </div>
           </div>
           <br />
@@ -174,7 +174,7 @@ const MyPage = () => {
             <h2 className={styles["profile-title"]}>1:1 문의</h2>
             <div className={styles["profile-item"]}>
               <label>상담 건수</label>
-              <div className={styles["value"]}>{consults.length} 건</div>
+              <div className={styles["chj-value"]}>{consults.length} 건</div>
             </div>
           </div>
           <br />
@@ -183,7 +183,7 @@ const MyPage = () => {
             <h2 className={styles["profile-title"]}>내가 쓴 후기</h2>
             <div className={styles["profile-item"]}>
               <label>총 후기</label>
-              <div className={styles["value"]}>{reviews.length} 건</div>
+              <div className={styles["chj-value"]}>{reviews.length} 건</div>
             </div>
           </div>
           <br />
@@ -192,7 +192,7 @@ const MyPage = () => {
             <h2 className={styles["profile-title"]}>내 쿠폰 보기</h2>
             <div className={styles["profile-item"]}>
               <label>사용 가능한 쿠폰</label>
-              <div className={styles["value"]}>{coupons.length} 장</div>
+              <div className={styles["chj-value"]}>{coupons.length} 장</div>
             </div>
           </div>
           <br />

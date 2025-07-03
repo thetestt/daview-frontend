@@ -8,44 +8,44 @@
     height: calc(100vh - 345px);
   }
   
-  .radio-group {
+  .chj-radio-group {
     margin-bottom: 20px;
   }
   
-  .radio-group label {
+  .chj-radio-group label {
     display: block;
     margin: 10px 0;
     font-weight: 500;
   }
   
-  .form-group {
+  .chj-form-group {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
   
-  input[type="text"] {
+  .chj-input {
     padding: 10px;
     font-size: 16px;
     width: 100%;
     box-sizing: border-box;
   }
   
-  .phone-inputs,
-  .email-inputs {
+  .chj-phone-inputs,
+  .chj-email-inputs {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .phone-inputs {
+  .chj-phone-inputs {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
   }
   
-  .country-code {
+  .chj-country-code {
     width: 60px !important;
     height: 40px !important;
     padding: 0 8px !important;
@@ -57,7 +57,7 @@
     font-size: 15px !important;
   }
   
-  .phone-input {
+  .chj-phone-input {
     flex: 1 !important;
     height: 40px !important;
     padding: 0 10px;
@@ -65,9 +65,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
-  
-  
+   
   .send-code-button {
     height: 40px; /* 높이 인풋과 맞춤 */
     padding: 0 12px;
@@ -83,11 +81,11 @@
     width: 60px;
   }
   
-  .email-inputs span {
+  .chj-email-inputs span {
     font-size: 18px;
   }
   
-  .findid-send-code-button {
+  .send-code-button {
     padding: 8px 12px;
     background-color: #0a3d62;
     color: white;
@@ -96,28 +94,28 @@
     cursor: pointer;
   }
   
-  .signup-links {
+  .chj-signup-links {
     margin-top: 0.5rem;
     font-size: 0.9rem;
   }
   
-  .signup-links a {
+  .chj-signup-links a {
     color: #0a3d62;
     text-decoration: none;
     margin: 0 0.3rem;
   }
   
-  .signup-links a:hover {
+  .chj-signup-links a:hover {
     text-decoration: underline;
   }
 
-  .verify-section {
+  .chj-verify-section {
     display: flex;
     gap: 10px;
     margin-top: 10px;
   }
   
-  .verify-section input {
+  .chj-verify-section input {
     flex: 1;
   }
   
