@@ -103,6 +103,14 @@ const MyPage = () => {
         console.error("내 후기 불러오기 실패:", err);
       }
 
+      try {
+        const imageRes = await axiosInstance.get("/mypage/profile-image");
+        setProfileImage(imageRes.data || "/uploads/profile/default-profile.png");
+      } catch (err) {
+        console.error("프로필 이미지 불러오기 실패:", err);
+        setProfileImage("/uploads/profile/default-profile.png");
+      }      
+
     };
 
     handleLoadProfile();
@@ -115,7 +123,7 @@ const MyPage = () => {
       <div className={styles["mypage-body"]}>
         <div className={styles["mypage-left"]}>
           <div className={styles.profileCircle}>
-            <img src={profileImage} alt="프로필 이미지" /></div>
+          <img src={profileImage ? profileImage : "/images/default-profile.png"} alt="프로필 이미지" className={styles.profileImage}/></div>
           <ul className={styles["mypage-menu"]}>
             <li>
               <Link to="/mypage/myprofile">내 정보</Link>

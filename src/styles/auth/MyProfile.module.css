@@ -299,6 +299,27 @@
   object-fit: cover;
 }
 
+.chj-confirm-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  background-color: #333;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chj-default-btn {
+  padding: 6px 12px;
+  border: none;
+  background-color: #666;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+
 
 
 
