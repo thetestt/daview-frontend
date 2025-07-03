@@ -22,13 +22,9 @@ const CompanyDashboard = () => {
     facility_homepage: '',
     facility_charge: '',
     facility_tag: '',
-    category: '',
     default_message: '',
     introduction: '',
-    facility_email: '',
     facility_website: '',
-    capacity: '',
-    established_date: '',
     license_number: '',
     services: [],
     photo_url: '',
@@ -237,13 +233,9 @@ const CompanyDashboard = () => {
           facility_homepage: response.data.facilityWebsite || response.data.facility_homepage || '',
           facility_charge: response.data.facilityCharge || response.data.facility_charge || '',
           facility_tag: response.data.facilityTag || response.data.facility_tag || '',
-          category: response.data.category || '',
           default_message: response.data.defaultMessage || response.data.default_message || '',
           introduction: response.data.introduction || '',
-          facility_email: response.data.facilityEmail || response.data.facility_email || '',
           facility_website: response.data.facilityWebsite || response.data.facility_website || '',
-          capacity: response.data.capacity || '',
-          established_date: response.data.establishedDate || response.data.established_date || '',
           license_number: response.data.licenseNumber || response.data.license_number || '',
           services: response.data.services || [],
           photo_url: response.data.photoUrl || response.data.photo_url || '',
@@ -294,12 +286,11 @@ const CompanyDashboard = () => {
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
     
-    // 시설 유형이 변경되면 카테고리 초기화
+    // 시설 유형 변경 처리
     if (name === 'facility_type') {
       setEditFormData(prev => ({
         ...prev,
-        [name]: value,
-        category: '' // 시설 유형이 변경되면 카테고리 초기화
+        [name]: value
       }));
       return;
     }
@@ -414,20 +405,13 @@ const CompanyDashboard = () => {
               <div className={styles['info-grid']}>
                 <div className={styles['info-item']}>
                   <label>시설명</label>
-                  <span>{facilityData?.facility_name || '정보 없음'}</span>
+                  <span>{facilityData?.facilityName || facilityData?.facility_name || '정보 없음'}</span>
                 </div>
                 <div className={styles['info-item']}>
                   <label>시설 유형</label>
-                  <span>{facilityData?.facility_type || '정보 없음'}</span>
+                  <span>{facilityData?.facilityType || facilityData?.facility_type || '정보 없음'}</span>
                 </div>
-                <div className={styles['info-item']}>
-                  <label>수용 인원</label>
-                  <span>{facilityData?.capacity ? `${facilityData.capacity}명` : '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>설립일</label>
-                  <span>{facilityData?.established_date || '정보 없음'}</span>
-                </div>
+
               </div>
             </div>
 
@@ -436,15 +420,15 @@ const CompanyDashboard = () => {
               <div className={styles['info-grid']}>
                 <div className={styles['info-item']}>
                   <label>지역</label>
-                  <span>{facilityData?.facility_address_location || '정보 없음'}</span>
+                  <span>{facilityData?.facilityAddressLocation || facilityData?.facility_address_location || '정보 없음'}</span>
                 </div>
                 <div className={styles['info-item']}>
                   <label>시/군/구</label>
-                  <span>{facilityData?.facility_address_city || '정보 없음'}</span>
+                  <span>{facilityData?.facilityAddressCity || facilityData?.facility_address_city || '정보 없음'}</span>
                 </div>
                 <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
                   <label>상세 주소</label>
-                  <span>{facilityData?.facility_detail_address || '정보 없음'}</span>
+                  <span>{facilityData?.facilityDetailAddress || facilityData?.facility_detail_address || '정보 없음'}</span>
                 </div>
               </div>
             </div>
@@ -454,15 +438,12 @@ const CompanyDashboard = () => {
               <div className={styles['info-grid']}>
                 <div className={styles['info-item']}>
                   <label>전화번호</label>
-                  <span>{facilityData?.facility_phone || '정보 없음'}</span>
+                  <span>{facilityData?.facilityPhone || facilityData?.facility_phone || '정보 없음'}</span>
                 </div>
-                <div className={styles['info-item']}>
-                  <label>이메일</label>
-                  <span>{facilityData?.facility_email || '정보 없음'}</span>
-                </div>
+
                 <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
                   <label>웹사이트</label>
-                  <span>{facilityData?.facility_homepage || '정보 없음'}</span>
+                  <span>{facilityData?.facilityHomepage || facilityData?.facility_homepage || '정보 없음'}</span>
                 </div>
               </div>
             </div>
@@ -472,19 +453,15 @@ const CompanyDashboard = () => {
               <div className={styles['info-grid']}>
                 <div className={styles['info-item']}>
                   <label>테마</label>
-                  <span>{facilityData?.facility_theme || '정보 없음'}</span>
+                  <span>{facilityData?.facilityTheme || facilityData?.facility_theme || '정보 없음'}</span>
                 </div>
                 <div className={styles['info-item']}>
                   <label>월별이용료</label>
-                  <span>{facilityData?.facility_charge ? `${facilityData.facility_charge}만원` : '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>카테고리</label>
-                  <span>{facilityData?.category || '정보 없음'}</span>
+                  <span>{facilityData?.facilityCharge || facilityData?.facility_charge ? `${facilityData?.facilityCharge || facilityData?.facility_charge}만원` : '정보 없음'}</span>
                 </div>
                 <div className={styles['info-item']}>
                   <label>기본 메시지</label>
-                  <span>{facilityData?.default_message || '정보 없음'}</span>
+                  <span>{facilityData?.defaultMessage || facilityData?.default_message || '정보 없음'}</span>
                 </div>
               </div>
             </div>
@@ -495,8 +472,8 @@ const CompanyDashboard = () => {
                 <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
                   <label>시설 태그</label>
                   <div className={styles['tag-list']}>
-                    {facilityData?.facility_tag ? (
-                      facilityData.facility_tag.split(',').map((tag, index) => (
+                    {(facilityData?.facilityTag || facilityData?.facility_tag) ? (
+                      (facilityData?.facilityTag || facilityData?.facility_tag).split(',').map((tag, index) => (
                         <span key={index} className={styles['facility-tag']}>
                           {tag.trim()}
                         </span>
@@ -527,10 +504,10 @@ const CompanyDashboard = () => {
             <div className={styles['info-card']}>
               <h3>📸 시설 사진</h3>
               <div className={styles['photo-info']}>
-                {facilityData?.photo_url ? (
+                {(facilityData?.photoUrl || facilityData?.photo_url) ? (
                   <div style={{textAlign: 'center'}}>
                     <img 
-                      src={facilityData.photo_url} 
+                      src={facilityData?.photoUrl || facilityData?.photo_url} 
                       alt="시설 사진" 
                       style={{
                         maxWidth: '300px',
@@ -540,7 +517,7 @@ const CompanyDashboard = () => {
                       }}
                     />
                     <p style={{marginTop: '10px', color: '#666', fontSize: '14px'}}>
-                      {facilityData.is_thumbnail ? '📌 썸네일 사진' : '📷 일반 사진'}
+                      {(facilityData?.isThumbnail || facilityData?.is_thumbnail) ? '📌 썸네일 사진' : '📷 일반 사진'}
                     </p>
                   </div>
                 ) : (
@@ -589,26 +566,7 @@ const CompanyDashboard = () => {
                     ))}
                   </select>
                 </div>
-                <div className={styles['form-group']}>
-                  <label>수용 인원</label>
-                  <input
-                    type="number"
-                    name="capacity"
-                    value={editFormData.capacity}
-                    onChange={handleEditInputChange}
-                    placeholder="수용 가능 인원"
-                    min="1"
-                  />
-                </div>
-                <div className={styles['form-group']}>
-                  <label>설립일</label>
-                  <input
-                    type="date"
-                    name="established_date"
-                    value={editFormData.established_date}
-                    onChange={handleEditInputChange}
-                  />
-                </div>
+
               </div>
             </div>
 
@@ -675,16 +633,7 @@ const CompanyDashboard = () => {
                     placeholder="000-0000-0000"
                   />
                 </div>
-                <div className={styles['form-group']}>
-                  <label>이메일</label>
-                  <input
-                    type="email"
-                    name="facility_email"
-                    value={editFormData.facility_email}
-                    onChange={handleEditInputChange}
-                    placeholder="contact@facility.com"
-                  />
-                </div>
+
                 <div className={styles['form-group']} style={{gridColumn: 'span 2'}}>
                   <label>웹사이트</label>
                   <input
@@ -727,46 +676,7 @@ const CompanyDashboard = () => {
                     min="0"
                   />
                 </div>
-                <div className={styles['form-group']}>
-                  <label>{editFormData.facility_type === '요양원' ? '업종' : editFormData.facility_type === '실버타운' ? '주거형태' : '카테고리'}</label>
-                  <select
-                    name="category"
-                    value={editFormData.category}
-                    onChange={handleEditInputChange}
-                  >
-                    <option value="">{editFormData.facility_type === '요양원' ? '업종을 선택하세요' : editFormData.facility_type === '실버타운' ? '주거형태를 선택하세요' : '카테고리를 선택하세요'}</option>
-                    {editFormData.facility_type === '요양원' ? (
-                      <>
-                        <option value="요양원">요양원</option>
-                        <option value="요양병원">요양병원</option>
-                        <option value="방문요양센터">방문요양센터</option>
-                        <option value="주야간보호센터">주야간보호센터</option>
-                      </>
-                    ) : editFormData.facility_type === '실버타운' ? (
-                      <>
-                        <option value="아파트형">아파트형</option>
-                        <option value="호텔형">호텔형</option>
-                        <option value="빌라형">빌라형</option>
-                        <option value="주택형">주택형</option>
-                        <option value="단독빌딩">단독빌딩</option>
-                        <option value="일반빌딩">일반빌딩</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="요양원">요양원</option>
-                        <option value="요양병원">요양병원</option>
-                        <option value="방문요양센터">방문요양센터</option>
-                        <option value="주야간보호센터">주야간보호센터</option>
-                        <option value="아파트형">아파트형</option>
-                        <option value="호텔형">호텔형</option>
-                        <option value="빌라형">빌라형</option>
-                        <option value="주택형">주택형</option>
-                        <option value="단독빌딩">단독빌딩</option>
-                        <option value="일반빌딩">일반빌딩</option>
-                      </>
-                    )}
-                  </select>
-                </div>
+
                 <div className={styles['form-group']}>
                   <label>기본 메시지</label>
                   <input
