@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import styles from "../../styles/auth/WithdrawPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { createOrGetChatRoom } from "../../api/chat";
@@ -39,13 +39,12 @@ function WithdrawPage() {
   useEffect(() => {
     if (!token) return;
 
-    axios.get("/api/mypage/profile", {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((res) => {
+    axiosInstance.get("/mypage/profile").then((res) => {
       setProfile(res.data);
-      axios.get("/coupon/my", {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then(res => setCouponCount(res.data.length));
+
+      axiosInstance.get("/coupon/my").then((res) => {
+        setCouponCount(res.data.length);
+      });
     });
   }, []);
 
@@ -55,7 +54,6 @@ function WithdrawPage() {
   };
 
   const handleWithdraw = async () => {
-    const username = profile?.username;
     const reason = selectedReason === "직접 입력" ? customReason : selectedReason;
 
     if (!reason.trim()) {
@@ -64,16 +62,11 @@ function WithdrawPage() {
     }
 
     try {
-      await axios.post("/api/mypage/account/withdraw", {
-        username,
+      await axiosInstance.post("/mypage/account/withdraw", {
         reason,
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
       console.log("username:", profile.username);
       console.log("reason:", selectedReason === "기타" ? customReason : selectedReason);
-
-
 
       alert("탈퇴가 완료되었습니다.");
       localStorage.clear();
@@ -91,7 +84,6 @@ function WithdrawPage() {
   const memberId = localStorage.getItem("memberId");
 
   const handleContactAdmin = async () => {
-
     try {
       const res = await createOrGetChatRoom({
         memberId,

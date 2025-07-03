@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/MyProfile.module.css";
 
@@ -17,6 +17,8 @@ const MyProfile = () => {
 
   const [profileImage, setProfileImage] = useState("/uploads/profile/default-profile.png");
   const [showMenu, setShowMenu] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [uploadFile, setUploadFile] = useState(null);
 
   const maskName = (name) => {
     if (!name) return "";
@@ -32,26 +34,55 @@ const MyProfile = () => {
     return phone;
   };
 
-  const handleImageChange = async (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("memberId", localStorage.getItem("memberId"));
-
-      try {
-        await axios.post("/api/mypage/profile-image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        const reader = new FileReader();
-        reader.onload = () => setProfileImage(reader.result);
-        reader.readAsDataURL(file);
-      } catch (err) {
-        console.error("이미지 업로드 실패", err);
-        alert("이미지 업로드에 실패했습니다.");
-      }
+      setUploadFile(file);
+      const reader = new FileReader();
+      reader.onload = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
     }
   };
+
+  const handleResetToDefault = () => {
+    setPreviewImage("/uploads/profile/default-profile.png");
+    setUploadFile("default");
+  };
+
+  const handleUpload = async () => {
+    if (!uploadFile) return;
+
+    const isDefault = uploadFile === "default";
+    const formData = new FormData();
+
+    if (isDefault) {
+      try {
+        await axiosInstance.post("/mypage/profile-image/default");
+        alert("기본 이미지로 변경되었습니다.");
+        setProfileImage("/uploads/profile/default-profile.png");
+      } catch (err) {
+        alert("기본 이미지 변경 실패");
+        return;
+      }
+    } else {
+      formData.append("file", uploadFile);
+      try {
+        await axiosInstance.post("/mypage/profile-image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        alert("프로필 이미지가 변경되었습니다.");
+        setProfileImage(previewImage);
+      } catch (err) {
+        alert("이미지 업로드 실패");
+        return;
+      }
+    }
+
+    setPreviewImage(null);
+    setUploadFile(null);
+  };
+
+
 
   const handleMarketingToggle = (type, value) => {
     const payload = {
@@ -60,7 +91,7 @@ const MyProfile = () => {
       value,
     };
 
-    axios.patch("/api/mypage/account/marketing", payload)
+    axiosInstance.patch("/mypage/account/marketing", payload)
       .then(() => {
         if (type === "sms") setAgreeSms(value);
         if (type === "email") setAgreeEmail(value);
@@ -74,20 +105,16 @@ const MyProfile = () => {
   };
 
   useEffect(() => {
-    const memberId = localStorage.getItem("memberId");
-
-    // 프로필 이미지 가져오기
-    axios.get(`/api/mypage/profile-image/${memberId}`)
-      .then((res) => setProfileImage(res.data))
+    // 프로필 이미지 가져오기 
+    axiosInstance.get("/mypage/profile-image")
+      .then((res) => {
+        const url = res.data;
+        setProfileImage(url && url.trim() !== "" ? url : "/uploads/profile/default-profile.png");
+      })
       .catch(() => setProfileImage("/uploads/profile/default-profile.png"));
 
     // 사용자 정보 가져오기
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    axios.get("/api/mypage/profile", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    axiosInstance.get("/mypage/profile")
       .then((res) => {
         setProfile(res.data);
         setAgreeSms(res.data.agreeSms ?? false);
@@ -96,6 +123,7 @@ const MyProfile = () => {
       })
       .catch((err) => console.error("프로필 가져오기 실패:", err));
   }, []);
+
 
   return (
     <div className={styles["mypage-container"]}>
@@ -106,7 +134,9 @@ const MyProfile = () => {
           <div className={styles["profile-item"]}>
             <div className={styles["profile-image-section"]}>
               <div className={styles.profileCircle}>
-                <img src={profileImage} alt="프로필 이미지" />
+                <img src={previewImage || profileImage} alt="프로필 이미지" />
+                {previewImage && (
+                  <button className={styles["chj-confirm-btn"]} onClick={handleUpload}>변경 확인</button>)}
               </div>
               <div className={styles["image-overlay"]}>
                 <button
@@ -115,7 +145,9 @@ const MyProfile = () => {
                 >+</button>
                 {showMenu && (
                   <div className={styles["chj-image-menu"]}>
-                    <button onClick={() => setProfileImage("/uploads/profile/default-profile.png")}>기본 이미지로</button>
+                    <button
+                      className={styles["chj-default-btn"]} onClick={handleResetToDefault}>기본 이미지로
+                    </button>
                     <label>
                       <span>이미지 업로드</span>
                       <input type="file" className={styles["chj-file"]} accept="image/*" onChange={handleImageChange} hidden />

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/components/ReviewBoard.module.css";
-import { getReviewsByPage, getTotalReviewCount } from "../api/reviewApi";
+import {
+  getReviewsByPage,
+  getTotalReviewCount,
+  getUserName,
+} from "../api/reviewApi";
 
 function ReviewBoard() {
   const navigate = useNavigate();
@@ -19,6 +23,14 @@ function ReviewBoard() {
 
         const totalResponse = await getTotalReviewCount();
         setTotalPages(Math.ceil(totalResponse / reviewsPerPage));
+
+        const name = await Promise.all(
+          data.map(async (review) => {
+            const name = await getUserName(review.memberId);
+            return { ...review, memberName: name };
+          })
+        );
+        setReviews(name);
       } catch (error) {
         console.error("후기 가져오기 실패:", error);
       }
@@ -35,11 +47,20 @@ function ReviewBoard() {
     }
   };
 
+  const stars = (count) => {
+    const filled = "★".repeat(count);
+    const empty = "☆".repeat(5 - count);
+    return filled + empty;
+  };
+
   return (
     <div className={styles["review-container"]}>
-      <h2>후기 게시판</h2>
+      <h2 className={styles["review-title"]}>후기 게시판</h2>
+
       <div className={styles["review-buttonWrapper"]}>
-        <button onClick={handleWriteClick}>후기 작성</button>
+        <button className={styles["review-btn"]} onClick={handleWriteClick}>
+          후기 작성
+        </button>
       </div>
 
       <table className={styles["review-table"]}>
@@ -49,14 +70,16 @@ function ReviewBoard() {
             <th className={styles["review-th"]}>제목</th>
             <th className={styles["review-th"]}>작성자</th>
             <th className={styles["review-th"]}>별점</th>
-            <th className={styles["review-th"]}>작성일자</th>
             <th className={styles["review-th"]}>조회수</th>
+            <th className={styles["review-th"]}>작성일자</th>
           </tr>
         </thead>
         <tbody>
           {reviews.map((review, index) => (
             <tr key={review.revId} className={styles["review-tr"]}>
-              <td className={styles["review-td"]}>{index + 1}</td>
+              <td className={styles["review-td"]}>
+                {(page - 1) * reviewsPerPage + index + 1}
+              </td>
               <td className={styles["review-td"]}>
                 <button
                   className={styles["review-revttl"]}
@@ -65,16 +88,21 @@ function ReviewBoard() {
                   {review.revTtl}
                 </button>
               </td>
-              <td className={styles["review-td"]}>{review.memberId}</td>
-              <td className={styles["review-td"]}>{review.revStars}</td>
+              <td className={styles["review-td"]}>{review.memberName}</td>
+              <td className={styles["review-td"]}>
+                <span className={styles["review-stars"]}>
+                  {stars(review.revStars)}
+                </span>
+              </td>
+              <td className={styles["review-td"]}>{review.revViews}</td>
               <td className={styles["review-td"]}>
                 {new Date(review.revRegDate).toLocaleDateString()}
               </td>
-              <td className={styles["review-td"]}>{review.revViews}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
       <div className={styles["review-page"]}>
         <button disabled={page === 1} onClick={() => setPage(page - 1)}>
           이전

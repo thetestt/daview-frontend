@@ -327,103 +327,9 @@ const AdminProductList = () => {
   const [filterWorkType, setFilterWorkType] = useState('');
   const [filterEmploymentType, setFilterEmploymentType] = useState('');
 
-  // 정적 지역 데이터 (하드코딩) - AdminCaregiverList.js와 동일
-  const regionsInComponent = [
-    { id: 1, name: '서울특별시' },
-    { id: 2, name: '부산광역시' },
-    { id: 3, name: '대구광역시' },
-    { id: 4, name: '인천광역시' },
-    { id: 5, name: '광주광역시' },
-    { id: 6, name: '대전광역시' },
-    { id: 7, name: '울산광역시' },
-    { id: 8, name: '세종특별자치시' },
-    { id: 9, name: '경기도' },
-    { id: 10, name: '강원도' },
-    { id: 11, name: '충청북도' },
-    { id: 12, name: '충청남도' },
-    { id: 13, name: '전라북도' },
-    { id: 14, name: '전라남도' },
-    { id: 15, name: '경상북도' },
-    { id: 16, name: '경상남도' },
-    { id: 17, name: '제주특별자치도' }
-  ];
-
-  // 정적 시/군/구 데이터 (하드코딩)
-  const cityDataInComponent = {
-    1: [ // 서울특별시
-      '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
-      '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
-      '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'
-    ],
-    2: [ // 부산광역시
-      '강서구', '금정구', '기장군', '남구', '동구', '동래구', '부산진구', '북구',
-      '사상구', '사하구', '서구', '수영구', '연제구', '영도구', '중구', '해운대구'
-    ],
-    3: [ // 대구광역시
-      '남구', '달서구', '달성군', '동구', '북구', '서구', '수성구', '중구'
-    ],
-    4: [ // 인천광역시
-      '강화군', '계양구', '남동구', '동구', '미추홀구', '부평구', '서구', '연수구', '옹진군', '중구'
-    ],
-    5: [ // 광주광역시
-      '광산구', '남구', '동구', '북구', '서구'
-    ],
-    6: [ // 대전광역시
-      '대덕구', '동구', '서구', '유성구', '중구'
-    ],
-    7: [ // 울산광역시
-      '남구', '동구', '북구', '울주군', '중구'
-    ],
-    8: [ // 세종특별자치시
-      '세종시'
-    ],
-    9: [ // 경기도
-      '가평군', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시',
-      '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시',
-      '안양시', '양주시', '양평군', '여주시', '연천군', '오산시', '용인시', '의왕시',
-      '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'
-    ],
-    10: [ // 강원도
-      '강릉시', '고성군', '동해시', '삼척시', '속초시', '양구군', '양양군', '영월군',
-      '원주시', '인제군', '정선군', '철원군', '춘천시', '태백시', '평창군', '홍천군', '화천군', '횡성군'
-    ],
-    11: [ // 충청북도
-      '괴산군', '단양군', '보은군', '영동군', '옥천군', '음성군', '제천시', '진천군', '청주시', '충주시', '증평군'
-    ],
-    12: [ // 충청남도
-      '계룡시', '공주시', '금산군', '논산시', '당진시', '보령시', '부여군', '서산시',
-      '서천군', '아산시', '예산군', '천안시', '청양군', '태안군', '홍성군'
-    ],
-    13: [ // 전라북도
-      '고창군', '군산시', '김제시', '남원시', '무주군', '부안군', '순창군', '완주군',
-      '익산시', '임실군', '장수군', '전주시', '정읍시', '진안군'
-    ],
-    14: [ // 전라남도
-      '강진군', '고흥군', '곡성군', '광양시', '구례군', '나주시', '담양군', '목포시',
-      '무안군', '보성군', '순천시', '신안군', '여수시', '영광군', '영암군', '완도군',
-      '장성군', '장흥군', '진도군', '함평군', '해남군', '화순군'
-    ],
-    15: [ // 경상북도
-      '경산시', '경주시', '고령군', '구미시', '군위군', '김천시', '문경시', '봉화군',
-      '상주시', '성주군', '안동시', '영덕군', '영양군', '영주시', '영천시', '예천군',
-      '울릉군', '울진군', '의성군', '청도군', '청송군', '칠곡군', '포항시'
-    ],
-    16: [ // 경상남도
-      '거제시', '거창군', '고성군', '김해시', '남해군', '밀양시', '사천시', '산청군',
-      '양산시', '의령군', '진주시', '창녕군', '창원시', '통영시', '하동군', '함안군',
-      '함양군', '합천군'
-    ],
-    17: [ // 제주특별자치도
-      '서귀포시', '제주시'
-    ]
-  };
-
-  // 제공 서비스 옵션 (CompanyDashboard와 동일)
-  const serviceOptions = [
-    '24시간 간병서비스', '의료진 상주', '물리치료', '작업치료', '언어치료',
-    '영양관리', '레크리에이션', '목욕서비스', '세탁서비스', '급식서비스',
-    '응급의료체계', '치매전문케어', '재활프로그램', '문화활동', '종교활동'
-  ];
+  // 🔄 DB에서 가져온 동적 지역/시군구 데이터
+  const [regionsInComponent, setRegionsInComponent] = useState([]);
+  const [cityDataInComponent, setCityDataInComponent] = useState({});
 
   const [formData, setFormData] = useState({
     // 공통 필드
@@ -455,9 +361,7 @@ const AdminProductList = () => {
     facility_homepage: '', // 홈페이지URL
     facility_phone: '', // 연락처
     default_message: '', // 기본 메시지
-    facility_email: '', // 이메일
-    capacity: '', // 수용인원
-    established_date: '', // 설립일
+
     
     // facility_photo 테이블 관련
     photo_url: '', // 사진 등록
@@ -466,9 +370,6 @@ const AdminProductList = () => {
     // facility_tag 테이블 관련
     category: '', // 카테고리
     facility_tag: '', // 태그
-    
-    // 제공 서비스
-    services: [],
     
     // 공통 필드
     prodDetail: ''
@@ -503,9 +404,7 @@ const AdminProductList = () => {
     facility_homepage: '',
     facility_phone: '',
     default_message: '',
-    facility_email: '',
-    capacity: '',
-    established_date: '',
+
     
     // facility_photo 테이블 관련
     photo_url: '',
@@ -515,9 +414,6 @@ const AdminProductList = () => {
     category: '',
     facility_tag: '',
     
-    // 제공 서비스
-    services: [],
-    
     // 공통 필드
     prodDetail: ''
   });
@@ -525,24 +421,97 @@ const AdminProductList = () => {
   // 수정 시 원본 데이터 저장용
   const [originalEditData, setOriginalEditData] = useState({});
 
-  // 서비스 변경 핸들러 (신규 등록용)
-  const handleServiceChange = (service) => {
-    setFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
-  };
+  // 🔄 DB에서 지역 데이터 가져오기
+  // 정적 지역 데이터 (기업 페이지와 동일)
+  const staticRegions = [
+    { id: 1, name: '서울특별시' },
+    { id: 2, name: '부산광역시' },
+    { id: 3, name: '대구광역시' },
+    { id: 4, name: '인천광역시' },
+    { id: 5, name: '광주광역시' },
+    { id: 6, name: '대전광역시' },
+    { id: 7, name: '울산광역시' },
+    { id: 8, name: '세종특별자치시' },
+    { id: 9, name: '경기도' },
+    { id: 10, name: '강원도' },
+    { id: 11, name: '충청북도' },
+    { id: 12, name: '충청남도' },
+    { id: 13, name: '전라북도' },
+    { id: 14, name: '전라남도' },
+    { id: 15, name: '경상북도' },
+    { id: 16, name: '경상남도' },
+    { id: 17, name: '제주특별자치도' }
+  ];
 
-  // 서비스 변경 핸들러 (수정용)
-  const handleEditServiceChange = (service) => {
-    setEditFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
+  // 정적 시/군/구 데이터 (기업 페이지와 동일)
+  const staticCityData = {
+    1: [ // 서울특별시
+      '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
+      '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
+      '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'
+    ],
+    2: [ // 부산광역시
+      '강서구', '금정구', '기장군', '남구', '동구', '동래구', '부산진구', '북구',
+      '사상구', '사하구', '서구', '수영구', '연제구', '영도구', '중구', '해운대구'
+    ],
+    3: [ // 대구광역시
+      '남구', '달서구', '달성군', '동구', '북구', '서구', '수성구', '중구'
+    ],
+    4: [ // 인천광역시
+      '강화군', '계양구', '미추홀구', '남동구', '동구', '부평구', '서구', '연수구', '옹진군', '중구'
+    ],
+    5: [ // 광주광역시
+      '광산구', '남구', '동구', '북구', '서구'
+    ],
+    6: [ // 대전광역시
+      '대덕구', '동구', '서구', '유성구', '중구'
+    ],
+    7: [ // 울산광역시
+      '남구', '동구', '북구', '중구', '울주군'
+    ],
+    8: [ // 세종특별자치시
+      '세종시'
+    ],
+    9: [ // 경기도
+      '가평군', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시',
+      '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시',
+      '안양시', '양주시', '양평군', '여주시', '연천군', '오산시', '용인시', '의왕시',
+      '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'
+    ],
+    10: [ // 강원도
+      '강릉시', '고성군', '동해시', '삼척시', '속초시', '양구군', '양양군', '영월군',
+      '원주시', '인제군', '정선군', '철원군', '춘천시', '태백시', '평창군', '홍천군', '화천군', '횡성군'
+    ],
+    11: [ // 충청북도
+      '괴산군', '단양군', '보은군', '영동군', '옥천군', '음성군', '증평군', '진천군',
+      '청주시', '충주시', '제천시'
+    ],
+    12: [ // 충청남도
+      '계룡시', '공주시', '금산군', '논산시', '당진시', '보령시', '부여군', '서산시',
+      '서천군', '아산시', '예산군', '천안시', '청양군', '태안군', '홍성군'
+    ],
+    13: [ // 전라북도
+      '고창군', '군산시', '김제시', '남원시', '무주군', '부안군', '순창군', '완주군',
+      '익산시', '임실군', '장수군', '전주시', '정읍시', '진안군'
+    ],
+    14: [ // 전라남도
+      '강진군', '고흥군', '곡성군', '광양시', '구례군', '나주시', '담양군', '목포시',
+      '무안군', '보성군', '순천시', '신안군', '여수시', '영광군', '영암군', '완도군',
+      '장성군', '장흥군', '진도군', '함평군', '해남군', '화순군'
+    ],
+    15: [ // 경상북도
+      '경산시', '경주시', '고령군', '구미시', '군위군', '김천시', '문경시', '봉화군',
+      '상주시', '성주군', '안동시', '영덕군', '영양군', '영주시', '영천시', '예천군',
+      '울릉군', '울진군', '의성군', '청도군', '청송군', '칠곡군', '포항시'
+    ],
+    16: [ // 경상남도
+      '거제시', '거창군', '고성군', '김해시', '남해군', '밀양시', '사천시', '산청군',
+      '양산시', '의령군', '진주시', '창녕군', '창원시', '통영시', '하동군', '함안군',
+      '함양군', '합천군'
+    ],
+    17: [ // 제주특별자치도
+      '서귀포시', '제주시'
+    ]
   };
 
   // 파일 업로드 함수
@@ -971,9 +940,7 @@ const AdminProductList = () => {
           facility_phone: formData.facility_phone.trim(),
           facility_homepage: formData.facility_homepage ? formData.facility_homepage.trim() : '',
           default_message: formData.default_message ? formData.default_message.trim() : '',
-          facility_email: formData.facility_email ? formData.facility_email.trim() : '',
-          capacity: formData.capacity ? parseInt(formData.capacity) : null,
-          established_date: formData.established_date || null,
+          
           photoUrl: uploadedPhotoUrl || '', // 업로드된 파일 URL 사용
           is_thumbnail: formData.is_thumbnail ? 1 : 0,
           category: formData.category,
@@ -1089,14 +1056,11 @@ const AdminProductList = () => {
           facility_homepage: '',
           facility_phone: '',
           default_message: '',
-          facility_email: '',
-          capacity: '',
-          established_date: '',
+
           photo_url: '',
           is_thumbnail: false,
           category: '',
-          facility_tag: '',
-          services: []
+          facility_tag: ''
         });
         
         // 지역 선택 초기화
@@ -1497,7 +1461,7 @@ const AdminProductList = () => {
 
   // 수정 모드 활성화
   const handleEditClick = () => {
-    // 기존 지역 데이터로부터 지역 ID 찾기 (기업/요양사 구분)
+    // 기존 지역 데이터로부터 지역 정보 찾기 (기업/요양사 구분)
     let currentLocation = '';
     
     if (selectedProduct.prodTypeName === '기업') {
@@ -1511,20 +1475,24 @@ const AdminProductList = () => {
                        selectedProduct.hopeWorkAreaLocation || '';
     }
     
-    const currentRegion = regionsInComponent.find(r => r.name === currentLocation);
-    const regionId = currentRegion ? currentRegion.id.toString() : '';
-    
-    // 지역 ID 설정
-    setEditSelectedRegionId(regionId);
-    
-    // 해당 지역의 시/군/구 목록 설정
-    if (regionId && cityDataInComponent[regionId]) {
-      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
-        id: index + 1,
-        name: cityName
-      }));
-      setEditCities(cityList);
+    // 지역 정보가 있을 때 시/군/구 목록 설정 (기업 페이지 방식)
+    if (currentLocation) {
+      const regionObj = staticRegions.find(r => r.name === currentLocation);
+      if (regionObj && staticCityData[regionObj.id]) {
+        setEditSelectedRegionId(regionObj.id);
+        const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
+          id: index + 1,
+          name: cityName
+        }));
+        setEditCities(cityList);
+      } else {
+        // 지역 정보 로드 실패 시 빈 상태로 초기화
+        setEditSelectedRegionId('');
+        setEditCities([]);
+      }
     } else {
+      // 지역 정보가 없을 때도 빈 상태로 초기화
+      setEditSelectedRegionId('');
       setEditCities([]);
     }
 
@@ -1662,20 +1630,7 @@ const AdminProductList = () => {
       ),
       
       // 기업 전용 추가 필드들
-      facility_email: getSafeValue(
-        selectedProduct.facility_email || 
-        selectedProduct.facilityEmail
-      ),
-      capacity: getSafeNumericValue(
-        selectedProduct.capacity
-      ),
-      established_date: getSafeValue(
-        selectedProduct.established_date || 
-        selectedProduct.establishedDate
-      ),
       
-      // 제공 서비스
-      services: selectedProduct.services || [],
       
       // facility_photo 테이블 관련
       photo_url: getSafeValue(selectedProduct.photo_url || selectedProduct.photoUrl),
@@ -1740,14 +1695,11 @@ const AdminProductList = () => {
       facility_homepage: '',
       facility_phone: '',
       default_message: '',
-      facility_email: '',
-      capacity: '',
-      established_date: '',
+
       photo_url: '',
       is_thumbnail: false,
       category: '',
-      facility_tag: '',
-      services: []
+      facility_tag: ''
     });
   };
 
@@ -1821,40 +1773,28 @@ const AdminProductList = () => {
 
   // 지역 선택 시 시/군/구 목록 로드 (등록 모달용)
   const handleRegionChange = (e) => {
-    const regionId = e.target.value;
-    // console.log('🔥 AdminProductList - 선택된 지역 ID:', regionId);
-    setSelectedRegionId(regionId);
+    const selectedRegion = e.target.value;
     
-    // 폼 데이터의 지역 설정
-    const selectedRegion = regionsInComponent.find(r => r.id.toString() === regionId);
-    console.log('🌍 선택된 지역 객체:', selectedRegion);
+    // formData 업데이트
+    setFormData(prev => ({
+      ...prev,
+      hope_work_area_location: selectedRegion,
+      facility_address_location: selectedRegion,
+      hope_work_area_city: '', // 지역 변경 시 시/군/구 초기화
+      facility_address_city: ''
+    }));
     
-    // 상품 유형에 따라 다른 필드에 저장
-    if (formData.prodTypeName === '기업') {
-      setFormData(prev => ({
-        ...prev,
-        facility_address_location: selectedRegion ? selectedRegion.name : '',
-        facility_address_city: '' // 시/군/구 초기화
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        hope_work_area_location: selectedRegion ? selectedRegion.name : '',
-        hope_work_area_city: '' // 시/군/구 초기화
-      }));
-    }
-
-    // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
-    console.log('🏙️ cityDataInComponent[regionId]:', cityDataInComponent[regionId]);
-    if (regionId && cityDataInComponent[regionId]) {
-      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
+    // 선택된 지역에 따라 시/군/구 목록 업데이트
+    const regionObj = staticRegions.find(r => r.name === selectedRegion);
+    if (regionObj && staticCityData[regionObj.id]) {
+      setSelectedRegionId(regionObj.id); // 시/군/구 드롭다운 활성화
+      const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
-      console.log('🏘️ 생성된 시/군/구 목록:', cityList);
       setCities(cityList);
     } else {
-      console.log('❌ 시/군/구 목록을 찾을 수 없음');
+      setSelectedRegionId('');
       setCities([]);
     }
   };
@@ -1862,71 +1802,57 @@ const AdminProductList = () => {
   // 시/군/구 선택 시 (등록 모달용)
   const handleCityChange = (e) => {
     const cityName = e.target.value;
-    // 상품 유형에 따라 다른 필드에 저장
-    if (formData.prodTypeName === '기업') {
-      setFormData(prev => ({
-        ...prev,
-        facility_address_city: cityName
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        hope_work_area_city: cityName
-      }));
-    }
+    
+    // formData 업데이트
+    setFormData(prev => ({
+      ...prev,
+      hope_work_area_city: cityName,
+      facility_address_city: cityName
+    }));
   };
 
-  // 지역 선택 시 시/군/구 목록 로드 (수정 모달용)
+  // 수정 모달의 지역 변경 처리 (기업 페이지와 동일한 방식)
   const handleEditRegionChange = (e) => {
-    const regionId = e.target.value;
-    setEditSelectedRegionId(regionId);
+    const selectedRegion = e.target.value;
     
-    // 수정 폼 데이터의 지역 설정
-    const selectedRegion = regionsInComponent.find(r => r.id.toString() === regionId);
-    
-    // 상품 유형에 따라 다른 필드에 저장
-    if (editFormData.prodTypeName === '기업') {
-      setEditFormData(prev => ({
-        ...prev,
-        facility_address_location: selectedRegion ? selectedRegion.name : '',
-        facility_address_city: '' // 시/군/구 초기화
-      }));
-    } else {
-      setEditFormData(prev => ({
-        ...prev,
-        hope_work_area_location: selectedRegion ? selectedRegion.name : '',
-        hope_work_area_city: '' // 시/군/구 초기화
-      }));
-    }
+    setEditFormData(prev => ({
+      ...prev,
+      facility_address_location: selectedRegion,
+      facility_address_city: '', // 지역 변경 시 시/군/구 초기화
+      hope_work_area_location: selectedRegion,
+      hope_work_area_city: ''
+    }));
 
-    // 하드코딩된 시/군/구 데이터에서 해당 지역의 시/군/구 목록 설정
-    if (regionId && cityDataInComponent[regionId]) {
-      const cityList = cityDataInComponent[regionId].map((cityName, index) => ({
+    // 선택된 지역에 따라 시/군/구 목록 업데이트
+    const regionObj = staticRegions.find(r => r.name === selectedRegion);
+    if (regionObj && staticCityData[regionObj.id]) {
+      setEditSelectedRegionId(regionObj.id); // ← 이 부분이 누락되어 있었음
+      const cityList = staticCityData[regionObj.id].map((cityName, index) => ({
         id: index + 1,
         name: cityName
       }));
       setEditCities(cityList);
     } else {
+      setEditSelectedRegionId('');
       setEditCities([]);
     }
   };
 
-  // 시/군/구 선택 시 (수정 모달용)
+  // 시/군/구 변경 처리 (수정 모달용)
   const handleEditCityChange = (e) => {
     const cityName = e.target.value;
-    // 상품 유형에 따라 다른 필드에 저장
-    if (editFormData.prodTypeName === '기업') {
-      setEditFormData(prev => ({
-        ...prev,
-        facility_address_city: cityName
-      }));
-    } else {
-      setEditFormData(prev => ({
-        ...prev,
-        hope_work_area_city: cityName
-      }));
-    }
+    setEditFormData(prev => ({
+      ...prev,
+      facility_address_city: cityName,
+      hope_work_area_city: cityName
+    }));
   };
+
+  // 컴포넌트 초기화 시 정적 지역 데이터 설정
+  useEffect(() => {
+    setRegionsInComponent(staticRegions);
+    console.log('✅ 정적 지역 데이터 초기화 완료:', staticRegions.length + '개');
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
 
   // 초기 및 조건 변경 시 자동 호출
   useEffect(() => {
@@ -2010,13 +1936,13 @@ const AdminProductList = () => {
               <div className={styles["filter-group"]}>
                 <label>지역</label>
                 <select 
-                  value={selectedRegionId} 
+                  value={formData.hope_work_area_location || ''} 
                   onChange={handleRegionChange}
                   className={styles["region-filter"]}
                 >
                   <option value="">선택</option>
-                  {regionsInComponent.map(region => (
-                    <option key={region.id} value={region.id}>
+                  {staticRegions.map(region => (
+                    <option key={region.id} value={region.name}>
                       {region.name}
                     </option>
                   ))}
@@ -2533,7 +2459,7 @@ const AdminProductList = () => {
                     <div className={styles["form-group"]}>
                       <label>희망근무지역(도/광역시) *</label>
                       <select
-                        value={selectedRegionId}
+                        value={formData.hope_work_area_location || ''}
                         onChange={(e) => {
                           // console.log('🔥 AdminProductList 드롭다운 onChange 이벤트 발생!', e.target.value);
                           handleRegionChange(e);
@@ -2541,8 +2467,8 @@ const AdminProductList = () => {
                         required
                       >
                         <option value="">지역을 선택하세요</option>
-                        {regionsInComponent.map(region => (
-                          <option key={region.id} value={region.id}>
+                        {staticRegions.map(region => (
+                          <option key={region.id} value={region.name}>
                             {region.name}
                           </option>
                         ))}
@@ -2555,7 +2481,7 @@ const AdminProductList = () => {
                         name="hope_work_area_city"
                         value={formData.hope_work_area_city}
                         onChange={handleCityChange}
-                        disabled={!selectedRegionId}
+                        disabled={!formData.hope_work_area_location}
                         required
                       >
                         <option value="">시/군/구를 선택하세요</option>
@@ -2805,7 +2731,7 @@ const AdminProductList = () => {
                       <div className={styles["form-group"]}>
                         <label>지역(도/광역시) *</label>
                         <select
-                          value={selectedRegionId}
+                          value={formData.facility_address_location || ''}
                           onChange={(e) => {
                             // console.log('🔥 AdminProductList 지역 드롭다운 onChange 이벤트 발생!', e.target.value);
                             handleRegionChange(e);
@@ -2813,8 +2739,8 @@ const AdminProductList = () => {
                           required
                         >
                           <option value="">지역을 선택하세요</option>
-                          {regionsInComponent.map(region => (
-                            <option key={region.id} value={region.id}>
+                          {staticRegions.map(region => (
+                            <option key={region.id} value={region.name}>
                               {region.name}
                             </option>
                           ))}
@@ -2827,7 +2753,7 @@ const AdminProductList = () => {
                           name="facility_address_city"
                           value={formData.facility_address_city}
                           onChange={handleCityChange}
-                          disabled={!selectedRegionId}
+                          disabled={!formData.facility_address_location}
                           required
                         >
                           <option value="">시/군/구를 선택하세요</option>
@@ -2932,40 +2858,7 @@ const AdminProductList = () => {
                     </div>
                   </div>
 
-                  <div className={styles["form-row"]}>
-                    <div className={styles["form-group"]}>
-                      <label>이메일</label>
-                      <input
-                        type="email"
-                        name="facility_email"
-                        value={formData.facility_email}
-                        onChange={handleInputChange}
-                        placeholder="시설 이메일"
-                      />
-                    </div>
 
-                    <div className={styles["form-group"]}>
-                      <label>수용인원</label>
-                      <input
-                        type="number"
-                        name="capacity"
-                        value={formData.capacity}
-                        onChange={handleInputChange}
-                        placeholder="수용 가능 인원"
-                        min="1"
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles["form-group"]}>
-                    <label>설립일</label>
-                    <input
-                      type="date"
-                      name="established_date"
-                      value={formData.established_date}
-                      onChange={handleInputChange}
-                    />
-                  </div>
 
                    <div className={styles["form-group"]}>
                      <label>{formData.facility_type === '요양원' ? '업종' : formData.facility_type === '실버타운' ? '주거형태' : '카테고리'}</label>
@@ -3351,48 +3244,7 @@ const AdminProductList = () => {
                           </div>
                         </div>
 
-                        <div className={styles["detail-field"]}>
-                          <label>이메일</label>
-                          <div className={styles["field-value"]}>
-                            {selectedProduct.facility_email || selectedProduct.facilityEmail || '-'}
-                          </div>
-                        </div>
-                        
-                        <div className={styles["detail-field"]}>
-                          <label>수용인원</label>
-                          <div className={styles["field-value"]}>
-                            {selectedProduct.capacity ? `${selectedProduct.capacity}명` : '-'}
-                          </div>
-                        </div>
-                        
-                        <div className={styles["detail-field"]}>
-                          <label>설립일</label>
-                          <div className={styles["field-value"]}>
-                            {selectedProduct.established_date || selectedProduct.establishedDate || '-'}
-                          </div>
-                        </div>
 
-                        <div className={styles["detail-field"]}>
-                          <label>제공 서비스</label>
-                          <div className={styles["field-value"]}>
-                            {selectedProduct.services && selectedProduct.services.length > 0 ? (
-                              <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px'}}>
-                                {selectedProduct.services.map((service, index) => (
-                                  <span key={index} style={{
-                                    backgroundColor: '#e3f2fd',
-                                    color: '#1565c0',
-                                    padding: '3px 8px',
-                                    borderRadius: '12px',
-                                    fontSize: '12px',
-                                    border: '1px solid #bbdefb'
-                                  }}>
-                                    {service}
-                                  </span>
-                                ))}
-                              </div>
-                            ) : '-'}
-                          </div>
-                        </div>
 
                         <div className={styles["detail-field"]}>
                           <label>테마</label>
@@ -3686,15 +3538,14 @@ const AdminProductList = () => {
                     {/* 기업 지역 선택 */}
                     <div className={styles["form-row"]}>
                       <div className={styles["form-group"]}>
-                        <label>지역(도/광역시) *</label>
+                        <label>지역(도/광역시)</label>
                         <select
-                          value={editSelectedRegionId}
+                          value={editFormData.facility_address_location || ''}
                           onChange={handleEditRegionChange}
-                          required
                         >
                           <option value="">지역을 선택하세요</option>
-                          {regionsInComponent.map(region => (
-                            <option key={region.id} value={region.id}>
+                          {staticRegions.map(region => (
+                            <option key={region.id} value={region.name}>
                               {region.name}
                             </option>
                           ))}
@@ -3702,13 +3553,11 @@ const AdminProductList = () => {
                       </div>
 
                       <div className={styles["form-group"]}>
-                        <label>시/군/구 *</label>
+                        <label>시/군/구</label>
                         <select
-                          name="facility_address_city"
-                          value={editFormData.facility_address_city}
+                          value={editFormData.facility_address_city || ''}
                           onChange={handleEditCityChange}
-                          disabled={!editSelectedRegionId}
-                          required
+                          disabled={!editFormData.facility_address_location}
                         >
                           <option value="">시/군/구를 선택하세요</option>
                           {editCities.map((city, index) => (
@@ -3960,39 +3809,7 @@ const AdminProductList = () => {
                       />
                     </div>
 
-                    <div className={styles["form-row"]}>
-                      <div className={styles["form-group"]}>
-                        <label>이메일</label>
-                        <input
-                          type="email"
-                          name="facility_email"
-                          value={editFormData.facility_email}
-                          onChange={handleEditInputChange}
-                          placeholder="시설 이메일을 입력하세요"
-                        />
-                      </div>
-                      <div className={styles["form-group"]}>
-                        <label>수용인원</label>
-                        <input
-                          type="number"
-                          name="capacity"
-                          value={editFormData.capacity}
-                          onChange={handleEditInputChange}
-                          placeholder="수용 가능 인원"
-                          min="1"
-                        />
-                      </div>
-                    </div>
 
-                    <div className={styles["form-group"]}>
-                      <label>설립일</label>
-                      <input
-                        type="date"
-                        name="established_date"
-                        value={editFormData.established_date}
-                        onChange={handleEditInputChange}
-                      />
-                    </div>
                   </>
                 )}
 
@@ -4175,16 +3992,15 @@ const AdminProductList = () => {
                    editFormData.facility_type) && (
                   <>
                     <div className={styles["form-group"]}>
-                      <label>희망근무지역(도/광역시) *</label>
+                      <label>희망근무지역(도/광역시)</label>
                       <select
-                        value={editSelectedRegionId}
+                        value={editFormData.hope_work_area_location || ''}
                         onChange={handleEditRegionChange}
                         className={styles["region-select"]}
-                        required
                       >
                         <option value="">지역을 선택하세요</option>
-                        {regionsInComponent.map(region => (
-                          <option key={region.id} value={region.id}>
+                        {staticRegions.map(region => (
+                          <option key={region.id} value={region.name}>
                             {region.name}
                           </option>
                         ))}
@@ -4192,13 +4008,12 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무지역(시/군/구) *</label>
+                      <label>희망근무지역(시/군/구)</label>
                       <select
                         value={editFormData.hope_work_area_city || ''}
                         onChange={handleEditCityChange}
-                        disabled={!editSelectedRegionId}
+                        disabled={!editFormData.hope_work_area_location}
                         className={styles["city-select"]}
-                        required
                       >
                         <option value="">시/군/구를 선택하세요</option>
                         {editCities.map(city => (
@@ -4210,7 +4025,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무장소 *</label>
+                      <label>희망근무장소</label>
                       <div className={styles["checkbox-group"]}>
                         {['가정방문', '방문요양센터', '요양병원'].map(workPlace => (
                           <label key={workPlace} className={styles["checkbox-label"]}>
@@ -4238,7 +4053,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망근무형태 *</label>
+                      <label>희망근무형태</label>
                       <div className={styles["checkbox-group"]}>
                         {['출퇴근', '입주'].map(workType => (
                           <label key={workType} className={styles["checkbox-label"]}>
@@ -4266,7 +4081,7 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>희망고용형태 *</label>
+                      <label>희망고용형태</label>
                       <div className={styles["checkbox-group"]}>
                         {['정규직', '계약직', '단기', '장기', '임시'].map(empType => (
                           <label key={empType} className={styles["checkbox-label"]}>
@@ -4309,14 +4124,13 @@ const AdminProductList = () => {
                     </div>
 
                     <div className={styles["form-group"]}>
-                      <label>경력 근무 장소 *</label>
+                      <label>경력 근무 장소</label>
                       <input
                         type="text"
                         name="company_name"
                         value={editFormData.company_name}
                         onChange={handleEditInputChange}
                         placeholder="경력 근무 장소를 입력하세요"
-                        required
                       />
                     </div>
 
