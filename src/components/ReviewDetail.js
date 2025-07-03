@@ -9,6 +9,11 @@ import {
 } from "../api/reviewApi";
 import styles from "../styles/components/ReviewDetail.module.css";
 
+function getInitial(name) {
+  if (!name) return "U";
+  return name[0].toUpperCase();
+}
+
 function ReviewDetail() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,6 +26,9 @@ function ReviewDetail() {
   const [newComment, setNewComment] = useState("");
   const [newReplyMap, setNewReplyMap] = useState({});
   const [author, setAuthor] = useState("");
+
+  const [showComments, setShowComments] = useState(true);
+  const [openReplies, setOpenReplies] = useState({});
 
   useEffect(() => {
     if (!revId || fromEdit) return;
@@ -82,7 +90,12 @@ function ReviewDetail() {
       setNewComment("");
       setComments([
         ...comments,
-        { commentText: newComment, parentCommentId: null, memberId },
+        {
+          commentText: newComment,
+          parentCommentId: null,
+          memberId,
+          commentId: Date.now(),
+        },
       ]);
     } catch (error) {
       console.error("댓글 작성 실패: ", error);
@@ -128,64 +141,192 @@ function ReviewDetail() {
 
   if (!review) return <p>리뷰를 불러오는 중...</p>;
 
+  const topLevelComments = comments.filter((c) => c.parentCommentId === null);
+  const replies = comments.filter((c) => c.parentCommentId !== null);
+
   return (
-    <div className={styles["rev-detail-container"]}>
-      <h2>후기 상세</h2>
-      <div>
-        <p>
-          작성자: {author}({review?.memberId})
-        </p>
-        <p>상품명: {review?.prodNm}</p>
-        <p>제목: {review?.revTtl}</p>
-        <p>별점: {review?.revStars}</p>
-        <p>
-          작성일:{" "}
-          {review ? new Date(review.revRegDate).toLocaleDateString() : "-"}
-        </p>
-        <p>조회수: {review?.revViews}</p>
-        <hr />
-        <p>후기 내용: {review?.revCont}</p>
-      </div>
-      <div>
-        <textarea
-          value={newComment}
-          onChange={handleCommentChange}
-          placeholder="댓글을 작성하세요"
-        />
-        <button onClick={handleCommentSubmit}>댓글 작성</button>
-      </div>
-      <div>
-        {comments.map((comment) => (
-          <div key={comment.commentId} className={styles.comment}>
-            <p>
-              <strong>
-                {author}({comment.memberId})
-              </strong>
-              : {comment.commentText}
-            </p>
-            <button onClick={() => handleDeleteComment(comment.commentId)}>
-              삭제
-            </button>
-            {comment.parentCommentId === null && (
-              <div>
-                <textarea
-                  value={newReplyMap[comment.commentId] || ""}
-                  onChange={(e) => handleReplyChange(e, comment.commentId)}
-                  placeholder="대댓글을 작성하세요."
-                />
-                <button onClick={() => handleReplySubmit(comment.commentId)}>
-                  대댓글 작성
-                </button>
-              </div>
-            )}
+    <div className={styles["review-detail-container"]}>
+      <div className={styles["review-detail-card"]}>
+        <div className={styles["review-detail-header"]}>
+          <div className={styles["review-detail-avatar"]}>
+            {getInitial(author)}
           </div>
-        ))}
+          <div className={styles["review-detail-meta"]}>
+            <div className={styles["review-detail-author"]}>{author}</div>
+            <div className={styles["review-detail-date"]}>
+              {review ? new Date(review.revRegDate).toLocaleDateString() : "-"}
+            </div>
+          </div>
+          <div className={styles["review-detail-stars"]}>
+            {"★".repeat(review.revStars)}
+            {"☆".repeat(5 - review.revStars)}
+          </div>
+        </div>
+        <div className={styles["review-detail-prod"]}>{review?.prodNm}</div>
+        <div className={styles["review-detail-title"]}>{review?.revTtl}</div>
+        <div className={styles["review-detail-content"]}>{review?.revCont}</div>
+        <div className={styles["review-detail-footer"]}>
+          <span
+            style={{ color: "#888", fontSize: "14px" }}
+            className={styles["review-detail-views"]}
+          >
+            조회수 {review?.revViews}
+          </span>
+          <button
+            className={styles["review-detail-btn"]}
+            onClick={() => navigate("/review-board")}
+          >
+            목록으로
+          </button>
+          <button
+            className={styles["review-detail-btn-update"]}
+            type="button"
+            onClick={handleUpdateClick}
+          >
+            후기 수정
+          </button>
+        </div>
       </div>
-      <div>
-        <button onClick={() => navigate("/review-board")}>목록으로</button>
-        <button type="submit" onClick={handleUpdateClick}>
-          후기 수정
-        </button>
+      <div className={styles["review-detail-comment-section"]}>
+        <form
+          className={styles["review-detail-comment-form"]}
+          onSubmit={handleCommentSubmit}
+        >
+          <textarea
+            className={styles["review-detail-comment-textarea"]}
+            value={newComment}
+            onChange={handleCommentChange}
+            placeholder="댓글을 작성하세요"
+          />
+          <button className={styles["review-detail-comment-btn"]} type="submit">
+            댓글 작성
+          </button>
+        </form>
+        <div className={styles["review-detail-comment-list"]}>
+          {topLevelComments.length > 0 && (
+            <button
+              className={
+                styles["review-detail-btn"] +
+                " " +
+                styles["review-detail-toggle-btn"]
+              }
+              onClick={() => setShowComments((prev) => !prev)}
+              style={{ marginBottom: "12px" }}
+              type="button"
+            >
+              {showComments
+                ? "댓글 숨기기"
+                : `댓글 ${topLevelComments.length}개 보기`}
+            </button>
+          )}
+          {showComments &&
+            topLevelComments.map((comment) => {
+              const replyCount = replies.filter(
+                (r) => r.parentCommentId === comment.commentId
+              ).length;
+              return (
+                <div
+                  key={comment.commentId}
+                  className={styles["review-detail-comment"]}
+                >
+                  <div className={styles["review-detail-comment-avatar"]}>
+                    {getInitial(author)}
+                  </div>
+                  <div className={styles["review-detail-comment-bubble"]}>
+                    <div className={styles["review-detail-comment-meta"]}>
+                      {author}({comment.memberId})
+                    </div>
+                    <div className={styles["review-detail-comment-text"]}>
+                      {comment.commentText}
+                    </div>
+                    <div className={styles["review-detail-comment-actions"]}>
+                      <button
+                        className={styles["review-detail-reply-btn-delete"]}
+                        onClick={() => handleDeleteComment(comment.commentId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                    <div className={styles["review-detail-reply-box"]}>
+                      <textarea
+                        className={styles["review-detail-reply-textarea"]}
+                        value={newReplyMap[comment.commentId] || ""}
+                        onChange={(e) =>
+                          handleReplyChange(e, comment.commentId)
+                        }
+                        placeholder="대댓글을 작성하세요."
+                      />
+                      <div className={styles["review-detail-reply-actions"]}>
+                        <button
+                          className={styles["review-detail-reply-btn"]}
+                          onClick={() => handleReplySubmit(comment.commentId)}
+                          type="button"
+                        >
+                          대댓글 작성
+                        </button>
+                      </div>
+                    </div>
+                    {replyCount > 0 && (
+                      <button
+                        className={
+                          styles["review-detail-reply-btn"] +
+                          " " +
+                          styles["review-detail-reply-toggle-btn"]
+                        }
+                        onClick={() =>
+                          setOpenReplies((prev) => ({
+                            ...prev,
+                            [comment.commentId]: !prev[comment.commentId],
+                          }))
+                        }
+                        type="button"
+                        style={{ margin: "8px 0" }}
+                      >
+                        {openReplies[comment.commentId]
+                          ? "대댓글 숨기기"
+                          : `대댓글 ${replyCount}개 보기`}
+                      </button>
+                    )}
+                    {openReplies[comment.commentId] &&
+                      replies
+                        .filter((r) => r.parentCommentId === comment.commentId)
+                        .map((reply) => (
+                          <div
+                            key={reply.commentId}
+                            className={styles["review-detail-reply-bubble"]}
+                          >
+                            <div
+                              className={styles["review-detail-comment-meta"]}
+                            >
+                              {author}({reply.memberId})
+                            </div>
+                            <div
+                              className={styles["review-detail-comment-text"]}
+                            >
+                              {reply.commentText}
+                            </div>
+                            <div
+                              className={styles["review-detail-reply-actions"]}
+                            >
+                              <button
+                                className={
+                                  styles["review-detail-reply-btn-delete"]
+                                }
+                                onClick={() =>
+                                  handleDeleteComment(reply.commentId)
+                                }
+                                type="button"
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );
