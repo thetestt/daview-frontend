@@ -112,7 +112,7 @@ function NursingHome() {
   };
 
   return (
-    <>
+    <div className={styles["page-background"]}>
       <FloatingNavButtons />
 
       <div className={styles["nursinghome-main"]}>
@@ -303,7 +303,7 @@ function NursingHome() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

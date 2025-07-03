@@ -1,16 +1,9 @@
-html {
-  height: 100%;
-}
-
-body {
-  min-height: 100%;
+.page-background {
+  min-height: 100vh;
   background: linear-gradient(to top, #e0ebf8, #ffffff);
   background-repeat: no-repeat;
-  background-attachment: fixed; /* 중요: 배경을 고정시킴 */
-  background-size: cover; /* 화면 전체 커버 */
-  font-family: "Noto Sans KR", sans-serif;
-  margin: 0;
-  padding: 0;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 /* 전체 레이아웃 */
