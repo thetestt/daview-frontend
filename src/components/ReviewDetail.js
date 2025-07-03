@@ -5,6 +5,7 @@ import {
   getCommentsByReview,
   addComment,
   deleteComment,
+  getUserName,
 } from "../api/reviewApi";
 import styles from "../styles/components/ReviewDetail.module.css";
 
@@ -19,6 +20,7 @@ function ReviewDetail() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newReplyMap, setNewReplyMap] = useState({});
+  const [author, setAuthor] = useState("");
 
   useEffect(() => {
     if (!revId || fromEdit) return;
@@ -27,6 +29,9 @@ function ReviewDetail() {
       try {
         const data = await getReviewById(revId);
         setReview(data);
+
+        const name = await getUserName(data.memberId);
+        setAuthor(name);
       } catch (error) {
         console.error("리뷰 조회 실패: ", error);
       }
@@ -74,11 +79,11 @@ function ReviewDetail() {
 
     try {
       await addComment(revId, newComment, null, memberId);
-      setNewComment(""); // 입력 필드 초기화
+      setNewComment("");
       setComments([
         ...comments,
         { commentText: newComment, parentCommentId: null, memberId },
-      ]); // 화면에 즉시 반영
+      ]);
     } catch (error) {
       console.error("댓글 작성 실패: ", error);
     }
@@ -102,7 +107,7 @@ function ReviewDetail() {
           commentText: replyText,
           parentCommentId,
           memberId,
-          commentId: Date.now(), // 임시 ID
+          commentId: Date.now(),
         },
       ]);
     } catch (error) {
@@ -115,7 +120,7 @@ function ReviewDetail() {
       await deleteComment(commentId);
       setComments(
         comments.filter((comment) => comment.commentId !== commentId)
-      ); // 삭제된 댓글 제거
+      );
     } catch (error) {
       console.error("댓글 삭제 실패: ", error);
     }
@@ -127,7 +132,9 @@ function ReviewDetail() {
     <div className={styles["rev-detail-container"]}>
       <h2>후기 상세</h2>
       <div>
-        <p>작성자: {review?.memberId}</p>
+        <p>
+          작성자: {author}({review?.memberId})
+        </p>
         <p>상품명: {review?.prodNm}</p>
         <p>제목: {review?.revTtl}</p>
         <p>별점: {review?.revStars}</p>
@@ -139,7 +146,6 @@ function ReviewDetail() {
         <hr />
         <p>후기 내용: {review?.revCont}</p>
       </div>
-      {/* 댓글 작성 */}
       <div>
         <textarea
           value={newComment}
@@ -148,17 +154,18 @@ function ReviewDetail() {
         />
         <button onClick={handleCommentSubmit}>댓글 작성</button>
       </div>
-
-      {/* 댓글 목록 */}
       <div>
         {comments.map((comment) => (
           <div key={comment.commentId} className={styles.comment}>
-            <p>{comment.commentText}</p>
+            <p>
+              <strong>
+                {author}({comment.memberId})
+              </strong>
+              : {comment.commentText}
+            </p>
             <button onClick={() => handleDeleteComment(comment.commentId)}>
               삭제
             </button>
-
-            {/* 대댓글 작성 */}
             {comment.parentCommentId === null && (
               <div>
                 <textarea

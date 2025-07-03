@@ -22,7 +22,7 @@ function CaregiverDetail() {
       .catch((err) => console.error("❌ 요양사 불러오기 실패:", err));
   }, [id]);
 
-  console.log("🔥 디테일 data:", { data });
+  console.log("🔥 요양사 디테일 받아오는 data:", { data });
 
   if (!data) return <div>Loading...</div>;
   const genderKey = data.userGender?.toLowerCase?.();
@@ -35,16 +35,16 @@ function CaregiverDetail() {
       <div className={styles["layout-container"]}>
         <div className={styles["detail-container"]}>
           <div className={styles["detail-header"]}>
-            <div>
-              <img
-                src={data.photo || "/images/default.png"}
-                alt="증명사진"
-                className={styles["main-photo"]}
-              />
-            </div>
             <div className={styles["detail-info"]}>
               <h2>
-                <span>{data.username || "이름 미정"}</span>
+                <span>
+                  {" "}
+                  {data.name
+                    ? data.name.length === 2
+                      ? data.name[0] + "*"
+                      : data.name[0] + "*" + data.name.slice(-1)
+                    : "이름 미정"}
+                </span>
                 <span
                   className={`${styles["detail-gender"]} ${
                     genderKey === "male"

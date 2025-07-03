@@ -71,3 +71,8 @@ export const deleteComment = async (commentId) => {
   const response = await axios.put(`${COMMENT_API}/${commentId}/delete`);
   return response.data;
 };
+
+export const getUserName = async (memberId) => {
+  const response = await axios.get(`${REVIEW_API}/name/${memberId}`);
+  return response.data;
+};
