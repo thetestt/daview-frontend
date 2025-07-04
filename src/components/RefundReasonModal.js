@@ -56,7 +56,13 @@ const RefundReasonModal = ({
         <select
           value={selectReason}
           onChange={(e) => setSelectReason(e.target.value)}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginBottom: "10px",
+            border: "1px solid #8080806e",
+            borderRadius: "10px",
+          }}
         >
           <option value="">사유 선택</option>
           <option value="단순 변심">단순 변심</option>
@@ -72,10 +78,12 @@ const RefundReasonModal = ({
             onChange={(e) => setCustomReason(e.target.value)}
             rows={3}
             style={{
-              width: "100%",
+              width: "96%",
               padding: "6px",
               resize: "none",
               marginBottom: "10px",
+              border: "1px solid #8080806e",
+              borderRadius: "10px",
             }}
           />
         )}
