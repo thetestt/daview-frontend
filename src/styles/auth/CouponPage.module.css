@@ -1,42 +1,75 @@
-.chj-container {
-  padding: 20px;
+.container {
+  max-width: 1000px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+  min-height: 80vh;
 }
 
-.chj-title {
-  font-size: 24px;
+.title {
+  font-size: 28px;
   font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tabWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: -1px;
+  padding-left: 10px;
+}
+
+.chjTabButton {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: white;
+  cursor: pointer;
+  border-radius: 12px 12px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.selected {
+  background-color: #00334f;
+  color: white;
+  font-weight: bold;
+}
+
+.cardBox {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 0 12px 12px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-top: 0;
+  min-height: 300px;
+}
+
+.card {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  cursor: pointer;
   margin-bottom: 16px;
 }
 
-.chj-tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.chj-tabs button {
-  padding: 8px 16px;
-  border: 1px solid #aaa;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.chj-active {
-  background-color: #333;
-  color: #fff;
-}
-
-.chj-content {
-  min-height: 120px;
-}
-
-.chj-card {
-  padding: 16px;
+.card:hover {
   background-color: #f0f0f0;
-  border-radius: 8px;
 }
 
-.chj-empty {
+.empty {
+  text-align: center;
   color: #888;
+  font-size: 14px;
+  margin-top: 40px;
 }
