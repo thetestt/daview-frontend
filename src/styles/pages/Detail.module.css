@@ -165,6 +165,12 @@
   margin-right: 2px;
 }
 
+.star-display .star-empty {
+  color: gold;
+  font-size: 30px;
+  margin-right: 2px;
+}
+
 .average-text {
   font-size: 14px;
   color: #555;
