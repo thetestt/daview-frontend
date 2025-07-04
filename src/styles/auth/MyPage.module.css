@@ -86,30 +86,38 @@
 }
 
 .mypage-menu li a,
-.fake-link {
+.mypage-menu li button.fake-link {
   display: block;
+  width: 100%;
   padding: 12px;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 12px;
   font-size: 15px;
+  font-weight: 500;
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.2px;
+  line-height: 1.5;  
   color: #333;
   text-align: center;
   text-decoration: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: 0.2s;
+  box-sizing: border-box;
 }
 
+
+
 .mypage-menu li a:hover,
-.fake-link:hover {
+.mypage-menu li button.fake-link:hover {
   background-color: #f3f3f3;
 }
 
 .fake-link {
-  background: white;
   border: none;
   cursor: pointer;
 }
+
 
 .mypage-right {
   display: flex;
@@ -147,3 +155,16 @@
   font-weight: 600;
   color: #00334f;
 }
+
+.profile-box {
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
+.profile-box h2,
+.profile-box label,
+.profile-box .chj-value {
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
