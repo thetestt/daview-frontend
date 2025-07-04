@@ -1,31 +1,31 @@
-.container {
+.sh-container {
   max-width: 1000px;
   margin: 100px auto 60px;
   padding: 0 20px;
   min-height: 80vh;
 }
 
-.title {
+.sh-title {
   font-size: 28px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 40px;
 }
 
-.tabWrapper {
+.sh-tab-wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.tabs {
+.sh-tabs {
   display: flex;
   gap: 10px;
   margin-bottom: -1px;
   padding-left: 10px;
 }
 
-.chjTabButton {
+.sh-tab-button {
   padding: 10px 20px;
   border: 1px solid #ccc;
   border-bottom: none;
@@ -37,13 +37,13 @@
   color: #333;
 }
 
-.selected {
+.sh-selected {
   background-color: #00334f;
   color: white;
   font-weight: bold;
 }
 
-.cardBox {
+.sh-card-box {
   width: 100%;
   border: 1px solid #ccc;
   background: white;
@@ -54,20 +54,47 @@
   min-height: 300px;
 }
 
-.card {
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background: #f9f9f9;
-  cursor: pointer;
+.sh-card {
+  background: #fff8e1;
+  border: 2px dashed #fbc02d;
+  border-radius: 16px;
+  padding: 20px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #5d4037;
+  position: relative;
   margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
-.card:hover {
-  background-color: #f0f0f0;
+.sh-card:hover {
+  transform: scale(1.02);
 }
 
-.empty {
+.sh-card::before,
+.sh-card::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.sh-card::before {
+  left: -10px;
+}
+
+.sh-card::after {
+  right: -10px;
+}
+
+
+.sh-empty {
   text-align: center;
   color: #888;
   font-size: 14px;

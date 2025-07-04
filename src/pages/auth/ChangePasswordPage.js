@@ -39,25 +39,36 @@ function ChangePasswordPage() {
   };
 
   return (
-    <div className={styles["change-password-container"]}>
-      <h2>비밀번호 변경</h2>
+    <div className={styles["sh-wrapper"]}
+      style={{
+        paddingTop: "100px",
+        paddingBottom: "140px",
+        minHeight: "100vh"
+      }}>
+      <div className={styles["change-password-container"]}>
+        <h2>비밀번호 변경</h2>
+        <input
+          type="password"
+          placeholder="새 비밀번호"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="비밀번호 확인"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <button className={styles["pass-btn"]} onClick={handleChangePassword}>
+          비밀번호 변경
+        </button>
+      </div>
 
-      <input
-        type="password"
-        placeholder="새 비밀번호"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="비밀번호 확인"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-
-      <button className={styles["pass-btn"]} onClick={handleChangePassword}>비밀번호 변경</button>
     </div>
+
   );
+
+
 }
 
 export default ChangePasswordPage;

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../pages/auth/axiosInstance";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/ChangeIdPage.module.css";
@@ -26,8 +26,8 @@ function ChangeIdPage() {
 
 
     try {
-      const res = await axios.get(
-        `http://localhost:8080/api/auth/check-username?username=${username}`
+      const res = await axiosInstance.get(
+        `/auth/check-username?username=${username}`
       );
       if (res.data === true) {
         alert("이미 사용 중인 아이디입니다.");
@@ -49,19 +49,18 @@ function ChangeIdPage() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      await axios.patch(
-        "/api/mypage/account/username",
-        { newUsername: username },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axiosInstance.patch("/mypage/account/username", {
+        newUsername: username,
+      });
+
+      const newToken = res.data.token;
+      localStorage.setItem("token", newToken);
+      window.dispatchEvent(new Event("loginStatusChanged"));
+
       alert("아이디가 변경되었습니다.");
       navigate("/mypage/myprofile", {
-        state: { username: username }});
+        state: { username: username },
+      });
     } catch (err) {
       console.error("아이디 변경 실패", err);
       alert("아이디 변경 중 오류 발생");
