@@ -1,117 +1,189 @@
 .withdraw-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-
-.withdraw-container h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
-}
-
-.withdraw-container h2 span {
-  color: #00334f;
-}
-
-.chj-notice-list {
-  list-style: disc;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-  color: #444;
-}
-
-.chj-box {
-  background: #f9f9f9;
-  border-left: 5px solid #00334f;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 5px;
-}
-
-.chj-checkbox-line {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-}
-
-
-.chj-reason-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem 0;
+  align-items: center;
+  padding: 100px 20px 160px;
+  min-height: 100vh;
+  background-color: #fff;
 }
 
-.reason-list label {
+.withdraw-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.withdraw-box {
+  width: 100%;
+  max-width: 520px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.withdraw-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.withdraw-notice-list {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  font-size: 15px;
+  color: #222;
+}
+
+.withdraw-notice-list li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.withdraw-coupon-box {
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 14px 0 20px;
+  background-color: #f9f9f9;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.withdraw-coupon-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.withdraw-coupon-count {
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+}
+
+.withdraw-outside-msg {
+  font-size: 15px;
+  margin: 16px 0 32px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.withdraw-checkbox-line {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  font-size: 14px;
+  margin: 24px 0 36px;
 }
 
-.chj-textarea {
+.withdraw-confirm-btn {
+  background-color: #00324e;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 0;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 36px;
+}
+
+.withdraw-reason-wrapper {
+  width: 100%;
+}
+
+.withdraw-reason-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.withdraw-sub {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.withdraw-reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.withdraw-reason-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.withdraw-reason-radio {
+  accent-color: #00324e;
+}
+
+textarea {
   width: 100%;
   height: 100px;
-  resize: none;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  font-size: 1rem;
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  margin: 20px 0;
+  font-size: 14px;
+  resize: none;
 }
 
-.chj-extra-msg {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #fff5f5;
-  border: 1px solid #ffd5d5;
-  border-radius: 5px;
+.withdraw-extra-msg {
+  background-color: #f1faff;
+  border: 1px solid #8dcbe9;
+  border-radius: 10px;
+  padding: 18px;
+  font-size: 14px;
+  margin-top: 20px;
 }
 
-.chj-extra-msg p {
-  margin-bottom: 1rem;
-  color: #00334f;
-}
-
-.chj-btn-row {
+.withdraw-btn-row {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 12px;
+  margin-top: 16px;
 }
 
-.chj-btn-row .gray {
-  background: #ddd;
-  color: #333;
+.withdraw-btn-row button {
+  flex: 1;
+  font-size: 16px;
+  padding: 14px 0;
+  font-weight: 600;
+  border-radius: 8px;
 }
 
-.chj-withdraw-btn {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  width: 100%;
-  font-size: 1rem;
-  background: #00334f;
-  color: white;
+.withdraw-notice-list {
+  margin: 0 0 20px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.withdraw-notice-list li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+  display: list-item;
+}
+
+.withdraw-gray {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+
+.withdraw-confirm-btn {
+  background-color: #00324e;
+  color: #fff;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.chj-withdraw-btn:hover {
-  background: #01659b;
-  color: white;
-}
-
-.chj-withdraw-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.chj-withdraw-btn.gray {
-  background: #ddd;
-  color: #333;
 }
 

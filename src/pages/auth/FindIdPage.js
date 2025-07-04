@@ -35,8 +35,8 @@ function FindIdPage() {
         alert("이메일 전송 중 오류가 발생했습니다.");
       }
     }
-    
-    
+
+
   };
 
   // 이메일 인증 확인 + 아이디 찾기
@@ -82,7 +82,7 @@ function FindIdPage() {
         alert("문자 전송 중 오류가 발생했습니다.");
       }
     }
-    
+
   };
 
   // 전화 인증 확인 + 아이디 찾기
@@ -111,40 +111,48 @@ function FindIdPage() {
 
   return (
     <div className={styles["find-id-wrapper"]}>
-      <h2>아이디 찾기</h2>
+      <h2 className={styles["find-title"]}>아이디 찾기</h2>
       <div className={styles["chj-radio-group"]}>
-        <label>
-          <input
-            type="radio"
-            value="phone"
-            checked={method === "phone"}
-            onChange={() => setMethod("phone")}
-          />
-          회원번호에 등록한 전화번호로 인증
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="email"
-            checked={method === "email"}
-            onChange={() => setMethod("email")}
-          />
-          본인확인 이메일로 인증
-        </label>
+        <div className={styles["chj-radio-option"]}>
+          <label>
+            <input
+              type="radio"
+              value="phone"
+              checked={method === "phone"}
+              onChange={() => setMethod("phone")}
+            />
+            회원번호에 등록한 전화번호로 인증
+          </label>
+        </div>
+        <div className={styles["chj-radio-option"]}>
+          <label>
+            <input
+              type="radio"
+              value="email"
+              checked={method === "email"}
+              onChange={() => setMethod("email")}
+            />
+            본인확인 이메일로 인증
+          </label>
+        </div>
       </div>
 
-      {/* 전화번호 인증*/}
       {method === "phone" ? (
         <div className={styles["chj-form-group"]}>
-          <label>이름</label>
-          <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
+          <label className={styles["form-label"]}>이름</label>
+          <input
+            type="text"
+            placeholder="이름 입력"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={styles["chj-input"]}
+          />
 
-          <label>전화번호</label>
+          <label className={styles["form-label"]}>전화번호</label>
           <div className={styles["chj-phone-inputs"]}>
-            <input placeholder="+82" className={styles["chj-country-code"]} value="+82" readOnly />
             <input
               type="text"
-              className={styles["chj-phone-input"]}
+              className={styles["chj-input"]}
               placeholder="휴대전화번호 '-' 없이 입력"
               value={phone}
               onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
@@ -158,6 +166,7 @@ function FindIdPage() {
               placeholder="인증번호 6자리 숫자 입력"
               value={phoneCode}
               onChange={(e) => setPhoneCode(e.target.value)}
+              className={styles["chj-input"]}
             />
             <button className={styles["send-code-button"]} onClick={verifyPhoneCode}>인증하기</button>
           </div>
@@ -167,17 +176,37 @@ function FindIdPage() {
           </div>
         </div>
       ) : (
-        // 이메일 인증
         <div className={styles["chj-form-group"]}>
-          <label>이름</label>
-          <input type="text" placeholder="이름 입력" value={name} onChange={(e) => setName(e.target.value)} />
+          <label className={styles["form-label"]}>이름</label>
+          <input
+            type="text"
+            placeholder="이름 입력"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={styles["chj-input"]}
+          />
 
-          <label>이메일 주소</label>
-          <div className={styles["chj-email-inputs"]}>
-            <input type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label className={styles["form-label"]}>이메일주소</label>
+          <div className={styles["chj-email-row"]}>
+            <input
+              type="text"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles["chj-input"]}
+            />
             <span>@</span>
-            <input type="text" placeholder="도메인" value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} />
-            <button className={styles["send-code-button"]} onClick={sendEmailCode}>인증번호 전송</button>
+            <select
+              value={emailDomain}
+              onChange={(e) => setEmailDomain(e.target.value)}
+              className={styles["chj-select"]}
+            >
+              <option value="">직접 입력</option>
+              <option value="naver.com">naver.com</option>
+              <option value="gmail.com">gmail.com</option>
+              <option value="daum.net">daum.net</option>
+            </select>
+            <button className={styles["send-code-button"]} onClick={sendEmailCode}>인증번호전송</button>
           </div>
 
           <div className={styles["chj-verify-section"]}>
@@ -186,6 +215,7 @@ function FindIdPage() {
               placeholder="인증번호 6자리 숫자 입력"
               value={emailCode}
               onChange={(e) => setEmailCode(e.target.value)}
+              className={styles["chj-input"]}
             />
             <button className={styles["send-code-button"]} onClick={verifyEmailCode}>인증하기</button>
           </div>
@@ -196,6 +226,8 @@ function FindIdPage() {
         </div>
       )}
     </div>
+
+
   );
 }
 

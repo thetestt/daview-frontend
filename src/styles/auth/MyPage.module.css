@@ -1,148 +1,149 @@
 .mypage-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px;
-    height: calc(100vh - -150px);
-  }
-  
-  .mypage-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    text-align: left;
-  }
-  
-  .mypage-body {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 40px;
-  }
-  
-  /* 왼쪽 */
-  .mypage-left {
-    width: 250px;
-    padding: 20px;
-    border: 1px solid #bbb;
-    border-radius: 10px;
-    text-align: center;
-  }
-  
-  .mypage-avatar {
-    width: 100px;
-    height: 100px;
-    background: #ddd;
-    border-radius: 50%;
-    margin: 0 auto 15px;
-  }
-  
-  .mypage-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-direction: column; 
-    gap: 10px;
-  }
-  
-  .mypage-menu li {
-    margin: 12px 0;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  /* 오른쪽 */
-  .mypage-right {
-    flex-grow: 1;
-  }
-  
-  .profile-box {
-    border: 1px solid #bbb;
-    padding: 25px;
-    border-radius: 10px;
-    background: #fdfdfd;
-    max-width: 600px;
-  }
-  
-  .profile-title {
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  .profile-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    gap: 10px;
-  }
-  
-  .profile-item label {
-    width: 130px;
-    font-weight: 600;
-  }
-  
-  .chj-value {
-    padding: 5px 10px;
-    border-bottom: 1px solid #ccc;
-    margin-right: 10px;
-    color: #000;
-    width: 300px; 
-  }
-  
-  .mod-btn {
-    background-color: #00334f;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+  max-width: 1200px;
+  margin: 100px auto 0 auto;
+  padding: 40px 20px 100px 20px;
+  min-height: 100vh;
+  padding-bottom: 100px;
+  min-height: 100vh;
+}
 
-  .mod-btn:hover {
-    background-color: #01659b;
-    color: white;
-  }
-  
-  .mod-btn.main {
-    margin-top: 20px;
-    float: right;
-  }
-  
-  .fake-link {
-    background: none;
-    border: none;
-    padding: 0;
-    color: #000000;
-    text-decoration: none;
-    cursor: pointer;
-    font: inherit;
-  }
+.mypage-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 50px;
+}
 
-  .mypage-menu a {
-    color: #000;
-    text-decoration: none;
-  }
-  
-  .mypage-menu a:visited {
-    color: #000;
-  }
+.mypage-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;
+  flex-wrap: wrap;
+}
 
-  .profileCircle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #ddd;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .profileCircle img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
- 
-  
+.mypage-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.profileCircle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  text-align: center;
+  margin-top: -10px;
+}
+
+.username {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.mod-btn {
+  padding: 6px 12px;
+  background-color: #00334f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mod-btn:hover {
+  background-color: #01659b;
+}
+
+.mypage-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mypage-menu li a,
+.fake-link {
+  display: block;
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.mypage-menu li a:hover,
+.fake-link:hover {
+  background-color: #f3f3f3;
+}
+
+.fake-link {
+  background: white;
+  border: none;
+  cursor: pointer;
+}
+
+.mypage-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 460px;
+}
+
+.profile-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.profile-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #333;
+}
+
+.chj-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00334f;
+}

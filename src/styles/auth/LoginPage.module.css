@@ -1,103 +1,90 @@
 .page-wrapper {
-  height: calc(100vh - 250px);  /* Footer 높이 예측해서 조정 */
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 90vh;
+  background-color: #fff;
 }
 
 .login-container {
   width: 100%;
   max-width: 400px;
-  padding: 1rem;
-  text-align: center;
+  padding: 20px;
 }
 
-/* 로그인 내용 박스 */
 .login-inner {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 타이틀 */
 .login-subtitle {
   font-size: 20px;
-  color: gray;
-  margin: 0;
-  padding-top: 10px;
+  color: #555;
+  margin-bottom: -30px;
 }
 
-/* 로고 텍스트 */
 .login-logo {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  color: #0a3d62;
+  font-size: 50px;
+  font-weight: 700;
+  color: #002c47;
+  margin-bottom: 40px;
 }
 
-/* 로그인 폼 */
 .login-form {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.login-form input,
-.login-form button {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-.login-form button {
-  background-color: #0a3d62;
-  color: white;
+.login-form input {
+  padding: 14px 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+}
+
+.login-button {
+  background-color: #002c47;
+  color: #fff;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s;
 }
 
-.login-form button:hover {
-  background-color: #074b80;
+.login-button:hover {
+  background-color: #01406a;
 }
 
-/* 아래 링크 */
 .login-links {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #4a4a4a;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .login-links a {
-  color: #0a3d62;
+  color: #4a6fa5;
   text-decoration: none;
-  margin: 0 0.3rem;
 }
 
-.login-links a:hover {
-  text-decoration: underline;
+.login-links span {
+  color: #999;
 }
 
-.kakao-login {
-  font-size: 0.9rem;
-  background: none;
-  padding: 0;
-  border: none;
-  margin-bottom: 10px;
-  color: #444;
-  line-height: 1.5;
-}
-
-.kakao-login-button {
-  background-color: #fff500; 
-  color: #311e00;
-  border: none;
-  padding: 10px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
 }

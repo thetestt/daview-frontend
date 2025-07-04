@@ -68,56 +68,74 @@ function RefundAccountPage() {
   };
 
   return (
-    <div className={styles["change-password-container"]}>
-      <h2>환불 계좌 관리</h2>
+    <div className={styles["refund-container"]}>
+      <h1 className={styles["refund-title"]}>환불 계좌 관리</h1>
+      <div className={styles["refund-box"]}>
+        <div className={styles["refund-field"]}>
+          <label className={styles["refund-label"]}>계좌주</label>
+          <input type="text" className={styles["refund-input"]} value={name} disabled />
+        </div>
 
-      <label>계좌주</label>
-      <input type="text" value={name} disabled />
+        <div className={styles["refund-field"]}>
+          <label className={styles["refund-label"]}>은행명</label>
+          <select
+            className={styles["refund-select"]}
+            value={bankName}
+            onChange={(e) => setBankName(e.target.value)}
+          >
+            <option value="">은행을 선택해주세요.</option>
+            <option value="국민은행">국민은행</option>
+            <option value="하나은행">하나은행</option>
+            <option value="신한은행">신한은행</option>
+            <option value="우리은행">우리은행</option>
+            <option value="카카오뱅크">카카오뱅크</option>
+            <option value="산업은행">산업은행</option>
+            <option value="외환은행">외환은행</option>
+            <option value="SC제일은행">SC제일은행</option>
+            <option value="상호저축은행">상호저축은행</option>
+            <option value="HSBC은행">HSBC은행</option>
+            <option value="한국씨티은행">한국씨티은행</option>
+            <option value="광주은행">광주은행</option>
+            <option value="경남은행">경남은행</option>
+            <option value="iM뱅크(대구)">iM뱅크(대구)</option>
+            <option value="부산은행">부산은행</option>
+            <option value="전북은행">전북은행</option>
+            <option value="우체국">우체국</option>
+            <option value="토스뱅크">토스뱅크</option>
+            <option value="케이뱅크">케이뱅크</option>
+            <option value="산림조합중앙회">산림조합중앙회</option>
+            <option value="유안타증권">유안타증권</option>
+            <option value="삼성증권">삼성증권</option>
+            <option value="한국투자증권">한국투자증권</option>
+            <option value="NH투자증권">NH투자증권</option>
+            <option value="대신증권">대신증권</option>
+            <option value="신한금융투자">신한금융투자</option>
+            <option value="유진투자증권">유진투자증권</option>
+            <option value="메리츠증권">메리츠증권</option>
+          </select>
+        </div>
+        <div className={styles["refund-field"]}>
+          <label className={styles["refund-label"]}>계좌번호</label>
+          <input
+            type="text"
+            className={styles["refund-input"]}
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value)}
+            placeholder="계좌번호 '-' 없이 입력"
+          />
+        </div>
 
-      <label>은행명</label>
-      <select value={bankName} onChange={(e) => setBankName(e.target.value)}>
-      <option value="">은행을 선택해주세요.</option>
-        <option value="국민은행">국민은행</option>
-        <option value="하나은행">하나은행</option>
-        <option value="신한은행">신한은행</option>
-        <option value="우리은행">우리은행</option>
-        <option value="카카오뱅크">카카오뱅크</option>
-        <option value="산업은행">산업은행</option>
-        <option value="외한은행">외환은행</option>
-        <option value="SC제일은행">SC제일은행</option>
-        <option value="상호저축은행">상호저축은행</option>
-        <option value="HSBC은행">HSBC은행</option>
-        <option value="한국씨티은행">한국씨티은행</option>
-        <option value="관주은행">광주은행</option>
-        <option value="경남은행">경남은행</option>
-        <option value="iM뱅크(대구)">iM뱅크(대구)</option>
-        <option value="부산은행">부산은행</option>
-        <option value="전북은행">전북은행</option>
-        <option value="우체국">우체국</option>
-        <option value="토스뱅크">토스뱅크</option>
-        <option value="케이뱅크">케이뱅크</option>
-        <option value="산림조합중앙회">산림조합중앙회</option>
-        <option value="유안타증권">유안타증권</option>
-        <option value="삼성증권">삼성증권</option>
-        <option value="한국투자증권">한국투자증권</option>
-        <option value="NH투자증권">NH투자증권</option>
-        <option value="대신증권">대신증권</option>
-        <option value="신한금융투자">신한금융투자</option>
-        <option value="유진투자증권">유진투자증권</option>
-        <option value="매리츠증권">매리츠증권</option>
-      </select>
-
-      <label>계좌번호</label>
-      <input
-        type="text"
-        value={accountNumber}
-        onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ""))}
-        placeholder="계좌번호 '-' 없이 입력"
-      />
-
-      <button className={styles["chj-save-btn"]} onClick={handleSave}>저장</button>
-      <button className={styles["chj-pass-btn"]} onClick={handleDelete}>해지</button>
+        <div className={styles["refund-buttons"]}>
+          <button onClick={handleDelete} className={styles["refund-cancel-btn"]}>
+            해지
+          </button>
+          <button onClick={handleSave} className={styles["refund-save-btn"]}>
+            저장
+          </button>
+        </div>
+      </div>
     </div>
+
   );
 }
 
