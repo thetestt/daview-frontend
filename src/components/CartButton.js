@@ -5,7 +5,7 @@ import CartCountModal from "./CartCountModal";
 import CartConfirmModal from "./CartConfirmModal";
 import styles from "../styles/components/CartButton.module.css";
 
-function CartButton({ data, productType }) {
+function CartButton({ data, productType, className }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -23,7 +23,6 @@ function CartButton({ data, productType }) {
 
   const handleAddToCart = async () => {
     try {
-
       const reservationData =
         productType === "caregiver"
           ? {
@@ -89,7 +88,9 @@ function CartButton({ data, productType }) {
 
   return (
     <>
-      <button onClick={handleReservation}>예약하기</button>
+      <button onClick={handleReservation} className={className}>
+        예약하기
+      </button>
 
       {isModalOpen && (
         <CartCountModal
