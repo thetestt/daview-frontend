@@ -15,6 +15,7 @@ const PayButton = ({
   isAgreed,
   selectedCouponId,
   couponDiscount,
+  className,
 }) => {
   const navigate = useNavigate();
 
@@ -113,7 +114,11 @@ const PayButton = ({
     );
   };
 
-  return <button onClick={handlePayment}>결제하기</button>;
+  return (
+    <button className={className} onClick={handlePayment}>
+      결제하기
+    </button>
+  );
 };
 
 export default PayButton;

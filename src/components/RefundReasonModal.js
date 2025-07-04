@@ -1,5 +1,3 @@
-// components/RefundReasonModal.js
-
 import React from "react";
 
 const RefundReasonModal = ({
@@ -94,7 +92,7 @@ const RefundReasonModal = ({
             marginTop: "10px",
             padding: "8px 16px",
             border: "none",
-            backgroundColor: "#007bff",
+            backgroundColor: "#004d7a",
             color: "#fff",
             borderRadius: "5px",
             cursor: "pointer",

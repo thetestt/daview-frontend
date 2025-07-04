@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PayButton from "./PayButton";
 import { getMyCoupons } from "../api/paymentApi";
+import styles from "../styles/components/Payment.module.css";
 
 function Payment() {
   const location = useLocation();
@@ -56,7 +57,6 @@ function Payment() {
   const handleCouponChange = (e) => {
     const selectedId = Number(e.target.value);
     setSelectedCouponId(selectedId);
-
     const selected = coupons.find((c) => c.couponId === selectedId);
     setDiscount(selected?.discount ?? 0);
   };
@@ -64,118 +64,190 @@ function Payment() {
   const discountedPrice = discount
     ? Math.floor(totalPrice * (1 - discount / 100))
     : totalPrice;
-
-  const filteredReservations = reservations.filter(
-    (reservation) => reservation.rsvType === 1 && reservation.rsvType !== 3
-  );
-
   const discountAmount = totalPrice - discountedPrice;
 
-  return (
-    <div style={{ maxWidth: "700px", margin: "50px auto", padding: "10px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>결제 페이지</h2>
+  if (loading) return <p>잠시만 기다려주세요...</p>;
 
-      {loading ? (
-        <p style={{ textAlign: "center" }}>로딩 중...</p>
-      ) : (
-        <>
-          {filteredReservations.length === 0 ? (
-            <p style={{ textAlign: "center", marginTop: "50px" }}>
-              결제할 예약 정보가 없습니다.
-            </p>
-          ) : (
-            reservations.map((reservation) => (
-              <div
+  return (
+    <div className={styles["pay-container"]}>
+      <div className={styles["pay-title-box"]}>
+        <h2 className={styles["pay-page-title"]}>주문 / 결제</h2>
+        <div className={styles["pay-notice"]}>
+          *** 해당 상품 금액은 [ 예약금 ]이며 추후 차액은 상담 후 센터에서
+          도와드립니다. ***
+        </div>
+      </div>
+
+      <div className={styles["pay-box"]}>
+        <div className={styles["pay-title"]}>주문 상품 정보</div>
+        <table className={styles["pay-reservation-table"]}>
+          <thead>
+            <tr>
+              <th className={styles["pay-img-row"]}>상품 이미지</th>
+              <th className={styles["pay-info-row"]}>상품 정보</th>
+              <th className={styles["pay-count-row"]}>인원</th>
+              <th className={styles["pay-price-row"]}> 상품 금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservations.map((reservation) => (
+              <tr
+                className={styles["pay-reservation-row"]}
                 key={reservation.rsvId}
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "15px",
-                  marginBottom: "20px",
-                }}
               >
-                <div>
+                <td className={styles["pay-img-row"]}>
                   <img
                     src={reservation.prodPhoto || "/images/default.png"}
-                    alt="상품이미지"
-                    style={{ width: "200px", height: "auto" }}
+                    alt="상품 이미지"
+                    className={styles["pay-product-img"]}
                   />
-                </div>
-                <div>예약 ID: {reservation.rsvId}</div>
-                <div>회원 ID: {reservation.memberId}</div>
-                <div>상품명: {reservation.prodNm}</div>
-                <div>상품 상세: {reservation.prodDetail}</div>
-                <div>예약 인원: {reservation.rsvCnt}</div>
-                <div>
-                  상품 가격:{" "}
-                  {reservation.prodPrice
-                    ? reservation.prodPrice.toLocaleString()
-                    : "정보 없음"}{" "}
-                  원
-                </div>
-              </div>
-            ))
-          )}
-          <div style={{ marginTop: "30px" }}>
-            <h3>상담자 정보</h3>
-            <div>
-              <label>이름 *</label>
+                </td>
+                <td className={styles["pay-info-row"]}>
+                  <div className={styles["pay-product-title"]}>
+                    {reservation.prodNm}
+                  </div>
+                  <ul>
+                    {(reservation.prodDetail || "")
+                      .split(" ")
+                      .map((detail, idx) => (
+                        <li key={idx}>{detail}</li>
+                      ))}
+                  </ul>
+                </td>
+                <td className={styles["pay-count-row"]}>
+                  {reservation.rsvCnt}
+                </td>
+                <td className={styles["pay-price-row"]}>
+                  ₩ {reservation.prodPrice?.toLocaleString() ?? "정보 없음"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className={styles["pay-user-title"]}>주문자 정보</div>
+        <div className={styles["pay-user-info"]}>
+          <div className={styles["pay-name-consult-group"]}>
+            <div className={styles["pay-input-group"]}>
+              <span className={styles["pay-user-name"]}>
+                이름<span className={styles["pay-red-star"]}>*</span>
+              </span>
               <input
                 type="text"
                 name="name"
                 value={userInfo.name}
                 onChange={handleChange}
-                required
-                style={{ width: "100%", marginBottom: "10px" }}
+                placeholder="이름"
               />
             </div>
-            <div>
-              <label>연락처 *</label>
+
+            <div className={styles["pay-input-group"]}>
+              <span className={styles["pay-facility-date"]}>
+                상담 예정일<span className={styles["pay-red-star"]}>*</span>
+              </span>
+              <input
+                type="date"
+                name="consultDate"
+                value={userInfo.consultDate}
+                min={
+                  new Date(Date.now() + 86400000).toISOString().split("T")[0]
+                }
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className={styles["pay-contact-group"]}>
+            <div className={styles["pay-input-group"]}>
+              <span className={styles["pay-user-name"]}>
+                연락처<span className={styles["pay-red-star"]}>*</span>
+              </span>
               <input
                 type="text"
                 name="phone"
                 value={userInfo.phone}
                 onChange={handleChange}
-                required
-                style={{ width: "100%", marginBottom: "10px" }}
+                placeholder="연락처"
               />
             </div>
-            <div>
-              <label>비상 연락처</label>
+
+            <div className={styles["pay-input-group"]}>
+              <span className={styles["pay-user-name"]}>
+                비상 연락처<span className={styles["pay-red-star"]}>*</span>
+              </span>
               <input
                 type="text"
                 name="emergencyPhone"
                 value={userInfo.emergencyPhone}
                 onChange={handleChange}
-                style={{ width: "100%", marginBottom: "10px" }}
-              />
-            </div>
-            <div>
-              <label>상담 예정일 *</label>
-              <input
-                type="date"
-                min={
-                  new Date(Date.now() + 86400000).toISOString().split("T")[0]
-                }
-                name="consultDate"
-                value={userInfo.consultDate}
-                onChange={handleChange}
-                required
-                style={{ width: "100%", marginBottom: "10px" }}
-              />
-            </div>
-            <div>
-              <label>기타 문의사항</label>
-              <textarea
-                name="message"
-                value={userInfo.message}
-                onChange={handleChange}
-                rows={4}
-                style={{ width: "100%" }}
+                placeholder="비상 연락처"
               />
             </div>
           </div>
-          <div style={{ marginTop: "30px" }}>
+
+          <div className={styles["pay-input-group"]}>
+            <span className={styles["pay-user-name"]}>
+              기타 문의 사항<span className={styles["pay-red-star"]}>*</span>
+            </span>
+            <textarea
+              name="message"
+              value={userInfo.message}
+              onChange={handleChange}
+              className={styles["pay-etc"]}
+              placeholder="기타 문의 사항"
+            ></textarea>
+          </div>
+        </div>
+
+        <div className={styles["pay-card-title"]}>결제 수단</div>
+        <div className={styles["pay-card-group"]}>
+          <div className={styles["pay-radio-group"]}>
             <label>
+              <input type="radio" name="payment" defaultChecked /> 신용카드
+            </label>
+            <label>
+              <input type="radio" name="payment" /> 무통장 입금
+            </label>
+            <label>
+              <input type="radio" name="payment" /> 카카오페이
+            </label>
+            <label>
+              <input type="radio" name="payment" /> 네이버페이
+            </label>
+          </div>
+        </div>
+
+        <div className={styles["pay-right-box"]}>
+          <div className={styles["pay-payinfo-title"]}>결제 정보</div>
+          <div className={styles["pay-price-row"]}>
+            <span>상품 금액</span>
+            <span>₩{totalPrice.toLocaleString()}</span>
+          </div>
+
+          <div className={styles["pay-total-box"]}>
+            <div className={styles["coupon-box"]}>
+              <label>사용할 쿠폰 선택</label>
+              <select
+                value={selectedCouponId || ""}
+                onChange={handleCouponChange}
+                className={styles["coupon-info"]}
+              >
+                <option value="">-- 쿠폰 선택 안함 --</option>
+                {coupons
+                  .filter((c) => !c.used)
+                  .map((c) => (
+                    <option key={c.couponId} value={c.couponId}>
+                      {c.description} (-{c.discount}% 할인)
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className={styles["pay-totalprice-row"]}>
+              <span>총 결제 금액</span>
+              <span>₩{discountedPrice.toLocaleString()}</span>
+            </div>
+
+            <label className={styles["pay-agreement"]}>
               <input
                 type="checkbox"
                 checked={isAgreed}
@@ -184,59 +256,33 @@ function Payment() {
               예약에 관한 내용을 확인하였으며, <br />
               결제에 동의합니다.
             </label>
-            <div>
-              <br />
-              <strong>상품 금액: {totalPrice.toLocaleString()}원</strong>
-            </div>
-            <div style={{ marginTop: "30px" }}>
-              <label>사용할 쿠폰 선택:</label>
-              <select
-                value={selectedCouponId || ""}
-                onChange={handleCouponChange}
-                style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+
+            <div className={styles["pay-btn-box"]}>
+              <PayButton
+                className={styles["pay-btn"]}
+                reservations={reservations}
+                totalPrice={discountedPrice}
+                userInfo={userInfo}
+                memberId={memberId}
+                isAgreed={isAgreed}
+                selectedCouponId={selectedCouponId}
+                couponDiscount={discountAmount}
+              />
+              <button
+                className={styles["pay-back-link"]}
+                onClick={() => {
+                  const confirmed = window.confirm(
+                    "이전 페이지로 돌아가면 결제 내용은 초기화됩니다.\n이동하시겠습니까?"
+                  );
+                  if (confirmed) navigate(-1);
+                }}
               >
-                <option value="">-- 쿠폰 선택 안함 --</option>
-                {coupons
-                  .filter((coupon) => !coupon.used)
-                  .map((coupon) => (
-                    <option key={coupon.couponId} value={coupon.couponId}>
-                      {coupon.description} (-{" "}
-                      {coupon.discount != null ? coupon.discount : 0}% 할인)
-                    </option>
-                  ))}
-              </select>
-            </div>
-            <div>
-              <strong>
-                총 결제 금액: {discountedPrice.toLocaleString()}원
-              </strong>
+                예약 페이지로 돌아가기
+              </button>
             </div>
           </div>
-          <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <button
-              onClick={() => {
-                const confirmed = window.confirm(
-                  "이전 페이지로 돌아가면 결제 내용은 초기화됩니다.\n이동하시겠습니까?"
-                );
-                if (confirmed) {
-                  navigate(-1);
-                }
-              }}
-            >
-              예약 페이지로 돌아가기
-            </button>
-            <PayButton
-              reservations={reservations}
-              totalPrice={discountedPrice}
-              userInfo={userInfo}
-              memberId={memberId}
-              isAgreed={isAgreed}
-              selectedCouponId={selectedCouponId}
-              couponDiscount={discountAmount}
-            />
-          </div>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
