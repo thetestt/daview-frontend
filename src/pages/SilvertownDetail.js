@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import styles from "../styles/pages/Detail.module.css";
 import FloatingNavButtons from "../components/FloatingNavButtons";
 import { fetchSilvertownDetail } from "../api/silvertown";
+import { getReviewsByProdNm } from "../api/reviewApi";
 import CartButton from "../components/CartButton";
 import HeartButton from "../components/common/HeartButton";
 import ChatButton from "../components/common/ChatButton";
@@ -15,11 +16,60 @@ function SilvertownDetail() {
   const [data, setData] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     fetchSilvertownDetail(id)
       .then(setData)
       .catch((err) => console.error("API 오류:", err));
   }, [id]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!data || !data.facilityName) return; // <-- 핵심!
+      try {
+        const res = await getReviewsByProdNm(data.facilityName);
+        console.log("리뷰데이터", res);
+
+        setReviews(res);
+      } catch (err) {
+        console.error("리뷰 불러오기 실패", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [data]);
+
+  //평균 별 갯수 변환
+  const calculateAverageStars = (reviews) => {
+    if (!reviews || reviews.length === 0) return 0;
+    const total = reviews.reduce((sum, review) => sum + review.revStars, 0);
+    return total / reviews.length;
+  };
+
+  const renderStars = (average) => {
+    const rounded = Math.round(average); // 반올림
+    const fullStars = Math.min(rounded, 5); // 최대 5
+    const emptyStars = 5 - fullStars;
+
+    return (
+      <>
+        {[...Array(fullStars)].map((_, i) => (
+          <span key={`full-${i}`} className={styles["star"]}>
+            ★
+          </span>
+        ))}
+        {[...Array(emptyStars)].map((_, i) => (
+          <span key={`empty-${i}`} className={styles["star-empty"]}>
+            ☆
+          </span>
+        ))}
+      </>
+    );
+  };
 
   if (!data) return <div>Loading...</div>;
 
@@ -76,6 +126,33 @@ function SilvertownDetail() {
               </div>
             </div>
 
+            <div className={styles["tilte-box"]}>
+              <div className={styles["title-header"]}>
+                <div className={styles["text-group"]}>
+                  <div className={styles["title-line"]}>
+                    <h2 className={styles["facility-name"]}>
+                      {data.facilityName}
+                    </h2>
+                    <span className={styles["star-display"]}>
+                      {renderStars(calculateAverageStars(reviews))}
+                    </span>
+                    <span className={styles["average-text"]}>
+                      {reviews.length > 0 &&
+                        `${calculateAverageStars(reviews).toFixed(1)}점 / ${
+                          reviews.length
+                        }개의 후기`}
+                    </span>
+                  </div>
+                </div>
+
+                <HeartButton
+                  facilityId={id}
+                  className={styles["heart-button"]}
+                />
+              </div>
+              <hr className={styles["divider"]} />
+            </div>
+
             <div className={styles["info_map-box"]}>
               {/* 2. 텍스트 정보 */}
               <div className={styles["info-box"]}>
@@ -87,13 +164,6 @@ function SilvertownDetail() {
                     className={styles["list-quote-background"]}
                   />
                 </div>
-                <h2>{data.facilityName}</h2>
-                <div className={styles["tags"]}>
-                  태그: {data.tags.join(", ")}
-                </div>
-                <p className={styles["price"]}>
-                  {data.facilityCharge.toLocaleString()}원 / 월
-                </p>
                 <p>주소: {address}</p>
                 <p>테마: {data.facilityTheme}</p>
                 <p>
@@ -107,9 +177,14 @@ function SilvertownDetail() {
                   </a>
                 </p>
                 <p>전화번호: {data.facilityPhone}</p>
+                <div className={styles["tags"]}>
+                  태그: {data.tags.join(", ")}
+                </div>
+                <p className={styles["price"]}>
+                  {data.facilityCharge.toLocaleString()}원 / 월
+                </p>
                 <div className={styles["button-group"]}>
                   <ChatButton facilityId={id} receiverId={data.memberId} />
-                  <HeartButton facilityId={id} />
                   <CartButton data={data} productType="silvertown" />
                 </div>
               </div>
@@ -136,11 +211,46 @@ function SilvertownDetail() {
               )}
             </ul>
             <Link to={`/notice/${data.facilityId}`}>공지사항 전체 보기</Link>
-
+            {/*리뷰*/}
             <h3>리뷰</h3>
             <div className={styles["review-box"]}>
-              {/* 여기에 리뷰 슬라이드 또는 리스트 추가 가능 */}
-              <p>분위기가 너무 좋아요 ★★★★★</p>
+              <ul className={styles["review-list"]}>
+                {isLoading ? (
+                  <li>로딩 중...</li>
+                ) : reviews.length > 1 ? (
+                  reviews.slice(0, 2).map((review) => (
+                    <li key={review.revId} className={styles["review-item"]}>
+                      <Link
+                        to={`/review/${review.revId}`}
+                        className={styles["review-link"]}
+                      >
+                        <span className={styles["review-title"]}>
+                          {review.revTtl}
+                        </span>
+                        <span className={styles["review-date"]}>
+                          {review.revRegDate?.slice(0, 10)}
+                        </span>
+                      </Link>
+                    </li>
+                  ))
+                ) : reviews.length === 1 ? (
+                  <li className={styles["review-item"]}>
+                    <Link
+                      to={`/review/${reviews[0].revId}`}
+                      className={styles["review-link"]}
+                    >
+                      <span className={styles["review-title"]}>
+                        {reviews[0].revTtl}
+                      </span>
+                      <span className={styles["review-date"]}>
+                        {reviews[0].revRegDate?.slice(0, 10)}
+                      </span>
+                    </Link>
+                  </li>
+                ) : (
+                  <li>등록된 리뷰가 없습니다.</li>
+                )}
+              </ul>
             </div>
 
             <h3>상세페이지</h3>

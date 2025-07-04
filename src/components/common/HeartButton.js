@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axiosInstance";
 import { useNavigate } from "react-router";
 
-function HeartButton({ facilityId }) {
+function HeartButton({ facilityId, className }) {
   const [isLiked, setIsLiked] = useState(false);
   const memberId = localStorage.getItem("memberId");
   const navigate = useNavigate();
@@ -36,7 +36,11 @@ function HeartButton({ facilityId }) {
       .catch((err) => console.error("찜 오류:", err));
   };
 
-  return <button onClick={toggleHeart}>{isLiked ? "❤️" : "🤍"}</button>;
+  return (
+    <button onClick={toggleHeart} className={`heart-button ${className}`}>
+      {isLiked ? "❤️" : "🤍"}
+    </button>
+  );
 }
 
 export default HeartButton;
