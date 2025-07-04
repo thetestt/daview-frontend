@@ -1,155 +1,201 @@
-.layout-container {
-  padding: 20px;
+.page-background {
+  min-height: 100vh;
+  background: linear-gradient(to top, #e4f6ff, #ffffff);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
-.detail-container {
-  padding: 20px;
+.detail-wrapper {
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.detail-header {
+.main-section {
   display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
+  flex-direction: column; /* ← 추가: 세로 정렬 */
+  align-items: center;
+  gap: 2rem;
 }
 
-.main-photo {
-  width: 300px;
-  height: 200px;
+/* 상위 사진 슬라이더 */
+.photo-slider {
+  position: relative;
+  width: 1000px;
+  height: auto;
+  overflow: hidden;
+  border-radius: 12px;
+  flex-shrink: 0;
+  margin: 0 auto; /* 가운데 정렬 */
+  display: flex; /* 내부 콘텐츠 정렬을 위해 */
+  justify-content: center;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+}
+/* 부모 영역 (위치 지정) */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 450px;
+  overflow: hidden;
+  margin: 30px auto;
+  padding: 0;
 }
 
-.detail-info {
+/* 트랙 전체 이미지 줄 */
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/* 각 이미지 */
+.carousel-image {
+  width: 700px;
+  height: 430px;
+  object-fit: cover;
+  margin: 0 -10px;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: all 0.4s ease;
+  border-radius: 5px;
+  flex-shrink: 0;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 현재 슬라이드에만 강조 */
+.carousel-image.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+}
+
+/*좌우버튼*/
+.arrow-left,
+.arrow-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border: none;
+  background: transparent; /* ← 배경 투명하게 */
+  padding: 0; /* ← 여백 제거 */
+  border-radius: 0; /* ← 둥근 테두리 제거 */
+  font-size: 60px;
+  color: inherit; /* ← 글자색 상속 */
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.arrow-left {
+  left: 50px;
+}
+
+.arrow-right {
+  right: 50px;
+}
+
+@media screen and (min-width: 768px) {
+  .main-section {
+    align-items: stretch; /* ← 중앙 정렬 대신 너비 꽉 채우게 */
+  }
+
+  /*인포-맵 박스*/
+  .info_map-box {
+    display: flex;
+    justify-content: space-between; /* 좌우 간격 정렬 */
+    align-items: flex-start; /* 위쪽 기준 정렬 */
+    gap: 2rem; /* 간격 */
+    width: 1200px;
+  }
+}
+
+/* 우측 정보 */
+.info-box {
   flex: 1;
 }
 
+/* 제목부터 > 디테일정보 > 지도까지  */
+.info-detail-box {
+  flex: 1;
+}
+
+/*백그라운드 따온표*/
+.list-quote-background {
+  position: absolute;
+  top: -70px; /* 카드 위로부터 얼마나 떨어질지 */
+  left: -40px; /* 카드 맨 왼쪽 */
+  width: 50px; /* 크기 */
+  opacity: 1; /* 은은하게 */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.info-detail-box h2 {
+  margin: 0.5rem 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.tags {
+  font-size: 14px;
+  color: #666;
+}
 .price {
-  font-size: 18px;
-  color: #007acc;
-  margin: 10px 0;
+  font-size: 20px;
+  color: #e86e6e;
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
 
-.detail-buttons {
+.button-group {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.detail-buttons button {
-  padding: 8px 12px;
-  background: #007acc;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
+  gap: 0.5rem;
+  margin: 1rem 0;
 }
 
 .map-box {
-  width: 200px;
-  height: 200px;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
+  width: 500px; /* ← 추가! */
+  height: 400px;
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 1rem;
+  background: #000000;
+  min-width: 200px;
+  flex-shrink: 0; /* 줄어들지 않게! */
+  position: relative;
 }
 
-.thumbnail-box {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
+/* 하단 공지/리뷰 */
+.notice-review-section {
+  margin-top: 3rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.thumbnail-box img {
-  width: 100px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 4px;
+.notice-review-section h3 {
+  margin-top: 1rem;
+  font-size: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
 }
 
-.tag-section {
-  margin: 10px 0;
+.review-box {
+  margin: 1rem 0;
 }
 
-.notice-section {
-  margin-top: 20px;
-}
-
-.fnotice-item {
-  background-color: #f1f1f1;
-  padding: 12px 16px;
+.detail-desc {
+  padding: 1rem;
+  background: #f8f8f8;
   border-radius: 8px;
-  margin-bottom: 10px;
-  height: 80px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-}
-
-.fnotice-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-  color: #333;
-  width: 100%;
-  height: 100%;
-}
-
-.fnotice-title {
-  font-weight: 600;
-  font-size: 1.3rem;
-}
-
-.fnotice-date {
-  font-size: 0.85rem;
-  color: gray;
-  margin-left: 12px;
-  white-space: nowrap;
-  text-decoration: none;
-  border: none;
-}
-
-.notice-full-link {
-  display: inline-block;
-  margin-top: 12px;
-  color: #007acc;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.career-section ul {
-  padding-left: 20px;
-}
-
-.intro-section {
-  margin-top: 20px;
-}
-
-/* 성별 배지 스타일 */
-.detail-gender {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #fff;
-  margin-left: 12px;
-}
-
-.gender-male {
-  background-color: #2196f3;
-}
-
-.gender-female {
-  background-color: #e91e63;
-}
-
-.gender-unknown {
-  background-color: #9e9e9e;
+  font-size: 14px;
 }

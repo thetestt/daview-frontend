@@ -46,6 +46,8 @@ const NaverMap = ({ address, className }) => {
   useEffect(() => {
     if (!address || !isMapReady || !mapInstance.current) return;
 
+    console.log("📍지도 주소:", address);
+
     const interval = setInterval(() => {
       if (window.naver?.maps?.Service) {
         clearInterval(interval);
