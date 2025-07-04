@@ -294,7 +294,7 @@ function ReviewDetail() {
                             <div
                               className={styles["review-detail-comment-meta"]}
                             >
-                              {reply.memberName}({reply.memberId})
+                              {comment.memberName}({reply.memberId})
                             </div>
                             <div
                               className={styles["review-detail-comment-text"]}
