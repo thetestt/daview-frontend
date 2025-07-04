@@ -1,56 +1,80 @@
-.chj-container {
-    padding: 20px;
-    height: calc(100vh - 310px);
-  }
-  
-  .chj-pageTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 24px;
-  }
-  
-  
-  .chj-tabs {
-    margin-bottom: 20px;
-  }
-  
-  .chj-tabButton {
-    margin-right: 12px;
-    padding: 8px 16px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: bold;
-  }
-  
-  .chj-tabButton:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .chj-cardGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .chj-card {
-    width: 220px;
-    padding: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .chj-cardTitle {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .chj-cardText {
-    font-size: 14px;
-    color: #555;
-  }
-  
+.container {
+  max-width: 1000px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+  min-height: 80vh;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tabWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: -1px;
+  padding-left: 10px;
+}
+
+.chjTabButton {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: white;
+  cursor: pointer;
+  border-radius: 12px 12px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.selected {
+  background-color: #00334f;
+  color: white;
+  font-weight: bold;
+}
+
+.cardBox {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 0 12px 12px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-top: 0;
+  min-height: 300px;
+}
+
+.chjCardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #f0f0f0;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  margin-top: 40px;
+}

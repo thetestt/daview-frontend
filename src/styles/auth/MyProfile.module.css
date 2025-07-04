@@ -1,296 +1,61 @@
-.profile-wrapper {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  font-family: 'Pretendard', sans-serif;
-  height: calc(100vh - 100px);
+.mypage-container {
+  max-width: 1000px;
+  margin: 100px auto;
+  padding: 0 20px 100px 20px;
+  min-height: 100vh;
 }
 
-.profile-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 32px;
+.myprofile-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-.profile-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-top: 1px solid #ddd;
-}
-
-.profile-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #eee;
-  font-size: 16px;
-  color: #222;
-}
-
-.profile-list li span {
-  font-weight: 500;
-}
-
-.match-info {
+.myprofile-right {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-}
-
-.chj-notice {
-  font-size: 13px;
-  color: #e9438f;
-  margin-top: 4px;
-}
-
-.profile-user {
+  gap: 24px;
   align-items: center;
-}
-
-.profile-user .user-id {
-  font-size: 13px;
-  color: #888;
-  margin-top: 4px;
-}
-
-.chj-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid #ccc;
-}
-
-.chj-danger {
-  text-align: right;
-  font-weight: 500;
-  color: #d00;
-  cursor: pointer;
-}
-.mypage-container {
-  max-width: 1200px;
-  padding: 40px;
-  height: calc(100vh - 100px);
-  flex-grow: 1;
-  margin: 0 auto;
-}
-
-.mypage-title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  text-align: left;
-}
-
-
-/* 오른쪽 */
-.mypage-right {
-  flex-grow: 1;
 }
 
 .profile-box {
-  border: 1px solid #bbb;
-  padding: 25px;
-  border-radius: 10px;
-  background: #fdfdfd;
+  width: 100%;
   max-width: 600px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .profile-title {
   font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .profile-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 12px;
-}
-
-.profile-item label {
-  flex: 1;
-  white-space: nowrap;
-}
-
-.chj-value {
-  padding: 5px 10px;
-  border-bottom: 1px solid #ccc;
-  margin-right: 10px;
-  color: #000;
-  width: 300px; 
-}
-
-.chj-mod-btn {
-  background-color: #00334f;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.mod-btn:hover {
-  background-color: #01659b;
-  color: white;
-}
-
-.mod-btn.main {
-  margin-top: 20px;
-  float: right;
-}
-
-.fake-link {
-  background: none;
-  border: none;
-  padding: 0;
-  color: #000000;
-  text-decoration: none;
-  cursor: pointer;
-  font: inherit;
-  font-size: 20px;
-}
-
-.profile-box {
-  transition: background-color 0.2s;
-}
-
-.profile-box:hover {
-  background-color: #f9f9f9;
-  cursor: pointer;
-}
-
-.chj-switch {
-  flex-shrink: 0;
-  position: relative;
-  display: inline-block;
-  width: 52px;
-  height: 28px;
-}
-
-.chj-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.chj-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.3s;
-  border-radius: 34px;
-}
-
-.chj-slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  top: 3px;
-  background-color: white;
-  transition: transform 0.3s;
-  border-radius: 50%;
-}
-
-.chj-input:checked + .slider {
-  background-color: #4caf50;
-}
-
-.chj-input:checked + .slider:before {
-  transform: translateX(18px);
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .profile-image-section {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin-bottom: 20px;
-}
-
-.profile-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #bbb;
-}
-
-.chj-image-overlay {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
-.chj-add-btn {
-  background-color: #333;
-  color: white;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-}
-
-.chj-image-menu {
-  position: absolute;
-  top: 35px;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  z-index: 99;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.chj-uploadMenu {
-  position: absolute;
-  top: 70px;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
-}
-
-.chj-uploadMenu button {
-  background: none;
-  border: none;
-  padding: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  text-align: left;
-}
-.chj-uploadMenu button:hover {
-  background-color: #f0f0f0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  margin-bottom: 12px;
 }
 
 .profileCircle {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #ccc;
-  background-color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid #ccc;
 }
 
 .profileCircle img {
@@ -299,34 +64,235 @@
   object-fit: cover;
 }
 
-.chj-confirm-btn {
-  margin-top: 10px;
-  padding: 6px 12px;
-  border: none;
-  background-color: #333;
+.image-overlay {
+  position: relative;
+}
+
+.chj-modify-btn {
+  background: #00334f;
   color: white;
-  border-radius: 6px;
+  font-size: 14px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+}
+
+.chj-modify-btn:hover {
+  background-color: #01659b;
+}
+
+.chj-image-menu {
+  margin-top: 10px;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .chj-default-btn {
-  padding: 6px 12px;
-  border: none;
-  background-color: #666;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.chj-default-btn:hover {
+  background: #eee;
+}
+
+.chj-file {
+  display: none;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chj-confirm-btn {
+  padding: 8px 16px;
+  background-color: #00334f;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chj-cancel-btn {
+  padding: 8px 16px;
+  background-color: white;
+  color: #00334f;
+  border: 1px solid #00334f;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chj-mod-btn {
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 6px 10px;
+  background: #00334f;
+  color: white;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
 }
 
+.chj-value {
+  font-size: 15px;
+  color: #444;
+}
 
+.profile-image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
 
+.chj-plain-btn {
+  background: none;
+  border: none;
+  color: #00334f;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
 
+.chj-plain-btn:hover {
+  text-decoration: underline;
+}
 
+.profile-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px;
+  row-gap: 12px;
+  align-items: center;
+  margin-top: 24px;
+}
 
+.profile-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+}
 
+.profile-value {
+  font-size: 15px;
+  color: #444;
+}
 
+.profile-change-btn {
+  text-align: right;
+}
 
+.chj-mod-btn {
+  background-color: #00334f;
+  color: white;
+  font-size: 13px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
+.chj-mod-btn:hover {
+  background-color: #01659b;
+}
 
+.confirm-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.chj-cancel-btn {
+  padding: 8px 16px;
+  background-color: white;
+  color: #00334f;
+  border: 1px solid #00334f;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chj-confirm-btn {
+  padding: 8px 16px;
+  background-color: #00334f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.consent-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 4px 8px;
+}
+
+.consent-label {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: #00334f;
+}
+
+.toggle-switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
 
 

@@ -1,373 +1,165 @@
-/*로그인*/
-.login-container {
-  max-width: 320px;
-  margin: 5rem auto;
-  text-align: center;
-  font-family: sans-serif;
-}
-
-.login-subtitle {
-  font-size: 20px;
-  color: gray;
-  margin-bottom: 0px;
-}
-
-.login-logo {
-  font-size: 50px;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  margin-top: 0.2px;
-  color: #0a3d62;
-}
-
-.login-form input {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.login-form button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #0a3d62;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.login-form input,
-.login-form button {
-  box-sizing: border-box;
-}
-
-.login-form button:hover {
-  background-color: #074b80;
-}
-
-.login-links {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-}
-
-.login-links a {
-  color: #0a3d62;
-  text-decoration: none;
-  margin: 0 0.3rem;
-}
-
-.login-links a:hover {
-  text-decoration: underline;
-}
-
-/*회원가입*/
 .signup-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: sans-serif;
+  max-width: 520px;
+  margin: 80px auto;
+  padding: 0 20px;
 }
 
-.signup-container h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.signup-form label {
-  display: block;
-  margin-bottom: 0.25rem;
+.signup-title {
+  font-size: 28px;
   font-weight: bold;
+  text-align: center;
+  margin-bottom: 32px;
 }
 
-.signup-form input,
-.signup-form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.signup-form .email-box {
+.signup-form {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.signup-form .email-box input {
+.form-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.input-description {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+  margin-bottom: -8px;
+}
+
+.chj-input {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   flex: 1;
 }
 
-.signup-form button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #0a3d62;
-  color: white;
-  font-size: 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.chj-select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.terms-content {
-  font-size: 0.9rem;
-  background: none;
-  padding: 0;
-  border: none;
-  margin-bottom: 10px;
-  color: #444;
-  line-height: 1.5;
-}
-
-.terms-wrapper {
-  margin-top: 6px;
-}
-
-.terms-row {
+.username-check-wrapper,
+.chj-phone-inputs,
+.verify-section,
+.email-box {
   display: flex;
-  align-items: baseline; 
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  align-items: center;
+}
+
+.username-check-button {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #00334f;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.username-check-button:hover {
+  background-color: #01659b;
+}
+
+.email-box input {
+  flex: 1;
+}
+
+.email-box select {
+  min-width: 130px;
 }
 
 .terms-label {
-  width: 80px; 
   font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.terms-row {
+  margin-top: 20px;
 }
 
 .agree-all-line {
-  display: inline-flex;
-  align-items: baseline; 
-  gap: 6px;
-  font-size: 1rem;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-
-.email-box {
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.email-box input[type="text"],
-.email-box select {
-  font-size: 1rem;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  height: 100%; 
-}
-
-.email-box span {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0 4px;
-  font-size: 1.1rem;
-  line-height: 1;
-  position: relative;
-  top: -3px; 
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.terms-content-scroll {
+  font-size: 14px;
+  color: #444;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  line-height: 1.6;
+  max-height: 180px;
+  overflow-y: auto;
 }
 
 .agree-check {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  margin-left: 4px;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .agree-check input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-}
-
-.agree-check span {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.signup-phone-inputs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.signup-country-code {
-  width: 30px;
-  height: 35px;
-  /* 높이 인풋과 맞춤 */
-}
-
-.signup-phone-input {
-  width: 80px;
-  height: 40px;
-  /* 높이 인풋과 맞춤 */
-}
-
-.signup-send-code-button {
-  height: 40px;
-  /* 높이 인풋과 맞춤 */
-  padding: 0 12px;
-  font-size: 0.7rem;
-  background-color: #0a3d62;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.username-check-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.username-check-wrapper input[type="text"] {
-  flex: 8;
-  height: 40px;
-  padding: 6px 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.username-check-button {
-  flex: 2;
-  height: 40px;
-  padding: 6px 12px;
-  font-size: 0.95rem;
-  background-color: #0a3d62;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  box-sizing: border-box;
-  position: relative;
-  top: -8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.username-check-button:hover {
-  background-color: #064174;
-}
-
-
-.chj-input-error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: -0.8rem;
-  margin-bottom: 1rem;
-}
-
-.chj-input-success {
-  color: green;
-  font-size: 0.9rem;
-  margin-top: -0.8rem;
-  margin-bottom: 1rem;
+  margin-right: 6px;
 }
 
 .agree-desc {
-  font-size: 0.9rem;
-  background: none;
-  padding: 0;
-  border: none;
-  margin-bottom: 10px;
-  color: #444;
+  background-color: #f3f3f3;
+  padding: 12px;
+  font-size: 13px;
+  color: #666;
+  border-radius: 8px;
+  margin-top: 6px;
   line-height: 1.5;
-  font-weight: 400;
 }
 
 .pass-btn {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  width: 100%;
-  font-size: 1rem;
-  background: #00334f;
+  margin-top: 20px;
+  padding: 14px;
+  font-size: 18px;
+  background-color: #00334f;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
 }
 
 .pass-btn:hover {
-  background: #01659b;
-  color: white;
-}
-
-.pass-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.pass-btn.gray {
-  background: #ddd;
-  color: #333;
-}
-
-.phone-inputs,
-.verify-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.chj-phone-inputs input,
-.verify-section input {
-  flex: 8;
-}
-
-.pass-check-button {
-  flex: 2;
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  background-color: #00334f;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-}
-
-.pass-check-button:hover {
   background-color: #01659b;
 }
 
-.chj-input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
+.chj-input-error {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 4px;
 }
 
-.chj-select {
-  width: 100%;
-  padding: 0.65rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
+.chj-input-success {
+  color: #2ecc71;
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 4px;
 }
-
-
