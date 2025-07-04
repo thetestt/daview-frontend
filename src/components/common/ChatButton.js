@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { createOrGetChatRoom } from "../../api/chat"; // API 함수
 
-const ChatButton = ({ facilityId, receiverId }) => {
+const ChatButton = ({ facilityId, receiverId, className }) => {
   const navigate = useNavigate();
   const memberId = localStorage.getItem("memberId");
 
@@ -38,7 +38,11 @@ const ChatButton = ({ facilityId, receiverId }) => {
     }
   };
 
-  return <button onClick={handleChatClick}>1:1 문의</button>;
+  return (
+    <button onClick={handleChatClick} className={className}>
+      1:1 문의
+    </button>
+  );
 };
 
 export default ChatButton;

@@ -164,28 +164,68 @@ function SilvertownDetail() {
                     className={styles["list-quote-background"]}
                   />
                 </div>
-                <p>주소: {address}</p>
-                <p>테마: {data.facilityTheme}</p>
-                <p>
-                  홈페이지:{" "}
-                  <a
-                    href={data.facilityHomepage}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {data.facilityHomepage}
-                  </a>
-                </p>
-                <p>전화번호: {data.facilityPhone}</p>
-                <div className={styles["tags"]}>
-                  태그: {data.tags.join(", ")}
+                <div className={styles["info-text"]}>
+                  <p>
+                    {" "}
+                    <img
+                      src="/images/icon/pin.png"
+                      alt="주소"
+                      style={{ width: "20px", marginRight: "-10px" }}
+                    />
+                    주소: {address}
+                  </p>
+                  <p>
+                    {" "}
+                    <img
+                      src="/images/icon/layout.png"
+                      alt="테마"
+                      style={{ width: "20px", marginRight: "-3px" }}
+                    />
+                    테마: {data.facilityTheme}
+                  </p>
+                  <p>
+                    <img
+                      src="/images/icon/website.png"
+                      alt="테마"
+                      style={{ width: "20px", marginRight: "-3px" }}
+                    />
+                    홈페이지:{" "}
+                    <a
+                      href={data.facilityHomepage}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {data.facilityHomepage}
+                    </a>
+                  </p>
+                  <p>
+                    {" "}
+                    <img
+                      src="/images/icon/telephone.png"
+                      alt="테마"
+                      style={{ width: "20px", marginRight: "-3px" }}
+                    />
+                    전화번호: {data.facilityPhone}
+                  </p>
                 </div>
-                <p className={styles["price"]}>
-                  {data.facilityCharge.toLocaleString()}원 / 월
-                </p>
+                <div className={styles["tags"]}># {data.tags.join(", #")}</div>
+                <div className={styles["price-box"]}>
+                  <p className={styles["price"]}>
+                    {data.facilityCharge.toLocaleString()}원
+                    <span className={styles["per-month"]}>/ 월</span>
+                  </p>
+                </div>
                 <div className={styles["button-group"]}>
-                  <ChatButton facilityId={id} receiverId={data.memberId} />
-                  <CartButton data={data} productType="silvertown" />
+                  <ChatButton
+                    facilityId={id}
+                    receiverId={data.memberId}
+                    className={styles["chat-button"]}
+                  />
+                  <CartButton
+                    data={data}
+                    productType="silvertown"
+                    className={styles["cart-button"]}
+                  />
                 </div>
               </div>
 

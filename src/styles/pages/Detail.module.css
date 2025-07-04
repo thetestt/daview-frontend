@@ -101,31 +101,6 @@
   right: 50px;
 }
 
-@media screen and (min-width: 768px) {
-  .main-section {
-    align-items: stretch; /* ← 중앙 정렬 대신 너비 꽉 채우게 */
-  }
-
-  /*인포-맵 박스*/
-  .info_map-box {
-    display: flex;
-    justify-content: space-between; /* 좌우 간격 정렬 */
-    align-items: flex-start; /* 위쪽 기준 정렬 */
-    gap: 2rem; /* 간격 */
-    width: 1200px;
-  }
-}
-
-/* 우측 정보 */
-.info-box {
-  flex: 1;
-}
-
-/* 제목부터 > 디테일정보 > 지도까지  */
-.info-detail-box {
-  flex: 1;
-}
-
 /*백그라운드 따온표*/
 .list-quote-background {
   position: absolute;
@@ -218,26 +193,132 @@
   margin: 10px 0; /* 위아래 간격 */
 }
 
+@media screen and (min-width: 768px) {
+  .main-section {
+    align-items: stretch; /* ← 중앙 정렬 대신 너비 꽉 채우게 */
+  }
+
+  /*인포-맵 박스*/
+  .info_map-box {
+    display: flex;
+    justify-content: space-between; /* 좌우 간격 정렬 */
+    align-items: flex-start; /* 위쪽 기준 정렬 */
+    gap: 2rem; /* 간격 */
+    width: 1200px;
+  }
+}
+
+.info-box {
+  margin-left: 50px;
+  flex: 1;
+}
+
+/* 제목부터 > 디테일정보 > 지도까지  */
+.info-detail-box {
+  flex: 1;
+}
+
+.info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* ✅ p 태그 간 간격 */
+  font-size: 18px; /* ✅ 전체 글자 크기 */
+  line-height: 1.6; /* ✅ 줄 간격 */
+  color: #333;
+  margin-top: 20px;
+  align-items: flex-first;
+}
+
+.info-text p {
+  display: flex; /* 수평 정렬 */
+  align-items: center; /* 아이콘과 텍스트 수직 중앙 정렬 */
+  margin: 0;
+  gap: 0.4rem; /* 아이콘과 텍스트 간격 */
+  font-size: 18px;
+  line-height: 1.6;
+  justify-content: flex-first;
+  gap: 0.7rem;
+}
+
+.info-text img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0; /* 이미지가 줄어들지 않게 */
+  vertical-align: middle;
+}
+
+.info-text a {
+  color: #252525;
+  text-decoration: none;
+}
+
 .tags {
+  margin-top: 20px;
   font-size: 14px;
   color: #666;
 }
+
+.price-box {
+  margin-top: 40px;
+  text-align: right;
+  margin-bottom: 0rem;
+}
+
 .price {
-  font-size: 20px;
-  color: #e86e6e;
-  font-weight: bold;
-  margin: 0.5rem 0;
+  font-size: 40px;
+  color: #2b2727;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.per-month {
+  font-size: 25px;
+  color: #666;
+  margin-left: 5px;
+  font-weight: 450;
 }
 
 .button-group {
   display: flex;
   gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 0rem 0;
+}
+
+.chat-button {
+  padding: 1rem 5.95rem;
+  border: 2px solid #e86e6e;
+  background-color: #ffffff;
+  color: #e86e6e;
+  font-weight: 600;
+  font-size: 23px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-button:hover {
+  background-color: #fff2f2;
+}
+
+.cart-button {
+  padding: 1rem 5.95rem;
+  border: none;
+  background-color: #e86e6e;
+  color: white;
+  font-weight: 600;
+  font-size: 23px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cart-button:hover {
+  background-color: #d85b5b;
 }
 
 .map-box {
   width: 500px; /* ← 추가! */
-  height: 400px;
+  height: 370px;
   flex: 1;
   border-radius: 10px;
   overflow: hidden;
@@ -246,6 +327,7 @@
   min-width: 200px;
   flex-shrink: 0; /* 줄어들지 않게! */
   position: relative;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* 하단 공지/리뷰 */
