@@ -1,0 +1,246 @@
+.pay-container {
+  background-color: #f7f7f7;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+.pay-notice-box {
+  background-color: white;
+  height: 40vh;
+  text-align: center;
+}
+
+.pay-complete-notice {
+  font-weight: bold;
+  font-size: 50px;
+  color: rgb(94, 94, 94);
+  padding-top: 120px;
+}
+
+.pay-detail-notice {
+  font-weight: 600;
+  font-size: 18px;
+  color: rgb(94, 94, 94);
+  padding-top: 30px;
+}
+
+.pay-call-notice {
+  padding-top: 40px;
+  color: tomato;
+  font-weight: 600;
+  text-align: center;
+}
+
+.pay-complete-box {
+  background-color: #f7f7f7;
+  width: 1000px;
+  margin: 0 auto;
+  margin-top: 40px;
+  height: auto;
+  border: 0px solid #ffffff;
+}
+
+.pay-complete-title {
+  background-color: #ffffff;
+  width: 100%;
+  height: 8vh;
+  text-align: left;
+  font-weight: 600;
+  font-size: 30px;
+  padding-left: 20px;
+  padding-top: 13px;
+  color: rgb(112, 112, 112);
+  box-sizing: border-box;
+}
+
+.pay-payinfo {
+  margin-top: 10px;
+  width: 100%;
+  height: 15vh;
+  background-color: #ffffff;
+}
+
+.pay-order-box {
+  padding-top: 30px;
+}
+
+.pay-order-row {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 6px;
+  align-items: center;
+  padding-left: 130px;
+}
+
+.pay-label {
+  width: 120px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.pay-value {
+  width: 290px;
+  margin-right: 100px;
+  text-align: left;
+}
+
+.pay-label2 {
+  width: 150px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.pay-value2 {
+  width: 200px;
+  margin-right: 100px;
+  text-align: left;
+}
+
+.pay-status {
+  color: rgb(26, 175, 26);
+  font-weight: bold;
+}
+
+.pay-total {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.pay-product-title {
+  background-color: #ffffff;
+  width: 100%;
+  height: 8vh;
+  text-align: left;
+  font-weight: 600;
+  font-size: 30px;
+  padding-left: 20px;
+  padding-top: 13px;
+  color: rgb(112, 112, 112);
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.pay-product-box {
+  margin-top: 10px;
+  background-color: #f7f7f7;
+  width: 100%;
+  height: auto;
+}
+
+.pay-reservation-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.pay-reservation-table thead {
+  background-color: #f7f7f7;
+  color: rgb(87, 86, 86);
+  font-size: 17px;
+}
+
+.pay-reservation-table tbody {
+  background-color: #ffffff;
+}
+
+.pay-reservation-table th,
+.pay-reservation-table td {
+  box-sizing: border-box;
+  padding: 8px;
+  text-align: center;
+}
+
+.pay-reservation-table,
+.pay-reservation-table th,
+.pay-reservation-table td {
+  border: none !important;
+  border-collapse: collapse;
+}
+
+.pay-reservation-table input[type="checkbox"] {
+  width: 20px;
+  height: 2vh;
+}
+
+.pay-product-img {
+  width: 120px;
+  height: auto;
+}
+
+.pay-info-row {
+  display: block;
+  width: 390px;
+}
+
+.pay-info-row ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.pay-info-row ul li {
+  display: block;
+  margin-bottom: 1px;
+  padding-left: 50px;
+}
+
+.pay-name-title {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+  padding-left: 50px;
+}
+
+.pay-img-row {
+  width: 240px;
+  padding-left: 20px;
+}
+
+.pay-count-row {
+  width: 100px;
+}
+
+.pay-price-row {
+  width: 150px;
+}
+
+.pay-reservation-table th.pay-info-row {
+  padding-left: 55px;
+}
+
+.pay-action {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.pay-shopping-btn,
+.pay-mypage-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  margin-left: 10px;
+  width: 140px;
+}
+
+.pay-shopping-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+}
+
+.pay-shopping-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #888;
+}
+
+.pay-mypage-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.pay-mypage-btn:hover {
+  background-color: #0056b3;
+}

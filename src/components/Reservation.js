@@ -184,7 +184,7 @@ const Reservation = () => {
                 <th className={styles["rsv-checkbox-row"]}></th>
                 <th className={styles["rsv-img-row"]}>상품 이미지</th>
                 <th className={styles["rsv-info-col"]}>상품 정보</th>
-                <th className={styles["rsv-count-row"]}>수량</th>
+                <th className={styles["rsv-count-row"]}>인원</th>
                 <th className={styles["rsv-price-row"]}>상품 금액</th>
                 <th className={styles["rsv-delete-row"]}>상품 삭제</th>
               </tr>
