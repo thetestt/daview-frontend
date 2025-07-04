@@ -109,7 +109,7 @@ const MyPage = () => {
       } catch (err) {
         console.error("프로필 이미지 불러오기 실패:", err);
         setProfileImage("/uploads/profile/default-profile.png");
-      }      
+      }
 
     };
 
@@ -120,55 +120,36 @@ const MyPage = () => {
     <div className={styles["mypage-container"]}>
       <h1 className={styles["mypage-title"]}>마이 페이지</h1>
 
-      <div className={styles["mypage-body"]}>
+      <div className={styles["mypage-wrapper"]}>
         <div className={styles["mypage-left"]}>
           <div className={styles.profileCircle}>
-          <img src={profileImage ? profileImage : "/images/default-profile.png"} alt="프로필 이미지" className={styles.profileImage}/></div>
+            <img
+              src={profileImage ? profileImage : "/images/default-profile.png"}
+              alt="프로필 이미지"
+              className={styles.profileImage}
+            />
+          </div>
+          <div className={styles["user-info"]}>
+            <div className={styles["username"]}>{profile.username}</div>
+            <div className={styles["name"]}>{maskName(profile.name)}</div>
+            <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
+              state: { username: profile.username },
+            })}>
+              변경
+            </button>
+          </div>
+
           <ul className={styles["mypage-menu"]}>
-            <li>
-              <Link to="/mypage/myprofile">내 정보</Link>
-            </li>
-            <li>
-              <Link to={`/payments/member/${memberId}`}>주문 내역</Link>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={handleChatOpen}
-                className={styles["fake-link"]}
-              >
-                1:1 문의
-              </button>
-            </li>
-            <li>
-              <Link to="/mypage/myprofile/myreview">내가 쓴 후기</Link>
-            </li>
-            <li>
-              <Link to="/mypage/wishlist">나의 찜 목록</Link>
-            </li>
-            <li>
-              <Link to="/mypage/mycoupon">내 쿠폰 보기</Link>
-            </li>
+            <li><Link to="/mypage/myprofile">내 정보</Link></li>
+            <li><Link to={`/payments/member/${memberId}`}>주문 내역</Link></li>
+            <li><button type="button" onClick={handleChatOpen} className={styles["fake-link"]}>1:1 문의</button></li>
+            <li><Link to="/mypage/myprofile/myreview">내가 쓴 후기</Link></li>
+            <li><Link to="/mypage/wishlist">나의 찜 목록</Link></li>
+            <li><Link to="/mypage/mycoupon">내 쿠폰 보기</Link></li>
           </ul>
         </div>
 
         <div className={styles["mypage-right"]}>
-          <div className={styles["profile-box"]}>
-            <h2 className={styles["profile-title"]}>내 정보</h2>
-            <div className={styles["profile-item"]}>
-              <label>사용자 아이디</label>
-              <div className={styles["value"]}>{profile.username}</div>
-              <button className={styles["mod-btn"]} onClick={() => navigate("/mypage/ChangeIdPage", {
-                state: { username: profile.username }
-              })}>변경</button>
-            </div>
-            <div className={styles["profile-item"]}>
-              <label>사용자 이름</label>
-              <div className={styles["chj-value"]}>{maskName(profile.name)}</div>
-            </div>
-          </div>
-          <br />
-
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>주문 내역</h2>
             <div className={styles["profile-item"]}>
@@ -176,7 +157,6 @@ const MyPage = () => {
               <div className={styles["chj-value"]}>{payments.length} 건</div>
             </div>
           </div>
-          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>1:1 문의</h2>
@@ -185,7 +165,6 @@ const MyPage = () => {
               <div className={styles["chj-value"]}>{consults.length} 건</div>
             </div>
           </div>
-          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>내가 쓴 후기</h2>
@@ -194,7 +173,6 @@ const MyPage = () => {
               <div className={styles["chj-value"]}>{reviews.length} 건</div>
             </div>
           </div>
-          <br />
 
           <div className={styles["profile-box"]}>
             <h2 className={styles["profile-title"]}>내 쿠폰 보기</h2>
@@ -203,10 +181,11 @@ const MyPage = () => {
               <div className={styles["chj-value"]}>{coupons.length} 장</div>
             </div>
           </div>
-          <br />
         </div>
       </div>
     </div>
+
+
   );
 };
 

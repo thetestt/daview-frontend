@@ -65,10 +65,6 @@ function WithdrawPage() {
       await axiosInstance.post("/mypage/account/withdraw", {
         reason,
       });
-      console.log("username:", profile.username);
-      console.log("reason:", selectedReason === "기타" ? customReason : selectedReason);
-
-      alert("탈퇴가 완료되었습니다.");
       localStorage.clear();
       window.location.href = "/";
     } catch (err) {
@@ -99,86 +95,89 @@ function WithdrawPage() {
         "width=900,height=700,left=200,top=100,noopener,noreferrer"
       );
     } catch (err) {
-      console.error("관리자 채팅 연결 실패:", err);
       alert("1:1 문의 채팅을 시작할 수 없습니다.");
     }
   };
 
   return (
     <div className={styles["withdraw-container"]}>
-      {profile && (
-        <>
-          <h2><span>{maskName(profile.name)}</span>님 탈퇴하기 전에 꼭 확인해주세요</h2>
+      <h1 className={styles["withdraw-page-title"]}>회원 탈퇴</h1>
+      <div className={styles["withdraw-box"]}>
+        {profile && (
+          <>
+            <h2 className={styles["withdraw-title"]}><span>{maskName(profile.name)}</span>님 탈퇴하기 전에 꼭 확인해주세요</h2>
 
-          <ul className={styles["chj-notice-list"]}>
-            <li>탈퇴 후 <b>14일이 지나야</b> 재가입이 가능해요.</li>
-          </ul>
+            <ul className={styles["withdraw-notice-list"]}>
+              <li>탈퇴 후 <b>14일이 지나야</b> 재가입이 가능해요.</li>
+              <li>다시 가입하더라도 웰컴쿠폰은 받을 수 없어요.</li>
+            </ul>
 
-          <div className={styles["chj-chj-box"]}>
-            <p>보유 중인 쿠폰: <b>{couponCount}장</b></p>
-            <small>또한 다시 가입하더라도 웰컴쿠폰을 받을 수 없어요.</small>
-          </div>
+            <div className={styles["withdraw-coupon-box"]}>
+              <p className={styles["withdraw-coupon-title"]}>보유 중인 쿠폰</p>
+              <p className={styles["withdraw-coupon-count"]}><b>{couponCount}장</b></p>
+            </div>
 
-          <div className={styles["chj-chj-box"]}>
-            <p>찜한 상품, 1:1 문의 등 조*현님의 소중한 기록이 모두 삭제돼요.</p>
-          </div>
+            <p className={styles["withdraw-outside-msg"]}>찜한 상품, 1:1 문의 등 <b>{maskName(profile.name)}님</b>의 소중한 기록이 모두 삭제돼요.</p>
 
-          <label className={styles["chj-checkbox-line"]}>
-            <input type="checkbox" checked={agreed} onChange={() => setAgreed(!agreed)} />
-            다뷰 회원 탈퇴 유의사항을 확인했어요.
-          </label>
+            <label className={styles["withdraw-checkbox-line"]}>
+              <input type="checkbox" checked={agreed} onChange={() => setAgreed(!agreed)} />
+              다뷰 회원 탈퇴 유의사항을 확인했어요.
+            </label>
 
-          {agreed && (
-            <>
-              <button className={styles["chj-with-btn"]} onClick={() => setReasonVisible(true)}>탈퇴 이유 입력하기</button>
+            {agreed && (
+              <>
+                <div className={styles["withdraw-reason-wrapper"]}>
+                  <button className={styles["withdraw-confirm-btn"]} onClick={() => setReasonVisible(true)}>탈퇴 이유 입력하기</button>
 
-              {reasonVisible && (
-                <>
-                  <h3>탈퇴 이유를 알려주세요</h3>
-                  <p className={styles["chj-sub"]}>더 좋은 서비스를 제공하기 위해 노력하겠습니다.</p>
+                  {reasonVisible && (
+                    <>
+                      <h3 className={styles["withdraw-reason-title"]}>탈퇴 이유를 알려주세요</h3>
+                      <p className={styles["withdraw-sub"]}>더 좋은 서비스를 제공하기 위해 노력하겠습니다.</p>
 
-                  <div className={styles["chj-reason-list"]}>
-                    {REASON_LIST.map((r) => (
-                      <label key={r}>
-                        <input
-                          type="radio"
-                         className={styles["chj-withdraw-reason"]}
-                          value={r}
-                          checked={selectedReason === r}
-                          onChange={() => handleReasonSelect(r)}
-                        />
-                        {r}
-                      </label>
-                    ))}
-                  </div>
-
-                  {selectedReason === "직접 입력" && (
-                    <textarea
-                      placeholder="탈퇴 사유를 입력해주세요"
-                      value={customReason}
-                      onChange={(e) => setCustomReason(e.target.value)}
-                    />
-                  )}
-
-                  {showExtraMsg && (
-                    <div className={styles["chj-extra-msg"]}>
-                      <p>{EXTRA_MSGS[selectedReason]}</p>
-                      <div className={styles["chj-btn-row"]}>
-                        <button className={styles["chj-gray"]} onClick={handleContactAdmin}>문의하기</button>
-                        <button className={styles["chj-with-btn"]} onClick={handleWithdraw}>그래도 탈퇴하기</button>
+                      <div className={styles["withdraw-reason-list"]}>
+                        {REASON_LIST.map((r) => (
+                          <label key={r}>
+                            <input
+                              type="radio"
+                              className={styles["withdraw-reason-radio"]}
+                              value={r}
+                              checked={selectedReason === r}
+                              onChange={() => handleReasonSelect(r)}
+                            />
+                            {r}
+                          </label>
+                        ))}
                       </div>
-                    </div>
-                  )}
 
-                  {selectedReason === "직접 입력" && customReason.trim() && (
-                    <button className={styles["chj-with-btn"]} onClick={handleWithdraw}>회원 탈퇴하고 계정 삭제하기</button>
+                      {selectedReason === "직접 입력" && (
+                        <textarea
+                          placeholder="탈퇴 사유를 입력해주세요"
+                          value={customReason}
+                          onChange={(e) => setCustomReason(e.target.value)}
+                        />
+                      )}
+
+                      {showExtraMsg && (
+                        <div className={styles["withdraw-extra-msg"]}>
+                          <p>{EXTRA_MSGS[selectedReason]}</p>
+                          <div className={styles["withdraw-btn-row"]}>
+                            <button className={styles["withdraw-gray"]} onClick={handleContactAdmin}>문의하기</button>
+                            <button className={styles["withdraw-confirm-btn"]} onClick={handleWithdraw}>그래도 탈퇴하기</button>
+                          </div>
+                        </div>
+                      )}
+
+                      {selectedReason === "직접 입력" && customReason.trim() && (
+                        <button className={styles["withdraw-confirm-btn"]} onClick={handleWithdraw}>회원 탈퇴하고 계정 삭제하기</button>
+                      )}
+                    </>
                   )}
-                </>
-              )}
-            </>
-          )}
-        </>
-      )}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

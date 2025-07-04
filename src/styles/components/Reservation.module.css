@@ -1,0 +1,256 @@
+.rsv-container {
+  background-color: #f7f7f7;
+  min-height: 90vh;
+  height: auto;
+  padding-bottom: 50px;
+}
+
+.rsv-notice {
+  padding-top: 80px;
+  color: tomato;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rsv-box {
+  background-color: #ffffff;
+  width: 1100px;
+  display: block;
+  border: 0px solid #ffffff;
+  margin: 0 auto;
+}
+
+.rsv-write-box {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.rsv-box-title {
+  padding-top: 40px;
+  padding-left: 30px;
+  text-align: left;
+  font-size: 40px;
+  color: rgb(94, 94, 94);
+}
+
+.rsv-table {
+  table-layout: fixed;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.rsv-table thead {
+  background-color: #f7f7f7;
+  color: rgb(87, 86, 86);
+  font-size: 17px;
+  text-align: left;
+}
+
+.rsv-table th,
+.rsv-table td {
+  box-sizing: border-box;
+  padding: 8px;
+  text-align: center;
+}
+
+.rsv-table,
+.rsv-table th,
+.rsv-table td {
+  border: none !important;
+  border-collapse: collapse;
+}
+
+.rsv-table input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.rsv-product-img {
+  width: 120px;
+  height: auto;
+}
+
+.rsv-info-row {
+  width: 390px;
+}
+
+.rsv-info-row ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rsv-info-row ul li {
+  display: block;
+  margin-bottom: 1px;
+}
+
+.rsv-product-title {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.rsv-product-title:hover {
+  color: #0056b3;
+}
+
+.rsv-delete-btn {
+  background-color: #ffffff;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rsv-delete-btn:hover {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.rsv-summary-line {
+  background-color: #f7f7f7;
+  height: 10px;
+}
+
+.rsv-summary {
+  display: flex;
+  justify-content: space-between;
+  height: 73px;
+  padding: 25px 25px 1px 25px;
+}
+
+.rsv-delete-all-btn {
+  background: white;
+  border: 1px solid red;
+  border-radius: 4px;
+  color: red;
+  padding: 1px 12px;
+  font-size: 15px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.rsv-delete-all-btn:hover {
+  background-color: red;
+  color: white;
+}
+
+.rsv-total {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.rsv-total .rsv-price {
+  color: #007bff;
+  margin-left: 15px;
+}
+
+.rsv-price {
+  font-size: 20px;
+}
+
+.rsv-action {
+  background-color: #f7f7f7;
+  height: 10px;
+  padding: 50px;
+  text-align: center;
+}
+
+.rsv-shopping-btn,
+.rsv-pay-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  margin-left: 10px;
+  width: 140px;
+  font-size: 16px;
+}
+
+.rsv-shopping-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+}
+
+.rsv-shopping-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #888;
+}
+
+.rsv-pay-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.rsv-pay-btn:hover {
+  background-color: #0056b3;
+}
+
+.rsv-checkbox-row {
+  width: 90px;
+}
+
+.rsv-img-row {
+  width: 240px;
+}
+
+.rsv-count-row {
+  width: 120px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rsv-count-btn {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 3px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.rsv-count-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #888;
+}
+
+.rsv-price-row {
+  width: 150px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rsv-delete-row {
+  width: 130px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rsv-plus-btn {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-left: 5px;
+}
+
+.rsv-plus-btn:hover {
+  background-color: #e6e6e6;
+}

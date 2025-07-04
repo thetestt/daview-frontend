@@ -143,15 +143,17 @@
   border-radius: 4px;
   padding: 8px 18px;
   background-color: #fff;
-  border: 1.5px solid #bdbdbd;
+  border: 1.5px solid #00334f;
+  color: #00334f;
   cursor: pointer;
   font-size: 15px;
   height: 60px;
+  margin-top: 20px;
 }
 
 .review-detail-comment-btn:hover {
   background-color: #f0f0f0;
-  border-color: #037bc0;
+  border-color: #00334f;
 }
 
 .review-detail-comment-section {
@@ -296,7 +298,7 @@
   color: #555;
   margin-right: 4px;
   height: 61px;
-  margin-top: -5px;
+  margin-top: 16px;
 }
 
 .review-detail-reply-toggle-btn {

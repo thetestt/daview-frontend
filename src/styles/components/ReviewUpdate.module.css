@@ -116,7 +116,7 @@
 }
 
 .review-star-container {
-  margin-top: 13px;
+  margin-top: 10px;
 }
 .review-star {
   font-size: 25px;
@@ -154,7 +154,7 @@
 }
 
 .review-button-row {
-  margin-top: 100px;
+  margin-top: 80px;
   display: flex;
   justify-content: center;
 }

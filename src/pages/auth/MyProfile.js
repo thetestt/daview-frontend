@@ -135,19 +135,14 @@ const MyProfile = () => {
             <div className={styles["profile-image-section"]}>
               <div className={styles.profileCircle}>
                 <img src={previewImage || profileImage} alt="프로필 이미지" />
-                {previewImage && (
-                  <button className={styles["chj-confirm-btn"]} onClick={handleUpload}>변경 확인</button>)}
               </div>
-              <div className={styles["image-overlay"]}>
-                <button
-                  className={styles["chj-add-btn"]}
-                  onClick={() => setShowMenu(!showMenu)}
-                >+</button>
+              <div>
+                <button className={styles["chj-plain-btn"]} onClick={() => setShowMenu(!showMenu)}>
+                  프로필 변경하기
+                </button>
                 {showMenu && (
                   <div className={styles["chj-image-menu"]}>
-                    <button
-                      className={styles["chj-default-btn"]} onClick={handleResetToDefault}>기본 이미지로
-                    </button>
+                    <button className={styles["chj-default-btn"]} onClick={handleResetToDefault}>기본 이미지로</button>
                     <label>
                       <span>이미지 업로드</span>
                       <input type="file" className={styles["chj-file"]} accept="image/*" onChange={handleImageChange} hidden />
@@ -156,28 +151,37 @@ const MyProfile = () => {
                 )}
               </div>
             </div>
-            <label>사용자 아이디</label>
-            <div className={styles["chj-value"]}>{profile.username}</div>
-            <button
-              className={styles["chj-mod-btn"]}
-              onClick={() => navigate("/mypage/ChangeIdPage", {
-                state: { username: profile.username }
-              })}
-            >변경</button>
           </div>
 
-          <div className={styles["profile-item"]}>
-            <label>사용자 이름</label>
-            <div className={styles["chj-value"]}>{maskName(profile.name)}</div>
-          </div>
+          {previewImage && (
+            <div className={styles["confirm-buttons"]}>
+              <button className={styles["chj-cancel-btn"]} onClick={() => { setPreviewImage(null); setUploadFile(null); }}>취소</button>
+              <button className={styles["chj-confirm-btn"]} onClick={handleUpload}>완료</button>
+            </div>
+          )}
 
-          <div className={styles["profile-item"]}>
-            <label>사용자 전화번호</label>
-            <div className={styles["chj-value"]}>{maskPhone(profile.phone)}</div>
+          <div className={styles["profile-grid"]}>
+            <div className={styles["profile-label"]}>사용자 아이디</div>
+            <div className={styles["profile-value"]}>{profile.username}</div>
+            <div className={styles["profile-change-btn"]}>
+              <button
+                className={styles["chj-mod-btn"]}
+                onClick={() => navigate("/mypage/ChangeIdPage", {
+                  state: { username: profile.username }
+                })}
+              >변경</button>
+            </div>
+
+            <div className={styles["profile-label"]}>사용자 이름</div>
+            <div className={styles["profile-value"]}>{maskName(profile.name)}</div>
+            <div></div>
+
+            <div className={styles["profile-label"]}>사용자 전화번호</div>
+            <div className={styles["profile-value"]}>{maskPhone(profile.phone)}</div>
+            <div></div>
           </div>
         </div>
 
-        <br />
 
         <div
           className={styles["profile-box"]}
@@ -187,11 +191,9 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>비밀번호 변경하기</label>
-            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
 
-        <br />
 
         <div
           className={styles["profile-box"]}
@@ -201,51 +203,47 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>환불계좌 관리</label>
-            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
-
-        <br />
-
         <div className={styles["profile-box"]}>
-          <div className={styles["profile-item"]}>
-            <label>SMS 수신 동의</label>
-            <label className={styles["chj-switch"]}>
+          <div className={styles["consent-box"]}>
+            <label className={styles["consent-label"]}>SMS 수신 동의</label>
+            <label className={styles["toggle-switch"]}>
               <input
                 type="checkbox"
                 checked={agreeSms}
-                onChange={(e) => handleMarketingToggle("sms", e.target.checked)}
+                onChange={() => handleMarketingToggle("sms", !agreeSms)}
               />
-              <span className={styles["chj-slider"]}></span>
+              <span className={styles.slider}></span>
             </label>
           </div>
 
-          <div className={styles["profile-item"]}>
-            <label>Email 수신 동의</label>
-            <label className={styles["chj-switch"]}>
+          <div className={styles["consent-box"]}>
+            <label className={styles["consent-label"]}>Email 수신 동의</label>
+            <label className={styles["toggle-switch"]}>
               <input
                 type="checkbox"
                 checked={agreeEmail}
-                onChange={(e) => handleMarketingToggle("email", e.target.checked)}
+                onChange={() => handleMarketingToggle("email", !agreeEmail)}
               />
-              <span className={styles["chj-slider"]}></span>
+              <span className={styles.slider}></span>
             </label>
           </div>
 
-          <div className={styles["profile-item"]}>
-            <label>Push 알림 수신 동의</label>
-            <label className={styles["chj-switch"]}>
+          <div className={styles["consent-box"]}>
+            <label className={styles["consent-label"]}>Push 알림 수신 동의</label>
+            <label className={styles["toggle-switch"]}>
               <input
                 type="checkbox"
                 checked={agreePush}
-                onChange={(e) => handleMarketingToggle("push", e.target.checked)}
+                onChange={() => handleMarketingToggle("push", !agreePush)}
               />
-              <span className={styles["chj-slider"]}></span>
+              <span className={styles.slider}></span>
             </label>
           </div>
         </div>
 
-        <br />
+
 
         <div
           className={styles["profile-box"]}
@@ -255,7 +253,6 @@ const MyProfile = () => {
             })}>
           <div className={styles["profile-item"]}>
             <label>회원 탈퇴</label>
-            <div className={styles["chj-arrow"]}>&gt;</div>
           </div>
         </div>
       </div>
