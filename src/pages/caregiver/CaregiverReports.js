@@ -21,6 +21,15 @@ const CaregiverReports = () => {
     loadReports();
   }, [currentPage]);
 
+  useEffect(() => {
+    // 컴포넌트 마운트 시 오늘 날짜로 기본값 설정
+    const today = new Date().toISOString().split('T')[0];
+    setFormData(prev => ({
+      ...prev,
+      reportDate: today
+    }));
+  }, []);
+
   const loadReports = async () => {
     try {
       setLoading(true);

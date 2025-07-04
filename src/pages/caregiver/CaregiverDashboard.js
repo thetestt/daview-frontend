@@ -141,13 +141,11 @@ const CaregiverDashboard = () => {
         // 지역이 선택되어 있으면 해당 시/군/구 목록 설정
         if (response.data.hopeWorkAreaLocation) {
           const regionObj = staticRegions.find(r => r.name === response.data.hopeWorkAreaLocation);
-          console.log('기존 지역 정보:', response.data.hopeWorkAreaLocation, regionObj);
           if (regionObj && cityData[regionObj.id]) {
             const cityList = cityData[regionObj.id].map((cityName, index) => ({
               id: index + 1,
               name: cityName
             }));
-            console.log('초기 시/군/구 목록 설정:', cityList);
             setCities(cityList);
           }
         }
@@ -190,7 +188,6 @@ const CaregiverDashboard = () => {
   // 지역 변경 처리
   const handleEditRegionChange = (e) => {
     const selectedRegion = e.target.value;
-    console.log('선택된 지역:', selectedRegion);
     
     setEditFormData(prev => ({
       ...prev,
