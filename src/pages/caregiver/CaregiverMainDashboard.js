@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../api/axiosInstance';
 import styles from '../../styles/admin/CaregiverMainDashboard.module.css';
 
 const CaregiverMainDashboard = () => {
@@ -193,7 +193,7 @@ const CaregiverMainDashboard = () => {
           <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>알림 관리</h3>
             <p className={styles.cardDescription}>
-              시설의 공지사항과 개인 알림을 확인하세요.
+              시설 공지사항과 알림을 확인하고 관리하세요.
             </p>
             <div className={styles.cardFooter}>
               <span className={styles.cardAction}>알림 보기 →</span>
@@ -202,19 +202,31 @@ const CaregiverMainDashboard = () => {
         </div>
       </div>
 
-      {/* 빠른 액션 버튼들 */}
-      <div className={styles.quickActions}>
-        <h3 className={styles.sectionTitle}>빠른 액션</h3>
-        <div className={styles.actionButtons}>
-          <button className={styles.actionBtn} onClick={handleChatManagement}>
-            새 메시지
-          </button>
-          <button className={styles.actionBtn} onClick={handleReportsManagement}>
-            보고서 작성
-          </button>
-          <button className={styles.actionBtn} onClick={handleScheduleManagement}>
-            일정 추가
-          </button>
+      {/* 최근 활동 */}
+      <div className={styles.recentActivity}>
+        <h2 className={styles.sectionTitle}>최근 활동</h2>
+        <div className={styles.activityList}>
+          <div className={styles.activityItem}>
+            <div className={styles.activityIcon}>📅</div>
+            <div className={styles.activityContent}>
+              <div className={styles.activityTitle}>일정 추가됨</div>
+              <div className={styles.activityTime}>30분 전</div>
+            </div>
+          </div>
+          <div className={styles.activityItem}>
+            <div className={styles.activityIcon}>💬</div>
+            <div className={styles.activityContent}>
+              <div className={styles.activityTitle}>새 메시지 도착</div>
+              <div className={styles.activityTime}>1시간 전</div>
+            </div>
+          </div>
+          <div className={styles.activityItem}>
+            <div className={styles.activityIcon}>📝</div>
+            <div className={styles.activityContent}>
+              <div className={styles.activityTitle}>보고서 작성 완료</div>
+              <div className={styles.activityTime}>2시간 전</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

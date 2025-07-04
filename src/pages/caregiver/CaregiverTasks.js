@@ -27,6 +27,15 @@ const CaregiverTasks = () => {
     }
   }, [currentPage, activeTab]);
 
+  useEffect(() => {
+    // 컴포넌트 마운트 시 오늘 날짜로 기본값 설정
+    const today = new Date().toISOString().split('T')[0];
+    setFormData(prev => ({
+      ...prev,
+      taskDate: today
+    }));
+  }, []);
+
   const loadTasks = async () => {
     try {
       setLoading(true);
