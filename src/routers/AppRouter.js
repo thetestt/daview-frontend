@@ -38,7 +38,11 @@ import WithdrawPage from "../pages/auth/WithdrawPage"
 import RefundAccountPage from "../pages/auth/RefundAccountPage";
 import MyReviewPage from "../pages/auth/MyReviewPage";
 import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
+import CaregiverMainDashboard from "../pages/caregiver/CaregiverMainDashboard";
+import CaregiverReports from "../pages/caregiver/CaregiverReports";
+import CaregiverTasks from "../pages/caregiver/CaregiverTasks";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
+import CompanyMainDashboard from "../pages/company/CompanyMainDashboard";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
 import AdminDashboard from "../pages/admin/AdminDashboard"; //관리자 대시보드
 import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //관리자 상품 목록
@@ -171,8 +175,12 @@ const AppRouter = () => {
         <Route path="/review/:revId/update" element={<ReviewUpdate />} />
 
         {/* 관리자 외 대시보드 */}
-        <Route path="/company/main" element={<CompanyDashboard />} />
-        <Route path="/caregiver/main" element={<CaregiverDashboard />} />
+        <Route path="/company/main" element={<CompanyMainDashboard />} />
+        <Route path="/company/facility" element={<CompanyDashboard />} />
+        <Route path="/caregiver/main" element={<CaregiverMainDashboard />} />
+        <Route path="/caregiver/profile" element={<CaregiverDashboard />} />
+        <Route path="/caregiver/reports" element={<CaregiverReports />} />
+        <Route path="/caregiver/tasks" element={<CaregiverTasks />} />
 
         {/* 마이페이지 */}
         {/* 아이디찾기 */}
