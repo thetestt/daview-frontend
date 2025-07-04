@@ -2,6 +2,8 @@ import axiosInstance from "../../pages/auth/axiosInstance";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/ChangeIdPage.module.css";
+import { motion } from "framer-motion";
+
 
 function ChangeIdPage() {
   const location = useLocation();
@@ -70,7 +72,10 @@ function ChangeIdPage() {
 
 
   return (
-    <div className={styles["change-id-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={styles["change-id-container"]}>
       <h2>아이디 변경</h2>
       <div className={styles["username-check-wrapper"]}>
         <input
@@ -96,7 +101,7 @@ function ChangeIdPage() {
       )}
       <button type="button" className={styles["chj-change-button"]} onClick={handleChangeUsername}> 아이디 변경하기</button>
 
-    </div>
+    </motion.div>
   );
 }
 

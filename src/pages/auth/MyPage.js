@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/MyPage.module.css";
 import { getPaymentsByMemberId } from "../../api/paymentApi";
 import { getChatRooms } from "../../api/chat";
+import { motion } from "framer-motion";
+
 
 const MyPage = () => {
   const [profile, setProfile] = useState({
@@ -97,7 +99,9 @@ const MyPage = () => {
   }, []);
 
   return (
-    <div className={styles["mypage-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["mypage-container"]}>
       <h1 className={styles["mypage-title"]}>마이 페이지</h1>
       <div className={styles["mypage-wrapper"]}>
         <div className={styles["mypage-left"]}>
@@ -142,7 +146,7 @@ const MyPage = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

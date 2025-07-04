@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/ChangePasswordPage.module.css";
+import { motion } from "framer-motion";
+
 
 function ChangePasswordPage() {
   const location = useLocation();
@@ -39,7 +41,9 @@ function ChangePasswordPage() {
   };
 
   return (
-    <div className={styles["sh-wrapper"]}
+    <motion.div initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }} className={styles["sh-wrapper"]}
       style={{
         paddingTop: "100px",
         paddingBottom: "140px",
@@ -64,7 +68,7 @@ function ChangePasswordPage() {
         </button>
       </div>
 
-    </div>
+    </motion.div>
 
   );
 

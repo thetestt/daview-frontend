@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "../api/axiosInstance";
 import styles from "../styles/components/WishlistPage.module.css";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 
 function WishlistPage() {
   const memberId = localStorage.getItem("memberId");

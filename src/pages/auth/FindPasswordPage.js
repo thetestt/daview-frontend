@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/FindPasswordPage.module.css";
+import { motion } from "framer-motion";
+
 
 function FindPasswordPage() {
   const [method, setMethod] = useState("phone");
@@ -58,7 +60,9 @@ function FindPasswordPage() {
   };
 
   return (
-    <div className={styles["find-password-wrapper"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["find-password-wrapper"]}>
       <h2 className={styles["find-title"]}>비밀번호 찾기</h2>
 
       {method === "phone" && (
@@ -110,7 +114,7 @@ function FindPasswordPage() {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
 
   );
 }

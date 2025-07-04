@@ -3,6 +3,8 @@ import axiosInstance from "../../pages/auth/axiosInstance";
 import styles from "../../styles/auth/LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { motion } from "framer-motion";
+
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -56,7 +58,9 @@ function LoginPage() {
   };
 
   return (
-    <div className={styles["page-wrapper"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["page-wrapper"]}>
       <div className={styles["login-container"]}>
         <div className={styles["login-inner"]}>
           <p className={styles["login-subtitle"]}>전국 모든 요양원 / 실버타운</p>
@@ -92,7 +96,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

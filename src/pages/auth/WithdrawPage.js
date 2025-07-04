@@ -3,6 +3,8 @@ import axiosInstance from "../../pages/auth/axiosInstance";
 import styles from "../../styles/auth/WithdrawPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { createOrGetChatRoom } from "../../api/chat";
+import { motion } from "framer-motion";
+
 
 function WithdrawPage() {
   const [profile, setProfile] = useState(null);
@@ -100,7 +102,9 @@ function WithdrawPage() {
   };
 
   return (
-    <div className={styles["withdraw-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["withdraw-container"]}>
       <h1 className={styles["withdraw-page-title"]}>회원 탈퇴</h1>
       <div className={styles["withdraw-box"]}>
         {profile && (
@@ -178,7 +182,7 @@ function WithdrawPage() {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

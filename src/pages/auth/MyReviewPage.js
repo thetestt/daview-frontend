@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../pages/auth/axiosInstance";
 import styles from "../../styles/auth/MyReviewPage.module.css";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
 
 function MyReviewPage() {
   const [reviews, setReviews] = useState([]);
@@ -21,7 +23,9 @@ function MyReviewPage() {
   }, []);
 
   return (
-    <div className={styles["sh-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["sh-container"]}>
       <h1 className={styles["sh-title"]}>내가 쓴 후기</h1>
       {reviews.length === 0 ? (
         <p className={styles["sh-no-review"]}>작성한 후기가 없습니다.</p>
@@ -54,7 +58,7 @@ function MyReviewPage() {
           </Link>
         ))
       )}
-    </div>
+    </motion.div>
   );
 }
 

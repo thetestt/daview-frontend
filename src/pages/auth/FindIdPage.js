@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../../styles/auth/FindIdPage.module.css";
+import { motion } from "framer-motion";
+
 axios.defaults.withCredentials = true;
 
 function FindIdPage() {
@@ -110,7 +112,9 @@ function FindIdPage() {
   };
 
   return (
-    <div className={styles["find-id-wrapper"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }} className={styles["find-id-wrapper"]}>
       <h2 className={styles["find-title"]}>아이디 찾기</h2>
       <div className={styles["chj-radio-group"]}>
         <div className={styles["chj-radio-option"]}>
@@ -225,7 +229,7 @@ function FindIdPage() {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
 
 
   );
