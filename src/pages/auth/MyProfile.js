@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../pages/auth/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/MyProfile.module.css";
+import { motion } from "framer-motion";
+
 
 const MyProfile = () => {
   const [profile, setProfile] = useState({
@@ -134,7 +136,9 @@ const MyProfile = () => {
 
 
   return (
-    <div className={styles["mypage-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["mypage-container"]}>
       <h1 className={styles["myprofile-title"]}>내 정보</h1>
       <div className={styles["myprofile-right"]}>
         {/* 회원정보 수정 */}
@@ -320,7 +324,7 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

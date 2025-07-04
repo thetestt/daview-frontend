@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/auth/CouponPage.module.css";
 import axiosInstance from "../../pages/auth/axiosInstance";
+import { motion } from "framer-motion";
+
 
 function CouponPage() {
   const [tab, setTab] = useState("owned");
@@ -14,7 +16,9 @@ function CouponPage() {
 
 
   return (
-    <div className={styles["sh-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }} className={styles["sh-container"]}>
       <h1 className={styles["sh-title"]}>내 쿠폰</h1>
       <div className={styles["sh-tab-wrapper"]}>
         <div className={styles["sh-tabs"]}>
@@ -47,7 +51,7 @@ function CouponPage() {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

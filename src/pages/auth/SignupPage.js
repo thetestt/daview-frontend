@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../pages/auth/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/SignupPage.module.css";
+import { motion } from "framer-motion";
+
 
 
 function SignupPage() {
@@ -163,7 +165,9 @@ function SignupPage() {
 
   console.log("SignupPage 렌더링 시작");
   return (
-    <div className={styles["signup-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["signup-container"]}>
   <h2 className={styles["signup-title"]}>회원가입</h2>
   <form className={styles["signup-form"]} onSubmit={handleSubmit}>
 
@@ -308,7 +312,7 @@ function SignupPage() {
 
     <button className={styles["pass-btn"]} type="submit">회원가입</button>
   </form>
-</div>
+</motion.div>
 
   );
 }

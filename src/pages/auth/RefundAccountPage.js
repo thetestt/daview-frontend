@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../pages/auth/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth/RefundAccountPage.module.css";
+import { motion } from "framer-motion";
+
 
 function RefundAccountPage() {
   const { state } = useLocation();
@@ -68,7 +70,9 @@ function RefundAccountPage() {
   };
 
   return (
-    <div className={styles["refund-container"]}>
+    <motion.div initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }} className={styles["refund-container"]}>
       <h1 className={styles["refund-title"]}>환불 계좌 관리</h1>
       <div className={styles["refund-box"]}>
         <div className={styles["refund-field"]}>
@@ -134,7 +138,7 @@ function RefundAccountPage() {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
 
   );
 }
