@@ -41,10 +41,10 @@ const PaymentList = () => {
     }
   }, [memberId]);
 
-  const toggleExpand = (impUid) => {
+  const toggleExpand = (pymId) => {
     setExpandedPayments((prev) => ({
       ...prev,
-      [impUid]: !prev[impUid],
+      [pymId]: !prev[pymId],
     }));
   };
 
@@ -90,7 +90,7 @@ const PaymentList = () => {
             </h3>
 
             {visiblePayments.map((payment) => {
-              const isExpanded = expandedPayments[payment.impUid] || false;
+              const isExpanded = expandedPayments[payment.pymId] || false;
               return (
                 <div key={payment.pymId} className={styles["pay-payment-box"]}>
                   <label className={styles["pay-checkbox-label"]}>
@@ -174,8 +174,8 @@ const PaymentList = () => {
 
                   <h4
                     className={styles["pay-section-title"]}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => toggleExpand(payment.impUid)}
+                    style={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => toggleExpand(payment.pymId)}
                     title={isExpanded ? "결제 상품 숨기기" : "결제 상품 보기"}
                   >
                     주문 상품 정보({payment.reservations?.length || 0}건)

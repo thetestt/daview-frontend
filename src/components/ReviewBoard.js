@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/components/ReviewBoard.module.css";
 import {
-  getReviewsByPage,
+  getReviewsWithCommentCount,
   getTotalReviewCount,
-  getUserName,
 } from "../api/reviewApi";
 
 function ReviewBoard() {
@@ -18,19 +17,11 @@ function ReviewBoard() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await getReviewsByPage(page, reviewsPerPage);
+        const data = await getReviewsWithCommentCount(page, reviewsPerPage);
         setReviews(data);
 
         const totalResponse = await getTotalReviewCount();
         setTotalPages(Math.ceil(totalResponse / reviewsPerPage));
-
-        const name = await Promise.all(
-          data.map(async (review) => {
-            const name = await getUserName(review.memberId);
-            return { ...review, memberName: name };
-          })
-        );
-        setReviews(name);
       } catch (error) {
         console.error("후기 가져오기 실패:", error);
       }
@@ -86,6 +77,7 @@ function ReviewBoard() {
                   onClick={() => navigate(`/review/${review.revId}`)}
                 >
                   {review.revTtl}
+                  <span> ({review.commentCount})</span>
                 </button>
               </td>
               <td className={styles["review-td"]}>{review.memberName}</td>

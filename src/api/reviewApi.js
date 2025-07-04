@@ -47,6 +47,13 @@ export const getReviewsByProdNm = async (prodNm) => {
   return response.data;
 };
 
+export const getReviewsWithCommentCount = async (page = 1, size = 10) => {
+  const response = await axios.get(`${REVIEW_API}/page/comment`, {
+    params: { page, size },
+  });
+  return response.data;
+};
+
 export const getCommentsByReview = async (revId) => {
   const response = await axios.get(`${COMMENT_API}/review/${revId}`);
   return response.data;
@@ -76,10 +83,5 @@ export const updateComment = async (commentId, commentText) => {
 
 export const deleteComment = async (commentId) => {
   const response = await axios.put(`${COMMENT_API}/${commentId}/delete`);
-  return response.data;
-};
-
-export const getUserName = async (memberId) => {
-  const response = await axios.get(`${REVIEW_API}/name/${memberId}`);
   return response.data;
 };
