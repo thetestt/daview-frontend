@@ -5,7 +5,6 @@ import {
   getCommentsByReview,
   addComment,
   deleteComment,
-  getUserName,
 } from "../api/reviewApi";
 import styles from "../styles/components/ReviewDetail.module.css";
 
@@ -25,8 +24,6 @@ function ReviewDetail() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newReplyMap, setNewReplyMap] = useState({});
-  const [author, setAuthor] = useState("");
-
   const [showComments, setShowComments] = useState(true);
   const [openReplies, setOpenReplies] = useState({});
 
@@ -37,9 +34,6 @@ function ReviewDetail() {
       try {
         const data = await getReviewById(revId);
         setReview(data);
-
-        const name = await getUserName(data.memberId);
-        setAuthor(name);
       } catch (error) {
         console.error("리뷰 조회 실패: ", error);
       }
@@ -149,10 +143,12 @@ function ReviewDetail() {
       <div className={styles["review-detail-card"]}>
         <div className={styles["review-detail-header"]}>
           <div className={styles["review-detail-avatar"]}>
-            {getInitial(author)}
+            {getInitial(review.memberName)}
           </div>
           <div className={styles["review-detail-meta"]}>
-            <div className={styles["review-detail-author"]}>{author}</div>
+            <div className={styles["review-detail-author"]}>
+              {review.memberName}
+            </div>
             <div className={styles["review-detail-date"]}>
               {review ? new Date(review.revRegDate).toLocaleDateString() : "-"}
             </div>
@@ -230,11 +226,11 @@ function ReviewDetail() {
                   className={styles["review-detail-comment"]}
                 >
                   <div className={styles["review-detail-comment-avatar"]}>
-                    {getInitial(author)}
+                    {getInitial(comment.memberName)}
                   </div>
                   <div className={styles["review-detail-comment-bubble"]}>
                     <div className={styles["review-detail-comment-meta"]}>
-                      {author}({comment.memberId})
+                      {comment.memberName}({comment.memberId})
                     </div>
                     <div className={styles["review-detail-comment-text"]}>
                       {comment.commentText}
@@ -298,7 +294,7 @@ function ReviewDetail() {
                             <div
                               className={styles["review-detail-comment-meta"]}
                             >
-                              {author}({reply.memberId})
+                              {reply.memberName}({reply.memberId})
                             </div>
                             <div
                               className={styles["review-detail-comment-text"]}

@@ -45,73 +45,52 @@ const PayButton = ({
       return;
     }
 
-    const { IMP } = window;
-    IMP.init("test");
+    try {
+      const result = await createPayment({
+        impUid: "imp_test_123456789",
+        merchantUid: `mid_${new Date().getTime()}`,
+        rsvId: reservations[0]?.rsvId,
+        prodId: reservations[0]?.prodId,
+        memberId: memberId,
+        custNm: userInfo.name,
+        custTel: userInfo.phone,
+        custEmTel: userInfo.emergencyPhone,
+        custDate: userInfo.consultDate,
+        custMemo: userInfo.message,
+        pymPrice: totalPrice,
+        pymStatus: 2,
+        pymMethod: "card",
+        pymNum: "1234-5678-9012",
+      });
 
-    IMP.request_pay(
-      {
-        channelKey: "test",
-        pay_method: "card",
-        merchant_uid: generatedMerchantUid,
-        name: reservations.map((r) => r.prodNm).join(", "),
-        amount: totalPrice,
-        buyer_name: userInfo.name,
-        buyer_tel: userInfo.phone,
-      },
-      async function (rsp) {
-        if (rsp.success) {
-          try {
-            const result = await createPayment({
-              impUid: rsp.imp_uid,
-              merchantUid: rsp.merchant_uid,
-              rsvId: reservations[0]?.rsvId,
-              prodId: reservations[0]?.prodId,
-              memberId: memberId,
-              custNm: rsp.buyer_name,
-              custTel: rsp.buyer_tel,
-              custEmTel: userInfo.emergencyPhone,
-              custDate: userInfo.consultDate,
-              custMemo: userInfo.message,
-              pymPrice: rsp.paid_amount,
-              pymStatus: 2,
-              pymMethod: rsp.pay_method,
-              pymNum: rsp.apply_num,
-              couponDiscount: couponDiscount,
-            });
+      const updated = result?.data ?? result;
+      const pymId = updated.pymId;
 
-            const updated = result?.data ?? result;
-            const pymId = updated.pymId;
+      const mappingList = reservations.map((rsv) => ({
+        pymId,
+        rsvId: rsv.rsvId,
+      }));
+      await mapReservationsToPayment(mappingList);
 
-            const mappingList = reservations.map((rsv) => ({
-              pymId,
-              rsvId: rsv.rsvId,
-            }));
-            await mapReservationsToPayment(mappingList);
+      const rsvIds = reservations.map((rsv) => rsv.rsvId);
+      await updateReservationStatus(rsvIds);
 
-            const rsvIds = reservations.map((rsv) => rsv.rsvId);
-            await updateReservationStatus(rsvIds);
-
-            if (selectedCouponId) {
-              await applyCoupon(selectedCouponId);
-            }
-
-            alert("결제 완료!");
-            navigate("/payment-result", {
-              state: {
-                reservations,
-                pymId,
-                memberId,
-              },
-              replace: true,
-            });
-          } catch (error) {
-            alert("서버 저장 중 오류 발생: " + error);
-          }
-        } else {
-          alert("결제에 실패했습니다: " + rsp.error_msg);
-        }
+      if (selectedCouponId) {
+        await applyCoupon(selectedCouponId);
       }
-    );
+
+      alert("결제 완료!");
+      navigate("/payment-result", {
+        state: {
+          reservations,
+          pymId,
+          memberId,
+        },
+        replace: true,
+      });
+    } catch (error) {
+      alert("서버 저장 중 오류 발생: " + error);
+    }
   };
 
   return (
