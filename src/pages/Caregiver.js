@@ -10,6 +10,7 @@ import CaregiverSearchResult from "../components/CaregiverSearchResult";
 import { getFilterOptions } from "../api/filterOption";
 import { getRegionList, getCityListByRegion } from "../api/SearchResults";
 import { motion } from "framer-motion";
+import heroImage from "../assets/caregiverup.png"; // 업로드한 상단 이미지
 
 function Caregiver() {
   const [isSearch, setIsSearch] = useState(false);
@@ -89,11 +90,24 @@ function Caregiver() {
   };
 
   return (
-    <>
+    <div className={styles["page-background"]}>
       <FloatingNavButtons />
-      <div className={styles["layout-container"]}>
-        <div className={styles["each-main"]}>
-          {/* 상단 탭 */}
+
+      <div className={styles["caregiver-main"]}>
+        {/* 상단 히어로 영역 (이미지가 없다면 기본 배경 또는 공백) */}
+        <motion.div
+          className={styles["hero-section"]}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className={styles["hero-image"]}>
+            <img src={heroImage} alt="믿을 수 있는 요양사" />
+          </div>
+        </motion.div>
+
+        <div className={styles["layout-container"]}>
+          {/* 상단 탭 메뉴 */}
           <div className={styles["tab-menu"]}>
             <button className={styles["active"]}>요양사</button>
             <Link to="/nursinghome">
@@ -106,44 +120,66 @@ function Caregiver() {
 
           {/* 필터 박스 */}
           <div className={styles["filter-box"]}>
-            <h2>요양사 검색</h2>
+            {/* 드롭다운 필터 – selector-row */}
+            <div className={styles["selector-row"]}>
+              <div className={styles["select-group"]}>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="지역"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>지역</label>
+                  <select onChange={handleRegionChange}>
+                    <option value="">선택</option>
+                    {locationOptions.map((region) => (
+                      <option key={region.id} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <div className={styles["filter-row"]}>
-              <label>지역</label>
-              <select onChange={handleRegionChange}>
-                <option value="">선택</option>
-                {locationOptions.map((region) => (
-                  <option key={region.id} value={region.name}>
-                    {region.name}
-                  </option>
-                ))}
-              </select>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/pin.png"
+                    alt="시군구"
+                    style={{ width: "20px", marginRight: "-10px" }}
+                  />
+                  <label>시/군/구</label>
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                  >
+                    <option value="">선택</option>
+                    {cityOptions.map((city) => (
+                      <option key={city.id} value={city.name}>
+                        {city.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>시/군/구</label>
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-              >
-                <option value="">선택</option>
-                {cityOptions.map((city) => (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
-
-              <label>성별</label>
-              <select
-                value={selectedGender}
-                onChange={(e) => setSelectedGender(e.target.value)}
-              >
-                <option value="">선택</option>
-                <option value="female">여자</option>
-                <option value="male">남자</option>
-                <option value="hidden">무관</option>
-              </select>
+                <div className={styles["select-item"]}>
+                  <img
+                    src="/images/icon/gender.png"
+                    alt="성별"
+                    style={{ width: "20px", marginRight: "-6px" }}
+                  />
+                  <label>성별</label>
+                  <select
+                    value={selectedGender}
+                    onChange={(e) => setSelectedGender(e.target.value)}
+                  >
+                    <option value="">선택</option>
+                    <option value="female">여자</option>
+                    <option value="male">남자</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
+            {/* 체크박스 필터 */}
             <div className={styles["filter-category"]}>
               <div>
                 <strong>자격증</strong>
@@ -206,12 +242,15 @@ function Caregiver() {
               </div>
             </div>
 
-            <button
-              className={styles["search-button"]}
-              onClick={handleSearchClick}
-            >
-              검색
-            </button>
+            {/* 검색 버튼: 오른쪽 정렬 */}
+            <div className={styles["search-button-wrapper"]}>
+              <button
+                className={styles["search-button"]}
+                onClick={handleSearchClick}
+              >
+                검색
+              </button>
+            </div>
           </div>
 
           {/* 검색 결과 */}
@@ -222,7 +261,7 @@ function Caregiver() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

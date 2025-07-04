@@ -41,7 +41,7 @@ export const updateReview = async (revId, reviewData) => {
 };
 
 export const getReviewsByProdNm = async (prodNm) => {
-  const response = await axios.get(`/${REVIEW_API}/product`, {
+  const response = await axios.get(`${REVIEW_API}/product`, {
     params: { prodNm },
   });
   return response.data;

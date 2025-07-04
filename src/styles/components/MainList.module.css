@@ -1,83 +1,119 @@
+.whole-list {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .facility-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
   justify-content: center;
-  margin-top: 20px;
+  gap: 40px;
+  max-width: 1200px;
   width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+/*따옴표 이미지 위치 */
+.list-quote-background {
+  position: absolute;
+  top: -70px; /* 카드 위로부터 얼마나 떨어질지 */
+  left: -40px; /* 카드 맨 왼쪽 */
+  width: 200px; /* 크기 */
+  opacity: 1; /* 은은하게 */
+  z-index: 0;
+  pointer-events: none;
+}
+.facility-card {
+  position: relative; /* 내부 absolute 요소 배치용 */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  padding: 16px;
+  text-align: center;
+  overflow: hidden; /* quote 이미지 넘치지 않게 */
+  z-index: 1;
 }
 
-.card-link {
+.facility-card-wrapper {
+  z-index: 1;
+  position: relative;
+  width: 280px; /* 카드 너비 고정 */
+  flex-shrink: 0;
+  margin-bottom: -30px; /* 아래 여백 */
+}
+
+.whole-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px; /* 카드 간격 */
+  margin-left: -30px;
+}
+
+.facility-card-link {
   text-decoration: none;
   color: inherit;
 }
 
 .facility-card {
-  width: 290px; /* ✅ 카드 고정 너비 */
-  height: 400px;
-  background: #f0f0f0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+  width: 310px;
   padding: 0px;
-  border-radius: 3px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
   transition: transform 0.2s;
-  cursor: pointer;
-  /* display: flex; */
-  flex-direction: column;
-  justify-content: space-between;
-  text-decoration: none;
-  color: inherit;
+  padding-bottom: 30px;
 }
 
 .facility-card:hover {
-  transform: scale(1.02);
-  background-color: #e0f7fa;
+  transform: translateY(-5px);
 }
 
 .card-thumbnail {
   width: 100%;
-  height: 290px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  margin-bottom: 0px;
+}
+
+.facility-card h3 {
+  font-size: 23px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #001520;
+}
+
+.facility-card p {
+  font-size: 14px;
+  margin: 1px 0;
+  color: #3a4a53;
 }
 
 .caregiver-name-box {
   display: flex;
-  justify-content: space-between; /* 이름 ↔ 성별 양 끝으로 배치 */
-  align-items: center;
-  margin-bottom: 6px;
-  margin-left: 30px;
-}
-
-.caregiverGender {
-  display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 0.8rem;
+  gap: 8px; /* 이름과 성별 사이 간격 */
+  margin-top: 12px; /* 상하 여백 */
+  margin-bottom: 1px;
+}
+
+.caregiver-name {
+  font-size: 20px;
   font-weight: bold;
-  color: white;
-  margin-left: 8px;
-  margin-right: 12px;
+  color: #001520;
 }
 
-.genderMale {
-  background-color: #2196f3; /* 파랑 */
-}
-
-.genderFemale {
-  background-color: #e91e63; /* 분홍 */
-}
-
-.genderUnknown {
-  background-color: #9e9e9e; /* 회색 */
-}
-
-.no-result {
-  text-align: center;
-  color: #999;
-  padding: 40px 0;
-  font-size: 1.2rem;
+.card-info-box {
+  margin-top: 12px;
+  text-align: left;
+  padding-left: 30px; /* ⬅ 왼쪽만 여백 주기 */
+  font-weight: 500;
 }
