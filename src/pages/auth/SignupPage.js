@@ -166,153 +166,192 @@ function SignupPage() {
   console.log("SignupPage 렌더링 시작");
   return (
     <motion.div initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }} className={styles["signup-container"]}>
-  <h2 className={styles["signup-title"]}>회원가입</h2>
-  <form className={styles["signup-form"]} onSubmit={handleSubmit}>
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }} className={styles["signup-container"]}>
+      <h2 className={styles["signup-title"]}>회원가입</h2>
+      <form className={styles["signup-form"]} onSubmit={handleSubmit}>
 
-    <label className={styles["form-label"]}>회원 유형</label>
-    <select value={role} onChange={(e) => setRole(e.target.value)} className={styles["chj-select"]}>
-      <option value="">선택하세요</option>
-      <option value="user">일반 회원</option>
-      <option value="company">기업</option>
-      <option value="caregiver">요양사</option>
-    </select>
+        <label className={styles["form-label"]}>회원 유형</label>
+        <select value={role} onChange={(e) => setRole(e.target.value)} className={styles["chj-select"]}>
+          <option value="">선택하세요</option>
+          <option value="user">일반 회원</option>
+          <option value="company">기업</option>
+          <option value="caregiver">요양사</option>
+        </select>
 
-    <label className={styles["form-label"]}>아이디</label>
-    <div className={styles["input-description"]}>아이디는 영문 소문자와 숫자 조합 4~16자로 입력해야 합니다.</div>
-    <div className={styles["username-check-wrapper"]}>
-      <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" className={styles["chj-input"]} />
-      <button type="button" className={styles["username-check-button"]} onClick={checkUsername}>중복 확인</button>
-    </div>
-    {isDuplicate === true && <p className={styles["chj-input-error"]}>이미 사용 중인 아이디입니다.</p>}
-    {isDuplicate === false && <p className={styles["chj-input-success"]}>사용 가능한 아이디입니다.</p>}
+        <label className={styles["form-label"]}>아이디</label>
+        <div className={styles["input-description"]}>아이디는 영문 소문자와 숫자 조합 4~16자로 입력해야 합니다.</div>
+        <div className={styles["username-check-wrapper"]}>
+          <input type="text" value={username} onChange={(e) => { setUsername(e.target.value); setIsDuplicate(null); }} placeholder="아이디 입력" className={styles["chj-input"]} />
+          <button type="button" className={styles["username-check-button"]} onClick={checkUsername}>중복 확인</button>
+        </div>
+        {isDuplicate === true && <p className={styles["chj-input-error"]}>이미 사용 중인 아이디입니다.</p>}
+        {isDuplicate === false && <p className={styles["chj-input-success"]}>사용 가능한 아이디입니다.</p>}
 
-    <label className={styles["form-label"]}>비밀번호</label>
-    <div className={styles["input-description"]}>비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.</div>
-    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" className={styles["chj-input"]} />
+        <label className={styles["form-label"]}>비밀번호</label>
+        <div className={styles["input-description"]}>비밀번호는 10~16자, 영문/숫자/기호를 모두 포함해야 합니다.</div>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" className={styles["chj-input"]} />
 
-    <label className={styles["form-label"]}>비밀번호 확인</label>
-    <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" className={styles["chj-input"]} />
-    {passwordConfirm && password !== passwordConfirm && (<p className={styles["chj-input-error"]}>비밀번호가 일치하지 않습니다.</p>)}
+        <label className={styles["form-label"]}>비밀번호 확인</label>
+        <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" className={styles["chj-input"]} />
+        {passwordConfirm && password !== passwordConfirm && (<p className={styles["chj-input-error"]}>비밀번호가 일치하지 않습니다.</p>)}
 
-    <label className={styles["form-label"]}>이름</label>
-    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" className={styles["chj-input"]} />
+        <label className={styles["form-label"]}>이름</label>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름 입력" className={styles["chj-input"]} />
 
-    <label className={styles["form-label"]}>전화번호</label>
-    <div className={styles["chj-phone-inputs"]}>
-      <input
-        type="text"
-        value={phone}
-        onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
-        placeholder="휴대전화번호 '-' 없이 입력"
-        className={styles["chj-input"]}
-      />
-      <button className={styles["username-check-button"]} type="button" onClick={sendSmsCode}>인증번호 전송</button>
-    </div>
+        <label className={styles["form-label"]}>전화번호</label>
+        <div className={styles["chj-phone-inputs"]}>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+            placeholder="휴대전화번호 '-' 없이 입력"
+            className={styles["chj-input"]}
+          />
+          <button className={styles["username-check-button"]} type="button" onClick={sendSmsCode}>인증번호 전송</button>
+        </div>
 
-    <label className={styles["form-label"]}>전화번호 인증</label>
-    <div className={styles["verify-section"]}>
-      <input
-        type="text"
-        placeholder="인증번호 입력"
-        value={smsCode}
-        onChange={(e) => setSmsCode(e.target.value)}
-        className={styles["chj-input"]}
-      />
-      <button className={styles["username-check-button"]} type="button" onClick={verifySmsCode}>인증하기</button>
-    </div>
+        <label className={styles["form-label"]}>전화번호 인증</label>
+        <div className={styles["verify-section"]}>
+          <input
+            type="text"
+            placeholder="인증번호 입력"
+            value={smsCode}
+            onChange={(e) => setSmsCode(e.target.value)}
+            className={styles["chj-input"]}
+          />
+          <button className={styles["username-check-button"]} type="button" onClick={verifySmsCode}>인증하기</button>
+        </div>
 
-    <label className={styles["form-label"]}>이메일</label>
-    <div className={styles["email-box"]}>
-      <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" className={styles["chj-input"]} />
-      <span>@</span>
-      <select value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} className={styles["chj-select"]}>
-        <option value="">직접 입력</option>
-        <option value="naver.com">naver.com</option>
-        <option value="gmail.com">gmail.com</option>
-        <option value="daum.net">daum.net</option>
-      </select>
-    </div>
+        <label className={styles["form-label"]}>이메일</label>
+        <div className={styles["email-box"]}>
+          <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} placeholder="이메일" className={styles["chj-input"]} />
+          <span>@</span>
+          <select value={emailDomain} onChange={(e) => setEmailDomain(e.target.value)} className={styles["chj-select"]}>
+            <option value="">직접 입력</option>
+            <option value="naver.com">naver.com</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="daum.net">daum.net</option>
+          </select>
+        </div>
 
-    <label className={styles["form-label"]}>성별</label>
-    <select value={gender} onChange={(e) => setGender(e.target.value)} className={styles["chj-select"]}>
-      <option value="">선택</option>
-      <option value="male">남성</option>
-      <option value="female">여성</option>
-    </select>
+        <label className={styles["form-label"]}>성별</label>
+        <select value={gender} onChange={(e) => setGender(e.target.value)} className={styles["chj-select"]}>
+          <option value="">선택</option>
+          <option value="male">남성</option>
+          <option value="female">여성</option>
+        </select>
 
-    <label className={styles["form-label"]}>생년월일</label>
-    <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} className={styles["chj-input"]} />
+        <label className={styles["form-label"]}>생년월일</label>
+        <input type="date" max={new Date().toISOString().split("T")[0]} value={birth} onChange={(e) => setBirth(e.target.value)} className={styles["chj-input"]} />
 
-    <div className={styles["terms-row"]}>
-      <label className={styles["terms-label"]}>약관동의</label>
-      <div className={styles["agree-all-line"]}>
-        <input type="checkbox" checked={agreeAll} onChange={(e) => {
-          const checked = e.target.checked;
-          setAgreeAll(checked);
-          setAgreed(checked);
-          setSmsAgree(checked);
-          setEmailAgree(checked);
-          setPushAgree(checked);
-        }} />
-        <span>전체 약관에 동의합니다</span>
-      </div>
-    </div>
+        <div className={styles["sh-terms-wrapper"]}>
+          <div className={styles["sh-terms-all"]}>
+            <input
+              type="checkbox"
+              checked={agreeAll}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setAgreeAll(checked);
+                setAgreed(checked);
+                setSmsAgree(checked);
+                setEmailAgree(checked);
+                setPushAgree(checked);
+              }}
+            />
+            <span>전체 약관에 동의합니다</span>
+          </div>
 
-    <div className={styles["terms-content-scroll"]}>
-      [이용약관 요약]<br /><br />
-      [필수선택약관]<br />
-      본 웹사이트는 요양 정보 제공 및 이용자 간 서비스 매칭을 위한 플랫폼입니다. <br />
-      회원은 가입 시 실명 및 정확한 정보를 제공해야 하며, 허위 정보 등록 시 서비스 이용에 제한이 발생할 수 있습니다.<br />
-      수집된 개인정보는 서비스 제공 목적 이외의 용도로 사용되지 않으며, 개인정보 보호법 등 관련 법령을 준수하여 안전하게 관리됩니다. <br />
-      이용자는 언제든지 본인의 정보에 대한 열람, 수정, 삭제를 요청할 수 있습니다.<br />
-      서비스 이용 시 무단 광고, 비방, 욕설, 허위 사실 유포 등은 금지되며, 운영진 판단에 따라 사전 경고 없이 이용 제한이 적용될 수 있습니다. <br />
-      본 약관은 변경될 수 있으며, 변경 시 공지사항을 통해 사전 안내합니다.<br />
-      회원은 항상 최신 약관을 숙지하고 이를 준수해야 하며, 지속적으로 서비스를 이용함으로써 약관 변경에 동의한 것으로 간주됩니다.<br />
-      자세한 사항은 정식 이용약관 전문을 참고해주세요.<br />
-    </div>
+          <div className={styles["sh-terms-item"]}>
+            <div className={styles["sh-terms-header"]}>
+              <span>[필수] 이용약관</span>
+              <label className={styles["sh-terms-checkbox"]}>
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                />
+                동의합니다
+              </label>
+            </div>
+            <div className={styles["sh-terms-box"]}>
+              본 웹사이트는 요양 정보 제공 및 이용자 간 서비스 매칭을 위한 플랫폼입니다. <br />
+              회원은 가입 시 실명 및 정확한 정보를 제공해야 하며, 허위 정보 등록 시 서비스 이용에 제한이 발생할 수 있습니다.<br />
+              수집된 개인정보는 서비스 제공 목적 이외의 용도로 사용되지 않으며, 개인정보 보호법 등 관련 법령을 준수하여 안전하게 관리됩니다. <br />
+              이용자는 언제든지 본인의 정보에 대한 열람, 수정, 삭제를 요청할 수 있습니다.<br />
+              서비스 이용 시 무단 광고, 비방, 욕설, 허위 사실 유포 등은 금지되며, 운영진 판단에 따라 사전 경고 없이 이용 제한이 적용될 수 있습니다. <br />
+              본 약관은 변경될 수 있으며, 변경 시 공지사항을 통해 사전 안내합니다.<br />
+              회원은 항상 최신 약관을 숙지하고 이를 준수해야 하며, 지속적으로 서비스를 이용함으로써 약관 변경에 동의한 것으로 간주됩니다.<br />
+              자세한 사항은 정식 이용약관 전문을 참고해주세요.<br />
 
-    <label className={styles["agree-check"]}>
-      <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-      <span>약관에 동의합니다</span>
-    </label>
+            </div>
+          </div>
 
-    <div className={styles["terms-label"]}><b>[선택약관]</b></div>
+          <div className={styles["sh-terms-item"]}>
+            <div className={styles["sh-terms-header"]}>
+              <span>[선택] SMS 수신 동의</span>
+              <label className={styles["sh-terms-checkbox"]}>
+                <input
+                  type="checkbox"
+                  checked={smsAgree}
+                  onChange={(e) => setSmsAgree(e.target.checked)}
+                />
+                동의합니다
+              </label>
+            </div>
+            <div className={styles["sh-terms-box"]}>
+              서비스 관련 주요 안내 및 혜택 정보를 문자로 받아보실 수 있습니다.<br />
+              수신 동의 시, 이벤트 알림 및 고객 맞춤 정보를 제공해드립니다.<br />
+              원치 않으실 경우 언제든지 수신 거부가 가능합니다.<br />
 
-    <label className={styles["agree-check"]}>
-      <input type="checkbox" checked={smsAgree} onChange={(e) => setSmsAgree(e.target.checked)} />
-      <span>SMS 문자 수신 동의</span>
-      <div className={styles["agree-desc"]}>
-        서비스 관련 주요 안내 및 혜택 정보를 문자로 받아보실 수 있습니다.<br />
-        수신 동의 시, 이벤트 알림 및 고객 맞춤 정보를 제공해드립니다.<br />
-        원치 않으실 경우 언제든지 수신 거부가 가능합니다.<br />
-      </div>
-    </label>
+            </div>
+          </div>
 
-    <label className={styles["agree-check"]}>
-      <input type="checkbox" checked={emailAgree} onChange={(e) => setEmailAgree(e.target.checked)} />
-      <span>이메일 수신 동의</span>
-      <div className={styles["agree-desc"]}>
-        다양한 혜택, 프로모션 및 신규 서비스 안내 메일을 보내드립니다.<br />
-        수신 동의 시, 맞춤형 정보와 소식지를 정기적으로 받아보실 수 있습니다.<br />
-        이메일은 언제든지 수신 거부를 통해 해지하실 수 있습니다.<br />
-      </div>
-    </label>
+          <div className={styles["sh-terms-item"]}>
+            <div className={styles["sh-terms-header"]}>
+              <span>[선택] 이메일 수신 동의</span>
+              <label className={styles["sh-terms-checkbox"]}>
+                <input
+                  type="checkbox"
+                  checked={emailAgree}
+                  onChange={(e) => setEmailAgree(e.target.checked)}
+                />
+                동의합니다
+              </label>
+            </div>
+            <div className={styles["sh-terms-box"]}>
+              다양한 혜택, 프로모션 및 신규 서비스 안내 메일을 보내드립니다.<br />
+              수신 동의 시, 맞춤형 정보와 소식지를 정기적으로 받아보실 수 있습니다.<br />
+              이메일은 언제든지 수신 거부를 통해 해지하실 수 있습니다.<br />
 
-    <label className={styles["agree-check"]}>
-      <input type="checkbox" checked={pushAgree} onChange={(e) => setPushAgree(e.target.checked)} />
-      <span>앱 푸시 알림 동의</span>
-      <div className={styles["agree-desc"]}>
-        앱을 통해 실시간 알림, 혜택 정보, 이벤트 소식을 받아보실 수 있습니다.<br />
-        푸시 알림은 설정에서 언제든지 ON/OFF 변경이 가능합니다.<br />
-        중요한 정보 누락 없이 빠르게 전달받을 수 있습니다.<br />
-      </div>
-    </label>
+            </div>
+          </div>
 
-    <button className={styles["pass-btn"]} type="submit">회원가입</button>
-  </form>
-</motion.div>
+          <div className={styles["sh-terms-item"]}>
+            <div className={styles["sh-terms-header"]}>
+              <span>[선택] 앱 푸시 알림 동의</span>
+              <label className={styles["sh-terms-checkbox"]}>
+                <input
+                  type="checkbox"
+                  checked={pushAgree}
+                  onChange={(e) => setPushAgree(e.target.checked)}
+                />
+                동의합니다
+              </label>
+            </div>
+            <div className={styles["sh-terms-box"]}>
+              앱을 통해 실시간 알림, 혜택 정보, 이벤트 소식을 받아보실 수 있습니다.<br />
+              푸시 알림은 설정에서 언제든지 ON/OFF 변경이 가능합니다.<br />
+              중요한 정보 누락 없이 빠르게 전달받을 수 있습니다.<br />
+
+            </div>
+          </div>
+        </div>
+
+
+        <button className={styles["pass-btn"]} type="submit">회원가입</button>
+      </form>
+    </motion.div>
 
   );
 }

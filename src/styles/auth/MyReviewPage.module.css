@@ -2,6 +2,10 @@
   max-width: 700px;
   margin: 100px auto 120px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
 }
 
 .sh-title {
