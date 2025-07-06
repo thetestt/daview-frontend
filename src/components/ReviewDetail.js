@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   getReviewById,
@@ -27,6 +27,15 @@ function ReviewDetail() {
   const [showComments, setShowComments] = useState(true);
   const [openReplies, setOpenReplies] = useState({});
 
+  const fetchComments = useCallback(async () => {
+    try {
+      const data = await getCommentsByReview(revId);
+      setComments(data);
+    } catch (error) {
+      console.error("댓글 불러오기 실패: ", error);
+    }
+  }, [revId]);
+
   useEffect(() => {
     if (!revId || fromEdit) return;
 
@@ -38,17 +47,10 @@ function ReviewDetail() {
         console.error("리뷰 조회 실패: ", error);
       }
     };
-    const fetchComments = async () => {
-      try {
-        const data = await getCommentsByReview(revId);
-        setComments(data);
-      } catch (error) {
-        console.error("댓글 불러오기 실패: ", error);
-      }
-    };
+
     fetchReview();
     fetchComments();
-  }, [revId, fromEdit]);
+  }, [revId, fromEdit, fetchComments]);
 
   const handleUpdateClick = () => {
     if (!memberId) {
@@ -82,15 +84,17 @@ function ReviewDetail() {
     try {
       await addComment(revId, newComment, null, memberId);
       setNewComment("");
-      setComments([
-        ...comments,
-        {
-          commentText: newComment,
-          parentCommentId: null,
-          memberId,
-          commentId: Date.now(),
-        },
-      ]);
+      // setComments([
+      //   ...comments,
+      //   {
+      //     commentText: newComment,
+      //     parentCommentId: null,
+      //     memberId,
+      //     commentId: Date.now(),
+      //   },
+      // ]);
+      await fetchComments();
+      alert("댓글이 성공적으로 작성되었습니다.");
     } catch (error) {
       console.error("댓글 작성 실패: ", error);
     }
@@ -108,21 +112,31 @@ function ReviewDetail() {
     try {
       await addComment(revId, replyText, parentCommentId, memberId);
       setNewReplyMap({ ...newReplyMap, [parentCommentId]: "" });
-      setComments([
-        ...comments,
-        {
-          commentText: replyText,
-          parentCommentId,
-          memberId,
-          commentId: Date.now(),
-        },
-      ]);
+      // setComments([
+      //   ...comments,
+      //   {
+      //     commentText: replyText,
+      //     parentCommentId,
+      //     memberId,
+      //     commentId: Date.now(),
+      //   },
+      // ]);
+      await fetchComments();
+      alert("대댓글이 성공적으로 작성되었습니다.");
     } catch (error) {
       console.error("대댓글 작성 실패: ", error);
     }
   };
 
   const handleDeleteComment = async (commentId) => {
+    const commentToDelete = comments.find((c) => c.commentId === commentId);
+    if (!commentToDelete) return;
+
+    if (commentToDelete.memberId !== memberId) {
+      alert("작성자만 삭제할 수 있습니다.");
+      return;
+    }
+
     try {
       await deleteComment(commentId);
       setComments(
@@ -150,7 +164,15 @@ function ReviewDetail() {
               {review.memberName}
             </div>
             <div className={styles["review-detail-date"]}>
-              {review ? new Date(review.revRegDate).toLocaleDateString() : "-"}
+              {review
+                ? new Date(review.revRegDate).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "-"}
             </div>
           </div>
           <div className={styles["review-detail-stars"]}>
@@ -231,17 +253,31 @@ function ReviewDetail() {
                   <div className={styles["review-detail-comment-bubble"]}>
                     <div className={styles["review-detail-comment-meta"]}>
                       {comment.memberName}({comment.memberId})
+                      <span className={styles["review-detail-comment-date"]}>
+                        {new Date(comment.commentRegDate).toLocaleString(
+                          "ko-KR",
+                          {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </span>
                     </div>
                     <div className={styles["review-detail-comment-text"]}>
                       {comment.commentText}
                     </div>
                     <div className={styles["review-detail-comment-actions"]}>
-                      <button
-                        className={styles["review-detail-reply-btn-delete"]}
-                        onClick={() => handleDeleteComment(comment.commentId)}
-                      >
-                        삭제
-                      </button>
+                      {comment.memberId === memberId && (
+                        <button
+                          className={styles["review-detail-reply-btn-delete"]}
+                          onClick={() => handleDeleteComment(comment.commentId)}
+                        >
+                          삭제
+                        </button>
+                      )}
                     </div>
                     <div className={styles["review-detail-reply-box"]}>
                       <textarea
@@ -294,7 +330,21 @@ function ReviewDetail() {
                             <div
                               className={styles["review-detail-comment-meta"]}
                             >
-                              {comment.memberName}({reply.memberId})
+                              {reply.memberName}({reply.memberId})
+                              <span
+                                className={styles["review-detail-comment-date"]}
+                              >
+                                {new Date(reply.commentRegDate).toLocaleString(
+                                  "ko-KR",
+                                  {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )}
+                              </span>
                             </div>
                             <div
                               className={styles["review-detail-comment-text"]}
@@ -304,17 +354,19 @@ function ReviewDetail() {
                             <div
                               className={styles["review-detail-reply-actions"]}
                             >
-                              <button
-                                className={
-                                  styles["review-detail-reply-btn-delete"]
-                                }
-                                onClick={() =>
-                                  handleDeleteComment(reply.commentId)
-                                }
-                                type="button"
-                              >
-                                삭제
-                              </button>
+                              {reply.memberId === memberId && (
+                                <button
+                                  className={
+                                    styles["review-detail-reply-btn-delete"]
+                                  }
+                                  onClick={() =>
+                                    handleDeleteComment(reply.commentId)
+                                  }
+                                  type="button"
+                                >
+                                  삭제
+                                </button>
+                              )}
                             </div>
                           </div>
                         ))}

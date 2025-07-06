@@ -1,6 +1,6 @@
 .review-detail-container {
   background: #f5f6fa;
-  min-height: 620px;
+  min-height: 720px;
   height: auto;
   padding-top: 80px;
   padding-bottom: 30px;
@@ -233,6 +233,13 @@
   color: #666;
   margin-bottom: 2px;
   font-weight: 500;
+}
+
+.review-detail-comment-date {
+  float: right;
+  color: #999;
+  font-size: 12px;
+  margin-left: auto;
 }
 
 .review-detail-comment-text {
