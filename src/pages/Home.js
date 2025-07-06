@@ -4,6 +4,7 @@ import MainButton from "../components/MainButton";
 import IntroSection from "../components/IntroSection";
 import ReviewSection from "../components/ReviewSection";
 import CallSection from "../components/CallSection";
+import ChatbotMain from "../components/ChatbotMain";
 
 function Home() {
   // const username = localStorage.getItem("username");
@@ -32,6 +33,7 @@ function Home() {
       <MainButton />
       <ReviewSection />
       <CallSection />
+      <ChatbotMain />
 
       {/* <p>{mainMessage}</p>
       {role && (
