@@ -10,7 +10,6 @@ function NoticeDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // noticeId는 int로 변환해서 넘겨주는 게 안전
     fetchNoticesByNoticeId(facilityId, parseInt(noticeId, 10))
       .then((data) => {
         setNotice(data);
@@ -27,18 +26,29 @@ function NoticeDetail() {
   return (
     <>
       <FloatingNavButtons />
-      <div className={styles["notice-detail-container"]}>
-        <h2>{notice.facilityName || "시설"} 공지게시판</h2>
-        <h2>{notice.noticeTitle}</h2>
-        <div className={styles["notice-date"]}>{notice.noticeCreatedAt}</div>
-        <div className={styles["notice-content"]}>
+      <div className={styles["page-background"]}>
+      <div className={styles["notice-detail-wrapper"]}>
+        <h2 className={styles["notice-board-title"]}>
+          {notice.facilityName || "시설"} 공지게시판
+        </h2>
+
+        <div className={styles["notice-header"]}>
+          <div className={styles["notice-title"]}>{notice.noticeTitle}</div>
+          <div className={styles["notice-date"]}>{notice.noticeCreatedAt.substring(0, 10)}</div>
+        </div>
+
+        <div className={styles["notice-box"]}>
           {notice.noticeContent.split("\n").map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}
         </div>
-        <Link to={`/notice/${facilityId}`} className={styles["back-button"]}>
-          목록으로가기
-        </Link>
+
+        <div className={styles["button-wrapper"]}>
+          <Link to={`/notice/${facilityId}`} className={styles["back-button"]}>
+            목록으로가기
+          </Link>
+        </div>
+      </div>
       </div>
     </>
   );

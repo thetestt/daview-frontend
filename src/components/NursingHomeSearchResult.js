@@ -23,7 +23,7 @@ function NursingHomeSearchResult({ filters }) {
   return (
     <div className={styles["whole-list"]}>
       <div className={styles["facility-list"]}>
-        <h3>요양원 검색결과</h3>
+        {/*<h3>요양원 검색결과</h3>*/}
         {/* ✅ quote 이미지: 카드들 뒷배경처럼 고정 */}
         <img
           src={backgroundShape}

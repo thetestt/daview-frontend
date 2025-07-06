@@ -111,7 +111,9 @@ function CaregiverDetail() {
             </div>
           </div>
 
-          <div className={styles["notice-review-section"]}>
+
+<div className={styles["notice-review-section"]}>
+          <div className={styles["career-box"]}>
             <h3>경력사항</h3>
             <ul>
               {data.career.length > 0 ? (
@@ -128,6 +130,7 @@ function CaregiverDetail() {
             <h3>자기소개</h3>
             <div className={styles["detail-desc"]}>
               {data.introduction || "자기소개가 없습니다."}
+            </div>
             </div>
           </div>
         </div>
