@@ -46,7 +46,7 @@
 .review-form-row {
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 70px;
 }
 
 .review-title-row {
@@ -70,7 +70,7 @@
 }
 
 .review-title-row select {
-  width: 260px;
+  width: 310px;
   height: 40px;
   border: 1px solid #8080806e;
   border-radius: 10px;

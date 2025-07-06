@@ -46,7 +46,7 @@
 .review-form-row {
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 70px;
 }
 
 .review-title-row {
@@ -61,7 +61,7 @@
 
 .review-prodnm-input,
 .review-select {
-  width: 300px;
+  width: 310px;
   height: 40px;
   border: 1px solid #8080806e;
   border-radius: 10px;
@@ -73,7 +73,7 @@
 }
 .review-prodttl-input,
 .review-textarea {
-  width: 640px;
+  width: 100%;
   height: 40px;
   border: 1px solid #8080806e;
   border-radius: 10px;
