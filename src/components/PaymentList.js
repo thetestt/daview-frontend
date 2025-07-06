@@ -119,9 +119,9 @@ const PaymentList = () => {
                       <div className={styles["pay-info-row"]}>
                         <span className={styles["pay-label"]}>상품 금액</span>
                         <span className={styles["pay-value"]}>
-                          {payment.reservations
-                            ?.reduce((sum, r) => sum + (r.prodPrice || 0), 0)
-                            .toLocaleString()}{" "}
+                          {(
+                            payment.pymPrice + (payment.couponDiscount || 0)
+                          ).toLocaleString()}{" "}
                           원
                         </span>
                       </div>
