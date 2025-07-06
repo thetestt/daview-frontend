@@ -1,3 +1,4 @@
+// 📂 src/pages/NursingHomeDetail.js
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "../styles/pages/Detail.module.css";
@@ -8,6 +9,7 @@ import ChatButton from "../components/common/ChatButton";
 import NaverMap from "../components/common/NaverMap";
 import { fetchNursinghomeDetail } from "../api/nursinghome";
 import { getReviewsByProdNm } from "../api/reviewApi";
+import backgroundShape from "../assets/mwhite.png";
 
 function NursingHomeDetail() {
   const { id } = useParams();
@@ -48,14 +50,10 @@ function NursingHomeDetail() {
     return (
       <>
         {[...Array(full)].map((_, i) => (
-          <span key={`full-${i}`} className={styles.star}>
-            ★
-          </span>
+          <span key={`full-${i}`} className={styles.star}>★</span>
         ))}
         {[...Array(5 - full)].map((_, i) => (
-          <span key={`empty-${i}`} className={styles["star-empty"]}>
-            ☆
-          </span>
+          <span key={`empty-${i}`} className={styles["star-empty"]}>☆</span>
         ))}
       </>
     );
@@ -63,8 +61,8 @@ function NursingHomeDetail() {
 
   if (!data) return <div>Loading...</div>;
 
-  const address = `${data.facilityAddressLocation} ${data.facilityAddressCity} ${data.facilityDetailAddress}`;
   const photos = data.photos?.filter((url) => url) || ["/images/default.png"];
+  const address = `${data.facilityAddressLocation} ${data.facilityAddressCity} ${data.facilityDetailAddress}`;
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
@@ -78,8 +76,7 @@ function NursingHomeDetail() {
   const imageMargin = -10;
   const totalImageWidth = imageWidth + imageMargin * 2;
   const wrapperWidth = 1000;
-  const offset =
-    wrapperWidth / 2 - totalImageWidth / 2 - currentIndex * totalImageWidth;
+  const offset = wrapperWidth / 2 - totalImageWidth / 2 - currentIndex * totalImageWidth;
 
   return (
     <>
@@ -87,6 +84,7 @@ function NursingHomeDetail() {
       <div className={styles["page-background"]}>
         <div className={styles["detail-wrapper"]}>
           <div className={styles["main-section"]}>
+            {/* 사진 슬라이더 */}
             <div className={styles["photo-slider"]}>
               <div className={styles["carousel-wrapper"]}>
                 <div
@@ -98,59 +96,47 @@ function NursingHomeDetail() {
                       key={i}
                       src={src}
                       alt={`slide-${i}`}
-                      className={`${styles["carousel-image"]} ${
-                        i === currentIndex ? styles["active"] : ""
-                      }`}
+                      className={`${styles["carousel-image"]} ${i === currentIndex ? styles["active"] : ""}`}
                     />
                   ))}
                 </div>
-                <button onClick={handlePrev} className={styles["arrow-left"]}>
-                  ❮
-                </button>
-                <button onClick={handleNext} className={styles["arrow-right"]}>
-                  ❯
-                </button>
+                <button onClick={handlePrev} className={styles["arrow-left"]}>❮</button>
+                <button onClick={handleNext} className={styles["arrow-right"]}>❯</button>
               </div>
             </div>
 
+            {/* 제목 영역 */}
             <div className={styles["tilte-box"]}>
               <div className={styles["title-header"]}>
                 <div className={styles["text-group"]}>
                   <div className={styles["title-line"]}>
-                    <h2 className={styles["facility-name"]}>
-                      {data.facilityName}
-                    </h2>
+                    <h2 className={styles["facility-name"]}>{data.facilityName}</h2>
                     <span className={styles["star-display"]}>
                       {renderStars(calculateAverageStars(reviews))}
                     </span>
                     <span className={styles["average-text"]}>
                       {reviews.length > 0 &&
-                        `${calculateAverageStars(reviews).toFixed(1)}점 / ${
-                          reviews.length
-                        }개의 후기`}
+                        `${calculateAverageStars(reviews).toFixed(1)}점 / ${reviews.length}개의 후기`}
                     </span>
                   </div>
                 </div>
-                <HeartButton
-                  facilityId={id}
-                  className={styles["heart-button"]}
-                />
+                <HeartButton facilityId={id} className={styles["heart-button"]} />
               </div>
               <hr className={styles["divider"]} />
             </div>
 
+            {/* 정보 + 지도 */}
             <div className={styles["info_map-box"]}>
               <div className={styles["info-box"]}>
+                <div className={styles["info-detail-box"]}>
+                  <img src={backgroundShape} alt="quote" className={styles["list-quote-background"]} />
+                </div>
                 <div className={styles["info-text"]}>
                   <p>주소: {address}</p>
                   <p>테마: {data.facilityTheme}</p>
                   <p>
                     홈페이지:{" "}
-                    <a
-                      href={data.facilityHomepage}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <a href={data.facilityHomepage} target="_blank" rel="noreferrer">
                       {data.facilityHomepage}
                     </a>
                   </p>
@@ -180,54 +166,78 @@ function NursingHomeDetail() {
             </div>
           </div>
 
+          {/* 공지사항 + 리뷰 + 상세페이지 */}
           <div className={styles["notice-review-section"]}>
-            <h3>공지사항</h3>
-            <ul>
-              {data.notices.length > 0 ? (
-                data.notices.map((notice, idx) => (
-                  <li key={idx}>
-                    <Link to={`/notice/${data.facilityId}/${notice.noticeId}`}>
-                      [{notice.noticeIsFixed ? "공지" : "일반"}]{" "}
-                      {notice.noticeTitle}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>공지사항 없음</li>
-              )}
-            </ul>
-            <Link to={`/notice/${data.facilityId}`}>공지사항 전체 보기</Link>
-
-            <h3>리뷰</h3>
-            <div className={styles["review-box"]}>
-              <ul className={styles["review-list"]}>
-                {isLoading ? (
-                  <li>로딩 중...</li>
-                ) : reviews.length > 0 ? (
-                  reviews.slice(0, 2).map((review) => (
-                    <li key={review.revId} className={styles["review-item"]}>
-                      <Link
-                        to={`/review/${review.revId}`}
-                        className={styles["review-link"]}
-                      >
-                        <span className={styles["review-title"]}>
-                          {review.revTtl}
-                        </span>
-                        <span className={styles["review-date"]}>
-                          {review.revRegDate?.slice(0, 10)}
-                        </span>
-                      </Link>
-                    </li>
-                  ))
+            <div className={styles["notice-box"]}>
+              <div className={styles["notice-header"]}>
+                <h3 className={styles["notice-title"]}>공지사항</h3>
+                <Link to={`/notice/${data.facilityId}`} className={styles["view-all"]}>
+                  공지사항 전체보기 &gt;
+                </Link>
+              </div>
+              <div className={styles["notice-content"]}>
+                {data.notices.length > 0 ? (
+                  <Link
+                    to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
+                    className={styles["notice-item"]}
+                  >
+                    <strong className={styles["notice-label"]}>
+                      [{data.notices[0].noticeIsFixed ? "공지" : "일반"}]
+                    </strong>{" "}
+                    {data.notices[0].noticeTitle}
+                  </Link>
                 ) : (
-                  <li>등록된 리뷰가 없습니다.</li>
+                  <span className={styles["notice-none"]}>공지사항 없음</span>
                 )}
-              </ul>
+              </div>
+            </div>
+
+            {/* 리뷰 슬라이더 */}
+            <h3>리뷰</h3>
+            <div className={styles["review-slider-container"]}>
+              <button className={styles["arrow-button"]} onClick={handlePrev}>
+                &#10094;
+              </button>
+              <div className={styles["review-slider-wrapper"]}>
+                <div
+                  className={styles["review-slider-track"]}
+                  style={{ transform: `translateX(-${currentIndex * 420}px)` }}
+                >
+                  {reviews.map((review, index) => {
+                    const isVisible = index === currentIndex || index === currentIndex + 1;
+                    return (
+                      <div
+                        key={review.revId}
+                        className={`${styles["review-item"]} ${
+                          isVisible ? styles["active"] : styles["inactive"]
+                        }`}
+                      >
+                        <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
+                          <div className={styles["review-title-line"]}>
+                            <span className={styles["review-title"]}>{review.revTtl}</span>
+                            <span className={styles["review-stars"]}>
+                              {renderStars(review.revStars)}
+                            </span>
+                          </div>
+                          <div className={styles["review-content"]}>
+                            {review.revCont?.slice(0, 60)}...
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <button className={styles["arrow-button"]} onClick={handleNext}>
+                &#10095;
+              </button>
             </div>
 
             <h3>상세페이지</h3>
             <div className={styles["detail-desc"]}>
-              {data.facilityDetailText || "상세 설명이 없습니다."}
+              {data.facilityDetailText || (
+                <img src="/images/silvertonwD.jpeg" alt="요양원 상세" />
+              )}
             </div>
           </div>
         </div>
