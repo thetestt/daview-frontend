@@ -79,12 +79,17 @@
 
 .review-th:nth-child(2),
 .review-td:nth-child(2) {
-  width: 30%;
+  width: 26%;
 }
 
 .review-th:nth-child(3),
 .review-td:nth-child(3) {
   width: 13%;
+}
+
+.review-th:nth-child(4),
+.review-td:nth-child(4) {
+  width: 18%;
 }
 
 .review-th:nth-child(5),

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getReports, createReport, updateReport, deleteReport, getReportByDate } from '../../api/caregiverReports';
 import styles from '../../styles/pages/CaregiverReports.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const CaregiverReports = () => {
   const [reports, setReports] = useState([]);
@@ -16,6 +17,8 @@ const CaregiverReports = () => {
   });
   const [selectedDate, setSelectedDate] = useState('');
   const [error, setError] = useState('');
+  const [expandedCards, setExpandedCards] = useState(new Set());
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadReports();
@@ -135,32 +138,54 @@ const CaregiverReports = () => {
     }
   };
 
+  const toggleCardExpansion = (reportId) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(reportId)) {
+        newSet.delete(reportId);
+      } else {
+        newSet.add(reportId);
+      }
+      return newSet;
+    });
+  };
+
+  const truncateContent = (content, maxLength = 150) => {
+    if (!content) return '내용 없음';
+    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>보고서 관리</h1>
-        <div className={styles.headerActions}>
-          <div className={styles.searchSection}>
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className={styles.dateInput}
-            />
-            <button onClick={handleDateSearch} className={styles.searchBtn}>
-              검색
-            </button>
-            <button onClick={resetSearch} className={styles.resetBtn}>
-              전체보기
+        <div className={styles.headerLeft}>
+          <h1>보고서 관리</h1>
+          <div className={styles.headerActions}>
+            <div className={styles.searchSection}>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className={styles.dateInput}
+              />
+              <button onClick={handleDateSearch} className={styles.searchBtn}>
+                검색
+              </button>
+              <button onClick={resetSearch} className={styles.resetBtn}>
+                전체보기
+              </button>
+            </div>
+            <button 
+              onClick={() => setShowModal(true)} 
+              className={styles.addBtn}
+            >
+              새 보고서 작성
             </button>
           </div>
-          <button 
-            onClick={() => setShowModal(true)} 
-            className={styles.addBtn}
-          >
-            새 보고서 작성
-          </button>
         </div>
+        <button onClick={() => navigate('/caregiver/main')} className={styles.backBtn}>
+          뒤로가기
+        </button>
       </div>
 
       {error && (
@@ -178,36 +203,51 @@ const CaregiverReports = () => {
             <p>보고서가 없습니다.</p>
           </div>
         ) : (
-          reports.map((report) => (
-            <div key={report.id} className={styles.reportCard}>
-              <div className={styles.reportHeader}>
-                <h3>{report.reportDate}</h3>
-                <span 
-                  className={styles.statusBadge}
-                  style={{ backgroundColor: getStatusColor(report.status) }}
-                >
-                  {getStatusText(report.status)}
-                </span>
+          reports.map((report) => {
+            const isExpanded = expandedCards.has(report.id);
+            const shouldShowToggle = report.content && report.content.length > 150;
+            
+            return (
+              <div key={report.id} className={styles.reportCard} data-expanded={isExpanded}>
+                <div className={styles.reportHeader}>
+                  <h3>{report.reportDate}</h3>
+                  <span 
+                    className={styles.statusBadge}
+                    style={{ backgroundColor: getStatusColor(report.status) }}
+                  >
+                    {getStatusText(report.status)}
+                  </span>
+                </div>
+                <div className={styles.reportContent}>
+                  <p className={`${styles.contentText} ${isExpanded ? styles.expanded : ''}`}>
+                    {isExpanded ? report.content || '내용 없음' : truncateContent(report.content, 150)}
+                  </p>
+                  {shouldShowToggle && (
+                    <button 
+                      onClick={() => toggleCardExpansion(report.id)}
+                      className={styles.toggleBtn}
+                    >
+                      {isExpanded ? '접기' : '더 보기'}
+                    </button>
+                  )}
+                </div>
+                <div className={styles.reportActions}>
+                  <button 
+                    onClick={() => handleEdit(report)}
+                    className={styles.editBtn}
+                  >
+                    수정
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(report.id)}
+                    className={styles.deleteBtn}
+                  >
+                    삭제
+                  </button>
+                </div>
               </div>
-              <div className={styles.reportContent}>
-                <p>{report.content ? report.content.substring(0, 100) + '...' : '내용 없음'}</p>
-              </div>
-              <div className={styles.reportActions}>
-                <button 
-                  onClick={() => handleEdit(report)}
-                  className={styles.editBtn}
-                >
-                  수정
-                </button>
-                <button 
-                  onClick={() => handleDelete(report.id)}
-                  className={styles.deleteBtn}
-                >
-                  삭제
-                </button>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 

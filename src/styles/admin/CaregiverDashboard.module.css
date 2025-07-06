@@ -13,69 +13,106 @@
     min-height: 100vh;
 }
 
+.dashboardContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
 }
 
 .header h1 {
-    margin: 0;
-    color: #333;
+    color: white;
     font-size: 24px;
     font-weight: 600;
+    margin: 0;
+}
+
+.backBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.backBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 .headerButtons {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-.editButton, .saveButton, .cancelButton {
+.editButton,
+.saveButton,
+.cancelButton {
     padding: 10px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .editButton {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
 }
 
 .editButton:hover {
-    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
 }
 
 .saveButton {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
-.saveButton:hover {
-    background-color: #218838;
+.saveButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .saveButton:disabled {
-    background-color: #6c757d;
+    background: #6c757d;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .cancelButton {
-    background-color: #6c757d;
+    background: #6c757d;
     color: white;
 }
 
 .cancelButton:hover {
-    background-color: #545b62;
+    background: #5a6268;
+    transform: translateY(-2px);
 }
 
 .profileCard {

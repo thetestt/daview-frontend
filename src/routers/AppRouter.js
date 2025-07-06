@@ -41,8 +41,14 @@ import CaregiverDashboard from "../pages/caregiver/CaregiverDashboard";
 import CaregiverMainDashboard from "../pages/caregiver/CaregiverMainDashboard";
 import CaregiverReports from "../pages/caregiver/CaregiverReports";
 import CaregiverTasks from "../pages/caregiver/CaregiverTasks";
+import CaregiverPatientManagement from "../pages/caregiver/CaregiverPatientManagement";
+import CaregiverNotifications from "../pages/caregiver/CaregiverNotifications";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import CompanyMainDashboard from "../pages/company/CompanyMainDashboard";
+import CompanyReservationManagement from "../pages/company/CompanyReservationManagement";
+import CompanyReviewManagement from "../pages/company/CompanyReviewManagement";
+import CompanyStatistics from "../pages/company/CompanyStatistics";
+import CompanyInquiryManagement from "../pages/company/CompanyInquiryManagement";
 import AdminLayout from "../components/admin_components/AdminLayout"; //관리자 레이아웃
 import AdminDashboard from "../pages/admin/AdminDashboard"; //관리자 대시보드
 import AdminProductList from "../pages/admin/admin_service/AdminProductList"; //관리자 상품 목록
@@ -177,10 +183,16 @@ const AppRouter = () => {
         {/* 관리자 외 대시보드 */}
         <Route path="/company/main" element={<CompanyMainDashboard />} />
         <Route path="/company/facility" element={<CompanyDashboard />} />
+        <Route path="/company/reservations" element={<CompanyReservationManagement />} />
+        <Route path="/company/reviews" element={<CompanyReviewManagement />} />
+        <Route path="/company/statistics" element={<CompanyStatistics />} />
+        <Route path="/company/inquiries" element={<CompanyInquiryManagement />} />
         <Route path="/caregiver/main" element={<CaregiverMainDashboard />} />
         <Route path="/caregiver/profile" element={<CaregiverDashboard />} />
         <Route path="/caregiver/reports" element={<CaregiverReports />} />
         <Route path="/caregiver/tasks" element={<CaregiverTasks />} />
+        <Route path="/caregiver/patients" element={<CaregiverPatientManagement />} />
+        <Route path="/caregiver/notifications" element={<CaregiverNotifications />} />
 
         {/* 마이페이지 */}
         {/* 아이디찾기 */}

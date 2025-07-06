@@ -46,13 +46,13 @@
   font-weight: 600;
   font-size: 30px;
   padding-left: 20px;
-  padding-top: 13px;
+  padding-top: 23px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
 
 .pay-reservation-table {
-  table-layout: fixed;
+  /* table-layout: fixed; */
   width: 70%;
 }
 
@@ -144,7 +144,7 @@
 
 .pay-name-consult-group {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   align-items: center;
   margin-bottom: 20px;
   padding-top: 30px;
@@ -159,7 +159,7 @@
   font-size: 30px;
   margin-top: 10px;
   padding-left: 20px;
-  padding-top: 13px;
+  padding-top: 23px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -176,19 +176,19 @@
   text-align: left;
   gap: 15px;
   margin-top: 10px;
-  height: 45vh;
+  height: 40vh;
 }
 
 .pay-contact-group {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   align-items: center;
 }
 
 .pay-input-group {
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
+  padding-left: 50px;
   padding-top: 5px;
 }
 
@@ -200,7 +200,7 @@
 }
 
 .pay-input-group input {
-  width: 360px;
+  width: 341px;
   height: 40px;
   border: 1px solid #8080806e;
   border-radius: 4px;
@@ -225,7 +225,7 @@
 .pay-input-group input[type="date"] {
   box-sizing: border-box;
   padding-right: 20px;
-  width: 372px;
+  width: 354px;
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   color: gray;
@@ -237,7 +237,7 @@
 }
 
 .pay-etc {
-  width: 838px;
+  width: 819px;
   height: 10vh;
   resize: none;
   padding: 20px;
@@ -263,7 +263,7 @@ textarea:focus {
   font-size: 30px;
   margin-top: 10px;
   padding-left: 20px;
-  padding-top: 13px;
+  padding-top: 23px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -273,13 +273,13 @@ textarea:focus {
   margin-top: 10px;
   text-align: left;
   width: 70%;
-  height: 18vh;
+  height: 15vh;
 }
 
 .pay-radio-group {
   display: flex;
   flex-direction: column;
-  padding-left: 30px;
+  padding-left: 60px;
   padding-top: 26px;
   letter-spacing: 1px;
   line-height: 1.9;
@@ -303,8 +303,8 @@ textarea:focus {
   align-self: start;
   height: 20vh;
   width: 520px;
-  right: 139px;
-  top: 396px;
+  right: 63px;
+  top: 426px;
   bottom: 40px;
   position: fixed;
   z-index: 1000;
