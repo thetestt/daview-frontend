@@ -24,6 +24,7 @@
   padding: 40px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   background-color: #ffffff;
+  flex: 1;
 }
 
 .refund-field {

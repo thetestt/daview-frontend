@@ -2,7 +2,10 @@
   max-width: 1000px;
   margin: 100px auto 60px;
   padding: 0 20px;
-  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
 }
 
 .sh-title {
@@ -52,6 +55,7 @@
   padding: 24px;
   margin-top: 0;
   min-height: 300px;
+  flex: 1;
 }
 
 .sh-card {

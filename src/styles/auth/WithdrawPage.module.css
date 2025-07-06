@@ -21,6 +21,7 @@
   border-radius: 12px;
   padding: 40px 30px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  flex: 1;
 }
 
 .withdraw-title {

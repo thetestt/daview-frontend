@@ -1,76 +1,80 @@
 .change-id-container {
-    max-width: 500px;
-    margin: 60px auto;
-    padding: 40px 30px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    text-align: center;
-  }
-  
-  .change-id-container h2 {
-    font-size: 24px;
-    margin-bottom: 30px;
-    color: #333;
-  }
-  
-  .username-check-wrapper {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  .username-check-wrapper input {
-    flex: 1;
-    padding: 10px 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-  }
-  
-  .username-check-button {
-    padding: 10px 14px;
-    font-size: 15px;
-    background-color: #555;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .username-check-button:hover {
-    background-color: #333;
-  }
-  
-  .chj-input-error {
-    color: #d9534f;
-    font-size: 14px;
-    margin-top: 8px;
-  }
-  
-  .chj-input-success {
-    color: #28a745;
-    font-size: 14px;
-    margin-top: 8px;
-  }
-  
-  .chj-change-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    background-color: #222;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .chj-change-button:hover {
-    background-color: #444;
-  }
-  
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex: 1;
+
+}
+
+.change-id-container h2 {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.username-check-wrapper {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.username-check-wrapper input {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.username-check-button {
+  padding: 10px 14px;
+  font-size: 15px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.username-check-button:hover {
+  background-color: #333;
+}
+
+.chj-input-error {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.chj-input-success {
+  color: #28a745;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.chj-change-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background-color: #222;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chj-change-button:hover {
+  background-color: #444;
+}
