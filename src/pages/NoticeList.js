@@ -11,10 +11,9 @@ function NoticeList() {
   useEffect(() => {
     fetchNoticesByFacilityId(facilityId)
       .then((data) => {
-        console.log("📦 받아온 공지:", data); // ← 여기에 출력
         setNotices(data);
       })
-      .catch((err) => console.error("❌ 공지 API 오류:", err));
+      .catch((err) => console.error("공지 API 오류:", err));
   }, [facilityId]);
 
   if (notices.length === 0) {
@@ -22,41 +21,57 @@ function NoticeList() {
   }
 
   const facilityName = notices[0]?.facilityName || "시설";
+  const fixedNotice = notices.find((n) => n.noticeIsFixed);
+  const recentNotices = notices.filter((n) => !n.noticeIsFixed);
 
   return (
     <>
       <FloatingNavButtons />
+      <div className={styles["page-background"]}>
       <div className={styles["notice-list-container"]}>
-        <h2>{facilityName} 공지게시판</h2>
+        <h2 className={styles["notice-title"]}>{facilityName} 공지사항</h2>
 
-        <div className={styles["notice-fixed"]}>
-          <h4>고정 공지</h4>
-          {notices
-            .filter((n) => n.noticeIsFixed)
-            .map((n) => (
-              <div
-                key={n.noticeId}
-                className={`${styles["notice-item"]} ${styles["fixed"]}`}
-              >
-                <Link to={`/notice/${facilityId}/${n.noticeId}`}>
-                  {n.noticeTitle}
-                </Link>
-              </div>
-            ))}
-        </div>
+        {/* 고정 공지 */}
+{fixedNotice && (
+  <div className={styles["notice-fixed"]}>
+    <h4>고정된 공지</h4>
+    <Link
+      to={`/notice/${facilityId}/${fixedNotice.noticeId}`}
+      className={styles["fixed-box"]}
+    >
+      <h5>{fixedNotice.noticeTitle}</h5>
+      <p>{fixedNotice.noticeContent}</p>
+    </Link>
+  </div>
+)}
 
+        {/* 최근 공지 */}
         <div className={styles["notice-recent"]}>
           <h4>최근 공지</h4>
-          {notices
-            .filter((n) => !n.noticeIsFixed)
-            .map((n) => (
-              <div key={n.noticeId} className={styles["notice-item"]}>
-                <Link to={`/notice/${facilityId}/${n.noticeId}`}>
-                  {n.noticeTitle}
-                </Link>
-              </div>
-            ))}
+          <table className={styles["notice-table"]}>
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentNotices.map((notice, idx) => (
+                <tr key={notice.noticeId}>
+                  <td>{idx + 1}.</td>
+                  <td>
+                    <Link to={`/notice/${facilityId}/${notice.noticeId}`}>
+                      {notice.noticeTitle}
+                    </Link>
+                  </td>
+                  <td>{notice.noticeCreatedAt?.slice(0, 10)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </div>
       </div>
     </>
   );

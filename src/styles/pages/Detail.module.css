@@ -1,9 +1,11 @@
 .page-background {
-  min-height: 100vh;
-  background: linear-gradient(to top, #e4f6ff, #ffffff);
+  min-height: 100vh; 
+  background: linear-gradient(to top, #f0f9fe 0%, #f0f9fe 50%, #ffffff 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: 100% 100%;
+  margin-top: 20px;
+  background-attachment: scroll;
 }
 
 .detail-wrapper {
@@ -339,7 +341,7 @@
 /* 하단 공지/리뷰 */
 /*공지*/
 .notice-box {
-  background-color: #e5edf2; /* 연한 회색-푸른 배경 */
+  background-color: #e5f5fd; /* 연한 회색-푸른 배경 */
   padding: 20px;
   border-radius: 8px;
   font-family: 'Noto Sans KR', sans-serif;
@@ -375,7 +377,7 @@
   background-color: white;
   padding: 12px 16px;
   border-radius: 4px;
-  border-left: 4px solid #3b82f6; /* 파란색 강조선 */
+  border-left: 4px solid #028aeb; /* 파란색 강조선 */
   font-size: 15px;
   line-height: 1.5;
 }
@@ -471,6 +473,7 @@
 .review-stars {
   font-size: 14px;
   color: #facc15;
+  
 }
 
 .review-content {
@@ -499,7 +502,7 @@
 
 .detail-desc {
   padding: 1rem;
-  background: #f8f8f8;
+  background: #f0f9fe;
   border-radius: 8px;
   font-size: 14px;
 }
@@ -507,4 +510,19 @@
 .detail-desc img {
   display: block;
   margin: 0 auto;
+}
+
+
+.career-box ul {
+  list-style: none; /* ●는 직접 입력했기 때문에 bullet 제거 */
+  padding: 0;
+  margin: 0;
+  display: block; /* flex로 가로 정렬된 경우 덮어씌움 */
+  margin-bottom: 50px;
+}
+
+.career-box li {
+  display: block; /* 혹시 inline 스타일일 경우를 방지 */
+  margin-bottom: 8px;
+  font-size: 15px;
 }
