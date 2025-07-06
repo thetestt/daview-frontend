@@ -14,6 +14,45 @@ const CaregiverMainDashboard = () => {
     messages: 2
   });
 
+  // 최근 활동 데이터 (실제 환경에서는 API로 가져올 수 있음)
+  const [recentActivities, setRecentActivities] = useState([
+    {
+      id: 1,
+      icon: '📋',
+      title: '일일 보고서 작성 완료',
+      time: '30분 전',
+      type: 'report'
+    },
+    {
+      id: 2,
+      icon: '💬',
+      title: '김○○ 어르신 가족과 상담',
+      time: '1시간 전',
+      type: 'message'
+    },
+    {
+      id: 3,
+      icon: '🩺',
+      title: '혈압 측정 및 기록',
+      time: '2시간 전',
+      type: 'medical'
+    },
+    {
+      id: 4,
+      icon: '🍽️',
+      title: '식사 도움 완료',
+      time: '3시간 전',
+      type: 'care'
+    },
+    {
+      id: 5,
+      icon: '📅',
+      title: '내일 일정 확인',
+      time: '4시간 전',
+      type: 'schedule'
+    }
+  ]);
+
   // 케어기버 기본 정보 조회
   const fetchCaregiverData = async () => {
     setIsLoading(true);
@@ -43,8 +82,7 @@ const CaregiverMainDashboard = () => {
   };
 
   const handlePatientManagement = () => {
-    // 환자 관리 페이지로 이동 (추후 구현)
-    alert('환자 관리 기능은 준비중입니다.');
+    navigate('/caregiver/patients');
   };
 
   const handleChatManagement = () => {
@@ -56,8 +94,7 @@ const CaregiverMainDashboard = () => {
   };
 
   const handleNotifications = () => {
-    // 알림 관리 페이지로 이동 (추후 구현)
-    alert('알림 관리 기능은 준비중입니다.');
+    navigate('/caregiver/notifications');
   };
 
   if (isLoading) {
@@ -206,27 +243,23 @@ const CaregiverMainDashboard = () => {
       <div className={styles.recentActivity}>
         <h2 className={styles.sectionTitle}>최근 활동</h2>
         <div className={styles.activityList}>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>📅</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>일정 추가됨</div>
-              <div className={styles.activityTime}>30분 전</div>
+          {recentActivities.length > 0 ? (
+            recentActivities.map(activity => (
+              <div key={activity.id} className={styles.activityItem} data-type={activity.type}>
+                <div className={styles.activityIcon}>
+                  {activity.icon}
+                </div>
+                <div className={styles.activityContent}>
+                  <div className={styles.activityTitle}>{activity.title}</div>
+                  <div className={styles.activityTime}>{activity.time}</div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className={styles.emptyActivity}>
+              최근 활동이 없습니다.
             </div>
-          </div>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>💬</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>새 메시지 도착</div>
-              <div className={styles.activityTime}>1시간 전</div>
-            </div>
-          </div>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>📝</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>보고서 작성 완료</div>
-              <div className={styles.activityTime}>2시간 전</div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

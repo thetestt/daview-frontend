@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axiosInstance';
 import { getRegions, getCitiesByRegion, getCaregiverFilterOptions } from '../../api/filterOption';
 import styles from '../../styles/admin/CaregiverDashboard.module.css';
 
 const CaregiverDashboard = () => {
+  const navigate = useNavigate();
   const [caregiverData, setCaregiverData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -296,9 +298,24 @@ const CaregiverDashboard = () => {
   }
 
   return (
-    <div className={styles.caregiverContainer}>
+    <div className={styles.dashboardContainer}>
       <div className={styles.header}>
-        <h1>요양사 프로필 관리</h1>
+        <h1>프로필 관리</h1>
+        <button onClick={() => navigate('/caregiver/main')} className={styles.backBtn}>
+          뒤로가기
+        </button>
+      </div>
+
+      <div className={styles['caregiver-dashboard-container']}>
+        {/* 로딩 스피너 */}
+        {isLoading && (
+          <div className={styles['loading-spinner']}>
+            <div className={styles['spinner']}></div>
+            <p>로딩 중...</p>
+          </div>
+        )}
+
+        {/* 프로필 수정/취소 버튼들 */}
         <div className={styles.headerButtons}>
           {!isEditMode && (
             <button 
@@ -326,306 +343,306 @@ const CaregiverDashboard = () => {
             </>
           )}
         </div>
-      </div>
 
-      <div className={styles.profileCard}>
-        {!isEditMode ? (
-          // 프로필 보기 모드
-          <div className={styles.profileView}>
-            <div className={styles.profileSection}>
-              <h3>기본 정보</h3>
-              <div className={styles.infoGrid}>
-                <div className={styles.infoItem}>
-                  <label>이름:</label>
-                  <span>{caregiverData.username}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>성별:</label>
-                  <span>{caregiverData.userGender}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>희망 근무 지역:</label>
-                  <span>{caregiverData.hopeWorkAreaLocation} {caregiverData.hopeWorkAreaCity}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>희망 근무 장소:</label>
-                  <span>{caregiverData.hopeWorkPlace}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>희망 근무 형태:</label>
-                  <span>{caregiverData.hopeWorkType}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>희망 고용 형태:</label>
-                  <span>{caregiverData.hopeEmploymentType}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>학력:</label>
-                  <span>{caregiverData.educationLevel}</span>
-                </div>
-                <div className={styles.infoItem}>
-                  <label>희망 급여:</label>
-                  <span>{caregiverData.hopeWorkAmount ? `${caregiverData.hopeWorkAmount}만원` : '-'}</span>
+        <div className={styles.profileCard}>
+          {!isEditMode ? (
+            // 프로필 보기 모드
+            <div className={styles.profileView}>
+              <div className={styles.profileSection}>
+                <h3>기본 정보</h3>
+                <div className={styles.infoGrid}>
+                  <div className={styles.infoItem}>
+                    <label>이름:</label>
+                    <span>{caregiverData.username}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>성별:</label>
+                    <span>{caregiverData.userGender}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>희망 근무 지역:</label>
+                    <span>{caregiverData.hopeWorkAreaLocation} {caregiverData.hopeWorkAreaCity}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>희망 근무 장소:</label>
+                    <span>{caregiverData.hopeWorkPlace}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>희망 근무 형태:</label>
+                    <span>{caregiverData.hopeWorkType}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>희망 고용 형태:</label>
+                    <span>{caregiverData.hopeEmploymentType}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>학력:</label>
+                    <span>{caregiverData.educationLevel}</span>
+                  </div>
+                  <div className={styles.infoItem}>
+                    <label>희망 급여:</label>
+                    <span>{caregiverData.hopeWorkAmount ? `${caregiverData.hopeWorkAmount}만원` : '-'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className={styles.profileSection}>
-              <h3>소개</h3>
-              <p className={styles.introduction}>
-                {caregiverData.introduction || '소개글이 없습니다.'}
-              </p>
-            </div>
-
-            <div className={styles.profileSection}>
-              <h3>보유 자격증</h3>
-              <div className={styles.certificatesList}>
-                {caregiverData.certificates && caregiverData.certificates.length > 0 ? (
-                  caregiverData.certificates.map((cert, index) => (
-                    <span key={index} className={styles.certificateTag}>
-                      {cert}
-                    </span>
-                  ))
-                ) : (
-                  <span className={styles.noCertificates}>등록된 자격증이 없습니다.</span>
-                )}
+              <div className={styles.profileSection}>
+                <h3>소개</h3>
+                <p className={styles.introduction}>
+                  {caregiverData.introduction || '소개글이 없습니다.'}
+                </p>
               </div>
-            </div>
 
-            <div className={styles.profileSection}>
-              <h3>경력 사항</h3>
-              <div className={styles.careerList}>
-                {caregiverData.career && caregiverData.career.length > 0 ? (
-                  caregiverData.career.map((career, index) => (
-                    <div key={index} className={styles.careerItem}>
-                      <h4>{career.companyName}</h4>
-                      <p>{career.startDate} ~ {career.endDate}</p>
-                    </div>
-                  ))
-                ) : (
-                  <span className={styles.noCareer}>등록된 경력이 없습니다.</span>
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          // 프로필 수정 모드
-          <form onSubmit={handleEditSubmit} className={styles.editForm}>
-            <div className={styles.formSection}>
-              <h3>기본 정보 수정</h3>
-              <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                  <label>이름</label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={editFormData.username}
-                    onChange={handleEditInputChange}
-                    required
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>성별</label>
-                  <select
-                    name="userGender"
-                    value={editFormData.userGender}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">선택해주세요</option>
-                    <option value="남성">남성</option>
-                    <option value="여성">여성</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 근무 지역</label>
-                  <select
-                    name="hopeWorkAreaLocation"
-                    value={editFormData.hopeWorkAreaLocation}
-                    onChange={handleEditRegionChange}
-                    required
-                  >
-                    <option value="">지역을 선택해주세요</option>
-                    {regions.map(region => (
-                      <option key={region.id} value={region.name}>
-                        {region.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 근무 시/군/구</label>
-                  <select
-                    name="hopeWorkAreaCity"
-                    value={editFormData.hopeWorkAreaCity}
-                    onChange={handleEditCityChange}
-                    required
-                    disabled={!editFormData.hopeWorkAreaLocation}
-                  >
-                    <option value="">시/군/구를 선택해주세요</option>
-                    {cities.map(city => (
-                      <option key={city.id} value={city.name}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 근무 장소</label>
-                  <select
-                    name="hopeWorkPlace"
-                    value={editFormData.hopeWorkPlace}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">선택해주세요</option>
-                    <option value="가정방문">가정방문</option>
-                    <option value="요양원">요양원</option>
-                    <option value="실버타운">실버타운</option>
-                    <option value="데이케어센터">데이케어센터</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 근무 형태</label>
-                  <select
-                    name="hopeWorkType"
-                    value={editFormData.hopeWorkType}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">선택해주세요</option>
-                    <option value="요양사">요양사</option>
-                    <option value="간병인">간병인</option>
-                    <option value="생활도우미">생활도우미</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 고용 형태</label>
-                  <select
-                    name="hopeEmploymentType"
-                    value={editFormData.hopeEmploymentType}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">선택해주세요</option>
-                    <option value="정규직">정규직</option>
-                    <option value="계약직">계약직</option>
-                    <option value="시간제">시간제</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>학력</label>
-                  <select
-                    name="educationLevel"
-                    value={editFormData.educationLevel}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">선택해주세요</option>
-                    <option value="고등학교 졸업">고등학교 졸업</option>
-                    <option value="전문대학 졸업">전문대학 졸업</option>
-                    <option value="대학교 졸업">대학교 졸업</option>
-                    <option value="대학원 졸업">대학원 졸업</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>희망 급여 (만원)</label>
-                  <input
-                    type="number"
-                    name="hopeWorkAmount"
-                    value={editFormData.hopeWorkAmount}
-                    onChange={handleEditInputChange}
-                    placeholder="예: 250"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.formSection}>
-              <h3>소개글</h3>
-              <textarea
-                name="introduction"
-                value={editFormData.introduction}
-                onChange={handleEditInputChange}
-                rows="4"
-                placeholder="자신을 소개해주세요..."
-                className={styles.introductionTextarea}
-              />
-            </div>
-
-            <div className={styles.formSection}>
-              <div className={styles.sectionHeader}>
+              <div className={styles.profileSection}>
                 <h3>보유 자격증</h3>
-                <button type="button" onClick={addCertificate} className={styles.addButton}>
-                  자격증 추가
-                </button>
-              </div>
-              {editFormData.certificates.map((cert, index) => (
-                <div key={index} className={styles.arrayItem}>
-                  <input
-                    type="text"
-                    value={cert}
-                    onChange={(e) => handleCertificateChange(index, e.target.value)}
-                    placeholder="자격증명을 입력하세요"
-                  />
-                  <button 
-                    type="button" 
-                    onClick={() => removeCertificate(index)}
-                    className={styles.removeButton}
-                  >
-                    삭제
-                  </button>
+                <div className={styles.certificatesList}>
+                  {caregiverData.certificates && caregiverData.certificates.length > 0 ? (
+                    caregiverData.certificates.map((cert, index) => (
+                      <span key={index} className={styles.certificateTag}>
+                        {cert}
+                      </span>
+                    ))
+                  ) : (
+                    <span className={styles.noCertificates}>등록된 자격증이 없습니다.</span>
+                  )}
                 </div>
-              ))}
-            </div>
-
-            <div className={styles.formSection}>
-              <div className={styles.sectionHeader}>
-                <h3>경력 사항</h3>
-                <button type="button" onClick={addCareer} className={styles.addButton}>
-                  경력 추가
-                </button>
               </div>
-              {editFormData.career.map((career, index) => (
-                <div key={index} className={styles.careerFormItem}>
-                  <div className={styles.careerInputs}>
+
+              <div className={styles.profileSection}>
+                <h3>경력 사항</h3>
+                <div className={styles.careerList}>
+                  {caregiverData.career && caregiverData.career.length > 0 ? (
+                    caregiverData.career.map((career, index) => (
+                      <div key={index} className={styles.careerItem}>
+                        <h4>{career.companyName}</h4>
+                        <p>{career.startDate} ~ {career.endDate}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <span className={styles.noCareer}>등록된 경력이 없습니다.</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            // 프로필 수정 모드
+            <form onSubmit={handleEditSubmit} className={styles.editForm}>
+              <div className={styles.formSection}>
+                <h3>기본 정보 수정</h3>
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <label>이름</label>
                     <input
                       type="text"
-                      value={career.companyName}
-                      onChange={(e) => handleCareerChange(index, 'companyName', e.target.value)}
-                      placeholder="회사명"
-                    />
-                    <input
-                      type="date"
-                      value={career.startDate}
-                      onChange={(e) => handleCareerChange(index, 'startDate', e.target.value)}
-                    />
-                    <input
-                      type="date"
-                      value={career.endDate}
-                      onChange={(e) => handleCareerChange(index, 'endDate', e.target.value)}
+                      name="username"
+                      value={editFormData.username}
+                      onChange={handleEditInputChange}
+                      required
                     />
                   </div>
-                  <button 
-                    type="button" 
-                    onClick={() => removeCareer(index)}
-                    className={styles.removeButton}
-                  >
-                    삭제
+
+                  <div className={styles.formGroup}>
+                    <label>성별</label>
+                    <select
+                      name="userGender"
+                      value={editFormData.userGender}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">선택해주세요</option>
+                      <option value="남성">남성</option>
+                      <option value="여성">여성</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 근무 지역</label>
+                    <select
+                      name="hopeWorkAreaLocation"
+                      value={editFormData.hopeWorkAreaLocation}
+                      onChange={handleEditRegionChange}
+                      required
+                    >
+                      <option value="">지역을 선택해주세요</option>
+                      {regions.map(region => (
+                        <option key={region.id} value={region.name}>
+                          {region.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 근무 시/군/구</label>
+                    <select
+                      name="hopeWorkAreaCity"
+                      value={editFormData.hopeWorkAreaCity}
+                      onChange={handleEditCityChange}
+                      required
+                      disabled={!editFormData.hopeWorkAreaLocation}
+                    >
+                      <option value="">시/군/구를 선택해주세요</option>
+                      {cities.map(city => (
+                        <option key={city.id} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 근무 장소</label>
+                    <select
+                      name="hopeWorkPlace"
+                      value={editFormData.hopeWorkPlace}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">선택해주세요</option>
+                      <option value="가정방문">가정방문</option>
+                      <option value="요양원">요양원</option>
+                      <option value="실버타운">실버타운</option>
+                      <option value="데이케어센터">데이케어센터</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 근무 형태</label>
+                    <select
+                      name="hopeWorkType"
+                      value={editFormData.hopeWorkType}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">선택해주세요</option>
+                      <option value="요양사">요양사</option>
+                      <option value="간병인">간병인</option>
+                      <option value="생활도우미">생활도우미</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 고용 형태</label>
+                    <select
+                      name="hopeEmploymentType"
+                      value={editFormData.hopeEmploymentType}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">선택해주세요</option>
+                      <option value="정규직">정규직</option>
+                      <option value="계약직">계약직</option>
+                      <option value="시간제">시간제</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>학력</label>
+                    <select
+                      name="educationLevel"
+                      value={editFormData.educationLevel}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">선택해주세요</option>
+                      <option value="고등학교 졸업">고등학교 졸업</option>
+                      <option value="전문대학 졸업">전문대학 졸업</option>
+                      <option value="대학교 졸업">대학교 졸업</option>
+                      <option value="대학원 졸업">대학원 졸업</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>희망 급여 (만원)</label>
+                    <input
+                      type="number"
+                      name="hopeWorkAmount"
+                      value={editFormData.hopeWorkAmount}
+                      onChange={handleEditInputChange}
+                      placeholder="예: 250"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.formSection}>
+                <h3>소개글</h3>
+                <textarea
+                  name="introduction"
+                  value={editFormData.introduction}
+                  onChange={handleEditInputChange}
+                  rows="4"
+                  placeholder="자신을 소개해주세요..."
+                  className={styles.introductionTextarea}
+                />
+              </div>
+
+              <div className={styles.formSection}>
+                <div className={styles.sectionHeader}>
+                  <h3>보유 자격증</h3>
+                  <button type="button" onClick={addCertificate} className={styles.addButton}>
+                    자격증 추가
                   </button>
                 </div>
-              ))}
-            </div>
-          </form>
-        )}
+                {editFormData.certificates.map((cert, index) => (
+                  <div key={index} className={styles.arrayItem}>
+                    <input
+                      type="text"
+                      value={cert}
+                      onChange={(e) => handleCertificateChange(index, e.target.value)}
+                      placeholder="자격증명을 입력하세요"
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => removeCertificate(index)}
+                      className={styles.removeButton}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className={styles.formSection}>
+                <div className={styles.sectionHeader}>
+                  <h3>경력 사항</h3>
+                  <button type="button" onClick={addCareer} className={styles.addButton}>
+                    경력 추가
+                  </button>
+                </div>
+                {editFormData.career.map((career, index) => (
+                  <div key={index} className={styles.careerFormItem}>
+                    <div className={styles.careerInputs}>
+                      <input
+                        type="text"
+                        value={career.companyName}
+                        onChange={(e) => handleCareerChange(index, 'companyName', e.target.value)}
+                        placeholder="회사명"
+                      />
+                      <input
+                        type="date"
+                        value={career.startDate}
+                        onChange={(e) => handleCareerChange(index, 'startDate', e.target.value)}
+                      />
+                      <input
+                        type="date"
+                        value={career.endDate}
+                        onChange={(e) => handleCareerChange(index, 'endDate', e.target.value)}
+                      />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => removeCareer(index)}
+                      className={styles.removeButton}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

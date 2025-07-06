@@ -448,4 +448,334 @@
   .sectionTitle {
     font-size: 20px;
   }
+}
+
+/* 최근 활동 섹션 스타일 */
+.recentActivity {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.recentActivity::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.recentActivity .sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.5px;
+  position: relative;
+  padding-left: 48px;
+}
+
+.recentActivity .sectionTitle::before {
+  content: '📋';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.activityItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.activityItem:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.activityItem:hover::before {
+  transform: scaleY(1);
+}
+
+.activityIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.activityItem:hover .activityIcon {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-color: transparent;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.activityContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activityTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.activityItem:hover .activityTitle {
+  color: #667eea;
+}
+
+.activityTime {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.activityTime::before {
+  content: '🕒';
+  font-size: 12px;
+}
+
+.activityItem:hover .activityTime {
+  opacity: 1;
+  color: #555;
+}
+
+/* 빈 상태 메시지 */
+.emptyActivity {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.emptyActivity::before {
+  content: '📭';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* 반응형 디자인 - 모바일 대응 */
+@media (max-width: 768px) {
+  .recentActivity {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .recentActivity .sectionTitle {
+    font-size: 20px;
+    padding-left: 40px;
+  }
+
+  .recentActivity .sectionTitle::before {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .activityItem {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .activityIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .activityTitle {
+    font-size: 15px;
+  }
+
+  .activityTime {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recentActivity {
+    padding: 20px;
+  }
+
+  .recentActivity .sectionTitle {
+    font-size: 18px;
+    padding-left: 36px;
+  }
+
+  .activityItem {
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .activityIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .activityTitle {
+    font-size: 14px;
+  }
+
+  .activityTime {
+    font-size: 11px;
+  }
+}
+
+/* 활동 유형별 색상 스타일 */
+.activityItem[data-type="report"] .activityIcon {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.activityItem[data-type="report"]:hover .activityIcon {
+  background: linear-gradient(135deg, #22c55e, #10b981);
+}
+
+.activityItem[data-type="message"] .activityIcon {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.1));
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.activityItem[data-type="message"]:hover .activityIcon {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.activityItem[data-type="medical"] .activityIcon {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.activityItem[data-type="medical"]:hover .activityIcon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.activityItem[data-type="care"] .activityIcon {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(147, 51, 234, 0.1));
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.activityItem[data-type="care"]:hover .activityIcon {
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+}
+
+.activityItem[data-type="schedule"] .activityIcon {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.activityItem[data-type="schedule"]:hover .activityIcon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* 활동 카테고리별 좌측 보더 색상 */
+.activityItem[data-type="report"]::before {
+  background: linear-gradient(135deg, #22c55e, #10b981);
+}
+
+.activityItem[data-type="message"]::before {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.activityItem[data-type="medical"]::before {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.activityItem[data-type="care"]::before {
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+}
+
+.activityItem[data-type="schedule"]::before {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.backBtn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
 } 
