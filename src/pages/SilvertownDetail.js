@@ -18,6 +18,7 @@ function SilvertownDetail() {
 
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  
 
   useEffect(() => {
     fetchSilvertownDetail(id)
@@ -235,68 +236,77 @@ function SilvertownDetail() {
             </div>
           </div>
           <div className={styles["notice-review-section"]}>
-            <h3>공지사항</h3>
-            <ul>
-              {data.notices.length > 0 ? (
-                data.notices.map((notice, idx) => (
-                  <li key={idx}>
-                    <Link to={`/notice/${data.facilityId}/${notice.noticeId}`}>
-                      [{notice.noticeIsFixed ? "공지" : "일반"}]{" "}
-                      {notice.noticeTitle}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>공지사항 없음</li>
-              )}
-            </ul>
-            <Link to={`/notice/${data.facilityId}`}>공지사항 전체 보기</Link>
+ <div className={styles["notice-box"]}>
+      <div className={styles["notice-header"]}>
+        <h3 className={styles["notice-title"]}>공지사항</h3>
+        <Link to={`/notice/${data.facilityId}`} className={styles["view-all"]}>
+          공지사항 전체보기 &gt;
+        </Link>
+      </div>
+      <div className={styles["notice-content"]}>
+        {data.notices.length > 0 ? (
+          <Link
+            to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
+            className={styles["notice-item"]}
+          >
+            <strong className={styles["notice-label"]}>
+              [{data.notices[0].noticeIsFixed ? "공지" : "일반"}]
+            </strong>{" "}
+            {data.notices[0].noticeTitle}
+          </Link>
+        ) : (
+          <span className={styles["notice-none"]}>공지사항 없음</span>
+        )}
+      </div>
+    </div>
             {/*리뷰*/}
-            <h3>리뷰</h3>
-            <div className={styles["review-box"]}>
-              <ul className={styles["review-list"]}>
-                {isLoading ? (
-                  <li>로딩 중...</li>
-                ) : reviews.length > 1 ? (
-                  reviews.slice(0, 2).map((review) => (
-                    <li key={review.revId} className={styles["review-item"]}>
-                      <Link
-                        to={`/review/${review.revId}`}
-                        className={styles["review-link"]}
-                      >
-                        <span className={styles["review-title"]}>
-                          {review.revTtl}
-                        </span>
-                        <span className={styles["review-date"]}>
-                          {review.revRegDate?.slice(0, 10)}
-                        </span>
-                      </Link>
-                    </li>
-                  ))
-                ) : reviews.length === 1 ? (
-                  <li className={styles["review-item"]}>
-                    <Link
-                      to={`/review/${reviews[0].revId}`}
-                      className={styles["review-link"]}
-                    >
-                      <span className={styles["review-title"]}>
-                        {reviews[0].revTtl}
-                      </span>
-                      <span className={styles["review-date"]}>
-                        {reviews[0].revRegDate?.slice(0, 10)}
-                      </span>
-                    </Link>
-                  </li>
-                ) : (
-                  <li>등록된 리뷰가 없습니다.</li>
-                )}
-              </ul>
-            </div>
+<h3>리뷰</h3>
+<div className={styles["review-slider-container"]}>
+  <button className={styles["arrow-button"]} onClick={handlePrev}>
+    &#10094;
+  </button>
+
+  <div className={styles["review-slider-wrapper"]}>
+    <div
+      className={styles["review-slider-track"]}
+      style={{ transform: `translateX(-${currentIndex * 420}px)` }}
+    >
+{reviews.map((review, index) => {
+  const isVisible = index === currentIndex || index === currentIndex + 1;
+  return (
+    <div
+      key={review.revId}
+      className={`${styles["review-item"]} ${
+        isVisible ? styles["active"] : styles["inactive"]
+      }`}
+    >
+      <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
+        <div className={styles["review-title-line"]}>
+          <span className={styles["review-title"]}>{review.revTtl}</span>
+          <span className={styles["review-stars"]}>
+            {renderStars(review.revStars)}
+          </span>
+        </div>
+        <div className={styles["review-content"]}>
+          {review.revCont?.slice(0, 60)}...
+        </div>
+      </Link>
+    </div>
+  );
+})}
+    </div>
+  </div>
+
+  <button className={styles["arrow-button"]} onClick={handleNext}>
+    &#10095;
+  </button>
+</div>
+
+
 
             <h3>상세페이지</h3>
             <div className={styles["detail-desc"]}>
-              {/* 시설 소개 글 또는 추가 정보 */}
-              {data.facilityDetailText || "상세 설명이 없습니다."}
+<img src="/images/silvertonwD.jpeg" alt="실버타운 메인"  />
             </div>
           </div>
         </div>

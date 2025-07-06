@@ -1,9 +1,11 @@
 .page-background {
-  min-height: 100vh;
-  background: linear-gradient(to top, #e4f6ff, #ffffff);
+  min-height: 100vh; 
+  background: linear-gradient(to top, #f0f9fe 0%, #f0f9fe 50%, #ffffff 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: 100% 100%;
+  margin-top: 20px;
+  background-attachment: scroll;
 }
 
 .detail-wrapper {
@@ -166,7 +168,7 @@
 }
 
 .star-display .star-empty {
-  color: gold;
+  color: #ccc;
   font-size: 30px;
   margin-right: 2px;
 }
@@ -337,6 +339,149 @@
 }
 
 /* 하단 공지/리뷰 */
+/*공지*/
+.notice-box {
+  background-color: #e5f5fd; /* 연한 회색-푸른 배경 */
+  padding: 20px;
+  border-radius: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.notice-title {
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  padding: 0 !important;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: none !important;
+}
+
+.view-all {
+  font-size: 13px;
+  color: #333;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+.notice-content {
+  background-color: white;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border-left: 4px solid #028aeb; /* 파란색 강조선 */
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.notice-item {
+  color: #222;
+  text-decoration: none;
+  display: block;
+}
+
+.notice-label {
+  font-weight: bold;
+  color: #111;
+}
+
+.notice-none {
+  color: #666;
+}
+
+
+.review-slider-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.arrow-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 2;
+  color: #555;
+  padding: 8px;
+}
+
+.review-slider-wrapper {
+  overflow: hidden;
+  width: 1200px; /* 2개 카드 보이도록 설정 */
+}
+
+.review-slider-track {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+}
+
+.review-item {
+  flex: 0 0 370px; /* 카드 너비 */
+  margin-right: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.review-item.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.review-item.inactive {
+  opacity: 0.4;
+  transform: scale(0.97);
+  z-index: 1;
+}
+
+.review-item:hover {
+  transform: translateY(-2px);
+}
+
+/* 기존 스타일 재사용 */
+.review-link {
+  text-decoration: none;
+  color: #222;
+}
+
+.review-title-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.review-stars {
+  font-size: 14px;
+  color: #facc15;
+  
+}
+
+.review-content {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+}
 .notice-review-section {
   margin-top: 3rem;
   background: white;
@@ -358,7 +503,27 @@
 
 .detail-desc {
   padding: 1rem;
-  background: #f8f8f8;
+  background: #f0f9fe;
   border-radius: 8px;
   font-size: 14px;
+}
+
+.detail-desc img {
+  display: block;
+  margin: 0 auto;
+}
+
+
+.career-box ul {
+  list-style: none; /* ●는 직접 입력했기 때문에 bullet 제거 */
+  padding: 0;
+  margin: 0;
+  display: block; /* flex로 가로 정렬된 경우 덮어씌움 */
+  margin-bottom: 50px;
+}
+
+.career-box li {
+  display: block; /* 혹시 inline 스타일일 경우를 방지 */
+  margin-bottom: 8px;
+  font-size: 15px;
 }

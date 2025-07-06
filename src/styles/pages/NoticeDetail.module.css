@@ -1,43 +1,77 @@
-.notice-detail-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
-  font-family: "Noto Sans KR", sans-serif;
+.page-background {
+  min-height: 100vh; 
+  background: linear-gradient(to top, #f0f9fe 0%, #f0f9fe 50%, #ffffff 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  margin-top: 20px;
+  background-attachment: scroll;
 }
 
-.notice-detail-container h2 {
+
+.notice-detail-wrapper {
+  max-width: 700px;
+  margin: 60px auto;
+  font-family: "Noto Sans KR", sans-serif;
+  padding: 0 20px;
+}
+
+.notice-board-title {
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.notice-title {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .notice-date {
-  color: #888;
   font-size: 14px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
+  color: #666;
 }
 
-.notice-content {
-  background: #eee;
+.notice-box {
+  background-color: #ffffff;
+  border-radius: 8px;
   padding: 20px;
-  border-radius: 6px;
-  white-space: pre-line;
+  min-height: 200px;
   line-height: 1.6;
+  font-size: 15px;
+  white-space: pre-line;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 💡 그림자 추가 */
 }
 
-.notice-content p {
+.notice-box p {
   margin-bottom: 10px;
 }
 
-.back-button {
-  display: inline-block;
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 30px;
-  background: #ddd;
-  padding: 8px 16px;
+}
+
+.back-button {
+  background-color: #00334f;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
   text-decoration: none;
-  font-weight: bold;
-  color: black;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #01659b;
 }
