@@ -18,6 +18,7 @@ function SilvertownDetail() {
 
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  
 
   useEffect(() => {
     fetchSilvertownDetail(id)
@@ -237,7 +238,7 @@ function SilvertownDetail() {
           <div className={styles["notice-review-section"]}>
  <div className={styles["notice-box"]}>
       <div className={styles["notice-header"]}>
-        <h3>공지사항</h3>
+        <h3 className={styles["notice-title"]}>공지사항</h3>
         <Link to={`/notice/${data.facilityId}`} className={styles["view-all"]}>
           공지사항 전체보기 &gt;
         </Link>
@@ -259,37 +260,53 @@ function SilvertownDetail() {
       </div>
     </div>
             {/*리뷰*/}
-            <h3>리뷰</h3>
-<div className={styles["review-box"]}>
-  <ul className={styles["review-list"]}>
-    {isLoading ? (
-      <li>로딩 중...</li>
-    ) : reviews.length > 0 ? (
-      reviews.slice(0, 2).map((review) => (
-        <li key={review.revId} className={styles["review-item"]}>
-          <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
-            <div className={styles["review-title-line"]}>
-              <span className={styles["review-title"]}>{review.revTtl}</span>
-              <span className={styles["review-stars"]}>
-                {renderStars(review.revStars)}
-              </span>
-            </div>
-            <div className={styles["review-content"]}>
-              {review.revContent?.slice(0, 50)}...
-            </div>
-          </Link>
-        </li>
-      ))
-    ) : (
-      <li>등록된 리뷰가 없습니다.</li>
-    )}
-  </ul>
+<h3>리뷰</h3>
+<div className={styles["review-slider-container"]}>
+  <button className={styles["arrow-button"]} onClick={handlePrev}>
+    &#10094;
+  </button>
+
+  <div className={styles["review-slider-wrapper"]}>
+    <div
+      className={styles["review-slider-track"]}
+      style={{ transform: `translateX(-${currentIndex * 420}px)` }}
+    >
+{reviews.map((review, index) => {
+  const isVisible = index === currentIndex || index === currentIndex + 1;
+  return (
+    <div
+      key={review.revId}
+      className={`${styles["review-item"]} ${
+        isVisible ? styles["active"] : styles["inactive"]
+      }`}
+    >
+      <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
+        <div className={styles["review-title-line"]}>
+          <span className={styles["review-title"]}>{review.revTtl}</span>
+          <span className={styles["review-stars"]}>
+            {renderStars(review.revStars)}
+          </span>
+        </div>
+        <div className={styles["review-content"]}>
+          {review.revCont?.slice(0, 60)}...
+        </div>
+      </Link>
+    </div>
+  );
+})}
+    </div>
+  </div>
+
+  <button className={styles["arrow-button"]} onClick={handleNext}>
+    &#10095;
+  </button>
 </div>
+
+
 
             <h3>상세페이지</h3>
             <div className={styles["detail-desc"]}>
-              {/* 시설 소개 글 또는 추가 정보 */}
-              {data.facilityDetailText || "상세 설명이 없습니다."}
+<img src="/images/silvertonwD.jpeg" alt="실버타운 메인"  />
             </div>
           </div>
         </div>
