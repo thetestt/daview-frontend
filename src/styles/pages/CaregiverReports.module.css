@@ -14,6 +14,12 @@
   border-bottom: 2px solid #e9ecef;
 }
 
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .header h1 {
   color: #2c3e50;
   font-size: 28px;
@@ -25,6 +31,23 @@
   display: flex;
   gap: 15px;
   align-items: center;
+}
+
+.backBtn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
 }
 
 .searchSection {
@@ -119,6 +142,7 @@
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .reportCard:hover {
@@ -157,6 +181,80 @@
   margin: 0;
   color: #495057;
   line-height: 1.5;
+}
+
+/* 확장된 텍스트 스타일 */
+.contentText {
+  margin: 0;
+  color: #495057;
+  line-height: 1.6;
+  word-wrap: break-word;
+  word-break: break-word;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-height: 4.8em; /* 기본적으로 3줄 표시 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.contentText.expanded {
+  max-height: none;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+}
+
+/* 더 보기/접기 버튼 스타일 */
+.toggleBtn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-align: left;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-left: -8px; /* 좌측 정렬 */
+}
+
+.toggleBtn:hover {
+  color: #0056b3;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.toggleBtn:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  transition: transform 0.2s ease;
+}
+
+.toggleBtn:hover:after {
+  transform: scale(1.1);
+}
+
+/* 확장 상태일 때 화살표 회전 */
+.reportCard[data-expanded="true"] .toggleBtn:after {
+  transform: rotate(180deg);
+}
+
+/* 보고서 카드 확장 시 부드러운 애니메이션 */
+.reportCard[data-expanded="true"] {
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.02);
 }
 
 .reportActions {
@@ -407,5 +505,16 @@
 
   .modalActions {
     flex-direction: column;
+  }
+
+  .contentText {
+    max-height: 3.6em; /* 모바일에서는 조금 더 짧게 */
+    -webkit-line-clamp: 2;
+  }
+  
+  .toggleBtn {
+    font-size: 12px;
+    padding: 3px 6px;
+    margin-left: -6px;
   }
 } 

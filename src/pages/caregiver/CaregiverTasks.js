@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getTasks, createTask, updateTask, deleteTask, toggleTaskCompletion, getTodayTasks } from '../../api/caregiverTasks';
 import styles from '../../styles/pages/CaregiverTasks.module.css';
 
 const CaregiverTasks = () => {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [todayTasks, setTodayTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -209,12 +211,33 @@ const CaregiverTasks = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>일정 관리</h1>
-        <button 
-          onClick={() => setShowModal(true)} 
-          className={styles.addBtn}
-        >
-          새 일정 추가
+        <div className={styles.headerLeft}>
+          <h1>일정 관리</h1>
+          <div className={styles.headerActions}>
+            <div className={styles.tabs}>
+              <button
+                className={`${styles.tabBtn} ${activeTab === 'today' ? styles.active : ''}`}
+                onClick={() => setActiveTab('today')}
+              >
+                오늘 일정
+              </button>
+              <button
+                className={`${styles.tabBtn} ${activeTab === 'all' ? styles.active : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                전체 일정
+              </button>
+            </div>
+            <button 
+              onClick={() => setShowModal(true)} 
+              className={styles.addBtn}
+            >
+              새 일정 추가
+            </button>
+          </div>
+        </div>
+        <button onClick={() => navigate('/caregiver/main')} className={styles.backBtn}>
+          뒤로가기
         </button>
       </div>
 
@@ -224,21 +247,6 @@ const CaregiverTasks = () => {
           <button onClick={() => setError('')} className={styles.closeError}>×</button>
         </div>
       )}
-
-      <div className={styles.tabs}>
-        <button 
-          className={`${styles.tab} ${activeTab === 'today' ? styles.active : ''}`}
-          onClick={() => setActiveTab('today')}
-        >
-          오늘 일정
-        </button>
-        <button 
-          className={`${styles.tab} ${activeTab === 'all' ? styles.active : ''}`}
-          onClick={() => setActiveTab('all')}
-        >
-          전체 일정
-        </button>
-      </div>
 
       <div className={styles.content}>
         {loading ? (

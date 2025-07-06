@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axiosInstance';
 import { fetchFacilityProfile } from '../../api/facilityApi';
 import styles from '../../styles/admin/CompanyDashboard.module.css';
 
 const CompanyDashboard = () => {
+  const navigate = useNavigate();
   const [facilityData, setFacilityData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -356,668 +358,677 @@ const CompanyDashboard = () => {
   }
 
   return (
-    <div className={styles['company-dashboard-container']}>
-      {/* 헤더 */}
-      <div className={styles['dashboard-header']}>
-        <div className={styles['header-title']}>
-          <h1>🏢 시설 관리 대시보드</h1>
-          <p>시설 정보를 관리하고 업데이트하세요</p>
-        </div>
-        <div className={styles['header-actions']}>
-          {!isEditMode ? (
-            <button 
-              className={styles['edit-btn']}
-              onClick={() => setIsEditMode(true)}
-            >
-              ✏️ 정보 수정
-            </button>
-          ) : (
-            <div className={styles['edit-actions']}>
-              <button 
-                className={styles['cancel-btn']}
-                onClick={() => {
-                  setIsEditMode(false);
-                  setSelectedFile(null);
-                  setUploadedPhotoUrl('');
-                }}
-              >
-                취소
-              </button>
-              <button 
-                className={styles['save-btn']}
-                onClick={handleEditSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? '저장중...' : '저장'}
-              </button>
-            </div>
-          )}
-        </div>
+    <div className={styles.dashboardContainer}>
+      <div className={styles.header}>
+        <h1>시설 관리</h1>
+        <button onClick={() => navigate('/company/main')} className={styles.backBtn}>
+          뒤로가기
+        </button>
       </div>
 
-      {/* 컨텐츠 영역 */}
-      <div className={styles['dashboard-content']}>
-        {!isEditMode ? (
-          // 읽기 모드
-          <div className={styles['view-mode']}>
-            <div className={styles['info-card']}>
-              <h3>🏢 기본 정보</h3>
-              <div className={styles['info-grid']}>
-                <div className={styles['info-item']}>
-                  <label>시설명</label>
-                  <span>{facilityData?.facilityName || facilityData?.facility_name || '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>시설 유형</label>
-                  <span>{facilityData?.facilityType || facilityData?.facility_type || '정보 없음'}</span>
-                </div>
-
+      <div className={styles['company-dashboard-container']}>
+        {/* 헤더 */}
+        <div className={styles['dashboard-header']}>
+          <div className={styles['header-title']}>
+            <h1>🏢 시설 관리 대시보드</h1>
+            <p>시설 정보를 관리하고 업데이트하세요</p>
+          </div>
+          <div className={styles['header-actions']}>
+            {!isEditMode ? (
+              <button 
+                className={styles['edit-btn']}
+                onClick={() => setIsEditMode(true)}
+              >
+                ✏️ 정보 수정
+              </button>
+            ) : (
+              <div className={styles['edit-actions']}>
+                <button 
+                  className={styles['cancel-btn']}
+                  onClick={() => {
+                    setIsEditMode(false);
+                    setSelectedFile(null);
+                    setUploadedPhotoUrl('');
+                  }}
+                >
+                  취소
+                </button>
+                <button 
+                  className={styles['save-btn']}
+                  onClick={handleEditSubmit}
+                  disabled={isLoading}
+                >
+                  {isLoading ? '저장중...' : '저장'}
+                </button>
               </div>
-            </div>
+            )}
+          </div>
+        </div>
 
-            <div className={styles['info-card']}>
-              <h3>📍 위치 정보</h3>
-              <div className={styles['info-grid']}>
-                <div className={styles['info-item']}>
-                  <label>지역</label>
-                  <span>{facilityData?.facilityAddressLocation || facilityData?.facility_address_location || '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>시/군/구</label>
-                  <span>{facilityData?.facilityAddressCity || facilityData?.facility_address_city || '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
-                  <label>상세 주소</label>
-                  <span>{facilityData?.facilityDetailAddress || facilityData?.facility_detail_address || '정보 없음'}</span>
-                </div>
-              </div>
-            </div>
+        {/* 컨텐츠 영역 */}
+        <div className={styles['dashboard-content']}>
+          {!isEditMode ? (
+            // 읽기 모드
+            <div className={styles['view-mode']}>
+              <div className={styles['info-card']}>
+                <h3>🏢 기본 정보</h3>
+                <div className={styles['info-grid']}>
+                  <div className={styles['info-item']}>
+                    <label>시설명</label>
+                    <span>{facilityData?.facilityName || facilityData?.facility_name || '정보 없음'}</span>
+                  </div>
+                  <div className={styles['info-item']}>
+                    <label>시설 유형</label>
+                    <span>{facilityData?.facilityType || facilityData?.facility_type || '정보 없음'}</span>
+                  </div>
 
-            <div className={styles['info-card']}>
-              <h3>📞 연락처 정보</h3>
-              <div className={styles['info-grid']}>
-                <div className={styles['info-item']}>
-                  <label>전화번호</label>
-                  <span>{facilityData?.facilityPhone || facilityData?.facility_phone || '정보 없음'}</span>
-                </div>
-
-                <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
-                  <label>웹사이트</label>
-                  <span>{facilityData?.facilityHomepage || facilityData?.facility_homepage || '정보 없음'}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles['info-card']}>
-              <h3>🎯 운영 정보</h3>
-              <div className={styles['info-grid']}>
-                <div className={styles['info-item']}>
-                  <label>테마</label>
-                  <span>{facilityData?.facilityTheme || facilityData?.facility_theme || '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>월별이용료</label>
-                  <span>{facilityData?.facilityCharge || facilityData?.facility_charge ? `${facilityData?.facilityCharge || facilityData?.facility_charge}만원` : '정보 없음'}</span>
-                </div>
-                <div className={styles['info-item']}>
-                  <label>기본 메시지</label>
-                  <span>{facilityData?.defaultMessage || facilityData?.default_message || '정보 없음'}</span>
                 </div>
               </div>
-            </div>
 
-            <div className={styles['info-card']}>
-              <h3>🏢 시설 특성</h3>
-              <div className={styles['info-grid']}>
-                <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
-                  <label>시설 태그</label>
-                  <div className={styles['tag-list']}>
-                    {(facilityData?.facilityTag || facilityData?.facility_tag) ? (
-                      (facilityData?.facilityTag || facilityData?.facility_tag).split(',').map((tag, index) => (
-                        <span key={index} className={styles['facility-tag']}>
-                          {tag.trim()}
-                        </span>
-                      ))
-                    ) : (
-                      <span className={styles['no-data']}>등록된 시설 특성이 없습니다</span>
+              <div className={styles['info-card']}>
+                <h3>📍 위치 정보</h3>
+                <div className={styles['info-grid']}>
+                  <div className={styles['info-item']}>
+                    <label>지역</label>
+                    <span>{facilityData?.facilityAddressLocation || facilityData?.facility_address_location || '정보 없음'}</span>
+                  </div>
+                  <div className={styles['info-item']}>
+                    <label>시/군/구</label>
+                    <span>{facilityData?.facilityAddressCity || facilityData?.facility_address_city || '정보 없음'}</span>
+                  </div>
+                  <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
+                    <label>상세 주소</label>
+                    <span>{facilityData?.facilityDetailAddress || facilityData?.facility_detail_address || '정보 없음'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>📞 연락처 정보</h3>
+                <div className={styles['info-grid']}>
+                  <div className={styles['info-item']}>
+                    <label>전화번호</label>
+                    <span>{facilityData?.facilityPhone || facilityData?.facility_phone || '정보 없음'}</span>
+                  </div>
+
+                  <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
+                    <label>웹사이트</label>
+                    <span>{facilityData?.facilityHomepage || facilityData?.facility_homepage || '정보 없음'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>🎯 운영 정보</h3>
+                <div className={styles['info-grid']}>
+                  <div className={styles['info-item']}>
+                    <label>테마</label>
+                    <span>{facilityData?.facilityTheme || facilityData?.facility_theme || '정보 없음'}</span>
+                  </div>
+                  <div className={styles['info-item']}>
+                    <label>월별이용료</label>
+                    <span>{facilityData?.facilityCharge || facilityData?.facility_charge ? `${facilityData?.facilityCharge || facilityData?.facility_charge}만원` : '정보 없음'}</span>
+                  </div>
+                  <div className={styles['info-item']}>
+                    <label>기본 메시지</label>
+                    <span>{facilityData?.defaultMessage || facilityData?.default_message || '정보 없음'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>🏢 시설 특성</h3>
+                <div className={styles['info-grid']}>
+                  <div className={styles['info-item']} style={{gridColumn: 'span 2'}}>
+                    <label>시설 태그</label>
+                    <div className={styles['tag-list']}>
+                      {(facilityData?.facilityTag || facilityData?.facility_tag) ? (
+                        (facilityData?.facilityTag || facilityData?.facility_tag).split(',').map((tag, index) => (
+                          <span key={index} className={styles['facility-tag']}>
+                            {tag.trim()}
+                          </span>
+                        ))
+                      ) : (
+                        <span className={styles['no-data']}>등록된 시설 특성이 없습니다</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>🛡️ 제공 서비스</h3>
+                <div className={styles['services-list']}>
+                  {facilityData?.services && facilityData.services.length > 0 ? (
+                    facilityData.services.map((service, index) => (
+                      <span key={index} className={styles['service-tag']}>
+                        {service}
+                      </span>
+                    ))
+                  ) : (
+                    <span className={styles['no-data']}>등록된 서비스가 없습니다</span>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>📸 시설 사진</h3>
+                <div className={styles['photo-info']}>
+                  {(facilityData?.photoUrl || facilityData?.photo_url) ? (
+                    <div style={{textAlign: 'center'}}>
+                      <img 
+                        src={facilityData?.photoUrl || facilityData?.photo_url} 
+                        alt="시설 사진" 
+                        style={{
+                          maxWidth: '300px',
+                          maxHeight: '200px',
+                          borderRadius: '8px',
+                          border: '1px solid #ddd'
+                        }}
+                      />
+                      <p style={{marginTop: '10px', color: '#666', fontSize: '14px'}}>
+                        {(facilityData?.isThumbnail || facilityData?.is_thumbnail) ? '📌 썸네일 사진' : '📷 일반 사진'}
+                      </p>
+                    </div>
+                  ) : (
+                    <span className={styles['no-data']}>등록된 시설 사진이 없습니다</span>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles['info-card']}>
+                <h3>📝 시설 소개</h3>
+                <div className={styles['introduction']}>
+                  {facilityData?.introduction || '시설 소개가 등록되지 않았습니다.'}
+                </div>
+              </div>
+            </div>
+          ) : (
+            // 편집 모드
+            <form onSubmit={handleEditSubmit} className={styles['edit-mode']}>
+              <div className={styles['form-card']}>
+                <h3>🏢 기본 정보</h3>
+                <div className={styles['form-grid']}>
+                  <div className={styles['form-group']}>
+                    <label>시설명 *</label>
+                    <input
+                      type="text"
+                      name="facility_name"
+                      value={editFormData.facility_name}
+                      onChange={handleEditInputChange}
+                      required
+                      placeholder="시설명을 입력하세요"
+                    />
+                  </div>
+                  <div className={styles['form-group']}>
+                    <label>시설 유형 *</label>
+                    <select
+                      name="facility_type"
+                      value={editFormData.facility_type}
+                      onChange={handleEditInputChange}
+                      required
+                    >
+                      <option value="">시설 유형 선택</option>
+                      {facilityTypeOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>📍 위치 정보</h3>
+                <div className={styles['form-grid']}>
+                  <div className={styles['form-group']}>
+                    <label>지역 *</label>
+                    <select
+                      name="facility_address_location"
+                      value={editFormData.facility_address_location}
+                      onChange={handleEditRegionChange}
+                      required
+                    >
+                      <option value="">지역 선택</option>
+                      {staticRegions.map(region => (
+                        <option key={region.id} value={region.name}>
+                          {region.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles['form-group']}>
+                    <label>시/군/구 *</label>
+                    <select
+                      name="facility_address_city"
+                      value={editFormData.facility_address_city}
+                      onChange={handleEditCityChange}
+                      required
+                      disabled={!cities.length}
+                    >
+                      <option value="">시/군/구 선택</option>
+                      {cities.map(city => (
+                        <option key={city.id} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles['form-group']} style={{gridColumn: 'span 2'}}>
+                    <label>상세 주소</label>
+                    <input
+                      type="text"
+                      name="facility_detail_address"
+                      value={editFormData.facility_detail_address}
+                      onChange={handleEditInputChange}
+                      placeholder="상세 주소를 입력하세요"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>📞 연락처 정보</h3>
+                <div className={styles['form-grid']}>
+                  <div className={styles['form-group']}>
+                    <label>전화번호 *</label>
+                    <input
+                      type="tel"
+                      name="facility_phone"
+                      value={editFormData.facility_phone}
+                      onChange={handleEditInputChange}
+                      required
+                      placeholder="000-0000-0000"
+                    />
+                  </div>
+
+                  <div className={styles['form-group']} style={{gridColumn: 'span 2'}}>
+                    <label>웹사이트</label>
+                    <input
+                      type="url"
+                      name="facility_homepage"
+                      value={editFormData.facility_homepage}
+                      onChange={handleEditInputChange}
+                      placeholder="https://www.facility.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>🎯 운영 정보</h3>
+                <div className={styles['form-grid']}>
+                  <div className={styles['form-group']}>
+                    <label>테마</label>
+                    <select
+                      name="facility_theme"
+                      value={editFormData.facility_theme}
+                      onChange={handleEditInputChange}
+                    >
+                      <option value="">테마를 선택하세요</option>
+                      {themeOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles['form-group']}>
+                    <label>월별이용료 (만원)</label>
+                    <input
+                      type="number"
+                      name="facility_charge"
+                      value={editFormData.facility_charge}
+                      onChange={handleEditInputChange}
+                      placeholder="월별 이용료를 입력하세요"
+                      min="0"
+                    />
+                  </div>
+
+                  <div className={styles['form-group']}>
+                    <label>기본 메시지</label>
+                    <input
+                      type="text"
+                      name="default_message"
+                      value={editFormData.default_message}
+                      onChange={handleEditInputChange}
+                      placeholder="기본 안내 메시지를 입력하세요"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>🏢 시설 특성</h3>
+                <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>
+                  <h4 style={{margin: '0 0 12px 0', fontSize: '15px', fontWeight: 'bold', color: '#495057'}}>⚕️ 시설관리</h4>
+                  
+                  {/* 서비스/프로그램 또는 시설 */}
+                  <div style={{marginBottom: '15px'}}>
+                    <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>
+                      {editFormData.facility_type === '실버타운' ? '시설' : '서비스·프로그램'}
+                    </h5>
+                    <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                      {editFormData.facility_type === '실버타운' ? 
+                        ['수영장', '도서관', '영화관', '병원'].map(tag => (
+                          <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
+                            <input
+                              type="checkbox"
+                              checked={(editFormData.facility_tag || '').includes(tag)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setEditFormData(prev => ({
+                                    ...prev,
+                                    facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                  }));
+                                } else {
+                                  setEditFormData(prev => ({
+                                    ...prev,
+                                    facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                  }));
+                                }
+                              }}
+                              style={{marginRight: '5px'}}
+                            />
+                            <span>{tag}</span>
+                          </label>
+                        )) :
+                        ['재활물리치료', '체육교실', '노래교실', '문화공연'].map(tag => (
+                          <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
+                            <input
+                              type="checkbox"
+                              checked={(editFormData.facility_tag || '').includes(tag)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setEditFormData(prev => ({
+                                    ...prev,
+                                    facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                  }));
+                                } else {
+                                  setEditFormData(prev => ({
+                                    ...prev,
+                                    facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                  }));
+                                }
+                              }}
+                              style={{marginRight: '5px'}}
+                            />
+                            <span>{tag}</span>
+                          </label>
+                        ))
+                      }
+                    </div>
+                  </div>
+
+                  {/* 주변환경 */}
+                  <div style={{marginBottom: '15px'}}>
+                    <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>주변환경</h5>
+                    <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                      {['산', '바다', '강/호수'].map(tag => (
+                        <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
+                          <input
+                            type="checkbox"
+                            checked={(editFormData.facility_tag || '').includes(tag)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setEditFormData(prev => ({
+                                  ...prev,
+                                  facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                }));
+                              } else {
+                                setEditFormData(prev => ({
+                                  ...prev,
+                                  facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                }));
+                              }
+                            }}
+                            style={{marginRight: '5px'}}
+                          />
+                          <span>{tag}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 편의시설 */}
+                  <div style={{marginBottom: '0'}}>
+                    <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>편의시설</h5>
+                    <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                      {['자유면회', '주차가능'].map(tag => (
+                        <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
+                          <input
+                            type="checkbox"
+                            checked={(editFormData.facility_tag || '').includes(tag)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setEditFormData(prev => ({
+                                  ...prev,
+                                  facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
+                                }));
+                              } else {
+                                setEditFormData(prev => ({
+                                  ...prev,
+                                  facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
+                                }));
+                              }
+                            }}
+                            style={{marginRight: '5px'}}
+                          />
+                          <span>{tag}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>🛡️ 제공 서비스</h3>
+                <div className={styles['services-grid']}>
+                  {serviceOptions.map(service => (
+                    <label key={service} className={styles['service-checkbox']}>
+                      <input
+                        type="checkbox"
+                        checked={editFormData.services.includes(service)}
+                        onChange={() => handleServiceChange(service)}
+                      />
+                      <span>{service}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles['form-card']}>
+                <h3>📸 시설 사진</h3>
+                <div className={styles['form-group']}>
+                  <label>시설 사진 업로드</label>
+                  <div style={{
+                    border: '2px dashed #e9ecef',
+                    borderRadius: '8px',
+                    padding: '20px',
+                    textAlign: 'center',
+                    backgroundColor: '#f8f9fa',
+                    marginTop: '8px'
+                  }}>
+                    <input
+                      type="file"
+                      id="facility-photo-upload"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      style={{ display: 'none' }}
+                    />
+                    
+                    {!selectedFile && !uploadedPhotoUrl && !editFormData.photo_url && (
+                      <div>
+                        <div style={{fontSize: '48px', marginBottom: '10px', opacity: 0.5}}>📷</div>
+                        <p style={{margin: '0 0 15px 0', color: '#6c757d'}}>
+                          시설 사진을 업로드하세요
+                        </p>
+                        <label 
+                          htmlFor="facility-photo-upload" 
+                          style={{
+                            display: 'inline-block',
+                            padding: '10px 20px',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            border: 'none',
+                            fontSize: '14px'
+                          }}
+                        >
+                          📁 사진 선택
+                        </label>
+                      </div>
+                    )}
+
+                    {editFormData.photo_url && !selectedFile && !uploadedPhotoUrl && (
+                      <div style={{textAlign: 'center'}}>
+                        <img 
+                          src={editFormData.photo_url} 
+                          alt="현재 시설 사진" 
+                          style={{
+                            maxWidth: '200px',
+                            maxHeight: '150px',
+                            borderRadius: '8px',
+                            border: '1px solid #ddd',
+                            marginBottom: '15px'
+                          }}
+                        />
+                        <p style={{margin: '0 0 15px 0', color: '#6c757d'}}>
+                          현재 등록된 사진 ({editFormData.is_thumbnail ? '썸네일' : '일반'})
+                        </p>
+                        <label 
+                          htmlFor="facility-photo-upload" 
+                          style={{
+                            display: 'inline-block',
+                            padding: '8px 16px',
+                            backgroundColor: '#6c757d',
+                            color: 'white',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            border: 'none',
+                            fontSize: '14px'
+                          }}
+                        >
+                          🔄 사진 변경
+                        </label>
+                      </div>
+                    )}
+                    
+                    {selectedFile && !uploadedPhotoUrl && (
+                      <div style={{textAlign: 'left'}}>
+                        <div style={{
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between',
+                          padding: '10px',
+                          backgroundColor: '#e7f3ff',
+                          borderRadius: '5px',
+                          marginBottom: '15px'
+                        }}>
+                          <span>📎 선택된 파일: <strong>{selectedFile.name}</strong></span>
+                          <button 
+                            type="button" 
+                            onClick={handleFileRemove}
+                            style={{
+                              backgroundColor: '#dc3545',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '3px',
+                              padding: '5px 10px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            ❌ 제거
+                          </button>
+                        </div>
+                        <button 
+                          type="button" 
+                          onClick={uploadFile}
+                          style={{
+                            width: '100%',
+                            padding: '12px',
+                            backgroundColor: '#28a745',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            fontSize: '16px',
+                            cursor: isUploading ? 'not-allowed' : 'pointer',
+                            opacity: isUploading ? 0.6 : 1
+                          }}
+                          disabled={isUploading}
+                        >
+                          {isUploading ? '📤 업로드 중...' : '📤 업로드 시작'}
+                        </button>
+                      </div>
+                    )}
+                    
+                    {uploadedPhotoUrl && (
+                      <div style={{textAlign: 'left'}}>
+                        <div style={{
+                          padding: '15px',
+                          backgroundColor: '#d4edda',
+                          borderRadius: '5px',
+                          border: '1px solid #c3e6cb'
+                        }}>
+                          <div style={{marginBottom: '10px'}}>
+                            <span style={{color: '#155724', fontWeight: 'bold'}}>✅ 업로드 완료!</span>
+                          </div>
+                          <img 
+                            src={uploadedPhotoUrl} 
+                            alt="업로드된 사진" 
+                            style={{
+                              maxWidth: '150px',
+                              maxHeight: '100px',
+                              borderRadius: '5px',
+                              border: '1px solid #c3e6cb'
+                            }}
+                          />
+                        </div>
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            setUploadedPhotoUrl('');
+                            setSelectedFile(null);
+                          }}
+                          style={{
+                            marginTop: '10px',
+                            padding: '8px 16px',
+                            backgroundColor: '#6c757d',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontSize: '14px'
+                          }}
+                        >
+                          🔄 다른 사진 선택
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className={styles['info-card']}>
-              <h3>🛡️ 제공 서비스</h3>
-              <div className={styles['services-list']}>
-                {facilityData?.services && facilityData.services.length > 0 ? (
-                  facilityData.services.map((service, index) => (
-                    <span key={index} className={styles['service-tag']}>
-                      {service}
-                    </span>
-                  ))
-                ) : (
-                  <span className={styles['no-data']}>등록된 서비스가 없습니다</span>
-                )}
-              </div>
-            </div>
-
-            <div className={styles['info-card']}>
-              <h3>📸 시설 사진</h3>
-              <div className={styles['photo-info']}>
-                {(facilityData?.photoUrl || facilityData?.photo_url) ? (
-                  <div style={{textAlign: 'center'}}>
-                    <img 
-                      src={facilityData?.photoUrl || facilityData?.photo_url} 
-                      alt="시설 사진" 
-                      style={{
-                        maxWidth: '300px',
-                        maxHeight: '200px',
-                        borderRadius: '8px',
-                        border: '1px solid #ddd'
-                      }}
-                    />
-                    <p style={{marginTop: '10px', color: '#666', fontSize: '14px'}}>
-                      {(facilityData?.isThumbnail || facilityData?.is_thumbnail) ? '📌 썸네일 사진' : '📷 일반 사진'}
-                    </p>
-                  </div>
-                ) : (
-                  <span className={styles['no-data']}>등록된 시설 사진이 없습니다</span>
-                )}
-              </div>
-            </div>
-
-            <div className={styles['info-card']}>
-              <h3>📝 시설 소개</h3>
-              <div className={styles['introduction']}>
-                {facilityData?.introduction || '시설 소개가 등록되지 않았습니다.'}
-              </div>
-            </div>
-          </div>
-        ) : (
-          // 편집 모드
-          <form onSubmit={handleEditSubmit} className={styles['edit-mode']}>
-            <div className={styles['form-card']}>
-              <h3>🏢 기본 정보</h3>
-              <div className={styles['form-grid']}>
+              <div className={styles['form-card']}>
+                <h3>📝 시설 소개</h3>
                 <div className={styles['form-group']}>
-                  <label>시설명 *</label>
-                  <input
-                    type="text"
-                    name="facility_name"
-                    value={editFormData.facility_name}
+                  <textarea
+                    name="introduction"
+                    value={editFormData.introduction}
                     onChange={handleEditInputChange}
-                    required
-                    placeholder="시설명을 입력하세요"
-                  />
-                </div>
-                <div className={styles['form-group']}>
-                  <label>시설 유형 *</label>
-                  <select
-                    name="facility_type"
-                    value={editFormData.facility_type}
-                    onChange={handleEditInputChange}
-                    required
-                  >
-                    <option value="">시설 유형 선택</option>
-                    {facilityTypeOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>📍 위치 정보</h3>
-              <div className={styles['form-grid']}>
-                <div className={styles['form-group']}>
-                  <label>지역 *</label>
-                  <select
-                    name="facility_address_location"
-                    value={editFormData.facility_address_location}
-                    onChange={handleEditRegionChange}
-                    required
-                  >
-                    <option value="">지역 선택</option>
-                    {staticRegions.map(region => (
-                      <option key={region.id} value={region.name}>
-                        {region.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={styles['form-group']}>
-                  <label>시/군/구 *</label>
-                  <select
-                    name="facility_address_city"
-                    value={editFormData.facility_address_city}
-                    onChange={handleEditCityChange}
-                    required
-                    disabled={!cities.length}
-                  >
-                    <option value="">시/군/구 선택</option>
-                    {cities.map(city => (
-                      <option key={city.id} value={city.name}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={styles['form-group']} style={{gridColumn: 'span 2'}}>
-                  <label>상세 주소</label>
-                  <input
-                    type="text"
-                    name="facility_detail_address"
-                    value={editFormData.facility_detail_address}
-                    onChange={handleEditInputChange}
-                    placeholder="상세 주소를 입력하세요"
+                    placeholder="시설에 대한 소개를 작성해주세요..."
+                    rows="6"
+                    className={styles['introduction-textarea']}
                   />
                 </div>
               </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>📞 연락처 정보</h3>
-              <div className={styles['form-grid']}>
-                <div className={styles['form-group']}>
-                  <label>전화번호 *</label>
-                  <input
-                    type="tel"
-                    name="facility_phone"
-                    value={editFormData.facility_phone}
-                    onChange={handleEditInputChange}
-                    required
-                    placeholder="000-0000-0000"
-                  />
-                </div>
-
-                <div className={styles['form-group']} style={{gridColumn: 'span 2'}}>
-                  <label>웹사이트</label>
-                  <input
-                    type="url"
-                    name="facility_homepage"
-                    value={editFormData.facility_homepage}
-                    onChange={handleEditInputChange}
-                    placeholder="https://www.facility.com"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>🎯 운영 정보</h3>
-              <div className={styles['form-grid']}>
-                <div className={styles['form-group']}>
-                  <label>테마</label>
-                  <select
-                    name="facility_theme"
-                    value={editFormData.facility_theme}
-                    onChange={handleEditInputChange}
-                  >
-                    <option value="">테마를 선택하세요</option>
-                    {themeOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={styles['form-group']}>
-                  <label>월별이용료 (만원)</label>
-                  <input
-                    type="number"
-                    name="facility_charge"
-                    value={editFormData.facility_charge}
-                    onChange={handleEditInputChange}
-                    placeholder="월별 이용료를 입력하세요"
-                    min="0"
-                  />
-                </div>
-
-                <div className={styles['form-group']}>
-                  <label>기본 메시지</label>
-                  <input
-                    type="text"
-                    name="default_message"
-                    value={editFormData.default_message}
-                    onChange={handleEditInputChange}
-                    placeholder="기본 안내 메시지를 입력하세요"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>🏢 시설 특성</h3>
-              <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>
-                <h4 style={{margin: '0 0 12px 0', fontSize: '15px', fontWeight: 'bold', color: '#495057'}}>⚕️ 시설관리</h4>
-                
-                {/* 서비스/프로그램 또는 시설 */}
-                <div style={{marginBottom: '15px'}}>
-                  <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>
-                    {editFormData.facility_type === '실버타운' ? '시설' : '서비스·프로그램'}
-                  </h5>
-                  <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
-                    {editFormData.facility_type === '실버타운' ? 
-                      ['수영장', '도서관', '영화관', '병원'].map(tag => (
-                        <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
-                          <input
-                            type="checkbox"
-                            checked={(editFormData.facility_tag || '').includes(tag)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setEditFormData(prev => ({
-                                  ...prev,
-                                  facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                }));
-                              } else {
-                                setEditFormData(prev => ({
-                                  ...prev,
-                                  facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                }));
-                              }
-                            }}
-                            style={{marginRight: '5px'}}
-                          />
-                          <span>{tag}</span>
-                        </label>
-                      )) :
-                      ['재활물리치료', '체육교실', '노래교실', '문화공연'].map(tag => (
-                        <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
-                          <input
-                            type="checkbox"
-                            checked={(editFormData.facility_tag || '').includes(tag)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setEditFormData(prev => ({
-                                  ...prev,
-                                  facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                                }));
-                              } else {
-                                setEditFormData(prev => ({
-                                  ...prev,
-                                  facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                                }));
-                              }
-                            }}
-                            style={{marginRight: '5px'}}
-                          />
-                          <span>{tag}</span>
-                        </label>
-                      ))
-                    }
-                  </div>
-                </div>
-
-                {/* 주변환경 */}
-                <div style={{marginBottom: '15px'}}>
-                  <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>주변환경</h5>
-                  <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
-                    {['산', '바다', '강/호수'].map(tag => (
-                      <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
-                        <input
-                          type="checkbox"
-                          checked={(editFormData.facility_tag || '').includes(tag)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setEditFormData(prev => ({
-                                ...prev,
-                                facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                              }));
-                            } else {
-                              setEditFormData(prev => ({
-                                ...prev,
-                                facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                              }));
-                            }
-                          }}
-                          style={{marginRight: '5px'}}
-                        />
-                        <span>{tag}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 편의시설 */}
-                <div style={{marginBottom: '0'}}>
-                  <h5 style={{margin: '0 0 8px 0', fontSize: '13px', fontWeight: '600', color: '#6c757d'}}>편의시설</h5>
-                  <div className={styles["checkbox-group"]} style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
-                    {['자유면회', '주차가능'].map(tag => (
-                      <label key={tag} style={{display: 'flex', alignItems: 'center', marginRight: '15px', cursor: 'pointer'}}>
-                        <input
-                          type="checkbox"
-                          checked={(editFormData.facility_tag || '').includes(tag)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setEditFormData(prev => ({
-                                ...prev,
-                                facility_tag: prev.facility_tag ? `${prev.facility_tag},${tag}` : tag
-                              }));
-                            } else {
-                              setEditFormData(prev => ({
-                                ...prev,
-                                facility_tag: (prev.facility_tag || '').split(',').filter(t => t !== tag).join(',')
-                              }));
-                            }
-                          }}
-                          style={{marginRight: '5px'}}
-                        />
-                        <span>{tag}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>🛡️ 제공 서비스</h3>
-              <div className={styles['services-grid']}>
-                {serviceOptions.map(service => (
-                  <label key={service} className={styles['service-checkbox']}>
-                    <input
-                      type="checkbox"
-                      checked={editFormData.services.includes(service)}
-                      onChange={() => handleServiceChange(service)}
-                    />
-                    <span>{service}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>📸 시설 사진</h3>
-              <div className={styles['form-group']}>
-                <label>시설 사진 업로드</label>
-                <div style={{
-                  border: '2px dashed #e9ecef',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  textAlign: 'center',
-                  backgroundColor: '#f8f9fa',
-                  marginTop: '8px'
-                }}>
-                  <input
-                    type="file"
-                    id="facility-photo-upload"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    style={{ display: 'none' }}
-                  />
-                  
-                  {!selectedFile && !uploadedPhotoUrl && !editFormData.photo_url && (
-                    <div>
-                      <div style={{fontSize: '48px', marginBottom: '10px', opacity: 0.5}}>📷</div>
-                      <p style={{margin: '0 0 15px 0', color: '#6c757d'}}>
-                        시설 사진을 업로드하세요
-                      </p>
-                      <label 
-                        htmlFor="facility-photo-upload" 
-                        style={{
-                          display: 'inline-block',
-                          padding: '10px 20px',
-                          backgroundColor: '#007bff',
-                          color: 'white',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                          border: 'none',
-                          fontSize: '14px'
-                        }}
-                      >
-                        📁 사진 선택
-                      </label>
-                    </div>
-                  )}
-
-                  {editFormData.photo_url && !selectedFile && !uploadedPhotoUrl && (
-                    <div style={{textAlign: 'center'}}>
-                      <img 
-                        src={editFormData.photo_url} 
-                        alt="현재 시설 사진" 
-                        style={{
-                          maxWidth: '200px',
-                          maxHeight: '150px',
-                          borderRadius: '8px',
-                          border: '1px solid #ddd',
-                          marginBottom: '15px'
-                        }}
-                      />
-                      <p style={{margin: '0 0 15px 0', color: '#6c757d'}}>
-                        현재 등록된 사진 ({editFormData.is_thumbnail ? '썸네일' : '일반'})
-                      </p>
-                      <label 
-                        htmlFor="facility-photo-upload" 
-                        style={{
-                          display: 'inline-block',
-                          padding: '8px 16px',
-                          backgroundColor: '#6c757d',
-                          color: 'white',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                          border: 'none',
-                          fontSize: '14px'
-                        }}
-                      >
-                        🔄 사진 변경
-                      </label>
-                    </div>
-                  )}
-                  
-                  {selectedFile && !uploadedPhotoUrl && (
-                    <div style={{textAlign: 'left'}}>
-                      <div style={{
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'space-between',
-                        padding: '10px',
-                        backgroundColor: '#e7f3ff',
-                        borderRadius: '5px',
-                        marginBottom: '15px'
-                      }}>
-                        <span>📎 선택된 파일: <strong>{selectedFile.name}</strong></span>
-                        <button 
-                          type="button" 
-                          onClick={handleFileRemove}
-                          style={{
-                            backgroundColor: '#dc3545',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '3px',
-                            padding: '5px 10px',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          ❌ 제거
-                        </button>
-                      </div>
-                      <button 
-                        type="button" 
-                        onClick={uploadFile}
-                        style={{
-                          width: '100%',
-                          padding: '12px',
-                          backgroundColor: '#28a745',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '5px',
-                          fontSize: '16px',
-                          cursor: isUploading ? 'not-allowed' : 'pointer',
-                          opacity: isUploading ? 0.6 : 1
-                        }}
-                        disabled={isUploading}
-                      >
-                        {isUploading ? '📤 업로드 중...' : '📤 업로드 시작'}
-                      </button>
-                    </div>
-                  )}
-                  
-                  {uploadedPhotoUrl && (
-                    <div style={{textAlign: 'left'}}>
-                      <div style={{
-                        padding: '15px',
-                        backgroundColor: '#d4edda',
-                        borderRadius: '5px',
-                        border: '1px solid #c3e6cb'
-                      }}>
-                        <div style={{marginBottom: '10px'}}>
-                          <span style={{color: '#155724', fontWeight: 'bold'}}>✅ 업로드 완료!</span>
-                        </div>
-                        <img 
-                          src={uploadedPhotoUrl} 
-                          alt="업로드된 사진" 
-                          style={{
-                            maxWidth: '150px',
-                            maxHeight: '100px',
-                            borderRadius: '5px',
-                            border: '1px solid #c3e6cb'
-                          }}
-                        />
-                      </div>
-                      <button 
-                        type="button" 
-                        onClick={() => {
-                          setUploadedPhotoUrl('');
-                          setSelectedFile(null);
-                        }}
-                        style={{
-                          marginTop: '10px',
-                          padding: '8px 16px',
-                          backgroundColor: '#6c757d',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                          fontSize: '14px'
-                        }}
-                      >
-                        🔄 다른 사진 선택
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles['form-card']}>
-              <h3>📝 시설 소개</h3>
-              <div className={styles['form-group']}>
-                <textarea
-                  name="introduction"
-                  value={editFormData.introduction}
-                  onChange={handleEditInputChange}
-                  placeholder="시설에 대한 소개를 작성해주세요..."
-                  rows="6"
-                  className={styles['introduction-textarea']}
-                />
-              </div>
-            </div>
-          </form>
-        )}
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

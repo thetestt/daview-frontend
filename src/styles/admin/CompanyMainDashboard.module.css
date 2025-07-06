@@ -394,6 +394,30 @@
   color: #666;
 }
 
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.backBtn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
   .dashboardContainer {
     padding: 16px;

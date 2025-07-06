@@ -41,13 +41,11 @@ const CompanyMainDashboard = () => {
   };
 
   const handleReservationManagement = () => {
-    // 예약 관리 페이지로 이동 (추후 구현)
-    alert('예약 관리 기능은 준비중입니다.');
+    navigate('/company/reservations');
   };
 
   const handleReviewManagement = () => {
-    // 리뷰 관리 페이지로 이동 (추후 구현)
-    alert('리뷰 관리 기능은 준비중입니다.');
+    navigate('/company/reviews');
   };
 
   const handleChatManagement = () => {
@@ -55,13 +53,11 @@ const CompanyMainDashboard = () => {
   };
 
   const handleStatistics = () => {
-    // 통계 페이지로 이동 (추후 구현)
-    alert('통계 분석 기능은 준비중입니다.');
+    navigate('/company/statistics');
   };
 
   const handleInquiryManagement = () => {
-    // 문의 관리 페이지로 이동 (추후 구현)
-    alert('문의 관리 기능은 준비중입니다.');
+    navigate('/company/inquiries');
   };
 
   const handleNoticeManagement = () => {
