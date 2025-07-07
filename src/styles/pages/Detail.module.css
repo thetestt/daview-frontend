@@ -1,5 +1,5 @@
 .page-background {
-  min-height: 100vh; 
+  min-height: 100vh;
   background: linear-gradient(to top, #f0f9fe 0%, #f0f9fe 50%, #ffffff 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -298,7 +298,7 @@
   background-color: #ffffff;
   color: #e86e6e;
   font-weight: 600;
-  font-size: 23px;
+  font-size: 22px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
@@ -344,7 +344,7 @@
   background-color: #e5f5fd; /* 연한 회색-푸른 배경 */
   padding: 20px;
   border-radius: 8px;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .notice-header {
@@ -397,7 +397,6 @@
 .notice-none {
   color: #666;
 }
-
 
 .review-slider-container {
   position: relative;
@@ -474,7 +473,6 @@
 .review-stars {
   font-size: 14px;
   color: #facc15;
-  
 }
 
 .review-content {
@@ -512,7 +510,6 @@
   display: block;
   margin: 0 auto;
 }
-
 
 .career-box ul {
   list-style: none; /* ●는 직접 입력했기 때문에 bullet 제거 */
