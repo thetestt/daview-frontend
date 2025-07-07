@@ -1,28 +1,31 @@
 .findidresultpage-container {
-    height: calc(100vh - 416px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 150px;
-    font-family: sans-serif;
-    font-size: 50px;
-  }
-  
-  .chj-title {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 50px;
-  }
-  
-  .chj-result-text {
-    font-size: 25px;
-    margin-bottom: 20px;
-  }
-  
-  .chj-login-link {
-    font-size: 25px;
-    color: #0a3d62;
-    text-decoration: none;
-  }
-  
-  
+  height: calc(100vh - 416px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150px;
+  font-family: sans-serif;
+  font-size: 50px;
+}
+
+.chj-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.chj-result-text {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.chj-login-links {
+  font-size: 19px; 
+  margin-top: 40px;
+}
+
+.chj-login-links a {
+  text-decoration: underline;
+  color: #6c3483;
+  margin: 0 5px;
+}
