@@ -66,15 +66,16 @@ function SignupPage() {
   const sendSmsCode = async () => {
     try {
       const cleanPhone = phone.replace(/-/g, "");
-      await axiosInstance.post("/auth/signup/send-sms-code", {
+      const response = await axiosInstance.post("/auth/signup/send-sms-code", {
         phone: cleanPhone,
       });
-      alert("인증번호가 전송되었습니다.");
+  
+      alert(response.data || "인증번호가 전송되었습니다.");
     } catch (err) {
       const msg = err.response?.data || "문자 전송 실패";
       alert(msg);
     }
-  };
+  };  
 
   const verifySmsCode = async () => {
     try {
