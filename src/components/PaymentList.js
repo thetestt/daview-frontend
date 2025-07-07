@@ -309,7 +309,9 @@ const PaymentList = () => {
                 for (const impUid of selectedImpUids) {
                   await cancelPaymentByImpUid({ impUid, refundReason });
                 }
-                alert("선택된 결제가 환불되었습니다.");
+                alert(
+                  "선택된 결제가 환불되었습니다.\n환불은 영업일 기준 1~3일 소요됩니다."
+                );
                 setSelectedImpUids([]);
                 setShowModal(false);
                 window.location.reload();

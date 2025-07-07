@@ -34,6 +34,9 @@
   padding: 5px !important;
   font-size: 14px !important;
   transition: 0.3s !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
 }
 
 .modal-button-blue {
@@ -43,6 +46,9 @@
   font-weight: bold !important;
   font-size: 16px !important;
   transition: 0.3s !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
 }
 
 .modal-button-gray {
@@ -52,6 +58,9 @@
   font-weight: bold !important;
   font-size: 16px !important;
   transition: 0.3s !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
 }
 
 .modalButtonBlue:hover,
