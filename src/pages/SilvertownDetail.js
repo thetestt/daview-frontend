@@ -1,4 +1,3 @@
-// 📂 src/pages/SilvertownDetail.js
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "../styles/pages/Detail.module.css";
@@ -14,11 +13,10 @@ import backgroundShape from "../assets/mwhite.png";
 function SilvertownDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [reviewIndex, setReviewIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
 
   useEffect(() => {
     fetchSilvertownDetail(id)
@@ -28,11 +26,9 @@ function SilvertownDetail() {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      if (!data || !data.facilityName) return; // <-- 핵심!
+      if (!data || !data.facilityName) return;
       try {
         const res = await getReviewsByProdNm(data.facilityName);
-        console.log("리뷰데이터", res);
-
         setReviews(res);
       } catch (err) {
         console.error("리뷰 불러오기 실패", err);
@@ -40,11 +36,9 @@ function SilvertownDetail() {
         setIsLoading(false);
       }
     };
-
     fetchReviews();
   }, [data]);
 
-  //평균 별 갯수 변환
   const calculateAverageStars = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const total = reviews.reduce((sum, review) => sum + review.revStars, 0);
@@ -52,8 +46,8 @@ function SilvertownDetail() {
   };
 
   const renderStars = (average) => {
-    const rounded = Math.round(average); // 반올림
-    const fullStars = Math.min(rounded, 5); // 최대 5
+    const rounded = Math.round(average);
+    const fullStars = Math.min(rounded, 5);
     const emptyStars = 5 - fullStars;
 
     return (
@@ -75,23 +69,35 @@ function SilvertownDetail() {
   if (!data) return <div>Loading...</div>;
 
   const photos = data.photos?.filter((url) => url) || ["/images/default.png"];
-
   const address = `${data.facilityAddressLocation} ${data.facilityAddressCity} ${data.facilityDetailAddress}`;
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  // 사진 슬라이드 핸들러
+  const handlePhotoPrev = () => {
+    setPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % photos.length);
+  const handlePhotoNext = () => {
+    setPhotoIndex((prev) => (prev + 1) % photos.length);
   };
 
   const imageWidth = 700;
   const imageMargin = -10;
   const totalImageWidth = imageWidth + imageMargin * 2;
   const wrapperWidth = 1000;
-  const offset =
-    wrapperWidth / 2 - totalImageWidth / 2 - currentIndex * totalImageWidth;
+  const photoOffset =
+    wrapperWidth / 2 - totalImageWidth / 2 - photoIndex * totalImageWidth;
+
+  // 리뷰 슬라이드 핸들러
+  const handleReviewPrev = () => {
+    setReviewIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  const handleReviewNext = () => {
+    setReviewIndex((prev) =>
+      Math.min(prev + 1, Math.max(0, reviews.length - 2))
+    );
+  };
+
   return (
     <>
       <FloatingNavButtons />
@@ -104,7 +110,7 @@ function SilvertownDetail() {
                 <div
                   className={styles["carousel-track"]}
                   style={{
-                    transform: `translateX(${offset}px)`,
+                    transform: `translateX(${photoOffset}px)`,
                   }}
                 >
                   {photos.map((src, i) => (
@@ -113,20 +119,27 @@ function SilvertownDetail() {
                       src={src}
                       alt={`slide-${i}`}
                       className={`${styles["carousel-image"]} ${
-                        i === currentIndex ? styles["active"] : ""
+                        i === photoIndex ? styles["active"] : ""
                       }`}
                     />
                   ))}
                 </div>
-                <button onClick={handlePrev} className={styles["arrow-left"]}>
+                <button
+                  onClick={handlePhotoPrev}
+                  className={styles["arrow-left"]}
+                >
                   ❮
                 </button>
-                <button onClick={handleNext} className={styles["arrow-right"]}>
+                <button
+                  onClick={handlePhotoNext}
+                  className={styles["arrow-right"]}
+                >
                   ❯
                 </button>
               </div>
             </div>
 
+            {/* 제목 */}
             <div className={styles["tilte-box"]}>
               <div className={styles["title-header"]}>
                 <div className={styles["text-group"]}>
@@ -145,7 +158,6 @@ function SilvertownDetail() {
                     </span>
                   </div>
                 </div>
-
                 <HeartButton
                   facilityId={id}
                   className={styles["heart-button"]}
@@ -154,11 +166,10 @@ function SilvertownDetail() {
               <hr className={styles["divider"]} />
             </div>
 
+            {/* 정보 + 지도 */}
             <div className={styles["info_map-box"]}>
-              {/* 2. 텍스트 정보 */}
               <div className={styles["info-box"]}>
                 <div className={styles["info-detail-box"]}>
-                  {" "}
                   <img
                     src={backgroundShape}
                     alt="quote"
@@ -167,7 +178,6 @@ function SilvertownDetail() {
                 </div>
                 <div className={styles["info-text"]}>
                   <p>
-                    {" "}
                     <img
                       src="/images/icon/pin.png"
                       alt="주소"
@@ -176,7 +186,6 @@ function SilvertownDetail() {
                     주소: {address}
                   </p>
                   <p>
-                    {" "}
                     <img
                       src="/images/icon/layout.png"
                       alt="테마"
@@ -187,7 +196,7 @@ function SilvertownDetail() {
                   <p>
                     <img
                       src="/images/icon/website.png"
-                      alt="테마"
+                      alt="홈페이지"
                       style={{ width: "20px", marginRight: "-3px" }}
                     />
                     홈페이지:{" "}
@@ -200,10 +209,9 @@ function SilvertownDetail() {
                     </a>
                   </p>
                   <p>
-                    {" "}
                     <img
                       src="/images/icon/telephone.png"
-                      alt="테마"
+                      alt="전화번호"
                       style={{ width: "20px", marginRight: "-3px" }}
                     />
                     전화번호: {data.facilityPhone}
@@ -229,84 +237,95 @@ function SilvertownDetail() {
                   />
                 </div>
               </div>
-
-              {/* 3. 지도 */}
-
               <NaverMap className={styles["map-box"]} address={address} />
             </div>
           </div>
+
+          {/* 공지 + 리뷰 + 상세페이지 */}
           <div className={styles["notice-review-section"]}>
- <div className={styles["notice-box"]}>
-      <div className={styles["notice-header"]}>
-        <h3 className={styles["notice-title"]}>공지사항</h3>
-        <Link to={`/notice/${data.facilityId}`} className={styles["view-all"]}>
-          공지사항 전체보기 &gt;
-        </Link>
-      </div>
-      <div className={styles["notice-content"]}>
-        {data.notices.length > 0 ? (
-          <Link
-            to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
-            className={styles["notice-item"]}
-          >
-            <strong className={styles["notice-label"]}>
-              [{data.notices[0].noticeIsFixed ? "공지" : "일반"}]
-            </strong>{" "}
-            {data.notices[0].noticeTitle}
-          </Link>
-        ) : (
-          <span className={styles["notice-none"]}>공지사항 없음</span>
-        )}
-      </div>
-    </div>
-            {/*리뷰*/}
-<h3>리뷰</h3>
-<div className={styles["review-slider-container"]}>
-  <button className={styles["arrow-button"]} onClick={handlePrev}>
-    &#10094;
-  </button>
+            <div className={styles["notice-box"]}>
+              <div className={styles["notice-header"]}>
+                <h3 className={styles["notice-title"]}>공지사항</h3>
+                <Link
+                  to={`/notice/${data.facilityId}`}
+                  className={styles["view-all"]}
+                >
+                  공지사항 전체보기 &gt;
+                </Link>
+              </div>
+              <div className={styles["notice-content"]}>
+                {data.notices.length > 0 ? (
+                  <Link
+                    to={`/notice/${data.facilityId}/${data.notices[0].noticeId}`}
+                    className={styles["notice-item"]}
+                  >
+                    <strong className={styles["notice-label"]}>
+                      [{data.notices[0].noticeIsFixed ? "공지" : "일반"}]
+                    </strong>{" "}
+                    {data.notices[0].noticeTitle}
+                  </Link>
+                ) : (
+                  <span className={styles["notice-none"]}>공지사항 없음</span>
+                )}
+              </div>
+            </div>
 
-  <div className={styles["review-slider-wrapper"]}>
-    <div
-      className={styles["review-slider-track"]}
-      style={{ transform: `translateX(-${currentIndex * 420}px)` }}
-    >
-{reviews.map((review, index) => {
-  const isVisible = index === currentIndex || index === currentIndex + 1;
-  return (
-    <div
-      key={review.revId}
-      className={`${styles["review-item"]} ${
-        isVisible ? styles["active"] : styles["inactive"]
-      }`}
-    >
-      <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
-        <div className={styles["review-title-line"]}>
-          <span className={styles["review-title"]}>{review.revTtl}</span>
-          <span className={styles["review-stars"]}>
-            {renderStars(review.revStars)}
-          </span>
-        </div>
-        <div className={styles["review-content"]}>
-          {review.revCont?.slice(0, 60)}...
-        </div>
-      </Link>
-    </div>
-  );
-})}
-    </div>
-  </div>
-
-  <button className={styles["arrow-button"]} onClick={handleNext}>
-    &#10095;
-  </button>
-</div>
-
-
+            {/* 리뷰 */}
+            <h3>리뷰</h3>
+            <div className={styles["review-slider-container"]}>
+              <button
+                className={styles["arrow-button"]}
+                onClick={handleReviewPrev}
+              >
+                &#10094;
+              </button>
+              <div className={styles["review-slider-wrapper"]}>
+                <div
+                  className={styles["review-slider-track"]}
+                  style={{ transform: `translateX(-${reviewIndex * 420}px)` }}
+                >
+                  {reviews.map((review, index) => {
+                    const isVisible =
+                      index === reviewIndex || index === reviewIndex + 1;
+                    return (
+                      <div
+                        key={review.revId}
+                        className={`${styles["review-item"]} ${
+                          isVisible ? styles["active"] : styles["inactive"]
+                        }`}
+                      >
+                        <Link
+                          to={`/review/${review.revId}`}
+                          className={styles["review-link"]}
+                        >
+                          <div className={styles["review-title-line"]}>
+                            <span className={styles["review-title"]}>
+                              {review.revTtl}
+                            </span>
+                            <span className={styles["review-stars"]}>
+                              {renderStars(review.revStars)}
+                            </span>
+                          </div>
+                          <div className={styles["review-content"]}>
+                            {review.revCont?.slice(0, 60)}...
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <button
+                className={styles["arrow-button"]}
+                onClick={handleReviewNext}
+              >
+                &#10095;
+              </button>
+            </div>
 
             <h3>상세페이지</h3>
             <div className={styles["detail-desc"]}>
-<img src="/images/silvertonwD.jpeg" alt="실버타운 메인"  />
+              <img src="/images/silvertonwD.jpeg" alt="실버타운 메인" />
             </div>
           </div>
         </div>

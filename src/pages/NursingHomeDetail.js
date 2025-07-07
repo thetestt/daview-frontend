@@ -14,7 +14,8 @@ import backgroundShape from "../assets/mwhite.png";
 function NursingHomeDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0); // 사진 슬라이드 인덱스
+  const [reviewIndex, setReviewIndex] = useState(0); // 리뷰 슬라이드 인덱스
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,10 +51,14 @@ function NursingHomeDetail() {
     return (
       <>
         {[...Array(full)].map((_, i) => (
-          <span key={`full-${i}`} className={styles.star}>★</span>
+          <span key={`full-${i}`} className={styles.star}>
+            ★
+          </span>
         ))}
         {[...Array(5 - full)].map((_, i) => (
-          <span key={`empty-${i}`} className={styles["star-empty"]}>☆</span>
+          <span key={`empty-${i}`} className={styles["star-empty"]}>
+            ☆
+          </span>
         ))}
       </>
     );
@@ -64,19 +69,30 @@ function NursingHomeDetail() {
   const photos = data.photos?.filter((url) => url) || ["/images/default.png"];
   const address = `${data.facilityAddressLocation} ${data.facilityAddressCity} ${data.facilityDetailAddress}`;
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  // 사진 슬라이드용 핸들러
+  const handlePhotoPrev = () => {
+    setPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % photos.length);
+  const handlePhotoNext = () => {
+    setPhotoIndex((prev) => (prev + 1) % photos.length);
   };
 
   const imageWidth = 700;
   const imageMargin = -10;
   const totalImageWidth = imageWidth + imageMargin * 2;
   const wrapperWidth = 1000;
-  const offset = wrapperWidth / 2 - totalImageWidth / 2 - currentIndex * totalImageWidth;
+  const photoOffset =
+    wrapperWidth / 2 - totalImageWidth / 2 - photoIndex * totalImageWidth;
+
+  // 리뷰 슬라이드용 핸들러
+  const handleReviewPrev = () => {
+    setReviewIndex((prev) => Math.max(0, prev - 1));
+  };
+  const handleReviewNext = () => {
+    setReviewIndex((prev) =>
+      Math.min(prev + 1, Math.max(0, reviews.length - 2))
+    );
+  };
 
   return (
     <>
@@ -89,19 +105,31 @@ function NursingHomeDetail() {
               <div className={styles["carousel-wrapper"]}>
                 <div
                   className={styles["carousel-track"]}
-                  style={{ transform: `translateX(${offset}px)` }}
+                  style={{ transform: `translateX(${photoOffset}px)` }}
                 >
                   {photos.map((src, i) => (
                     <img
                       key={i}
                       src={src}
                       alt={`slide-${i}`}
-                      className={`${styles["carousel-image"]} ${i === currentIndex ? styles["active"] : ""}`}
+                      className={`${styles["carousel-image"]} ${
+                        i === photoIndex ? styles["active"] : ""
+                      }`}
                     />
                   ))}
                 </div>
-                <button onClick={handlePrev} className={styles["arrow-left"]}>❮</button>
-                <button onClick={handleNext} className={styles["arrow-right"]}>❯</button>
+                <button
+                  onClick={handlePhotoPrev}
+                  className={styles["arrow-left"]}
+                >
+                  ❮
+                </button>
+                <button
+                  onClick={handlePhotoNext}
+                  className={styles["arrow-right"]}
+                >
+                  ❯
+                </button>
               </div>
             </div>
 
@@ -110,17 +138,24 @@ function NursingHomeDetail() {
               <div className={styles["title-header"]}>
                 <div className={styles["text-group"]}>
                   <div className={styles["title-line"]}>
-                    <h2 className={styles["facility-name"]}>{data.facilityName}</h2>
+                    <h2 className={styles["facility-name"]}>
+                      {data.facilityName}
+                    </h2>
                     <span className={styles["star-display"]}>
                       {renderStars(calculateAverageStars(reviews))}
                     </span>
                     <span className={styles["average-text"]}>
                       {reviews.length > 0 &&
-                        `${calculateAverageStars(reviews).toFixed(1)}점 / ${reviews.length}개의 후기`}
+                        `${calculateAverageStars(reviews).toFixed(1)}점 / ${
+                          reviews.length
+                        }개의 후기`}
                     </span>
                   </div>
                 </div>
-                <HeartButton facilityId={id} className={styles["heart-button"]} />
+                <HeartButton
+                  facilityId={id}
+                  className={styles["heart-button"]}
+                />
               </div>
               <hr className={styles["divider"]} />
             </div>
@@ -129,14 +164,22 @@ function NursingHomeDetail() {
             <div className={styles["info_map-box"]}>
               <div className={styles["info-box"]}>
                 <div className={styles["info-detail-box"]}>
-                  <img src={backgroundShape} alt="quote" className={styles["list-quote-background"]} />
+                  <img
+                    src={backgroundShape}
+                    alt="quote"
+                    className={styles["list-quote-background"]}
+                  />
                 </div>
                 <div className={styles["info-text"]}>
                   <p>주소: {address}</p>
                   <p>테마: {data.facilityTheme}</p>
                   <p>
                     홈페이지:{" "}
-                    <a href={data.facilityHomepage} target="_blank" rel="noreferrer">
+                    <a
+                      href={data.facilityHomepage}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {data.facilityHomepage}
                     </a>
                   </p>
@@ -168,10 +211,14 @@ function NursingHomeDetail() {
 
           {/* 공지사항 + 리뷰 + 상세페이지 */}
           <div className={styles["notice-review-section"]}>
+            {/* 공지사항 */}
             <div className={styles["notice-box"]}>
               <div className={styles["notice-header"]}>
                 <h3 className={styles["notice-title"]}>공지사항</h3>
-                <Link to={`/notice/${data.facilityId}`} className={styles["view-all"]}>
+                <Link
+                  to={`/notice/${data.facilityId}`}
+                  className={styles["view-all"]}
+                >
                   공지사항 전체보기 &gt;
                 </Link>
               </div>
@@ -195,16 +242,20 @@ function NursingHomeDetail() {
             {/* 리뷰 슬라이더 */}
             <h3>리뷰</h3>
             <div className={styles["review-slider-container"]}>
-              <button className={styles["arrow-button"]} onClick={handlePrev}>
+              <button
+                className={styles["arrow-button"]}
+                onClick={handleReviewPrev}
+              >
                 &#10094;
               </button>
               <div className={styles["review-slider-wrapper"]}>
                 <div
                   className={styles["review-slider-track"]}
-                  style={{ transform: `translateX(-${currentIndex * 420}px)` }}
+                  style={{ transform: `translateX(-${reviewIndex * 420}px)` }}
                 >
                   {reviews.map((review, index) => {
-                    const isVisible = index === currentIndex || index === currentIndex + 1;
+                    const isVisible =
+                      index === reviewIndex || index === reviewIndex + 1;
                     return (
                       <div
                         key={review.revId}
@@ -212,9 +263,14 @@ function NursingHomeDetail() {
                           isVisible ? styles["active"] : styles["inactive"]
                         }`}
                       >
-                        <Link to={`/review/${review.revId}`} className={styles["review-link"]}>
+                        <Link
+                          to={`/review/${review.revId}`}
+                          className={styles["review-link"]}
+                        >
                           <div className={styles["review-title-line"]}>
-                            <span className={styles["review-title"]}>{review.revTtl}</span>
+                            <span className={styles["review-title"]}>
+                              {review.revTtl}
+                            </span>
                             <span className={styles["review-stars"]}>
                               {renderStars(review.revStars)}
                             </span>
@@ -228,7 +284,10 @@ function NursingHomeDetail() {
                   })}
                 </div>
               </div>
-              <button className={styles["arrow-button"]} onClick={handleNext}>
+              <button
+                className={styles["arrow-button"]}
+                onClick={handleReviewNext}
+              >
                 &#10095;
               </button>
             </div>
