@@ -17,7 +17,7 @@
   font-weight: 600;
   font-size: 40px;
   padding-left: 20px;
-  padding-top: 13px;
+  padding-top: 14px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -46,7 +46,7 @@
   font-weight: 600;
   font-size: 30px;
   padding-left: 20px;
-  padding-top: 23px;
+  padding-top: 14px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -159,7 +159,7 @@
   font-size: 30px;
   margin-top: 10px;
   padding-left: 20px;
-  padding-top: 23px;
+  padding-top: 14px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -176,7 +176,7 @@
   text-align: left;
   gap: 15px;
   margin-top: 10px;
-  height: 40vh;
+  height: 46vh;
 }
 
 .pay-contact-group {
@@ -188,7 +188,7 @@
 .pay-input-group {
   display: flex;
   flex-direction: column;
-  padding-left: 50px;
+  padding-left: 30px;
   padding-top: 5px;
 }
 
@@ -237,7 +237,7 @@
 }
 
 .pay-etc {
-  width: 819px;
+  width: 799px;
   height: 10vh;
   resize: none;
   padding: 20px;
@@ -263,7 +263,7 @@ textarea:focus {
   font-size: 30px;
   margin-top: 10px;
   padding-left: 20px;
-  padding-top: 23px;
+  padding-top: 14px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -273,7 +273,7 @@ textarea:focus {
   margin-top: 10px;
   text-align: left;
   width: 70%;
-  height: 15vh;
+  height: 18vh;
 }
 
 .pay-radio-group {
@@ -294,7 +294,7 @@ textarea:focus {
   font-size: 30px;
   margin-top: 10px;
   padding-left: 20px;
-  padding-top: 13px;
+  padding-top: 14px;
   color: rgb(94, 94, 94);
   box-sizing: border-box;
 }
@@ -304,7 +304,7 @@ textarea:focus {
   height: 20vh;
   width: 520px;
   right: 63px;
-  top: 426px;
+  top: 393px;
   bottom: 40px;
   position: fixed;
   z-index: 1000;

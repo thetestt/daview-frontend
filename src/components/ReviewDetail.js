@@ -84,15 +84,6 @@ function ReviewDetail() {
     try {
       await addComment(revId, newComment, null, memberId);
       setNewComment("");
-      // setComments([
-      //   ...comments,
-      //   {
-      //     commentText: newComment,
-      //     parentCommentId: null,
-      //     memberId,
-      //     commentId: Date.now(),
-      //   },
-      // ]);
       await fetchComments();
       alert("댓글이 성공적으로 작성되었습니다.");
     } catch (error) {
@@ -112,15 +103,6 @@ function ReviewDetail() {
     try {
       await addComment(revId, replyText, parentCommentId, memberId);
       setNewReplyMap({ ...newReplyMap, [parentCommentId]: "" });
-      // setComments([
-      //   ...comments,
-      //   {
-      //     commentText: replyText,
-      //     parentCommentId,
-      //     memberId,
-      //     commentId: Date.now(),
-      //   },
-      // ]);
       await fetchComments();
       alert("대댓글이 성공적으로 작성되었습니다.");
     } catch (error) {
@@ -232,9 +214,7 @@ function ReviewDetail() {
               style={{ marginBottom: "12px" }}
               type="button"
             >
-              {showComments
-                ? "댓글 숨기기"
-                : `댓글 ${topLevelComments.length}개 보기`}
+              {showComments ? "댓글 숨기기" : `댓글 ${comments.length}개 보기`}
             </button>
           )}
           {showComments &&

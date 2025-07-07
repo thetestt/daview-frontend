@@ -157,6 +157,14 @@ const Reservation = () => {
       ? getProdTypePath(reservations[0].prodType)
       : "nursinghome";
 
+  const handleSelectAll = (isChecked) => {
+    const allChecked = {};
+    reservations.forEach((r) => {
+      allChecked[r.rsvId] = isChecked;
+    });
+    setCheckedItems(allChecked);
+  };
+
   if (loading)
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>로딩 중...</div>
@@ -181,7 +189,16 @@ const Reservation = () => {
           <table className={styles["rsv-table"]}>
             <thead>
               <tr>
-                <th className={styles["rsv-checkbox-row"]}></th>
+                <th className={styles["rsv-checkbox-row"]}>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleSelectAll(e.target.checked)}
+                    checked={
+                      Object.values(checkedItems).length > 0 &&
+                      Object.values(checkedItems).every(Boolean)
+                    }
+                  />
+                </th>
                 <th className={styles["rsv-img-row"]}>상품 이미지</th>
                 <th className={styles["rsv-info-col"]}>상품 정보</th>
                 <th className={styles["rsv-count-row"]}>인원</th>
