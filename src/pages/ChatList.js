@@ -10,7 +10,6 @@ const ChatList = ({
   readChatroomIds,
   onNewMessage,
   removeChatroomFromRead,
-  showHeader = true  // 기본값은 true
 }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigate = useNavigate();
@@ -141,15 +140,6 @@ const ChatList = ({
 
   return (
     <div>
-      {/* 독립 페이지로 사용될 때만 헤더 표시 */}
-      {showHeader && (
-        <div className={styles["chat-header"]}>
-          <h1>채팅 목록</h1>
-          <button onClick={() => navigate('/caregiver/main')} className={styles["back-btn"]}>
-            뒤로가기
-          </button>
-        </div>
-      )}
       <div className={styles["chat-search-box"]}>
         <input
           type="text"
