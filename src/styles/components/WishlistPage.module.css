@@ -56,13 +56,13 @@
 .sh-card-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px; /* 간격 줄임 */
   justify-content: flex-start;
   width: 100%;
 }
 
 .sh-card {
-  width: 240px;
+  width: 220px; /* 살짝 더 작게 */
   border: 1px solid #ccc;
   border-radius: 12px;
   background: #fff;
@@ -70,6 +70,7 @@
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease;
+  padding: 8px;
 }
 
 .sh-card:hover {
@@ -82,26 +83,49 @@
   object-fit: cover;
 }
 
-.sh-card-info {
-  padding: 16px;
+.sh-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sh-card-inner {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: center;
 }
 
-.sh-card-title {
+.sh-card-name {
   font-size: 17px;
   font-weight: 600;
-  color: #222;
-  word-break: keep-all;
-  white-space: normal;
+  text-align: center;
+  color: #000000;
+  margin-top: 10px;
 }
 
-.sh-card-sub {
+.sh-card-address {
   font-size: 14px;
-  color: #555;
-  line-height: 1.4;
-  white-space: pre-wrap;
+  color: #000000;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.sh-card-price {
+  font-size: 15px;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+}
+
+.sh-card-info-box {
+  padding: 8px;
+  color: #000000;
+}
+
+.sh-card-info {
+  font-size: 14px;
+  margin: 2px 0;
+  text-align: center;
 }
 
 .sh-empty {
