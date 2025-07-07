@@ -65,9 +65,9 @@ function PaymentResult() {
             <div className={styles["pay-order-row"]}>
               <span className={styles["pay-label"]}>주문 번호</span>
               <span className={styles["pay-value"]}>{merchantUid}</span>
-              <span className={styles["pay-label2"]}>결제 수단</span>
+              <span className={styles["pay-label2"]}>상품 금액</span>
               <span className={styles["pay-value2"]}>
-                {pymMethod === "card" ? "카드결제" : pymMethod}
+                {(pymPrice + (couponDiscount || 0)).toLocaleString()}원
               </span>
             </div>
             <div className={styles["pay-order-row"]}>
@@ -75,9 +75,21 @@ function PaymentResult() {
               <span className={styles["pay-value"]}>
                 {new Date(pymDate).toLocaleString()}
               </span>
-              <span className={styles["pay-label2"]}>상품 금액</span>
+              <span className={styles["pay-label2"]}>쿠폰 할인</span>
               <span className={styles["pay-value2"]}>
-                {(pymPrice + (couponDiscount || 0)).toLocaleString()}원
+                - {couponDiscount.toLocaleString()}원
+              </span>
+            </div>
+            <div className={styles["pay-order-row"]}>
+              <span className={styles["pay-label"]}>결제 수단</span>
+              <span className={styles["pay-value"]}>
+                {pymMethod === "card" ? "카드결제" : pymMethod}
+              </span>
+              <span className={styles["pay-label2"]}>총 결제 금액</span>
+              <span
+                className={`${styles["pay-value2"]} ${styles["pay-total"]}`}
+              >
+                {pymPrice.toLocaleString()}원
               </span>
             </div>
             <div className={styles["pay-order-row"]}>
@@ -91,21 +103,7 @@ function PaymentResult() {
                   ? "결제 대기"
                   : "기타"}
               </span>
-              <span className={styles["pay-label2"]}>총 결제 금액</span>
-              <span
-                className={`${styles["pay-value2"]} ${styles["pay-total"]}`}
-              >
-                {pymPrice.toLocaleString()}원
-              </span>
             </div>
-            {couponDiscount > 0 && (
-              <div className={styles["pay-order-row"]}>
-                <span className={styles["pay-label"]}>쿠폰 할인</span>
-                <span className={styles["pay-value"]}>
-                  -{couponDiscount.toLocaleString()}원
-                </span>
-              </div>
-            )}
           </div>
         </div>
 
