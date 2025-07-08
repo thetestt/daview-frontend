@@ -4,7 +4,7 @@ import { getReviewByIdForEdit, updateReview } from "../api/reviewApi";
 import { getProdNmList } from "../api/paymentApi";
 import styles from "../styles/components/ReviewUpdate.module.css";
 
-function ReviewModifyTest() {
+function ReviewModify() {
   const navigate = useNavigate();
   const { revId } = useParams();
   const [review, setReview] = useState(null);
@@ -146,4 +146,4 @@ function ReviewModifyTest() {
   );
 }
 
-export default ReviewModifyTest;
+export default ReviewModify;

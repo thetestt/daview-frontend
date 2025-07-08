@@ -1,16 +1,15 @@
 .review-container {
   background-color: #f7f7f7;
-  min-height: 100vh;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  min-height: 80vh;
+  padding-top: 100px;
+  padding-bottom: 60px;
 }
 
 .review-title {
-  font-size: 50px;
+  font-size: 36px;
   font-weight: bold;
   color: rgb(112, 112, 112);
-  padding-top: 0;
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -18,25 +17,24 @@
   background-color: #f7f7f7;
   width: 80%;
   margin: 0 auto;
-  margin-top: 10px;
 }
 
 .review-buttonWrapper {
   display: flex;
   justify-content: flex-end;
-  width: 80%;
+  width: 70%;
+  margin: 0 auto;
 }
 
 .review-btn {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background-color: #00334f;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 18px;
-  margin-bottom: 20px;
-  margin-right: 50px;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 
 .review-btn:hover {
@@ -47,26 +45,27 @@
   background-color: white;
   margin: 0 auto;
   margin-bottom: 30px;
-  width: 55%;
+  width: 70%;
   text-align: center;
   border-collapse: collapse;
   table-layout: fixed;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.08);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 .review-thead th {
-  font-size: 18px;
+  font-size: 15px;
   color: rgb(112, 112, 112);
-  border-bottom: 3px solid #00334f;
-  padding-bottom: 8px;
-  height: 43px;
+  border-bottom: 2px solid #00334f;
+  padding-bottom: 6px;
+  height: 36px;
 }
 
 .review-th,
 .review-td {
-  padding: 12px;
-  border: 2px solid #f7f7f7;
+  padding: 8px;
+  border: 1px solid #f0f0f0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -79,22 +78,27 @@
 
 .review-th:nth-child(2),
 .review-td:nth-child(2) {
-  width: 26%;
+  width: 30%;
 }
 
 .review-th:nth-child(3),
 .review-td:nth-child(3) {
-  width: 13%;
+  width: 14%;
 }
 
 .review-th:nth-child(4),
 .review-td:nth-child(4) {
-  width: 18%;
+  width: 14%;
 }
 
 .review-th:nth-child(5),
 .review-td:nth-child(5) {
   width: 8%;
+}
+
+.review-th:nth-child(6),
+.review-td:nth-child(6) {
+  width: 14%;
 }
 
 .review-revttl {
@@ -103,7 +107,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   text-align: center;
   display: inline-block;
@@ -117,25 +121,25 @@
 .review-stars {
   color: gold;
   text-shadow: 1px 1px 4px rgba(218, 165, 32, 0.5);
-  font-size: 22px;
+  font-size: 16px;
   letter-spacing: 1px;
 }
 
 .review-page {
   margin-top: 20px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .review-page button {
   background: none;
   border: none;
-  margin: 0 8px;
-  padding: 4px 8px;
+  margin: 0 6px;
+  padding: 2px 6px;
   cursor: pointer;
   color: #555;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .review-page button:hover {
@@ -156,6 +160,101 @@
 .review-page button:first-child::after,
 .review-page button:last-child::before {
   content: "|";
-  margin: 0 8px;
+  margin: 0 6px;
   color: #aaa;
+}
+
+/* ===========================
+   ✅ 반응형 스타일
+=========================== */
+
+@media (max-width: 1024px) {
+  .review-title {
+    font-size: 28px;
+  }
+
+  .review-btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .review-table {
+    width: 90%;
+    font-size: 13px;
+  }
+
+  .review-page {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .review-title {
+    font-size: 24px;
+  }
+
+  .review-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .review-buttonWrapper {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .review-table {
+    width: 95%;
+    font-size: 12px;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+
+  .review-tr {
+    display: table-row;
+  }
+
+  .review-td,
+  .review-th {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .review-revttl {
+    font-size: 13px;
+  }
+
+  .review-stars {
+    font-size: 14px;
+  }
+
+  .review-page button {
+    font-size: 12px;
+    margin: 0 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .review-title {
+    font-size: 20px;
+  }
+
+  .review-btn {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+
+  .review-table {
+    font-size: 11px;
+  }
+
+  .review-page {
+    font-size: 12px;
+  }
+
+  .review-page button {
+    padding: 2px 4px;
+  }
 }

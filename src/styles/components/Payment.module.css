@@ -7,7 +7,7 @@
 
 .pay-title-box {
   background-color: #f7f7f7;
-  width: 70%;
+  width: 63%;
   height: 15vh;
   margin: 0 auto;
 }
@@ -30,7 +30,7 @@
 
 .pay-box {
   background-color: #f7f7f7;
-  width: 70%;
+  width: 63%;
   margin: 0 auto;
   border: 9px solid #f7f7f7;
   box-sizing: border-box;
@@ -40,7 +40,7 @@
 
 .pay-title {
   background-color: #ffffff;
-  width: 70%;
+  width: 63%;
   height: 8vh;
   text-align: left;
   font-weight: 600;
@@ -53,7 +53,7 @@
 
 .pay-reservation-table {
   /* table-layout: fixed; */
-  width: 70%;
+  width: 63%;
 }
 
 .pay-reservation-table thead {
@@ -144,7 +144,7 @@
 
 .pay-name-consult-group {
   display: flex;
-  gap: 30px;
+  /* gap: 30px; */
   align-items: center;
   margin-bottom: 20px;
   padding-top: 30px;
@@ -152,7 +152,7 @@
 
 .pay-user-title {
   background-color: #ffffff;
-  width: 70%;
+  width: 63%;
   height: 8vh;
   text-align: left;
   font-weight: 600;
@@ -170,7 +170,7 @@
 }
 
 .pay-user-info {
-  width: 70%;
+  width: 63%;
   background-color: #ffffff;
   height: 50vh;
   text-align: left;
@@ -181,14 +181,14 @@
 
 .pay-contact-group {
   display: flex;
-  gap: 30px;
+  /* gap: 30px; */
   align-items: center;
 }
 
 .pay-input-group {
   display: flex;
   flex-direction: column;
-  padding-left: 30px;
+  padding-left: 21px;
   padding-top: 5px;
 }
 
@@ -200,7 +200,7 @@
 }
 
 .pay-input-group input {
-  width: 341px;
+  width: 280px;
   height: 40px;
   border: 1px solid #8080806e;
   border-radius: 4px;
@@ -225,7 +225,7 @@
 .pay-input-group input[type="date"] {
   box-sizing: border-box;
   padding-right: 20px;
-  width: 354px;
+  width: 296px;
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   color: gray;
@@ -237,7 +237,7 @@
 }
 
 .pay-etc {
-  width: 799px;
+  width: 642px;
   height: 10vh;
   resize: none;
   padding: 20px;
@@ -256,7 +256,7 @@ textarea:focus {
 
 .pay-card-title {
   background-color: #ffffff;
-  width: 70%;
+  width: 63%;
   height: 8vh;
   text-align: left;
   font-weight: 600;
@@ -272,7 +272,7 @@ textarea:focus {
   background-color: #ffffff;
   margin-top: 10px;
   text-align: left;
-  width: 70%;
+  width: 63%;
   height: 18vh;
 }
 
