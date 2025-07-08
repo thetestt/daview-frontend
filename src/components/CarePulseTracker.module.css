@@ -1,0 +1,1046 @@
+/* 케어펄스 트래커 전용 스타일 - CSS 모듈 */
+.carePulseTracker {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+    padding: 24px;
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    color: #333;
+}
+
+/* 헤더 스타일 */
+.trackerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.backBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.backBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+}
+
+.headerContent h1 {
+    color: #1565c0;
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.headerIcon {
+    color: #e91e63;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.headerContent p {
+    color: #616161;
+    font-size: 1.1rem;
+    margin: 8px 0 0 0;
+    font-weight: 400;
+}
+
+.headerRight {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.patientSelector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.patientSelector label {
+    color: #1565c0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.patientSelect {
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+    border-radius: 8px;
+    color: #333;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+.patientSelect:focus {
+    outline: none;
+    border-color: #2196f3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.patientSelect option {
+    background: white;
+    color: #333;
+    padding: 8px;
+}
+
+.headerControls {
+    display: flex;
+    gap: 12px;
+}
+
+.controlBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.startBtn {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: white;
+}
+
+.startBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.startBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.stopBtn {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+}
+
+.stopBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+}
+
+.stopBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.resetBtn {
+    background: linear-gradient(135deg, #9e9e9e, #616161);
+    color: white;
+}
+
+.resetBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(158, 158, 158, 0.4);
+}
+
+/* 시스템 상태 */
+.systemStatus {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.systemStatus h3 {
+    color: #1565c0;
+    margin: 0 0 20px 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.statusGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.statusItem {
+    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(33, 150, 243, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statusItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.statusLabel {
+    color: #616161;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.statusValue {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusValue.healthy {
+    color: #4caf50;
+}
+
+.statusValue.warning {
+    color: #ff9800;
+}
+
+.statusValue.error {
+    color: #f44336;
+}
+
+.statusDetail {
+    color: #757575;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+/* 파이프라인 컨테이너 */
+.pipelineContainer {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.pipelineHeader {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.pipelineHeader h3 {
+    color: #1565c0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.pipelineHeader p {
+    color: #616161;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.pipelineFlow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 16px 0;
+}
+
+.pipelineStepContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pipelineStep {
+    background: linear-gradient(135deg, #fafafa, #f5f5f5);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    min-width: 200px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pipelineStep.active {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-color: #2196f3;
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(33, 150, 243, 0.2);
+}
+
+.pipelineStep.idle {
+    opacity: 0.7;
+}
+
+.pipelineStep.active,
+.pipelineStep.processing,
+.pipelineStep.interpreting,
+.pipelineStep.predicting {
+    animation: stepPulse 2s infinite;
+}
+
+@keyframes stepPulse {
+    0% { box-shadow: 0 8px 24px rgba(33, 150, 243, 0.2); }
+    50% { box-shadow: 0 12px 32px rgba(33, 150, 243, 0.3); }
+    100% { box-shadow: 0 8px 24px rgba(33, 150, 243, 0.2); }
+}
+
+.stepIcon {
+    font-size: 2rem;
+    color: #2196f3;
+    margin-bottom: 12px;
+}
+
+.stepInfo h3 {
+    color: #1565c0;
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.stepInfo p {
+    color: #616161;
+    font-size: 0.85rem;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+}
+
+.stepStatus {
+    color: #757575;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    display: inline-block;
+}
+
+.pipelineArrow {
+    color: #bdbdbd;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.pipelineArrow.active {
+    color: #2196f3;
+    transform: scale(1.2);
+}
+
+/* 상세 정보 그리드 */
+.pipelineDetails {
+    margin-top: 24px;
+}
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.detailCard {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.detailCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.detailCard h3 {
+    color: #1565c0;
+    font-size: 1.3rem;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(33, 150, 243, 0.1);
+}
+
+.detailCard h4 {
+    color: #424242;
+    font-size: 1.1rem;
+    margin: 16px 0 12px 0;
+    font-weight: 600;
+}
+
+/* 감지 카드 스타일 */
+.detectionCard {
+    border-left: 4px solid #e91e63;
+}
+
+.detectionInactive {
+    text-align: center;
+    padding: 20px;
+}
+
+.inactiveMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(233, 30, 99, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(233, 30, 99, 0.1);
+}
+
+.inactiveMessage svg {
+    font-size: 2rem;
+    color: #e91e63;
+}
+
+.inactiveMessage p {
+    color: #616161;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.sensorData {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.sensorItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #fafafa, #f5f5f5);
+    border-radius: 12px;
+    border: 1px solid rgba(233, 30, 99, 0.1);
+    transition: all 0.3s ease;
+}
+
+.sensorItem:hover {
+    background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+    transform: translateX(4px);
+}
+
+.sensorType {
+    font-weight: 600;
+    color: #424242;
+    font-size: 0.9rem;
+}
+
+.sensorValue {
+    font-weight: 700;
+    color: #1565c0;
+    font-size: 1rem;
+}
+
+.sensorStatus {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sensorStatus.normal {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.sensorStatus.warning {
+    background: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+}
+
+.sensorStatus.danger {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.timestamp {
+    color: #757575;
+    font-size: 0.8rem;
+    margin-top: 12px;
+    font-style: italic;
+}
+
+/* 분석 카드 스타일 */
+.analysisCard {
+    border-left: 4px solid #2196f3;
+}
+
+.analysisMetrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.metric {
+    padding: 16px;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(33, 150, 243, 0.1);
+    transition: all 0.3s ease;
+}
+
+.metric:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+.metricLabel {
+    display: block;
+    color: #616161;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.metricValue {
+    display: block;
+    color: #1565c0;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.patterns {
+    margin-top: 16px;
+}
+
+.patternItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(33, 150, 243, 0.1);
+    transition: all 0.3s ease;
+}
+
+.patternItem:hover {
+    background: rgba(33, 150, 243, 0.05);
+    transform: translateX(4px);
+}
+
+.patternType {
+    font-weight: 600;
+    color: #424242;
+    font-size: 0.9rem;
+}
+
+.patternConfidence {
+    color: #1565c0;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.patternTrend {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.patternTrend.stable {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.patternTrend.improving {
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+}
+
+.patternTrend.declining {
+    background: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+}
+
+/* 해석 카드 스타일 */
+.interpretationCard {
+    border-left: 4px solid #9c27b0;
+}
+
+.aiSummary {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(156, 39, 176, 0.1);
+}
+
+.aiSummary p {
+    color: #424242;
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.confidenceScore {
+    color: #7b1fa2;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.insights {
+    margin-bottom: 20px;
+}
+
+.insightItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.insightItem:hover {
+    transform: translateX(4px);
+}
+
+.insightItem.low {
+    background: rgba(76, 175, 80, 0.05);
+    border-left-color: #4caf50;
+}
+
+.insightItem.medium {
+    background: rgba(255, 152, 0, 0.05);
+    border-left-color: #ff9800;
+}
+
+.insightItem.high {
+    background: rgba(244, 67, 54, 0.05);
+    border-left-color: #f44336;
+}
+
+.insightType {
+    font-weight: 600;
+    color: #7b1fa2;
+    font-size: 0.9rem;
+}
+
+.insightMessage {
+    color: #424242;
+    font-size: 0.9rem;
+    flex: 1;
+    margin-left: 12px;
+}
+
+.recommendations {
+    margin-top: 16px;
+}
+
+.recommendationItem {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.recommendationItem:hover {
+    transform: translateX(4px);
+}
+
+.recommendationItem.low {
+    background: rgba(76, 175, 80, 0.05);
+    border-left-color: #4caf50;
+}
+
+.recommendationItem.medium {
+    background: rgba(255, 152, 0, 0.05);
+    border-left-color: #ff9800;
+}
+
+.recommendationItem.high {
+    background: rgba(244, 67, 54, 0.05);
+    border-left-color: #f44336;
+}
+
+.recAction {
+    display: block;
+    font-weight: 600;
+    color: #7b1fa2;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.recReason {
+    display: block;
+    color: #616161;
+    font-size: 0.85rem;
+}
+
+/* 예측 카드 스타일 */
+.predictionCard {
+    border-left: 4px solid #ff9800;
+}
+
+.riskScore {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.riskGauge {
+    background: linear-gradient(135deg, #fff3e0, #ffcc02);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px auto;
+    border: 3px solid #ff9800;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.riskGauge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+}
+
+.gaugeLabel {
+    color: #e65100;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.gaugeValue {
+    color: #bf360c;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.gaugeStatus {
+    color: #e65100;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.predictions {
+    margin-bottom: 20px;
+}
+
+.predictionItem {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 243, 224, 0.7);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 152, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.predictionItem:hover {
+    background: rgba(255, 152, 0, 0.05);
+    transform: translateX(4px);
+}
+
+.predType {
+    font-weight: 600;
+    color: #e65100;
+    font-size: 0.9rem;
+}
+
+.predResult {
+    color: #bf360c;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.predProbability {
+    color: #ff9800;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.predTimeframe {
+    color: #757575;
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+.alerts {
+    margin-top: 16px;
+}
+
+.alertItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.alertItem:hover {
+    transform: translateX(4px);
+}
+
+.alertItem.warning {
+    background: rgba(255, 152, 0, 0.1);
+    border-left-color: #ff9800;
+}
+
+.alertItem.info {
+    background: rgba(33, 150, 243, 0.1);
+    border-left-color: #2196f3;
+}
+
+.alertMessage {
+    color: #424242;
+    font-size: 0.9rem;
+    flex: 1;
+    font-weight: 500;
+}
+
+.alertTime {
+    color: #757575;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .detailsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pipelineFlow {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .pipelineArrow {
+        transform: rotate(90deg);
+    }
+    
+    .statusGrid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .carePulseTracker {
+        padding: 16px;
+    }
+    
+    .trackerHeader {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+    }
+    
+    .headerLeft {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+    
+    .headerRight {
+        align-items: center;
+        width: 100%;
+    }
+    
+    .patientSelector {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .patientSelect {
+        width: 100%;
+    }
+    
+    .headerControls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .controlBtn {
+        font-size: 0.85rem;
+        padding: 10px 16px;
+    }
+    
+    .systemStatus {
+        padding: 20px;
+    }
+    
+    .pipelineStep {
+        min-width: 150px;
+        padding: 16px;
+    }
+    
+    .stepIcon {
+        font-size: 1.5rem;
+    }
+    
+    .stepInfo h3 {
+        font-size: 1rem;
+    }
+    
+    .stepInfo p {
+        font-size: 0.8rem;
+    }
+    
+    .detailsGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .detailCard {
+        padding: 20px;
+    }
+    
+    .analysisMetrics {
+        grid-template-columns: 1fr;
+    }
+    
+    .predictionItem {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .riskGauge {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .gaugeValue {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carePulseTracker {
+        padding: 12px;
+    }
+    
+    .trackerHeader {
+        padding: 20px;
+    }
+    
+    .headerContent h1 {
+        font-size: 1.8rem;
+    }
+    
+    .headerContent p {
+        font-size: 0.9rem;
+    }
+    
+    .backBtn {
+        font-size: 0.8rem;
+        padding: 10px 14px;
+    }
+    
+    .controlBtn {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+    
+    .detailCard {
+        padding: 16px;
+    }
+    
+    .detailCard h3 {
+        font-size: 1.1rem;
+    }
+    
+    .sensorItem,
+    .patternItem,
+    .insightItem,
+    .recommendationItem {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .pipelineStep {
+        min-width: 120px;
+        padding: 12px;
+    }
+} 

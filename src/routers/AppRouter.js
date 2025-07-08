@@ -43,6 +43,7 @@ import CaregiverReports from "../pages/caregiver/CaregiverReports";
 import CaregiverTasks from "../pages/caregiver/CaregiverTasks";
 import CaregiverPatientManagement from "../pages/caregiver/CaregiverPatientManagement";
 import CaregiverNotifications from "../pages/caregiver/CaregiverNotifications";
+import CarePulseTracker from "../components/CarePulseTracker";
 import CompanyDashboard from "../pages/company/CompanyDashboard";
 import CompanyMainDashboard from "../pages/company/CompanyMainDashboard";
 import CompanyReservationManagement from "../pages/company/CompanyReservationManagement";
@@ -193,6 +194,7 @@ const AppRouter = () => {
         <Route path="/caregiver/tasks" element={<CaregiverTasks />} />
         <Route path="/caregiver/patients" element={<CaregiverPatientManagement />} />
         <Route path="/caregiver/notifications" element={<CaregiverNotifications />} />
+        <Route path="/caregiver/care-pulse-tracker" element={<CarePulseTracker />} />
 
         {/* 마이페이지 */}
         {/* 아이디찾기 */}

@@ -97,6 +97,10 @@ const CaregiverMainDashboard = () => {
     navigate('/caregiver/notifications');
   };
 
+  const handleCarePulseTracker = () => {
+    navigate('/caregiver/care-pulse-tracker');
+  };
+
   if (isLoading) {
     return <div className={styles.loading}>로딩 중...</div>;
   }
@@ -234,6 +238,20 @@ const CaregiverMainDashboard = () => {
             </p>
             <div className={styles.cardFooter}>
               <span className={styles.cardAction}>알림 보기 →</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Care Pulse Tracker */}
+        <div className={styles.functionCard} onClick={handleCarePulseTracker}>
+          <div className={styles.cardIcon}>💓</div>
+          <div className={styles.cardContent}>
+            <h3 className={styles.cardTitle}>Care Pulse Tracker</h3>
+            <p className={styles.cardDescription}>
+              AI 기반 실시간 생체신호 모니터링 및 예측 분석 시스템
+            </p>
+            <div className={styles.cardFooter}>
+              <span className={styles.cardAction}>PoC 시작 →</span>
             </div>
           </div>
         </div>
