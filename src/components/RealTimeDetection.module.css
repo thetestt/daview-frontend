@@ -1,0 +1,428 @@
+.realtime-detection {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 100%;
+    overflow-y: auto;
+}
+
+.realtime-detection.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: white;
+}
+
+.loading-spinner .pulse-icon {
+    font-size: 4rem;
+    color: #ff6b6b;
+    animation: heartbeat 1.5s infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.loading-spinner p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* 연결 상태 헤더 */
+.connection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.connection-icon {
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.connection-icon.connected {
+    color: #28a745;
+    animation: pulse 2s infinite;
+}
+
+.connection-icon.disconnected {
+    color: #dc3545;
+}
+
+.status-text {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.status-text.connected {
+    color: #28a745;
+}
+
+.status-text.disconnected {
+    color: #dc3545;
+}
+
+.last-update {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+/* 생체신호 카드 */
+.vital-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.vital-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.vital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.vital-card.normal {
+    border-color: #28a745;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+}
+
+.vital-card.warning {
+    border-color: #ffc107;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+    animation: warningPulse 2s infinite;
+}
+
+.vital-card.danger {
+    border-color: #dc3545;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+    animation: dangerPulse 1.5s infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+    50% { box-shadow: 0 0 20px 10px rgba(255, 193, 7, 0.1); }
+}
+
+@keyframes dangerPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    50% { box-shadow: 0 0 20px 10px rgba(220, 53, 69, 0.1); }
+}
+
+.vital-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.vital-card.normal .vital-icon {
+    color: #28a745;
+}
+
+.vital-card.warning .vital-icon {
+    color: #ffc107;
+}
+
+.vital-card.danger .vital-icon {
+    color: #dc3545;
+}
+
+.vital-info {
+    text-align: center;
+}
+
+.vital-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.vital-value {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.vital-unit {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+}
+
+.vital-trend {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}
+
+.trend-line {
+    display: flex;
+    align-items: end;
+    gap: 2px;
+}
+
+.trend-point {
+    width: 4px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.trend-point.active {
+    background: rgba(255, 255, 255, 0.8);
+    height: 15px;
+}
+
+/* 센서 상태 */
+.sensor-status {
+    margin-bottom: 25px;
+}
+
+.sensor-status h4 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.sensor-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sensor-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.sensor-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sensor-value {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.sensor-battery {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #28a745;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* 데이터 품질 */
+.data-quality {
+    margin-bottom: 25px;
+}
+
+.data-quality h4 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.quality-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.quality-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quality-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.quality-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.quality-value.excellent {
+    color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.quality-value.good {
+    color: #20c997;
+    background: rgba(32, 201, 151, 0.1);
+}
+
+.quality-value.fair {
+    color: #ffc107;
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.quality-value.poor {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* 실시간 알림 */
+.realtime-alerts {
+    margin-top: 25px;
+}
+
+.realtime-alerts h4 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alert-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.alert-item.warning {
+    border-left-color: #ffc107;
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.alert-item.danger {
+    border-left-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    animation: alertBlink 2s infinite;
+}
+
+@keyframes alertBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.alert-message {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.alert-value {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.alert-time {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .realtime-detection {
+        padding: 15px;
+    }
+    
+    .connection-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .vital-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .vital-value {
+        font-size: 1.5rem;
+    }
+    
+    .sensor-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quality-metrics {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .vital-cards {
+        gap: 10px;
+    }
+    
+    .vital-card {
+        padding: 15px;
+    }
+    
+    .vital-icon {
+        font-size: 1.5rem;
+    }
+    
+    .vital-value {
+        font-size: 1.2rem;
+    }
+} 
